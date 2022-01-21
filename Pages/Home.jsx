@@ -14,7 +14,7 @@ export default function Home() {
                 justifyContent='flex-end'
                 radios={1000}
                 withe={10}
-                heigth={25}
+                heigth={24}
                 textSize={30}
                 alignItems='center'
             />
@@ -44,8 +44,9 @@ const styles = StyleSheet.create({
         fontWeight:'bold' ,
     },
     Image:{
-height:'32%',
-width:'60%',
+height:'25%',
+resizeMode:'cover',
+width:'40%',
 alignSelf:'flex-end',
 opacity:0.95
     }

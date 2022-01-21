@@ -35,9 +35,12 @@ const styles = StyleSheet.create({
     width: '70%',
     height: '55%',
     textAlign: 'right',
-    paddingRight: '3%',
+    paddingRight: '4%',
     fontWeight: 'bold',
-    color: 'white'
+    color: 'white',
+    textShadowColor: '#1EA6D6',
+    textShadowOffset: { width: 2, height: 2 },
+    textShadowRadius: 1
   },
   line: {
     borderBottomWidth: 3
