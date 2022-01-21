@@ -21,7 +21,7 @@ export default function Button(props) {
     );
 }
 const styles = StyleSheet.create({
-    possition: (justifyContent='center',alignItems='center')=> {
+    possition: (justifyContent='',alignItems='')=> {
        return{ flex: 1,
         justifyContent: justifyContent,
         alignItems: alignItems,

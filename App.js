@@ -1,22 +1,19 @@
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, ImageBackground } from 'react-native';
 import Input from './CTools/Input';
 import Button from './CTools/Button';
+import { NavigationContainer } from '@react-navigation/native';
+import Routes from './Routes/Routes';
+import Home from './Pages/Home'
+
 export default function App() {
   return (
-    <View style={styles.container}>
-      <ImageBackground source={require('./images/backimg.png')} resizeMode='cover' style={styles.image}>
-      <Input placeholder={"   inser email"}
-                justifyContent='flex-end'
-                width={70}
-        />
-        <Button
-          btntext="click me"
-          justifyContent='flex-start'
-        />
-        <StatusBar style="auto" />
-      </ImageBackground>
-    </View>
+    <NavigationContainer>
+      <View style={styles.container}>
+        <ImageBackground source={require('./images/backimg.png')} resizeMode='cover' style={styles.image}>
+          <Home />
+        </ImageBackground>
+      </View>
+    </NavigationContainer>
   );
 }
 
@@ -25,7 +22,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent:'center',
+    // justifyContent: 'center',
   },
   image: {
     flex: 1,
