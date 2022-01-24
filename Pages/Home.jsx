@@ -3,6 +3,9 @@ import React from 'react';
 import Button from '../CTools/Button';
 import Header from '../CTools/Header';
 
+import s from '../images/headerLogo/heart.png'
+
+
 export default function Home() {
     return (
         <View style={styles.container}>
