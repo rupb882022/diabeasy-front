@@ -1,17 +1,27 @@
 import { View, Text, Image, StyleSheet } from 'react-native';
 import React from 'react';
 
+import { heart_icon } from '../images/headerLogo/heart.png';
 
 export default function Header(props) {
-  const { logo_image, title, flex,paddingRight } = props
+  const { logo_image, title, flex, paddingRight } = props
 
+  const get_icon = (value) => {
+    switch (value) {
+      case 'heart':
+        return heart_icon;
+      default:
+        break;
+    }
+  }
   return (
     <>
       <View style={styles.container(flex)}>
         <Text style={styles.title(paddingRight)}>{title}</Text>
+
         <Image
           style={styles.Image}
-          source={logo_image ? require('../images/headerLogo/heart.png'):''}
+          source={get_icon(logo_image)}
         />
 
       </View>
