@@ -12,6 +12,7 @@ export default function Header(props) {
         return heart_icon;
       default:
         break;
+        //ani ose push
     }
   }
   return (
