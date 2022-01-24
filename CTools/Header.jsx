@@ -9,11 +9,16 @@ export default function Header(props) {
     <>
       <View style={styles.container(flex)}>
         <Text style={styles.title(paddingRight)}>{title}</Text>
+<<<<<<< HEAD
         
         {/* <Image
+=======
+        <Image
+>>>>>>> tal
           style={styles.Image}
-          source={logo_image ?require(logo_image):''}
-        /> */}
+          source={logo_image ? require('../images/headerLogo/heart.png'):''}
+        />
+
       </View>
       <View style={styles.line}></View>
     </>

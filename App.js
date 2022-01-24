@@ -1,6 +1,4 @@
 import { StyleSheet, Text, View, ImageBackground } from 'react-native';
-import Input from './CTools/Input';
-import Button from './CTools/Button';
 import { NavigationContainer } from '@react-navigation/native';
 import Routes from './Routes/Routes';
 import InsertData from './Pages/InsertData'
