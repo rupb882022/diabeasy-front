@@ -20,6 +20,7 @@ export default function Header(props) {
         <Text style={styles.title(paddingRight)}>{title}</Text>
 
         <Image
+
           style={styles.Image}
           source={get_icon(logo_image)}
         />
