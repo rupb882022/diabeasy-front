@@ -9,6 +9,7 @@ export default function Header(props) {
     <>
       <View style={styles.container(flex)}>
         <Text style={styles.title(paddingRight)}>{title}</Text>
+        
         {/* <Image
           style={styles.Image}
           source={logo_image ?require(logo_image):''}
