@@ -1,27 +1,29 @@
 import { View, Text, Image, StyleSheet } from 'react-native';
-import React from 'react';
-
+import React, { useState } from 'react';
 import { heart_icon } from '../images/headerLogo/heart.png';
+
 
 export default function Header(props) {
   const { logo_image, title, flex, paddingRight } = props
+  var icon = '';
 
-  const get_icon = (value) => {
-    switch (value) {
-      case 'heart':
-        return heart_icon;
-      default:
-        break;
-    }
+  switch (logo_image) {
+    case 'heart':
+      icon = require('../images/headerLogo/heart.png')
+      break;
+    default:
+      break;
   }
+
+
+
   return (
     <>
       <View style={styles.container(flex)}>
         <Text style={styles.title(paddingRight)}>{title}</Text>
-
         <Image
           style={styles.Image}
-          source={get_icon(logo_image)}
+          source={icon}
         />
 
       </View>
@@ -43,13 +45,13 @@ const styles = StyleSheet.create({
     height: '84%',
     width: '25%',
   },
-  title: (paddingRight=0) => {
+  title: (paddingRight = 0) => {
     return {
       fontSize: 30,
       width: '70%',
       height: '55%',
       textAlign: 'right',
-      paddingRight: paddingRight+'%',
+      paddingRight: paddingRight + '%',
       fontWeight: 'bold',
       color: 'white',
       textShadowColor: '#1EA6D6',
