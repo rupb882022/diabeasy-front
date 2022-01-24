@@ -11,7 +11,7 @@ export default function Home() {
         <View style={styles.container}>
             <Header
                 title='Diabeasy'
-                logo_image='../images/headerLogo/heart.png'
+                logo_image='heart'
                 flex={0.5}
                 paddingRight={4}
             />
