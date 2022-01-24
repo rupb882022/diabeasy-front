@@ -5,7 +5,6 @@ import React from 'react';
 export default function Button(props) {
 
     const { text, onPress, width, height, radios, textSize, justifyContent, alignItems } = props
-//stammmmmmm
     return (
         <View style={styles.possition(justifyContent, alignItems)}>
             <TouchableOpacity
