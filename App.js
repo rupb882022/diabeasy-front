@@ -3,6 +3,7 @@ import Input from './CTools/Input';
 import Button from './CTools/Button';
 import { NavigationContainer } from '@react-navigation/native';
 import Routes from './Routes/Routes';
+import InsertData from './Pages/InsertData'
 import Home from './Pages/Home'
 
 export default function App() {
@@ -10,7 +11,7 @@ export default function App() {
     <NavigationContainer>
       <View style={styles.container}>
         <ImageBackground source={require('./images/backimg.png')} resizeMode='cover' style={styles.image}>
-          <Home />
+       <Home/>
         </ImageBackground>
       </View>
     </NavigationContainer>
@@ -22,7 +23,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    // justifyContent: 'center',
+    justifyContent: 'center',
   },
   image: {
     flex: 1,

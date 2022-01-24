@@ -4,43 +4,44 @@ import React from 'react';
 
 export default function Button(props) {
 
-    const { btntext, onPress, withe, heigth, radios, textSize,justifyContent,alignItems } = props
+    const { text, onPress, width, height, radios, textSize, justifyContent, alignItems } = props
 
     return (
-        <View style={styles.possition(justifyContent,alignItems)}>
+        <View style={styles.possition(justifyContent, alignItems)}>
             <TouchableOpacity
                 onPress={onPress}
-                style={styles.button(withe, heigth, radios)}
+                style={styles.button(width, height, radios)}
             >
                 <Text
                     style={styles.btntext(textSize)}
-                >{btntext}
+                >{text}
                 </Text>
             </TouchableOpacity>
         </View>
     );
 }
 const styles = StyleSheet.create({
-    possition: (justifyContent='',alignItems='')=> {
-       return{ flex: 1,
-        justifyContent: justifyContent,
-        alignItems: alignItems,
-    }
+    possition: (justifyContent = '', alignItems = '') => {
+        return {
+            flex: 1,
+            justifyContent: justifyContent,
+            alignItems: alignItems,
+        }
     },
     //generic bottom style
-    button: (size = 15, heigth = 4, radios = 30) => {
+    button: (size = 15, height = 4, radios = 30) => {
         return {
             borderWidth: 1,
             borderRadius: radios,
             backgroundColor: '#1ea6d6',
-            paddingTop: heigth + '%',
-            paddingBottom: heigth + '%',
+            paddingTop: height + '%',
+            paddingBottom: height + '%',
             paddingRight: size + '%',
             paddingLeft: size + '%',
             borderColor: 'white',
         }
     },
-    btntext: (textSize=18) => {
+    btntext: (textSize = 18) => {
         return {
             color: 'white',
             fontSize: textSize,

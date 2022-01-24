@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 
 export default function Input(props) {
 
-    const { placeholder, secure = false, textAlign = 'left', label, validtion, min = 0, max, alignItems, justifyContent,width,fontSize } = props
+    const { placeholder, secure = false, textAlign = 'left', label, validtion, min = 0, max, alignItems, justifyContent, width, height, fontSize,keyboardType='default' } = props
     const [text, setText] = useState('');
     const [valid_lable, setValid_lable] = useState('');
 
@@ -31,9 +31,9 @@ export default function Input(props) {
     }
     return (
         <View style={styles.possition(justifyContent, alignItems)}>
-            <Text style={styles.label}>{label}</Text>
+            <Text style={styles.label(width)}>{label}</Text>
             <TextInput
-                style={styles.input(width,fontSize)}
+                style={styles.input(width, fontSize)}
                 placeholder={placeholder}
                 textAlign={textAlign}
                 secureTextEntry={secure} //hide with bollet- for passwords
@@ -41,7 +41,7 @@ export default function Input(props) {
                 onBlur={checkTextInput}
                 textAlignVertical='top'
                 clearButtonMode='while-editing'    //'never', 'while-editing', 'unless-editing', 'always'
-                keyboardType='default'             //'default', 'email-address', 'numeric', 'phone-pad', 'ascii-capable', 'numbers-and-punctuation', 'url', 'number-pad', 'name-phone-pad', 'decimal-pad', 'twitter', 'web-search', 'visible-password'
+                keyboardType={keyboardType}             //'default', 'email-address', 'numeric', 'phone-pad', 'ascii-capable', 'numbers-and-punctuation', 'url', 'number-pad', 'name-phone-pad', 'decimal-pad', 'twitter', 'web-search', 'visible-password'
             // maxLength={10}  max lengh of the text, char=1
             // placeholderTextColor='red'
             // spellCheck={true/false}         If false, disables spell-check style (i.e. red underlines). The default value is inherited from autoCorrect
@@ -61,19 +61,21 @@ const styles = StyleSheet.create({
             alignItems: alignItems,
         }
     },
-    input: (width=80,fontSize=16)=> {
+    input: (width = 75, fontSize = 16, height = 40) => {
         return {
-        // borderWidth: 1,
-        backgroundColor: 'white',
-        width: width+'%',
-        height: '6%',
-        borderRadius: 5,
-        fontSize: fontSize
-    }
+            // borderWidth: 1,
+            backgroundColor: 'white',
+            width: width + '%',
+            height: height + '%',
+            borderRadius: 5,
+            fontSize: fontSize,
+        }
     },
-    label: {
-        width: '80%',
-        paddingBottom: '1%'
+    label: (width = 75) => {
+        return {
+            width: width + '%',
+            paddingBottom: '1%',
+        }
     },
     valid_lable: {
         width: '80%',
