@@ -3,14 +3,21 @@ import { NavigationContainer } from '@react-navigation/native';
 import Routes from './Routes/Routes';
 import InsertData from './Pages/InsertData'
 import Home from './Pages/Home'
+import PersonalInfo1 from './Pages/PersonalInfo1';
+import PersonalInfo2 from './Pages/PersonalInfo2';
+import PatientLogin from './Pages/PatientLogin';
 
 export default function App() {
   return (
     <NavigationContainer>
       <View style={styles.container}>
         <ImageBackground source={require('./images/backimg.png')} resizeMode='cover' style={styles.image}>
-       <Home/>
-       
+       {/* <Home/> */}
+       {/* <InsertData/> */}
+       {/* <PersonalInfo1/> */}
+       {/* <PersonalInfo2/> */}
+        <PatientLogin/>
+
         </ImageBackground>
       </View>
     </NavigationContainer>
