@@ -10,10 +10,10 @@ export default function Home() {
     return (
         <View style={styles.container}>
             <Header
-                title='Diabeasy'
+                title='Home'
                 logo_image='heart'
                 flex={0.5}
-                paddingRight={4}
+                paddingRight={8}
             />
             <Button
                 text='Insert Data'
@@ -26,7 +26,7 @@ export default function Home() {
             />
 
             {/* user name */}
-            <Text style={styles.textHwllo}>Hello Itzik</Text>
+            <Text style={styles.textHello}>Hello Itzik</Text>
             <Image
                 style={styles.Image}
                 source={require('../images/home_img.webp.png')}
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
     },
-    textHwllo: {
+    textHello: {
         color: '#1ea6d6',
         alignSelf: 'flex-start',
         fontSize: 32,

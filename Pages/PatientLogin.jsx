@@ -10,7 +10,12 @@ export default function PatientLogin(props) {
         <View style={styles.container}>
             <Header
                 title='Patient Login'
-                logo_image='heart'              
+                logo_image='heart' 
+                flexDirection="column-reverse" 
+                alignItems='center'   
+                paddingRight={9} 
+                justifyContent='flex-end'
+                line={false}        
             />
             <View style={styles.inputs}>
             <Input
@@ -56,7 +61,7 @@ const styles = StyleSheet.create({
     Image:
     {height: '25%',
     resizeMode: 'cover',
-    width: '40%',
+    width: '50%',
     alignSelf: 'center',
     opacity: 0.95,
    marginBottom:'1%'},
