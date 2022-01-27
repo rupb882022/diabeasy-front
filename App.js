@@ -10,7 +10,6 @@ export default function App() {
       <View style={styles.container}>
         <ImageBackground source={require('./images/backimg.png')} resizeMode='cover' style={styles.image}>
        <Home/>
-       
         </ImageBackground>
       </View>
     </NavigationContainer>

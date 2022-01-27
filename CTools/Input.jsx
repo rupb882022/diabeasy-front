@@ -33,7 +33,7 @@ export default function Input(props) {
         <View style={styles.possition(justifyContent, alignItems)}>
             <Text style={styles.label(width)}>{label}</Text>
             <TextInput
-                style={styles.input(width, fontSize)}
+                style={styles.input(width, fontSize,height)}
                 placeholder={placeholder}
                 textAlign={textAlign}
                 secureTextEntry={secure} //hide with bollet- for passwords

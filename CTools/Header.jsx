@@ -14,9 +14,6 @@ export default function Header(props) {
     default:
       break;
   }
-
-
-
   return (
     <>
       <View style={styles.container(flex)}>
