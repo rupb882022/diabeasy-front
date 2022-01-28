@@ -18,7 +18,7 @@ export default function Home() {
             <Button
                 text='Insert Data'
                 justifyContent='flex-end'
-                radios={1000}
+                radius={1000}
                 width={10}
                 height={24}
                 textSize={30}

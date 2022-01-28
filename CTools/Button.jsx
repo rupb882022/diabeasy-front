@@ -4,12 +4,12 @@ import React from 'react';
 
 export default function Button(props) {
 
-    const { text, onPress, width, height, radios, textSize, justifyContent, alignItems } = props
+    const { text, onPress, width, height, radius, textSize, justifyContent, alignItems } = props
     return (
         <View style={styles.possition(justifyContent, alignItems)}>
             <TouchableOpacity
                 onPress={onPress}
-                style={styles.button(width, height, radios)}
+                style={styles.button(width, height, radius)}
             >
                 <Text
                     style={styles.btntext(textSize)}
@@ -28,10 +28,10 @@ const styles = StyleSheet.create({
         }
     },
     //generic bottom style
-    button: (size = 15, height = 4, radios = 30) => {
+    button: (size = 15, height = 4, radius = 30) => {
         return {
             borderWidth: 1,
-            borderRadius: radios,
+            borderRadius: radius,
             backgroundColor: '#1ea6d6',
             paddingTop: height + '%',
             paddingBottom: height + '%',
