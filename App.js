@@ -6,18 +6,24 @@ import Home from './Pages/Home'
 import PersonalInfo1 from './Pages/PersonalInfo1';
 import PersonalInfo2 from './Pages/PersonalInfo2';
 import PatientLogin from './Pages/PatientLogin';
+import CameraUse from './Pages/ImagePicker/CameraUse';
+import GalleryPick from './Pages/ImagePicker/GalleryPick';
+
 
 export default function App() {
+
+
   return (
     <NavigationContainer>
       <View style={styles.container}>
         <ImageBackground source={require('./images/backimg.png')} resizeMode='cover' style={styles.image}>
        {/* <Home/> */}
        {/* <InsertData/> */}
-       {/* <PersonalInfo1/> */}
+       {/* <PersonalInfo1  /> */}
        {/* <PersonalInfo2/> */}
-        <PatientLogin/>
-
+        {/* <PatientLogin/> */}
+<CameraUse/>
+{/* <Gall eryPick/> */}
         </ImageBackground>
       </View>
     </NavigationContainer>

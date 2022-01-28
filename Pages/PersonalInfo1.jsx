@@ -1,10 +1,24 @@
-import { View, StyleSheet,Text } from 'react-native';
-import React from 'react';
+import { View, StyleSheet,Text,TouchableOpacity } from 'react-native';
+import React,{useState,useRef} from 'react';
 import Header from '../CTools/Header';
 import Input from '../CTools/Input';
 import Button from '../CTools/Button';
+import PickerMenu from './ImagePicker/PickerMenu';
 
 export default function PersonalInfo1(props) {
+  const sheetRef= useRef(null);
+//close menu picture picker
+  const closeSheet = ()=>{
+  if(sheetRef.current){
+    sheetRef.current.close();
+  }
+};
+//open menu picture picker
+const openSheet = ()=>{
+  if(sheetRef.current){
+    sheetRef.current.open();
+  }
+};
     return (
         <View style={styles.container}>
             <Header
@@ -34,13 +48,21 @@ export default function PersonalInfo1(props) {
                 label='Date Of Birth' />
 
         <View style={styles.uploadbutton}>
-        <Text>Upload Profile Picture </Text>
+        <Text>Upload Profile Picture</Text>
+       
         <Button 
         text='+'
         width={8}
         height={5}
+        onPress={openSheet}        
         />
-      </View>
+        </View>
+         {/* <TouchableOpacity onPress={openSheet}>
+             <Text>UPLOAD BUTTON HERE</Text>
+         </TouchableOpacity> */}
+      
+
+     
      {/* Next Page Button */}
      <View style={styles.Next}>
      <Text style={styles.txt}> 1/2</Text>
@@ -50,7 +72,8 @@ export default function PersonalInfo1(props) {
             height={2}
             justifyContent='flex-start'
             />
-        </View>
+        </View> 
+        <PickerMenu ref={sheetRef}/>
         </View>
     );
 }
@@ -66,5 +89,5 @@ const styles = StyleSheet.create({
     },
     txt:{paddingRight:'13%'},
     uploadbutton: {flex:1,           
-      paddingLeft:50}
+      paddingLeft:50},
 });
