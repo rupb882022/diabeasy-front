@@ -3,14 +3,15 @@ import React, { useState } from 'react';
 import Button from './Button';
 export default function PopUp(props) {
 
-    const { show, setShow, width, height, button_width = 15, button_height = 3, button_textSize = 17, padding, title, title_size,element } = props
+    const { show,animationType='slide', setShow, width, height, button_width = 15, button_height = 3, button_textSize = 17, padding, title, title_size,element } = props
 
     return (
         <>
             <Modal
-                animationType="slide"
                 transparent={true}
                 visible={show}
+                animationType={animationType} //slide ,fade ,none
+
             >
                 <View style={styles.centeredView}>
                     <View style={styles.modalView(width, height, padding)}>

@@ -3,14 +3,18 @@ import React, { useState } from 'react';
 import PopUp from './PopUp'
 import DatePikcer from './DatePikcer';
 import Moment from 'moment';
+import SelectBox from './SelectBox';
 
 export default function Input(props) {
 
-    const { placeholder, secure = false, editable = true, textAlign = 'left', label, validtion, min = 0, max, alignItems, justifyContent, width, height, fontSize, keyboardType = 'default', type = '' } = props
+    const { placeholder, secure = false,required=false,editable = true, textAlign = 'left', label, validtion, min = 0, max, alignItems, justifyContent, width, height, fontSize,
+     keyboardType = 'default', type = '',selectBox_items=[],SelectBox_placeholder } = props
+
     const [text, setText] = useState('');
     const [valid_lable, setValid_lable] = useState('');
     const [showPopUp, setShowPopUp] = useState(false);
-
+    const [selectBox, setSelectBox] = useState([]);
+    
     //if props validtion
     const checkTextInput = () => {
         let regex = '';
@@ -32,12 +36,20 @@ export default function Input(props) {
             default:
                 break;
         }
+        text==''&&required? setValid_lable("   please fill in some value"):'';
     }
 
     //if date picker 
     const onPress = () => {
-        if (type == 'date') {
-            setShowPopUp(true);
+        switch (type) {
+            case 'date':
+                setShowPopUp(true);
+                break;
+            case 'selectBox':
+                setSelectBox(selectBox_items)
+                break;
+            default:
+                break;
         }
     }
 
@@ -51,7 +63,7 @@ export default function Input(props) {
                 textAlign={textAlign}
                 value={text}
                 secureTextEntry={secure} //hide with bollet- for passwords
-                onChangeText={value => {setText(value); setValid_lable('');}}
+                onChangeText={value => { setText(value); setValid_lable(''); }}
                 onBlur={checkTextInput}
                 onPressIn={onPress}
                 textAlignVertical='top'
@@ -83,10 +95,19 @@ export default function Input(props) {
                             justifyContent='flex-start'
                             height={230}
                             width={270}
-                            setdate={(value) => { setText(Moment(value).format("DD/MM/YYYY H:mm"))}}
+
+                            max={new Date()}
+                            setdate={(value) => { setText(Moment(value).format("DD/MM/YYYY H:mm")) }}
                         />
                     }
                 /> : <></>}
+                {selectBox.length>0?
+                <SelectBox
+                placeholder={SelectBox_placeholder}
+                onSelect={(value)=>{setText(value)}}
+                items={selectBox_items}
+                />
+               :<></>}
         </View>
     );
 }
@@ -108,7 +129,7 @@ const styles = StyleSheet.create({
             height: height + '%',
             borderRadius: 5,
             fontSize: fontSize,
-            padding:'2%'
+            padding: '2%'
         }
     },
     label: (width = 75) => {
