@@ -11,16 +11,18 @@ export default function CameraUse(props) {
   useEffect(() => {
     (async () => {
       const { status } = await Camera.requestCameraPermissionsAsync();
+      //TODO cheack if premission can be save in DB
       setHasPermission(status === 'granted');
     })();
   }, []);
 
   if (hasPermission === null) {
-    return <View />;
+    return <></>;
   }
   if (hasPermission === false) {
     return <Text>No access to camera</Text>;
   }
+  
   return (
     <View style={styles.container}>
       <Camera style={styles.camera} type={type} ref={ref => setCamera(ref)}>
@@ -42,8 +44,6 @@ export default function CameraUse(props) {
                   : Camera.Constants.Type.back
               );
             }}/>
-              {/* </View>
-              <View style={styles.buttonContainer2}> */}
           <Button
           text='Pic'
          radios={1000} 
@@ -59,7 +59,6 @@ export default function CameraUse(props) {
               //setPicUri(data.uri);
               }
               }}/>
-           {/* <Text style={styles.text}> Flip </Text> */}
            <Button
           text='Pic'
          radios={1000} 
@@ -89,25 +88,16 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flex: 0.1,
-    //backgroundColor: 'transparent',
     flexDirection: 'row',
     justifyContent:'center',
-    // marginBottom:10,
-    // marginLeft:10,
     alignItems:'center'
    
   },
   buttonContainer2:{
-    //flex:0.5,
-    //justifyContent:'flex-end',
   marginBottom:10,
   marginRight:10,
 alignItems:'flex-end'},
   button: {
    // flex: 0.2,
   },
-  // text: {
-  //   fontSize: 18,
-  //   color: 'white',
-  // },
 });

@@ -19,11 +19,11 @@ export default function App() {
         <ImageBackground source={require('./images/backimg.png')} resizeMode='cover' style={styles.image}>
 
        {/* <Home/> */}
-       {/* <InsertData/> */}
+       <InsertData/>
        {/* <PersonalInfo1  /> */}
        {/* <PersonalInfo2/> */}
         {/* <PatientLogin/> */}
-<CameraUse/>
+{/* <CameraUse/> */}
 {/* <Gall eryPick/> */}
         </ImageBackground>
       </View>

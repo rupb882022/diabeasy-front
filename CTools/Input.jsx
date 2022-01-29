@@ -1,11 +1,15 @@
 import { View, Text, TextInput, StyleSheet } from 'react-native';
 import React, { useState } from 'react';
+import PopUp from './PopUp'
+import DatePikcer from './DatePikcer';
+import Moment from 'moment';
 
 export default function Input(props) {
 
-    const { placeholder, secure = false, textAlign = 'left', label, validtion, min = 0, max, alignItems, justifyContent, width, height, fontSize,keyboardType='default' } = props
+    const { placeholder, secure = false, editable = true, textAlign = 'left', label, validtion, min = 0, max, alignItems, justifyContent, width, height, fontSize, keyboardType = 'default', type = '' } = props
     const [text, setText] = useState('');
     const [valid_lable, setValid_lable] = useState('');
+    const [showPopUp, setShowPopUp] = useState(false);
 
     //if props validtion
     const checkTextInput = () => {
@@ -29,29 +33,64 @@ export default function Input(props) {
                 break;
         }
     }
+
+    //if date picker 
+    const onPress = () => {
+        if (type == 'date') {
+            setShowPopUp(true);
+        }
+    }
+
+
     return (
         <View style={styles.possition(justifyContent, alignItems)}>
             <Text style={styles.label(width)}>{label}</Text>
             <TextInput
-                style={styles.input(width, fontSize,height)}
+                style={styles.input(width, fontSize, height)}
                 placeholder={placeholder}
                 textAlign={textAlign}
+                value={text}
                 secureTextEntry={secure} //hide with bollet- for passwords
-                onChangeText={text => { setText(text); setValid_lable(''); }}
+                onChangeText={value => {setText(value); setValid_lable('');}}
                 onBlur={checkTextInput}
+                onPressIn={onPress}
                 textAlignVertical='top'
+                editable={editable} //disable clikc
                 clearButtonMode='while-editing'    //'never', 'while-editing', 'unless-editing', 'always'
                 keyboardType={keyboardType}             //'default', 'email-address', 'numeric', 'phone-pad', 'ascii-capable', 'numbers-and-punctuation', 'url', 'number-pad', 'name-phone-pad', 'decimal-pad', 'twitter', 'web-search', 'visible-password'
+
+
             // maxLength={10}  max lengh of the text, char=1
             // placeholderTextColor='red'
             // spellCheck={true/false}         If false, disables spell-check style (i.e. red underlines). The default value is inherited from autoCorrect
             // inlineImageLeft='search_icon'
             // inlineImagePadding={icon_padding}
             />
+
+            {/* validtion label */}
             <Text style={styles.valid_lable}>{valid_lable}</Text>
+
+            {/* pop up for date picker if type=date */}
+            {showPopUp ?
+                <PopUp
+                    show={showPopUp}
+                    title={'choose date and time'}
+                    setShow={(val) => setShowPopUp(val)}
+                    element={
+                        <DatePikcer
+                            mode='datetime'
+                            display='spinner'
+                            justifyContent='flex-start'
+                            height={230}
+                            width={270}
+                            setdate={(value) => { setText(Moment(value).format("DD/MM/YYYY H:mm"))}}
+                        />
+                    }
+                /> : <></>}
         </View>
     );
 }
+
 
 const styles = StyleSheet.create({
     possition: (justifyContent = 'center', alignItems = 'center') => {
@@ -69,6 +108,7 @@ const styles = StyleSheet.create({
             height: height + '%',
             borderRadius: 5,
             fontSize: fontSize,
+            padding:'2%'
         }
     },
     label: (width = 75) => {
