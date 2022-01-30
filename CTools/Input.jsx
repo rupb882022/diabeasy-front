@@ -8,7 +8,7 @@ import SelectBox from './SelectBox';
 export default function Input(props) {
 
     const { placeholder, secure = false,required=false,editable = true, textAlign = 'left', label, validtion, min = 0, max, alignItems, justifyContent, width, height, fontSize,
-     keyboardType = 'default', type = '',selectBox_items=[],SelectBox_placeholder } = props
+     keyboardType = 'default', type = '',selectBox_items=[],SelectBox_placeholder,mode='datetime',display='spinner',popup_title,date_format_hour=true} = props
 
     const [text, setText] = useState('');
     const [valid_lable, setValid_lable] = useState('');
@@ -86,18 +86,21 @@ export default function Input(props) {
             {showPopUp ?
                 <PopUp
                     show={showPopUp}
-                    title={'choose date and time'}
+                    title={popup_title}
                     setShow={(val) => setShowPopUp(val)}
                     element={
                         <DatePikcer
-                            mode='datetime'
-                            display='spinner'
+                            mode={mode}
+                            display={display}
                             justifyContent='flex-start'
                             height={230}
                             width={270}
 
                             max={new Date()}
-                            setdate={(value) => { setText(Moment(value).format("DD/MM/YYYY H:mm")) }}
+                            setdate= {date_format_hour?
+                            (value) => { setText(Moment(value).format('DD/MM/YYYY H:mm'))}:
+                            (value) => { setText(Moment(value).format('DD/MM/YYYY'))}
+                        }
                         />
                     }
                 /> : <></>}

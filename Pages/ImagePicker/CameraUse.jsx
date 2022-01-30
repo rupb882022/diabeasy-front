@@ -2,11 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { Camera } from 'expo-camera';
 import Button from '../../CTools/Button';
+import { Feather } from '@expo/vector-icons'; 
+
 
 export default function CameraUse(props) {
   const [hasPermission, setHasPermission] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [camera, setCamera] = useState(null);
+
 
   useEffect(() => {
     (async () => {
@@ -26,9 +29,13 @@ export default function CameraUse(props) {
   return (
     <View style={styles.container}>
       <Camera style={styles.camera} type={type} ref={ref => setCamera(ref)}>
-
+<TouchableOpacity onPress={()=>navigation.goBack()} style={styles.X}>
+<Feather name="x" size={24} color="black" />
+</TouchableOpacity>
       </Camera>
       <View style={styles.buttonContainer}>
+
+
           <Button
           justifyContent='flex-end'
           alignItems='flex-start'
@@ -100,4 +107,9 @@ alignItems:'flex-end'},
   button: {
    // flex: 0.2,
   },
+  X: {
+  alignItems:'flex-end',
+paddingTop:'15%',
+paddingRight: '5%'
+}
 });
