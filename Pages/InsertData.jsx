@@ -15,6 +15,10 @@ export default function InsertData(props) {
         <View style={styles.container}>
             <Header
                 title='Insert Data'
+                logo_image='infusion'
+                image_width={35}
+                image_heigt={95}
+                image_padding={50}
             />
             <Input
                 popup_title='choose date and time'

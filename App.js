@@ -20,7 +20,7 @@ export default function App() {
 
        {/* <Home/> */}
        {/* <InsertData/> */}
-       <PersonalInfo1  />
+       {/* <PersonalInfo1  /> */}
        {/* <PersonalInfo2/> */}
         {/* <PatientLogin/> */}
 {/* <CameraUse/> */}
@@ -41,6 +41,6 @@ const styles = StyleSheet.create({
   image: {
     flex: 1,
     resizeMode: 'stretch',
-    width: '100%'
+    width: '100%',
   }
 });
