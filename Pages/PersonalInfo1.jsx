@@ -5,7 +5,7 @@ import Input from '../CTools/Input';
 import Button from '../CTools/Button';
 import PickerMenu from './ImagePicker/PickerMenu';
 
-export default function PersonalInfo1(props) {
+export default function PersonalInfo1(props,{navigation}) {
   const sheetRef= useRef(null);
 //close menu picture picker
   const closeSheet = ()=>{
@@ -39,27 +39,40 @@ const openSheet = ()=>{
                 label='Confirm Password'
                 secure={true}/>*/}
 
-            <Input
-                label='Gender' />
+                <Input
+                label='Gender'
+                editable={false}
+                type='selectBox'
+                SelectBox_placeholder='Gender'
+                selectBox_items={[
+                    {itemKey:0, label: 'Male', value: 'Male' },
+                    {itemKey:1, label: 'Female', value: 'Female' },
+                    {itemKey:2, label: 'Other', value: 'Other' },
+                ]} />
 
+                <Input
+                label='Date Of Birth '
+                type='date'
+                editable={false}          
+                mode='date' 
+                display='spinner'
+                date_format_hour={false}
                 
+            />
                 
-            <Input
-                label='Date Of Birth' />
 
         <View style={styles.uploadbutton}>
         <Text>Upload Profile Picture</Text>
        
         <Button 
-        text='+'
+        logo_image='gallery'
         width={8}
         height={5}
-        onPress={openSheet}        
+        onPress={openSheet} 
+        
         />
         </View>
-         {/* <TouchableOpacity onPress={openSheet}>
-             <Text>UPLOAD BUTTON HERE</Text>
-         </TouchableOpacity> */}
+      
       
 
      

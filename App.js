@@ -19,8 +19,8 @@ export default function App() {
         <ImageBackground source={require('./images/backimg.png')} resizeMode='cover' style={styles.image}>
 
        {/* <Home/> */}
-       <InsertData/>
-       {/* <PersonalInfo1  /> */}
+       {/* <InsertData/> */}
+       <PersonalInfo1  />
        {/* <PersonalInfo2/> */}
         {/* <PatientLogin/> */}
 {/* <CameraUse/> */}

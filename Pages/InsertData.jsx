@@ -17,6 +17,7 @@ export default function InsertData(props) {
                 title='Insert Data'
             />
             <Input
+                popup_title='choose date and time'
                 label='Date time'
                 type='date'
                 editable={false}

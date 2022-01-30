@@ -17,8 +17,7 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true,
-      "NSCameraUsageDescription":"Diabeasy need your permition"
+      "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {

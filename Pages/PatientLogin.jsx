@@ -49,7 +49,7 @@ export default function PatientLogin(props) {
 
             <Image
                 style={styles.Image}
-                source={require('../images/home_img.webp.png')}
+                source={require('../images/login.JPG.png')}
             />
         </View>
     );
@@ -65,7 +65,8 @@ const styles = StyleSheet.create({
         width: '50%',
         alignSelf: 'center',
         opacity: 0.95,
-        marginBottom: '1%'
+        marginBottom: '4%',
+        marginTop:'2%'
     },
     forgotPassword: {
         alignItems: 'flex-end',
