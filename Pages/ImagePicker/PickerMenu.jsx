@@ -7,8 +7,8 @@ import CameraUse from './CameraUse';
 import { MaterialCommunityIcons,AntDesign } from '@expo/vector-icons';
 const PickerMenu = React.forwardRef(({},ref)=>{
 const options =[
-{name:"   Take from camera",icon : <AntDesign name='camerao' size={27}/> ,onPress:()=>{ navigation.navigate('CameraUse')} },
-{name:"   Choose from gallery",icon :<MaterialCommunityIcons name='image-search-outline' size={27}/> , onPress:()=>{navigation.navigate('GalleryPick')} }
+{name:"   Take from camera",icon : <AntDesign name='camerao' size={27}/> ,onPress:()=>{ } },
+{name:"   Choose from gallery",icon :<MaterialCommunityIcons name='image-search-outline' size={27}/> , onPress:()=>{} }
 ]
 // switch(options.icon){
 // case 'camera':
