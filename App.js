@@ -20,14 +20,14 @@ export default function App() {
 
        {/* <Home/> */}
        {/* <InsertData/> */}
-       <PersonalInfo1  />
+       {/* <PersonalInfo1  /> */}
        {/* <PersonalInfo2/> */}
         {/* <PatientLogin/> */}
-{/* <CameraUse/> */}
-{/* <Gall eryPick/> */}
+       <CameraUse/>
+      {/* <GalleryPick/> */}
         </ImageBackground>
-      </View>
-    </NavigationContainer>
+         </View>
+      </NavigationContainer>
   );
 }
 

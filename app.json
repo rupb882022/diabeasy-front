@@ -17,7 +17,11 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSPhotoLibraryUsageDescription": "Diabeasy need your gallery access",
+        "NSCameraUsageDescription":"Diabeasy need your camera access"
+      }
     },
     "android": {
       "adaptiveIcon": {
