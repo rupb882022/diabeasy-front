@@ -21,8 +21,8 @@ const {mode='datetime',display='default',max,min,color='black',text_Color='dark'
           value={date}
           mode={mode}
           is24Hour={true}
-          maximumDate={max} 
-          minimumDate={min}
+          maximumDate={max}      //send prop Like this -> {new Date(1920,1,1)}
+          minimumDate={min}      // Same like max
           themeVariant={text_Color}
           textColor={color}   //Allows changing of the textColor of the date picker. Has effect only when display is "spinner"
           display={display}  //spiner ,calendar (only for date mode) ,clock (only for time mode)

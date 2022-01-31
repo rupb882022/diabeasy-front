@@ -10,14 +10,7 @@ const options =[
 {name:"   Take from camera",icon : <AntDesign name='camerao' size={27}/> ,onPress:()=>{ } },
 {name:"   Choose from gallery",icon :<MaterialCommunityIcons name='image-search-outline' size={27}/> , onPress:()=>{} }
 ]
-// switch(options.icon){
-// case 'camera':
-//   icon = require()
-// break;
-// case 'gallery':
-//   icon = require('../../images/icons/camera/jpg.png')
-//   break;
-// }
+
 return(
   <RBSheet
           ref={ref}

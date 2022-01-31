@@ -23,11 +23,11 @@ export default function App() {
        {/* <PersonalInfo1  /> */}
        {/* <PersonalInfo2/> */}
         {/* <PatientLogin/> */}
-{/* <CameraUse/> */}
-{/* <Gall eryPick/> */}
+       <CameraUse/>
+      {/* <GalleryPick/> */}
         </ImageBackground>
-      </View>
-    </NavigationContainer>
+         </View>
+      </NavigationContainer>
   );
 }
 

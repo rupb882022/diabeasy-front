@@ -95,7 +95,7 @@ export default function Input(props) {
                             justifyContent='flex-start'
                             height={230}
                             width={270}
-
+                            min={min}
                             max={new Date()}
                             setdate= {date_format_hour?
                             (value) => { setText(Moment(value).format('DD/MM/YYYY H:mm'))}:

@@ -1,28 +1,21 @@
-import { View, Text, TouchableOpacity, StyleSheet,Image } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import React from 'react';
 
 
 export default function Button(props) {
 
-    const { logo_image,logoWidth,logoHeight,text, onPress, width, height, radius, textSize, justifyContent, alignItems } = props
-         var icon=''
-    switch(logo_image){
-    case 'gallery':
-        icon = require('../images/icons/gallery.JPG.png');
-        break;
-    
+    const { element,text, onPress, width, height, radius, textSize, justifyContent, alignItems } = props
 
-    }
+
+  
     return (
         <View style={styles.possition(justifyContent, alignItems)}>
             <TouchableOpacity
                 onPress={onPress}
                 style={styles.button(width, height, radius)}
             >
-                {icon!=''?<Image 
-                style={styles.logo(logoWidth,logoHeight)}
-                source={icon}/>:<></>}
-
+             
+                {element? element:<></>}
 
                 {text?<Text
                 style={styles.btntext(textSize)}
