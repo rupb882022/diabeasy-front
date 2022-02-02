@@ -17,13 +17,13 @@ export default function App() {
     <NavigationContainer>
       <View style={styles.container}>
         <ImageBackground source={require('./images/backimg.png')} resizeMode='cover' style={styles.image}>
-
+        
        {/* <Home/> */}
        {/* <InsertData/> */}
        {/* <PersonalInfo1  /> */}
        {/* <PersonalInfo2/> */}
-        {/* <PatientLogin/> */}
-       <CameraUse/>
+        <PatientLogin/>
+       {/* <CameraUse/> */}
       {/* <GalleryPick/> */}
         </ImageBackground>
          </View>

@@ -13,7 +13,6 @@ export default function GalleryPick() {
     (async ()=>{
     if (Platform.OS !== 'web') {
       const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-     // console.log(status);
       if (status !== 'granted') {
         console.log(status);
         alert('permission denied!')
@@ -39,7 +38,8 @@ export default function GalleryPick() {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.pic} onPress={PickImage}>
-        {image ? <Image source={{ uri: image }} style={styles.img} /> : <></>}
+        {image==null ? <Image style={styles.img} source={require('../../images/blankProfilePicture.png')}/>: 
+        <Image source={{ uri: image }} style={styles.img} /> }
         <View style={styles.icon}><Ionicons name="camera-reverse-outline"  size={35}  /></View>
         <Text style={{alignSelf: 'center',justifyContent:'flex-start' }}>Tap To Edit </Text>
       </TouchableOpacity>

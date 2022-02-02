@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import Button from './Button';
 export default function PopUp(props) {
 
-    const { show,animationType='slide', setShow, width, height, button_width = 15, button_height = 3, button_textSize = 17, padding, title, title_size,element } = props
+    const { show,animationType='slide', setShow, width, height, button_width = 15, button_height = 3, button_textSize = 17,button_txt='OK', padding, title, title_size,element,backgroundColor } = props
 
     return (
         <>
@@ -11,15 +11,14 @@ export default function PopUp(props) {
                 transparent={true}
                 visible={show}
                 animationType={animationType} //slide ,fade ,none
-
             >
                 <View style={styles.centeredView}>
-                    <View style={styles.modalView(width, height, padding)}>
-                        <Text style={styles.title(title_size)}>{title}</Text>
+                    <View style={styles.modalView(width, height, padding,backgroundColor)}>
+                        {title? <Text style={styles.title(title_size)}>{title}</Text>:<></>}
                         {/* the element that will show in pop up */}
                         {element}
                         <Button
-                            text='OK'
+                            text={button_txt}
                             width={button_width}
                             height={button_height}
                             textSize={button_textSize}
@@ -38,9 +37,9 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
     },
-    modalView: (width = 75, height = 40, padding = 5) => {
+    modalView: (width = 75, height = 40, padding = 5, backgroundColor= "white") => {
         return {
-            backgroundColor: "white",
+            backgroundColor: backgroundColor,
             borderRadius: 20,
             padding: padding + '%',
             width: width + '%',
@@ -53,7 +52,7 @@ const styles = StyleSheet.create({
             },
             shadowOpacity: 0.25,
             shadowRadius: 4,
-            elevation: 5
+            elevation: 5,
         }
     },
     title: (title_size=20) => {
