@@ -13,13 +13,17 @@ export default function InsertData(props) {
 
     return (
         <View style={styles.container}>
-            <Header
-                title='Insert Data'
-                logo_image='infusion'
-                image_width={35}
-                image_heigt={95}
-                image_padding={50}
-            />
+
+                <Header
+                    title='Insert Data'
+                    logo_image='infusion'
+                    image_width={30}
+                    image_heigt={125}
+                    possiton={55}
+                    marginLeft={2}
+                    image_margin={{Bottom:-5}}
+                />
+
             <Input
                 popup_title='choose date and time'
                 label='Date time'
@@ -40,9 +44,9 @@ export default function InsertData(props) {
                 type='selectBox'
                 SelectBox_placeholder='Select spot of injection'
                 selectBox_items={[
-                    {itemKey:0, label: 'Arm', value: 'Arm' },
-                    {itemKey:1, label: 'Belly', value: 'Belly' },
-                    {itemKey:2, label: 'Leg', value: 'Leg' },
+                    { itemKey: 0, label: 'Arm', value: 'Arm' },
+                    { itemKey: 1, label: 'Belly', value: 'Belly' },
+                    { itemKey: 2, label: 'Leg', value: 'Leg' },
                 ]} />
             <Input
                 label='category' />

@@ -12,9 +12,14 @@ export default function Home() {
             <Header
                 title='Home'
                 logo_image='heart'
-                flex={0.5}
-                paddingRight={8}
+                flex={0.4}
+                image_width={30}
+                image_heigt={50}
+                paddingRight={9}
+                possiton={68}
+                image_margin={{Bottom:5}}
             />
+   
             <Button
                 text='Insert Data'
                 justifyContent='flex-end'

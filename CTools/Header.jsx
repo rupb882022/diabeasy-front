@@ -4,8 +4,11 @@ import React from 'react';
 
 
 export default function Header(props) {
-  const { logo_image, title, flex, paddingRight, flexDirection, line = true, image_heigt, image_width, alignItems, justifyContent } = props
+  const { logo_image, possiton = 75, title, flex, paddingRight, marginLeft, flexDirection, line = true, image_heigt, image_width, alignItems, justifyContent, image_margin } = props
   var icon = '';
+
+  let image_marginBottom = image_margin && image_margin.Bottom ? image_margin.Bottom : 0;
+  let image_marginTop = image_margin && image_margin.Top ? image_margin.Top : 0;
 
   switch (logo_image) {
     case 'heart':
@@ -43,48 +46,57 @@ export default function Header(props) {
   }
   return (
     <>
-      <View style={styles.container(flex, flexDirection, alignItems, justifyContent)}>
-        <Text style={styles.title(paddingRight)}>{title}</Text>
+      <View style={styles.container(flex, flexDirection, alignItems, justifyContent, possiton)}>
+        <Text style={styles.title(paddingRight, marginLeft)}>{title}</Text>
         <Image
-          style={styles.Image(image_heigt, image_width)}
+          style={styles.Image(image_heigt, image_width, image_marginTop, image_marginBottom)}
           source={icon}
         />
       </View>
-      {line ? <View style={styles.line}></View> : <></>}
+      {line ? <View style={styles.line(possiton)}></View> : <></>}
     </>
   );
 }
 const styles = StyleSheet.create({
-  container: (flex = 1, flexDirection = 'row', alignItems = 'flex-end', justifyContent = 'flex-start') => {
+  container: (flex = 1, flexDirection = 'row', alignItems = 'flex-end', justifyContent = 'flex-start', possiton) => {
     return {
       flex: flex,
       flexDirection: flexDirection,
       justifyContent: justifyContent,
       alignItems: alignItems,
+      position: 'relative',
+      bottom: possiton
     }
   },
-  Image: (image_heigt = 84, image_width = 25) => {
+  Image: (image_heigt = 84, image_width = 25, image_marginTop, image_marginBottom) => {
     return {
       resizeMode: 'contain',
       height: image_heigt + '%',
-      width: image_width + '%'
+      width: image_width + '%',
+      marginTop: image_marginTop + '%',
+      marginBottom: image_marginBottom + '%',
     }
   },
-  title: (paddingRight = 0) => {
+  title: (paddingRight = 0, marginLeft = 0) => {
     return {
       fontSize: 30,
       width: '70%',
       height: '55%',
       textAlign: 'right',
       paddingRight: paddingRight + '%',
+      marginLeft: marginLeft + '%',
       fontWeight: 'bold',
       color: 'white',
       textShadowColor: '#1EA6D6',
       textShadowOffset: { width: 2, height: 2 },
-      textShadowRadius: 1
+      textShadowRadius: 1,
     }
   },
-  line: {
-    borderBottomWidth: 3
+  line: (possiton) => {
+    return {
+      borderBottomWidth: 3,
+      position: 'relative',
+      bottom: possiton
+    }
   }
 });

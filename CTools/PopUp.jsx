@@ -15,7 +15,7 @@ export default function PopUp(props) {
             >
                 <View style={styles.centeredView}>
                     <View style={styles.modalView(width, height, padding)}>
-                        <Text style={styles.title(title_size)}>{title}</Text>
+                       {title? <Text style={styles.title(title_size)}>{title}</Text>:<></>}
                         {/* the element that will show in pop up */}
                         {element}
                         <Button
