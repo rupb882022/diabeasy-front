@@ -9,6 +9,9 @@ export default function PersonalInfo2(props) {
         <View style={styles.container}>
             <Header
                 title='Medical Info'  
+                possiton={-10}
+                marginLeft={4}
+                line={false}
             />
             <Input
                 label='Weight'

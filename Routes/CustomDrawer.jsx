@@ -1,35 +1,43 @@
-import { View, Text,Image,StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet } from 'react-native';
 import React from 'react';
 import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
 export default function CustomDrawer(props) {
     return (
-        <View style={{flex:1}}>
-        <DrawerContentScrollView>
-            <Image source={{uri:'https://cdn.shopify.com/s/files/1/0045/5104/9304/t/27/assets/AC_ECOM_SITE_2020_REFRESH_1_INDEX_M2_THUMBS-V2-1.jpg?v=8913815134086573859'}}
-            style={styles.image}
-            />
-            <Text style={styles.text}>hello,</Text>
-            <Text style={styles.text} >Itzik toledano</Text>
-            <DrawerItemList {...props} />
-        </DrawerContentScrollView>
-        </View>
+        <>
+            <DrawerContentScrollView>
+                <View style={styles.header}>
+                <Image source={require('../images/profile_pictur.jpeg')}
+                    style={styles.image}
+                />
+                <Text style={styles.text}>hello,</Text>
+                <Text style={styles.text} >Itzik toledano</Text>
+                </View>
+                <DrawerItemList {...props} />
+            </DrawerContentScrollView>
+        </>
     );
 }
 const styles = StyleSheet.create({
 
-    text:{
-        fontSize:20,
-        fontWeight:'bold',
-        paddingLeft:'5%',
-        marginBottom:'2%'
+    text: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        paddingLeft: '5%',
+        marginBottom: '2%'
     },
-    image:{
-        width:78,
-        height:80,
-        borderRadius:1000,
-        alignSelf:'center',
-        marginTop:'5%'
+    image: {
+        width: 78,
+        height: 80,
+        borderRadius: 1000,
+        alignSelf: 'center',
+        marginTop: '5%',
+        borderColor:"white",
+        borderWidth:2
+    },
+    header:{
+        backgroundColor:"#1ea6d6",
+        marginBottom:'5%'
     }
 }
-    
-    )
+
+)

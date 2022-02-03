@@ -7,6 +7,7 @@ export default function Header(props) {
   const { logo_image, possiton = 75, title, flex, paddingRight, marginLeft, flexDirection, line = true, image_heigt, image_width, alignItems, justifyContent, image_margin } = props
   var icon = '';
 
+  //for icon image margin 
   let image_marginBottom = image_margin && image_margin.Bottom ? image_margin.Bottom : 0;
   let image_marginTop = image_margin && image_margin.Top ? image_margin.Top : 0;
 

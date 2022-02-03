@@ -24,10 +24,14 @@ export default function PersonalInfo1(props, { navigation }) {
         <View style={styles.container}>
             <Header
                 title='Personal Info'
+                possiton={0}
+                marginLeft={4}
+                line={false}
             />
             <Input
                 label='Name'
                 validtion='letters' />
+                {/* TODO validtion all inputs */}
             <Input
                 label='Email'
                 keyboardType='email-address' />

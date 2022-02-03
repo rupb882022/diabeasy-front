@@ -1,5 +1,5 @@
 import { View, StyleSheet, Image, Text } from 'react-native';
-import React ,{useState} from 'react';
+import React, { useState } from 'react';
 import Header from '../CTools/Header';
 import Input from '../CTools/Input';
 import Button from '../CTools/Button';
@@ -7,7 +7,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import ForgotPasswordPopUp from './ForgotPasswordPopUp';
 
 export default function PatientLogin(props) {
-const [show, setShow] = useState(false);
+    const [show, setShow] = useState(false);
 
 
     return (
@@ -16,18 +16,19 @@ const [show, setShow] = useState(false);
                 title='Login'
                 logo_image='diabeasy'
                 image_width={100}
+                image_heigt={200}
                 flexDirection="column-reverse"
                 alignItems='center'
                 paddingRight={25}
-                justifyContent='flex-end'
+                justifyContent='space-evenly'
                 line={false}
+                possiton={50}
             />
             <View style={styles.inputs}>
                 <Input
                     label='Email'
                     keyboardType='email-address'
                     justifyContent='flex-end'
-
                 />
 
                 <Input
@@ -37,15 +38,16 @@ const [show, setShow] = useState(false);
                 // height={}
                 //width={}
                 />
+                <TouchableOpacity style={styles.forgotPassword} onPress={() => setShow(!show)}>
+                    <Text >Forgot Password?</Text>
+                </TouchableOpacity>
             </View>
-            <TouchableOpacity style={styles.forgotPassword} onPress={()=>setShow(!show)}>
-                <Text >Forgot Password?</Text>
-            </TouchableOpacity>
+
             {show ?
-            <ForgotPasswordPopUp  
-            setShow={(isShow)=>setShow(isShow)}
-            />
-            :<></>}
+                <ForgotPasswordPopUp
+                    setShow={(isShow) => setShow(isShow)}
+                />
+                : <></>}
 
             <Button
                 text="LogIn"
@@ -53,7 +55,7 @@ const [show, setShow] = useState(false);
                 height={4}
                 alignItems='center'
                 justifyContent='flex-end'
-            
+
 
             />
 
@@ -76,11 +78,12 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         opacity: 0.95,
         marginBottom: '4%',
-        marginTop:'10%'
+        marginTop: '10%'
     },
     inputs: {
         flex: 1,
-        justifyContent: 'flex-end',
+        position: 'relative',
+        top:'11%'
     },
     forgotPassword: {
         alignItems: 'flex-end',

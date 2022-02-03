@@ -8,11 +8,11 @@ export default function App() {
 
   return (
 
-      <View style={styles.container}>
-        <ImageBackground source={require('./images/backimg.png')} resizeMode='cover' style={styles.image}>
+    <View style={styles.container}>
+      <ImageBackground source={require('./images/backimg.png')} resizeMode='cover' style={styles.image}>
         <Drawer/>
-        </ImageBackground>
-      </View>
+      </ImageBackground>
+    </View>
   );
 }
 
