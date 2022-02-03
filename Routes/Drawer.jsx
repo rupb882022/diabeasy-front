@@ -1,16 +1,18 @@
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { TouchableOpacity,Text } from 'react-native';
+import { TouchableOpacity, Text } from 'react-native';
 import InsertData from '../Pages/InsertData'
 import Home from '../Pages/Home'
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
-import { Ionicons } from '@expo/vector-icons';
-import routs from './PageRoutes';
-
+import CustomDrawer from './CustomDrawer'
+import { Ionicons, Entypo } from '@expo/vector-icons';
 
 const Drawernav = createDrawerNavigator();
 
 
 export default function Drawer() {
+    //color of icons
+    const color = "#1ea6d6"
+
 
     //style of the drawer
     const Theme = {
@@ -21,12 +23,7 @@ export default function Drawer() {
         },
     };
 
-// will rander the drawer items
-const pagesRouts=routs.map((x,i)=>
-    {
-        return(
-    <Drawernav.Screen key={i} name={x.name} component={Home} 
-    options={{
+    const options = {
         headerStyle: {
             backgroundColor: 'transparent',
         },
@@ -34,20 +31,14 @@ const pagesRouts=routs.map((x,i)=>
         headerTitleStyle: {
             color: 'transparent',
         },
-
-        //icon for each items
-        drawerIcon: () => (x.icon)
-    }} 
-    />)} 
-)
-
+    }
     return (
         <NavigationContainer theme={Theme}>
-            <Drawernav.Navigator screenOptions={({ navigation }) => ({
+            <Drawernav.Navigator drawerContent={props => <CustomDrawer {...props} />} screenOptions={({ navigation }) => ({
                 headerLeft: () => {
                     return (
                         <TouchableOpacity
-                            onPress={() =>navigation.toggleDrawer()}>
+                            onPress={() => navigation.toggleDrawer()}>
                             <Ionicons name="ios-menu"
                                 size={75}
                                 style={{
@@ -61,7 +52,17 @@ const pagesRouts=routs.map((x,i)=>
                     )
                 }
             })}>
-                {pagesRouts}
+
+                {/* list of items in the drawer */}
+                <Drawernav.Screen name='Home' component={Home} options={{
+                    ...options,
+                    drawerIcon: () => (<Ionicons name="ios-home-outline" size={24} color={color} />)
+                }} />
+                <Drawernav.Screen name='InsertData' component={InsertData} options={{
+                    ...options,
+                    drawerIcon: () => (<Entypo name="add-to-list" size={24} color={color} />)
+                }} />
+
             </Drawernav.Navigator>
         </NavigationContainer>
     );
