@@ -13,12 +13,12 @@ export default function PersonalInfo2(props) {
             <Input
                 label='Weight'
                 validtion='number'
-                keyboardType='numeric' 
+                keyboardType='number-pad' 
                 placeholder='  kg'/>
             <Input
             label='Height'
             validtion='number'
-            keyboardType='numeric'
+            keyboardType='number-pad'
             placeholder='  cm'
                  />
                  <Input
@@ -28,12 +28,21 @@ export default function PersonalInfo2(props) {
             <Input
                 label='Boules Value' />
             <Input
-                label='Injection Spot' />
+                label='injection spot'
+                editable={false}
+                type='selectBox'
+                SelectBox_placeholder='Select spot of injection'
+                selectBox_items={[
+                    {itemKey:0, label: 'Arm', value: 'Arm' },
+                    {itemKey:1, label: 'Belly', value: 'Belly' },
+                    {itemKey:2, label: 'Leg', value: 'Leg' },
+                ]} />
 
             <Input
                 label='Emergency Contact Phone Number'
                 validtion='number'
-                keyboardType='numeric'/>
+                keyboardType='number-pad'
+                placeholder='+972'/>
 
             <Input
                 label='Add Your Doctor By Email'

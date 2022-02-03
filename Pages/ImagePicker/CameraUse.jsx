@@ -1,20 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Vibration } from 'react-native';
 import { Camera } from 'expo-camera';
 import Button from '../../CTools/Button';
-import { Feather } from '@expo/vector-icons'; 
+import { Feather, SimpleLineIcons, AntDesign, Ionicons } from '@expo/vector-icons';
 
 
 export default function CameraUse(props) {
   const [hasPermission, setHasPermission] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [camera, setCamera] = useState(null);
+  const [picUri, setPicUri] = useState('https://reactjs.org/logo-og.png');
+  const [flashMode, setFlashMode] = useState('off')
 
 
   useEffect(() => {
     (async () => {
       const { status } = await Camera.requestCameraPermissionsAsync();
-      //TODO cheack if premission can be save in DB
+      //TODO cheack if premission can be save in DB=>????????
       setHasPermission(status === 'granted');
     })();
   }, []);
@@ -25,63 +27,81 @@ export default function CameraUse(props) {
   if (hasPermission === false) {
     return <Text>No access to camera</Text>;
   }
-  
+//Flash Mode On/Off
+  const handleFlashMode = () => {
+    if (flashMode === 'on') {
+      setFlashMode('off')
+    } else if (flashMode === 'off') {
+      setFlashMode('on')
+    }
+    else {
+      setFlashMode('auto')
+    }
+  }
+
+
   return (
     <View style={styles.container}>
-      <Camera style={styles.camera} type={type} ref={ref => setCamera(ref)}>
-<TouchableOpacity onPress={()=>navigation.goBack()} style={styles.X}>
-<Feather name="x" size={24} color="black" />
-</TouchableOpacity>
+      <Camera flashMode={flashMode} style={styles.camera} type={type} ref={ref => setCamera(ref)}>
+     <View style={styles.icons}>
+  
+
+        <TouchableOpacity onPress={handleFlashMode} style={styles.flash}>
+          {flashMode === 'off' ?
+            <Ionicons name="flash-off-outline" size={30} color="black" /> :
+            <Ionicons name="flash-outline" size={30} color="black" />}
+        </TouchableOpacity>  
+            <TouchableOpacity onPress={() => navigation.goBack()} style={styles.X}>
+          <Feather name="x" size={35} color="black" />
+        </TouchableOpacity>
+        </View>
       </Camera>
       <View style={styles.buttonContainer}>
 
 
-          <Button
+        <Button
           justifyContent='flex-end'
-          alignItems='flex-start'
-          text='flip'
-          radios={1000} 
-          width={6.5}
-          height={7}
-            style={styles.button}
-            onPress={() => {
-              setType(
-                type === Camera.Constants.Type.back
-                  ? Camera.Constants.Type.front
-                  : Camera.Constants.Type.back
-              );
-            }}/>
-          <Button
-          text='Pic'
-         radios={1000} 
-         width={6.5}
-         height={7}
+          // alignItems='flex-start'
+          element={<SimpleLineIcons name="refresh" size={30} color="black" />}
+          radios={1000}
+          width={10}
+          height={10}
+          style={styles.button}
+          onPress={() => {
+            setType(
+              type === Camera.Constants.Type.back
+                ? Camera.Constants.Type.front
+                : Camera.Constants.Type.back
+            );
+          }} />
+        <Button
+          element={<SimpleLineIcons name="camera" size={30} color="black" />}
+          radios={1000}
+          width={10}
+          height={10}
           justifyContent='flex-end'
-          alignItems='center'
-            style={styles.button2}
-            onPress={async () => {
-              if (camera) {
-              const data = await camera.takePictureAsync(null);
+          // alignItems='center'
+          style={styles.button}
+          onPress={async () => {
+            if (camera) {
+              const data = await camera.takePictureAsync();
               console.log(data.uri)
-              //setPicUri(data.uri);
-              }
-              }}/>
-           <Button
-          text='Pic'
-         radios={1000} 
-         width={6.5}
-         height={7}
+              setPicUri(data.uri)
+            };
+            Vibration.vibrate(); //we can use vibration anywhere! 
+          }} />
+
+        <Button
+          element={<AntDesign name="picture" size={30} color="black" />}
+          radios={1000}
+          width={10}
+          height={10}
           justifyContent='flex-end'
-          alignItems='flex-end'
-            style={styles.button2}
-            onPress={async () => {
-              if (camera) {
-              const data = await camera.takePictureAsync(null);
-              console.log(data.uri)
-              //setPicUri(data.uri);
-              }
-              }}/>
-        </View>
+          // alignItems='flex-end'
+          style={styles.button}
+        //onPress={}
+        />
+      </View>
     </View>
   );
 }
@@ -92,24 +112,31 @@ const styles = StyleSheet.create({
   },
   camera: {
     flex: 1,
+
+  },
+  icons:{   
+    flexDirection: 'row',
+    justifyContent:'space-between'
+
   },
   buttonContainer: {
-    flex: 0.1,
+    flex: 0.15,
+    paddingLeft: '15%',
     flexDirection: 'row',
-    justifyContent:'center',
-    alignItems:'center'
-   
+    alignItems: 'center',
   },
-  buttonContainer2:{
-  marginBottom:10,
-  marginRight:10,
-alignItems:'flex-end'},
   button: {
-   // flex: 0.2,
+
   },
   X: {
-  alignItems:'flex-end',
-paddingTop:'15%',
-paddingRight: '5%'
-}
+    alignItems: 'flex-end',
+    paddingTop: '15%',
+    paddingRight: '5%',
+    justifyContent:'flex-end'
+  },
+  flash: {
+    justifyContent: 'flex-start',
+    paddingLeft: '5%',
+    paddingTop:'15%'
+  }
 });

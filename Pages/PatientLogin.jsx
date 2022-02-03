@@ -1,11 +1,15 @@
 import { View, StyleSheet, Image, Text } from 'react-native';
-import React from 'react';
+import React ,{useState} from 'react';
 import Header from '../CTools/Header';
 import Input from '../CTools/Input';
 import Button from '../CTools/Button';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import ForgotPasswordPopUp from './ForgotPasswordPopUp';
 
 export default function PatientLogin(props) {
+const [show, setShow] = useState(false);
+
+
     return (
         <View style={styles.container}>
             <Header
@@ -34,9 +38,14 @@ export default function PatientLogin(props) {
                 //width={}
                 />
             </View>
-            <TouchableOpacity style={styles.forgotPassword}>
+            <TouchableOpacity style={styles.forgotPassword} onPress={()=>setShow(!show)}>
                 <Text >Forgot Password?</Text>
             </TouchableOpacity>
+            {show ?
+            <ForgotPasswordPopUp  
+            setShow={(isShow)=>setShow(isShow)}
+            />
+            :<></>}
 
             <Button
                 text="LogIn"
@@ -44,6 +53,7 @@ export default function PatientLogin(props) {
                 height={4}
                 alignItems='center'
                 justifyContent='flex-end'
+            
 
             />
 
@@ -66,15 +76,15 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         opacity: 0.95,
         marginBottom: '4%',
-        marginTop:'2%'
+        marginTop:'10%'
+    },
+    inputs: {
+        flex: 1,
+        justifyContent: 'flex-end',
     },
     forgotPassword: {
         alignItems: 'flex-end',
         paddingRight: '12%',
         justifyContent: 'flex-start'
     },
-    inputs: {
-        flex: 1,
-        justifyContent: 'flex-end',
-    }
 });

@@ -1,25 +1,30 @@
-import { View, Text, StyleSheet, Platform, Image } from 'react-native';
+import { View, Text, StyleSheet, Platform, Image, TouchableOpacity } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import * as ImagePicker from 'expo-image-picker'
 import { Constants } from 'expo-constants';
 import Button from '../../CTools/Button';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function GalleryPick() {
   const [image, setImage] = useState(null);
 
+  //waiting for permision
   useEffect(() => {
+    (async ()=>{
     if (Platform.OS !== 'web') {
-      const { status } = ImagePicker.requestMediaLibraryPermissionsAsync();
+      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
       if (status !== 'granted') {
-        alert('permission denied !')
+        console.log(status);
+        alert('permission denied!')
       }
     }
+  })
   }, [])
 
+  //choose *only* picture
   const PickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
-      //TODO check if there is only image opption, not vidoe files
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1
@@ -32,10 +37,16 @@ export default function GalleryPick() {
 
   return (
     <View style={styles.container}>
+      <TouchableOpacity style={styles.pic} onPress={PickImage}>
+        {image==null ? <Image style={styles.img} source={require('../../images/blankProfilePicture.png')}/>: 
+        <Image source={{ uri: image }} style={styles.img} /> }
+        <View style={styles.icon}><Ionicons name="camera-reverse-outline"  size={35}  /></View>
+        <Text style={{alignSelf: 'center',justifyContent:'flex-start' }}>Tap To Edit </Text>
+      </TouchableOpacity>
       <Button text='go to gallery'
         onPress={PickImage}
+        style={styles.button}
       />
-      {image ? <Image source={{ uri: image }} style={styles.img} />:<></>}
     </View>
   );
 }
@@ -49,6 +60,10 @@ const styles = StyleSheet.create({
   img: {
     height: 200,
     width: 200,
-  }
+    borderRadius: 1000,
+  },
+  pic: { justifyContent: 'center', flex: 1 },
+  button: { justifyContent: 'flex-end' },
+  icon: { justifyContent:'flex-start',alignSelf: 'center', backgroundColor: 'gray',borderRadius:1000,padding:'1%',position:'relative',bottom:'5%' }
 
 });
