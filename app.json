@@ -4,12 +4,12 @@
     "slug": "my-project",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./images/headerLogo/diabeasy_logo.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./images/headerLogo/diabeasy_logo.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
+      "backgroundColor": "#bbe4f2"
+        },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
@@ -17,11 +17,7 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true,
-      "infoPlist": {
-        "NSPhotoLibraryUsageDescription": "Diabeasy need your gallery access",
-        "NSCameraUsageDescription":"Diabeasy need your camera access"
-      }
+      "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {

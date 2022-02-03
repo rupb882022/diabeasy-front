@@ -1,14 +1,16 @@
-import { StyleSheet, Text, View ,Image} from 'react-native';
+import { StyleSheet, Text, View ,Image, TouchableWithoutFeedback} from 'react-native';
 import React from 'react';
 import PopUp from '../CTools/PopUp';
 import Input from '../CTools/Input';
+import Button from '../CTools/Button';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export default function ForgotPasswordPopUp(props) {
 const {show ,setShow }=props
 
+ 
 
   return (
-
     <PopUp
     style={styles.container}
     setShow={(isShow)=>setShow(isShow)}
@@ -21,10 +23,11 @@ const {show ,setShow }=props
     <Text style={styles.title()}> {'Forgot Your \n Password?'}</Text>
     </View>
     <Text style={styles.bodytxt}> Dont Worry! Enter your Email for password restore </Text>
-    <Input width={5} keyboardType='email-address' placeholder='Enter Your Email Adress' /> 
+      <Input  keyboardType='email-address' placeholder='Enter Your Email Adress' /> 
+      <Button alignItems='flex-end' width={3} height={6} text='send' />
     </>
     }
-    button_txt='SEND!'
+    button_txt='Cancle'
     backgroundColor="#bbe4f2"
     button_height='4'
     
@@ -63,11 +66,12 @@ title: (paddingRight =0, title_size = 30) => {
   bodytxt:{
     fontWeight:'bold',
     textAlign:'center',
-    fontSize:15,  
+    fontSize:20,
     justifyContent:'center',
-    padding: '7%',
-    marginTop:'20%'
-    
+   // padding: '1%',
+   paddingBottom:'10%',
+    marginTop:'10%',
+
 
   },
 imgPopup:{
@@ -76,7 +80,8 @@ imgPopup:{
     justifyContent:'flex-start',
     alignItems:'flex-start',
     flex:0.2
-    }
+    },
+  
 
 
 });
