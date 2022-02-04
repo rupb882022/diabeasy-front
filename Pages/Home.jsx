@@ -7,6 +7,32 @@ import Header from '../CTools/Header';
 
 
 export default function Home() {
+
+const upiUrl='http://proj.ruppin.ac.il//bgroup88/test2/tar2/diabeasy_back/api/values'
+
+const test=()=>{
+
+    fetch(upiUrl,{
+        method:'GET',
+        headers:new Headers({
+            'Content-Type':'appliction/json; charset=UTF-8',
+            'Accept':'appliction/json; charset=UTF-8'
+        })
+    }).then(res=>{
+        console.log("res",res)
+        return res.json();
+    }).then((resulte)=>{
+        alert(resulte);
+    },
+    (error)=>{
+        console.log("error",error)
+    }).catch(err=>{
+
+        console.log("err",err);
+    });
+}
+
+
     return (
         <View style={styles.container}>
             <Header
@@ -28,6 +54,7 @@ export default function Home() {
                 height={24}
                 textSize={30}
                 alignItems='center'
+                onPress={test}
             />
 
             {/* user name */}
