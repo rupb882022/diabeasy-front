@@ -1,5 +1,5 @@
 import { View, Text, TextInput, StyleSheet } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import PopUp from './PopUp'
 import DatePikcer from './DatePikcer';
 import Moment from 'moment';
@@ -8,7 +8,8 @@ import SelectBox from './SelectBox';
 export default function Input(props) {
 
     const { placeholder, secure = false,required=false,editable = true, textAlign = 'left', label, validtion, min = 0, max, alignItems, justifyContent, width, height, fontSize,
-     keyboardType = 'default', type = '',selectBox_items=[],SelectBox_placeholder,mode='datetime',display='spinner',popup_title,date_format_hour=true} = props
+     keyboardType = 'default', type = '',selectBox_items=[],SelectBox_placeholder,mode='datetime',display='spinner',popup_title,date_format_hour=true,
+    getValue} = props
 
     const [text, setText] = useState('');
     const [valid_lable, setValid_lable] = useState('');
@@ -52,7 +53,10 @@ export default function Input(props) {
                 break;
         }
     }
-
+//get the text from input to outside component
+    useEffect(() => {
+        getValue&&getValue(text);
+      },[text]);
 
     return (
         <View style={styles.possition(justifyContent, alignItems)}>
@@ -63,7 +67,7 @@ export default function Input(props) {
                 textAlign={textAlign}
                 value={text}
                 secureTextEntry={secure} //hide with bollet- for passwords
-                onChangeText={value => { setText(value); setValid_lable(''); }}
+                onChangeText={value => { setText(value); setValid_lable('');}}
                 onBlur={checkTextInput}
                 onPressIn={onPress}
                 textAlignVertical='top'

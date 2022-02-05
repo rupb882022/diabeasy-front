@@ -30,13 +30,17 @@ const styles = StyleSheet.create({
         height: 80,
         borderRadius: 1000,
         alignSelf: 'center',
-        marginTop: '5%',
+        marginTop: '10%',
         borderColor:"white",
         borderWidth:2
     },
     header:{
-        backgroundColor:"#1ea6d6",
-        marginBottom:'5%'
+        backgroundColor:"#54BCC0",
+        marginBottom:'5%',
+        width:'100%',
+        padding:'2%'
+        // bottom:'18%',
+        // height:'70%'
     }
 }
 
