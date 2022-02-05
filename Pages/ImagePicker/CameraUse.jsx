@@ -16,7 +16,6 @@ export default function CameraUse(props) {
   useEffect(() => {
     (async () => {
       const { status } = await Camera.requestCameraPermissionsAsync();
-      //TODO cheack if premission can be save in DB=>????????
       setHasPermission(status === 'granted');
     })();
   }, []);
