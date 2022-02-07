@@ -4,14 +4,15 @@ import InsertData from '../Pages/InsertData'
 import Home from '../Pages/Home'
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import CustomDrawer from './CustomDrawer'
-import { Ionicons, Entypo } from '@expo/vector-icons';
+import { Ionicons, Entypo,AntDesign } from '@expo/vector-icons';
+import PanicButton from '../Pages/PanicButton';
 
 const Drawernav = createDrawerNavigator();
 
 
 export default function Drawer() {
     //color of icons
-    const color = "#1ea6d6"
+    let color = "black"
 
 
     //style of the drawer
@@ -19,7 +20,7 @@ export default function Drawer() {
         colors: {
             ...DefaultTheme.colors,
             background: 'transparent',
-            primary: 'blue',
+            primary: '#ff650d',
         },
     };
 
@@ -58,9 +59,13 @@ export default function Drawer() {
                     ...options,
                     drawerIcon: () => (<Ionicons name="ios-home-outline" size={24} color={color} />)
                 }} />
-                <Drawernav.Screen name='InsertData' component={InsertData} options={{
+                <Drawernav.Screen name='Insert Data' component={InsertData} options={{
                     ...options,
                     drawerIcon: () => (<Entypo name="add-to-list" size={24} color={color} />)
+                }} />
+                <Drawernav.Screen name='Panic Button' component={PanicButton} options={{
+                    ...options,
+                    drawerIcon: () => (<AntDesign name="exclamationcircleo" size={24} color={color} />)
                 }} />
 
             </Drawernav.Navigator>

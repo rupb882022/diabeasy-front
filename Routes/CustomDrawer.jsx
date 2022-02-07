@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: 'bold',
         paddingLeft: '5%',
-        marginBottom: '2%'
+        marginBottom: '2%',
     },
     image: {
         width: 78,

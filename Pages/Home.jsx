@@ -2,17 +2,15 @@ import { View, Text, StyleSheet, Image } from 'react-native';
 import React from 'react';
 import Button from '../CTools/Button';
 import Header from '../CTools/Header';
-
+import upiUrl from '../Routes/Url'
 
 
 
 export default function Home() {
 
-const upiUrl='http://proj.ruppin.ac.il//bgroup88/test2/tar2/diabeasy_back/api/values'
-
 const test=()=>{
 
-    fetch(upiUrl,{
+    fetch(upiUrl+"values",{
         method:'GET',
         headers:new Headers({
             'Content-Type':'appliction/json; charset=UTF-8',
@@ -26,10 +24,7 @@ const test=()=>{
     },
     (error)=>{
         console.log("error",error)
-    }).catch(err=>{
-
-        console.log("err",err);
-    });
+    })
 }
 
 

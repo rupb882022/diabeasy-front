@@ -1,5 +1,5 @@
 import { View, Text, TextInput, StyleSheet } from 'react-native';
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import PopUp from './PopUp'
 import DatePikcer from './DatePikcer';
 import Moment from 'moment';
@@ -7,15 +7,15 @@ import SelectBox from './SelectBox';
 
 export default function Input(props) {
 
-    const { placeholder, secure = false,required=false,editable = true, textAlign = 'left', label, validtion, min = 0, max, alignItems, justifyContent, width, height, fontSize,
-     keyboardType = 'default', type = '',selectBox_items=[],SelectBox_placeholder,mode='datetime',display='spinner',popup_title,date_format_hour=true,
-    getValue} = props
+    const { placeholder, secure = false, required = false, editable = true, textAlign = 'left', label, validtion, min = 0, max, alignItems, justifyContent, width, height, fontSize,
+        keyboardType = 'default', type = '', selectBox_items = [], SelectBox_placeholder, mode = 'datetime', display = 'spinner', popup_title, date_format_hour = true,
+        getValue } = props
 
     const [text, setText] = useState('');
     const [valid_lable, setValid_lable] = useState('');
     const [showPopUp, setShowPopUp] = useState(false);
     const [selectBox, setSelectBox] = useState([]);
-    
+
     //if props validtion
     const checkTextInput = () => {
         let regex = '';
@@ -37,7 +37,7 @@ export default function Input(props) {
             default:
                 break;
         }
-        text==''&&required? setValid_lable("   please fill in some value"):'';
+        text == '' && required ? setValid_lable("   please fill in some value") : '';
     }
 
     //if date picker 
@@ -53,10 +53,10 @@ export default function Input(props) {
                 break;
         }
     }
-//get the text from input to outside component
+    //get the text from input to outside component
     useEffect(() => {
-        getValue&&getValue(text);
-      },[text]);
+        getValue && getValue(text);
+    }, [text]);
 
     return (
         <View style={styles.possition(justifyContent, alignItems)}>
@@ -67,7 +67,7 @@ export default function Input(props) {
                 textAlign={textAlign}
                 value={text}
                 secureTextEntry={secure} //hide with bollet- for passwords
-                onChangeText={value => { setText(value); setValid_lable('');}}
+                onChangeText={value => { setText(value); setValid_lable(''); }}
                 onBlur={checkTextInput}
                 onPressIn={onPress}
                 textAlignVertical='top'
@@ -101,20 +101,20 @@ export default function Input(props) {
                             width={270}
                             min={min}
                             max={new Date()}
-                            setdate= {date_format_hour?
-                            (value) => { setText(Moment(value).format('DD/MM/YYYY H:mm'))}:
-                            (value) => { setText(Moment(value).format('DD/MM/YYYY'))}
-                        }
+                            setdate={date_format_hour ?
+                                (value) => { setText(Moment(value).format('DD/MM/YYYY H:mm')) } :
+                                (value) => { setText(Moment(value).format('DD/MM/YYYY')) }
+                            }
                         />
                     }
                 /> : <></>}
-                {selectBox.length>0?
+            {selectBox.length > 0 ?
                 <SelectBox
-                placeholder={SelectBox_placeholder}
-                onSelect={(value)=>{setText(value)}}
-                items={selectBox_items}
+                    placeholder={SelectBox_placeholder}
+                    onSelect={(value) => { setText(value) }}
+                    items={selectBox_items}
                 />
-               :<></>}
+                : <></>}
         </View>
     );
 }
@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
             height: height + '%',
             borderRadius: 5,
             fontSize: fontSize,
-            padding: '2%'
+            padding: '2%',
         }
     },
     label: (width = 75) => {
@@ -149,6 +149,7 @@ const styles = StyleSheet.create({
         width: '80%',
         paddingTop: '1%',
         fontSize: 16,
-        color: 'red',
+        color: '#ff9000',
+        fontWeight: 'bold',
     }
 });

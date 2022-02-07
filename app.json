@@ -6,7 +6,7 @@
     "orientation": "portrait",
     "icon": "./images/headerLogo/diabeasy_logo.png",
     "splash": {
-      "image": "./images/WelcomeImg.jpeg",
+      "image": "./images/WelcomTo.png",
       "resizeMode": "contain",
       "backgroundColor": "#bbe4f2"
         },

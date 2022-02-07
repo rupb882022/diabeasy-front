@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'flex-start',
         alignItems: 'center',
-        backgroundColor: '#B4B5B6',
+        backgroundColor: '#ff9900',
         paddingTop: '5%'
     },
     backTitle: {

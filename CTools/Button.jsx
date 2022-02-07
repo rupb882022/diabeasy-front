@@ -4,7 +4,7 @@ import React from 'react';
 
 export default function Button(props) {
 
-    const { element,text, onPress, width, height, radius, textSize, justifyContent, alignItems } = props
+    const { element,text, onPress, width, height, radius, textSize, justifyContent, alignItems,color } = props
 
 
   
@@ -12,7 +12,7 @@ export default function Button(props) {
         <View style={styles.possition(justifyContent, alignItems)}>
             <TouchableOpacity
                 onPress={onPress}
-                style={styles.button(width, height, radius)}
+                style={styles.button(width, height, radius,color)}
             >
              
                 {element? element:<></>}
@@ -34,11 +34,11 @@ const styles = StyleSheet.create({
         }
     },
     //generic bottom style
-    button: (size = 15, height = 4, radius = 30) => {
+    button: (size = 15, height = 4, radius = 30,color='#1ea6d6') => {
         return {
             borderWidth: 1,
             borderRadius: radius,
-            backgroundColor: '#1ea6d6',
+            backgroundColor: color,
             paddingTop: height + '%',
             paddingBottom: height + '%',
             paddingRight: size + '%',
