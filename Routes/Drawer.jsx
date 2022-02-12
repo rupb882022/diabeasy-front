@@ -1,19 +1,19 @@
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { TouchableOpacity, Text } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import InsertData from '../Pages/InsertData'
 import Home from '../Pages/Home'
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import CustomDrawer from './CustomDrawer'
-import { Ionicons, Entypo,AntDesign } from '@expo/vector-icons';
+import { Ionicons, Entypo, AntDesign } from '@expo/vector-icons';
 import PanicButton from '../Pages/PanicButton';
+import Forum from '../Pages/Forum';
 
+ 
 const Drawernav = createDrawerNavigator();
-
 
 export default function Drawer() {
     //color of icons
     let color = "black"
-
 
     //style of the drawer
     const Theme = {
@@ -67,7 +67,10 @@ export default function Drawer() {
                     ...options,
                     drawerIcon: () => (<AntDesign name="exclamationcircleo" size={24} color={color} />)
                 }} />
-
+                <Drawernav.Screen name='Forum' component={Forum} options={{
+                    ...options,
+                    drawerIcon: () => (<Entypo name="chat" size={24} color={color} />)
+                }} />
             </Drawernav.Navigator>
         </NavigationContainer>
     );

@@ -12,6 +12,7 @@ export default function Button(props) {
         <View style={styles.possition(justifyContent, alignItems)}>
             <TouchableOpacity
                 onPress={onPress}
+       
                 style={styles.button(width, height, radius,color)}
             >
              

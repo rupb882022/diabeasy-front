@@ -13,8 +13,10 @@ export default function PanicButton(props) {
     id=1;
     const EmergancyCall = () => {
         console.log(phone)
-        
-        Communications.phonecall(phone.toString(), true)
+        let Sphone=phone&&phone.toString();
+        if(Sphone){
+        Communications.phonecall(Sphone, true)
+        }
     }
 
     if (!phone) {
@@ -53,7 +55,7 @@ export default function PanicButton(props) {
                 text='Panic Button'
                 justifyContent='flex-start'
                 radius={1000}
-                width={12}
+                width={13}
                 height={30}
                 textSize={30}
                 alignItems='center'

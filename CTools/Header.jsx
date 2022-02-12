@@ -18,7 +18,7 @@ export default function Header(props) {
     case 'diabeasy':
       icon = require('../images/headerLogo/diabeasy_logo.png')
       break;
-    case 'form':
+    case 'forum':
       icon = require('../images/headerLogo/edit_details.png')
       break;
     case 'graph':
