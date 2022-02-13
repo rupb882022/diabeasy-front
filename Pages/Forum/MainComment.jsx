@@ -12,6 +12,7 @@ export default function MainComment(props) {
   const { item, data, index } = props; //index= index of item in the current subject
   const [isopen, setIsopen] = useState(false);
   const [show, setShow] = useState(false);//pop up state
+
   //find the index of subject(main comment)
   let data_Index = '';
   for (let i = 0; i < data.length; i++) {
@@ -52,7 +53,7 @@ export default function MainComment(props) {
         {user_id == writer_id &&
           <TouchableOpacity style={styles.delete}>
             <AntDesign style={styles.Icondelete} name="delete" size={20} />
-            {/* <Entypo style={styles.Icondelete} name="dots-three-vertical" size={20} /> */}
+            {/* <Entypo style={styles.Icondelete} name6="dots-three-vertical" size={20} /> */}
           </TouchableOpacity>
 
         }
@@ -96,7 +97,7 @@ export default function MainComment(props) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#9DC1D4",
+    backgroundColor: "#69BEDC",
     padding: '3%',
     marginVertical: '2%',
     shadowOffset: {

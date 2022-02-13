@@ -6,8 +6,6 @@ export default function Button(props) {
 
     const { element,text, onPress, width, height, radius, textSize, justifyContent, alignItems,color } = props
 
-
-  
     return (
         <View style={styles.possition(justifyContent, alignItems)}>
             <TouchableOpacity
