@@ -69,6 +69,7 @@ export default function InsertData({navigation}) {
             {show?
             <PopUp
             width={100}
+            Button={true}
             backgroundColor='#40C5CA'
             height={95}
             setShow={setShow}

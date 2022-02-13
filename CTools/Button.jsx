@@ -32,6 +32,12 @@ const styles = StyleSheet.create({
             flex: 1,
             justifyContent: justifyContent,
             alignItems: alignItems,
+            shadowOffset: {
+                width: 1,
+                height: 1
+              },
+              shadowColor:'#D1D1D1',
+              shadowOpacity:10,
         }
     },
     //generic bottom style

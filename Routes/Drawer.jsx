@@ -4,9 +4,9 @@ import InsertData from '../Pages/InsertData'
 import Home from '../Pages/Home'
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import CustomDrawer from './CustomDrawer'
-import { Ionicons, Entypo, AntDesign } from '@expo/vector-icons';
+import { Ionicons, Entypo, AntDesign,MaterialCommunityIcons  } from '@expo/vector-icons';
 import PanicButton from '../Pages/PanicButton';
-import Forum from '../Pages/Forum';
+import Forum from '../Pages/Forum/Forum';
 
  
 const Drawernav = createDrawerNavigator();
@@ -63,13 +63,13 @@ export default function Drawer() {
                     ...options,
                     drawerIcon: () => (<Entypo name="add-to-list" size={24} color={color} />)
                 }} />
+                                <Drawernav.Screen name='Forum' component={Forum} options={{
+                    ...options,
+                    drawerIcon: () => (<MaterialCommunityIcons  name="forum-outline" size={24} color={color} />)
+                }} />
                 <Drawernav.Screen name='Panic Button' component={PanicButton} options={{
                     ...options,
                     drawerIcon: () => (<AntDesign name="exclamationcircleo" size={24} color={color} />)
-                }} />
-                <Drawernav.Screen name='Forum' component={Forum} options={{
-                    ...options,
-                    drawerIcon: () => (<Entypo name="chat" size={24} color={color} />)
                 }} />
             </Drawernav.Navigator>
         </NavigationContainer>

@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 import Button from './Button';
 export default function PopUp(props) {
 
-    const { show, animationType = 'slide', setShow, width, height, button_width = 15, button_height = 3, button_textSize = 17, button_txt = 'OK', padding, title, title_size, element, backgroundColor, Button = true } = props
-
+    const { show, animationType = 'slide', setShow, width, height, button_width = 15, button_height = 3, button_textSize = 17, button_txt = 'OK', padding, title, title_size, element, backgroundColor, isButton=true } = props
+   
     return (
         <>
             <Modal
@@ -19,14 +19,14 @@ export default function PopUp(props) {
 
                         {/* the element that will show in pop up */}
                         {element}
-                        {Button && <Button
+                        {isButton? <Button
                             text={button_txt}
                             width={button_width}
                             height={button_height}
                             textSize={button_textSize}
                             onPress={() => { setShow(false); }}
                             justifyContent='flex-end'
-                        />}
+                        />:<></>}
                     </View>
                 </View>
             </Modal>
