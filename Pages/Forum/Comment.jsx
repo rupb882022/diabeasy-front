@@ -1,6 +1,9 @@
 import { View, Text, Image, StyleSheet } from 'react-native'
 import React from 'react'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import moment from 'moment';
+
+
 export default function Comment(props) {
 
   //igone props.item bug in flatList use let comment from comment json
@@ -28,7 +31,7 @@ export default function Comment(props) {
     </View>
     <View  style={styles.row}>
     <MaterialCommunityIcons style={styles.Icon} name="calendar-clock" size={20} />
-      <Text style={styles.date}> {comment.date}</Text>
+      <Text style={styles.date}>{moment(comment.date).format('MM-DD-YYYY')}</Text>
     </View>
   </View>
   );

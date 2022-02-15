@@ -11,6 +11,7 @@ export default function Header(props) {
   let image_marginBottom = image_margin && image_margin.Bottom ? image_margin.Bottom : 0;
   let image_marginTop = image_margin && image_margin.Top ? image_margin.Top : 0;
 
+  
   switch (logo_image) {
     case 'heart':
       icon = require('../images/headerLogo/heart.png')

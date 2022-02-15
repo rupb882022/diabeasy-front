@@ -3,21 +3,23 @@ import React, { useState } from 'react'
 import Comment from './Comment';
 import PopUp from '../../CTools/PopUp';
 import Input from '../../CTools/Input';
-import { MaterialCommunityIcons, FontAwesome5, AntDesign , Entypo } from '@expo/vector-icons';
+import { MaterialCommunityIcons, FontAwesome5, AntDesign, Entypo, Feather } from '@expo/vector-icons';
+import moment from 'moment';
 
 export default function MainComment(props) {
 
   let user_id = 1//temp
 
   const { item, data, index } = props; //index= index of item in the current subject
-  const [isopen, setIsopen] = useState(false);
+  const [isopen, setIsopen] = useState(false);//respon comments
   const [show, setShow] = useState(false);//pop up state
+  const [showEdit, setShowEdit] = useState(false)//pop up editcomment user
 
   //find the index of subject(main comment)
   let data_Index = '';
   for (let i = 0; i < data.length; i++) {
     if (data[i].data[index] == item) {
-      data_Index = data[i].id;
+      data_Index = data[i].index;
     }
   }
 
@@ -32,14 +34,6 @@ export default function MainComment(props) {
 
 
 
-  const open_comments = () => {
-    if (isopen) {
-      setIsopen(false);
-    } else {
-      setIsopen(true);
-    }
-  }
-
   return (<>
     <View style={styles.container} id={writer_id}>
       <View style={styles.row}>
@@ -47,13 +41,9 @@ export default function MainComment(props) {
           style={styles.image(35, 35)}
         />
         <Text style={styles.name}>{name}</Text>
-        <TouchableOpacity onPress={open_comments} style={styles.numberComments}>
-          <Text style={styles.numberCommentsText}>{comments.length}</Text>
-        </TouchableOpacity>
         {user_id == writer_id &&
-          <TouchableOpacity style={styles.delete}>
-            <AntDesign style={styles.Icondelete} name="delete" size={20} />
-            {/* <Entypo style={styles.Icondelete} name6="dots-three-vertical" size={20} /> */}
+          <TouchableOpacity style={styles.edit} onPress={() => setShowEdit(!showEdit)}>
+            <Entypo name="dots-three-vertical" size={20} style={styles.Icon} />
           </TouchableOpacity>
 
         }
@@ -63,10 +53,15 @@ export default function MainComment(props) {
       </View>
       <View style={styles.row}>
         <MaterialCommunityIcons style={styles.Icon} name="calendar-clock" size={20} />
-        <Text style={styles.date}> {date}</Text>
+        <Text style={styles.date}> {moment(date).format('MM-DD-YYYY')}</Text>
         <TouchableOpacity style={styles.addComment} onPress={() => setShow(true)}>
           <FontAwesome5 style={styles.Icon} name="comment-dots" size={20} />
           <Text style={styles.addCommentText}>add comment</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => setIsopen(!isopen)} style={styles.numberComments}>
+          {isopen ? <AntDesign name="up" size={20} style={styles.Icon} />
+            : <AntDesign name="down" size={20} style={styles.Icon} />}
+          <Text style={styles.numberCommentsText}>{comments.length} response</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -79,7 +74,7 @@ export default function MainComment(props) {
       <PopUp
         title={'comment to ' + name}
         backgroundColor='#d6f2fc'
-        Button={false}
+        isButton={true}
         height={30}
         element={
           <View style={{ flex: 4, width: '100%', justifyContent: 'flex-start' }}>
@@ -90,6 +85,25 @@ export default function MainComment(props) {
           </View>}
         setShow={setShow}
       />}
+    {showEdit &&
+      <PopUp
+        animationType='fade'
+        isButton={false}
+        height={15}
+        width={40}
+        element={<View style={{ flex: 1, width: '100%', justifyContent: 'space-evenly', alignItems: 'center' }}>
+          <TouchableOpacity onPress={() => setShowEdit(!showEdit)} style={{ marginRight: '10%' }}><Text>
+            <Feather name="edit-3" size={20} color="black" />
+            Edit
+          </Text></TouchableOpacity>
+          <TouchableOpacity onPress={() => setShowEdit(!showEdit)}>
+            <Text >
+              <AntDesign name="delete" size={20} color="black" />
+              delete
+            </Text></TouchableOpacity>
+        </View>}
+      />
+    }
   </>
   );
 
@@ -101,10 +115,10 @@ const styles = StyleSheet.create({
     padding: '3%',
     marginVertical: '2%',
     shadowOffset: {
-      width:-1,
+      width: -1,
       height: 1
     },
-    shadowOpacity:25,
+    shadowOpacity: 25,
   },
   row: {
     flexDirection: 'row',
@@ -130,21 +144,22 @@ const styles = StyleSheet.create({
     }
   },
   numberComments: {
-    borderWidth: 1,
-    height: '50%',
-    width: '6%',
-    backgroundColor: 'white',
+
     position: 'absolute',
-    right: '2%',
-    top: '10%'
+    left: '74%',
+    top: '29%',
+    flexDirection: 'row'
+
+
   },
   numberCommentsText: {
     textAlign: 'center',
-    fontWeight: 'bold',
-    fontSize: 14
+    fontSize: 12,
+    color: '#666666',
+    paddingTop: '3%',
   },
   date: {
-    color: 'gray',
+    color: '#666666',
     textAlign: 'left',
     paddingTop: '3%',
     fontSize: 12
@@ -156,9 +171,9 @@ const styles = StyleSheet.create({
     paddingLeft: '3%'
   },
   addComment: {
-    textAlign: 'left',
+    textAlign: 'center',
     flexDirection: 'row',
-    left: '40%',
+    left: '8%',
 
     color: '#666666',
     fontSize: 12
@@ -179,24 +194,13 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
   },
   Icon: {
-    color: 'gray',
+    color: '#666666',
     textAlign: 'left',
     paddingTop: '2%',
   },
-  delete: {
-    textAlign: 'left',
+  edit: {
     flexDirection: 'row',
-    left: '50%',
-    top: '6%'
+    left: '61%',
+    bottom: '20%'
   },
-  deleteText: {
-    color: '#E92F2F',
-    fontSize: 12,
-    textAlign: 'left',
-    paddingTop: '1%',
-    marginLeft: '5%'
-  },
-  Icondelete: {
-    color: '#E92F2F',
-  }
 });

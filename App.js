@@ -5,7 +5,6 @@ import Drawer from './Routes/Drawer';
 
 export default function App() {
 
-
   return (
 
     <View style={styles.container}>
