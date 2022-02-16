@@ -7,7 +7,7 @@ import Moment from 'moment';
 import PopUp from '../CTools/PopUp';
 import FoodLibrary from './Food/FoodLibrary';
 
-export default function InsertData(props) {
+export default function InsertData({navigation}) {
 
     //for date time placeholder
     const today = new Date();
@@ -69,6 +69,7 @@ export default function InsertData(props) {
             {show?
             <PopUp
             width={100}
+            Button={true}
             backgroundColor='#40C5CA'
             height={95}
             setShow={setShow}

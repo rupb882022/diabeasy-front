@@ -4,6 +4,7 @@ import Header from '../CTools/Header';
 import Button from '../CTools/Button'
 import Communications from "react-native-communications";
 import upiUrl from '../Routes/Url'
+import { Feather } from '@expo/vector-icons'; 
 
 
 
@@ -13,8 +14,10 @@ export default function PanicButton(props) {
     id=1;
     const EmergancyCall = () => {
         console.log(phone)
-        
-        Communications.phonecall(phone.toString(), true)
+        let Sphone=phone&&phone.toString();
+        if(Sphone){
+        Communications.phonecall(Sphone, true)
+        }
     }
 
     if (!phone) {
@@ -40,21 +43,22 @@ export default function PanicButton(props) {
     return (
         <View style={styles.container}>
             <Header
-                title='Panic Button'
+                title='Emergency Call'
                 logo_image='panic'
                 flex={0.2}
-                image_width={30}
+                image_width={25}  
                 image_heigt={100}
-                image_margin={{ Bottom: -4 }}
-                marginLeft={6}
+                image_margin={{ Bottom: -4}}
                 possiton={70}
+                marginLeft={12}
             />
             <Button
-                text='Panic Button'
+                // text='Panic Button'
+                element={<Feather style={{opacity:0.85, width:'100%',alignSelf:'flex-start'}} name="phone-call" size={105} color="white" />}
                 justifyContent='flex-start'
                 radius={1000}
-                width={12}
-                height={30}
+                width={16}
+                height={16}
                 textSize={30}
                 alignItems='center'
                 color='#ff9900'

@@ -5,7 +5,6 @@ import PersonalInfo1 from './Pages/PersonalInfo1'
 import SignUp from './Pages/SignUp';
 export default function App() {
 
-
   return (
 
     <View style={styles.container}>

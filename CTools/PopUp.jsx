@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 import Button from './Button';
 export default function PopUp(props) {
 
-    const { show,animationType='slide', setShow, width, height, button_width = 15, button_height = 3, button_textSize = 17,button_txt='OK', padding, title, title_size,element,backgroundColor } = props
-
+    const { show, animationType = 'slide', setShow, width, height, button_width = 15, button_height = 3, button_textSize = 17, button_txt = 'OK', padding, title, title_size, element, backgroundColor, isButton=true } = props
+   
     return (
         <>
             <Modal
@@ -14,19 +14,19 @@ export default function PopUp(props) {
             >
                 <View style={styles.centeredView}>
 
-                    <View style={styles.modalView(width, height, padding,backgroundColor)}>
-                        {title? <Text style={styles.title(title_size)}>{title}</Text>:<></>}
+                    <View style={styles.modalView(width, height, padding, backgroundColor)}>
+                        {title ? <Text style={styles.title(title_size)}>{title}</Text> : <></>}
 
                         {/* the element that will show in pop up */}
                         {element}
-                        <Button
+                        {isButton? <Button
                             text={button_txt}
                             width={button_width}
                             height={button_height}
                             textSize={button_textSize}
                             onPress={() => { setShow(false); }}
                             justifyContent='flex-end'
-                        />
+                        />:<></>}
                     </View>
                 </View>
             </Modal>
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
     },
-    modalView: (width = 75, height = 40, padding = 5, backgroundColor= "white") => {
+    modalView: (width = 75, height = 40, padding = 5, backgroundColor = "white") => {
         return {
             backgroundColor: backgroundColor,
             borderRadius: 20,
@@ -57,10 +57,10 @@ const styles = StyleSheet.create({
             elevation: 5,
         }
     },
-    title: (title_size=20) => {
+    title: (title_size = 20) => {
         return {
-            fontSize:title_size,
-            
+            fontSize: title_size,
+
         }
     }
 });

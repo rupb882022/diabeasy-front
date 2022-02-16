@@ -6,26 +6,26 @@ import upiUrl from '../Routes/Url'
 
 
 
-export default function Home() {
+export default function Home({ navigation }) {
 
-const test=()=>{
+// const test=()=>{
 
-    fetch(upiUrl+"values",{
-        method:'GET',
-        headers:new Headers({
-            'Content-Type':'appliction/json; charset=UTF-8',
-            'Accept':'appliction/json; charset=UTF-8'
-        })
-    }).then(res=>{
-        console.log("res",res)
-        return res.json();
-    }).then((resulte)=>{
-        alert(resulte);
-    },
-    (error)=>{
-        console.log("error",error)
-    })
-}
+//     fetch(upiUrl+"values",{
+//         method:'GET',
+//         headers:new Headers({
+//             'Content-Type':'appliction/json; charset=UTF-8',
+//             'Accept':'appliction/json; charset=UTF-8'
+//         })
+//     }).then(res=>{
+//         console.log("res",res)
+//         return res.json();
+//     }).then((resulte)=>{
+//         alert(resulte);
+//     },
+//     (error)=>{
+//         console.log("error",error)
+//     })
+// }
 
 
     return (
@@ -49,7 +49,7 @@ const test=()=>{
                 height={24}
                 textSize={30}
                 alignItems='center'
-                onPress={test}
+                onPress={() => navigation.navigate('Insert Data')}
             />
 
             {/* user name */}
