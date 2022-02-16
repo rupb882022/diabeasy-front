@@ -1,8 +1,8 @@
 import { StyleSheet, View, ImageBackground } from 'react-native';
 import Drawer from './Routes/Drawer';
-
-
-
+import PatientLogin from './Pages/PatientLogin'
+import PersonalInfo1 from './Pages/PersonalInfo1'
+import SignUp from './Pages/SignUp';
 export default function App() {
 
 
@@ -10,7 +10,10 @@ export default function App() {
 
     <View style={styles.container}>
       <ImageBackground source={require('./images/backimg.png')} resizeMode='cover' style={styles.image}>
-        <Drawer/>
+        {/* <Drawer/> */}
+        {/* <PatientLogin/> */}
+        <SignUp/>
+        {/* <PersonalInfo1/> */}
       </ImageBackground>
     </View>
   );

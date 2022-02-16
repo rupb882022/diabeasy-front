@@ -39,10 +39,9 @@ export default function PersonalInfo1(props, { navigation }) {
                 label='Password'
                 secure={true}
             />
-            {/* Optional :
                <Input
                 label='Confirm Password'
-                secure={true}/>*/}
+                secure={true}/>
 
             <Input
                 label='Gender'
