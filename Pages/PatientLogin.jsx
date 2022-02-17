@@ -82,12 +82,16 @@ const styles = StyleSheet.create({
     },
     inputs: {
         flex: 1,
-        position: 'relative',
-        top:'11%'
+        // position: 'relative',
+        // top:'11%',
+        alignContent:'stretch',
+        paddingTop:'15%'
+    
     },
     forgotPassword: {
         alignItems: 'flex-end',
         paddingRight: '12%',
-        justifyContent: 'flex-start'
+        //justifyContent: 'flex-start'
     },
+    
 });

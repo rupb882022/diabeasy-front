@@ -6,7 +6,12 @@ import Button from '../CTools/Button';
 import PickerMenu from './ImagePicker/PickerMenu';
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 
+
 export default function PersonalInfo1(props, { navigation }) {
+
+const [email, setEmail]= useState('')
+const [password, setPassword]= useState('')
+
     const sheetRef = useRef(null);
     //close menu picture picker
     const closeSheet = () => {
@@ -20,6 +25,8 @@ export default function PersonalInfo1(props, { navigation }) {
             sheetRef.current.open();
         }
     };
+
+
     return (
         <View style={styles.container}>
             <Header
@@ -34,14 +41,20 @@ export default function PersonalInfo1(props, { navigation }) {
                 {/* TODO validtion all inputs */}
             <Input
                 label='Email'
-                keyboardType='email-address' />
+                keyboardType='email-address'
+                getValue={(value) => setEmail(value)}
+                />
             <Input
                 label='Password'
                 secure={true}
+                getValue={(value) => setPassword(value)}
+
             />
                <Input
                 label='Confirm Password'
-                secure={true}/>
+                secure={true}
+               // validtion='password'
+                />
 
             <Input
                 label='Gender'
@@ -88,7 +101,7 @@ export default function PersonalInfo1(props, { navigation }) {
             <View style={styles.Next}>
                 <Text style={styles.txt}> 1/2</Text>
                 <Button
-                    text="Next"
+                    text="Register"
                     width={10}
                     height={2}
                     justifyContent='flex-start'

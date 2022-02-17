@@ -7,17 +7,18 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 export default function SignUp() {
   return (
        <View style={styles.container}>
-            <Header
+            <Header style={styles.header}
                 title='Create your account'
                 logo_image='diabeasy'
                 image_width={100}
                 image_heigt={200} 
-                justifyContent='space-evenly'
+                justifyContent='flex-end'
                 flexDirection="column-reverse"
-                alignItems='center'
+            alignItems='center'
                 //paddingRight={25}
                 line={false}
-                possiton={50}
+                possiton={0}
+                //image_marginBottom={40}
             />
        
 
@@ -52,20 +53,23 @@ Image: {
   width: '50%',
   alignSelf: 'center',
   opacity: 0.95,
-  marginBottom: '10%',
-  marginTop: '0%'
+  marginBottom: '30%',
+  marginTop: '10%',
 },
+
 buttons:{
   flexDirection:'row',
   //alignItems:'center',
-  //justifyContent:'space-evenly',
+  //justifyContent:'space-around',
   flex:1,
   paddingTop:'40%',
+  marginTop:'15%'
 },
 SignIn:{
-  //paddingBottom:'25%'
+  //paddingBottom:'25%',
 marginBottom:'0%',
-
+alignItems:'center',
+//justifyContent:'flex-start'
 
 }
 })

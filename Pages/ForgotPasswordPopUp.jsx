@@ -23,7 +23,7 @@ const {show ,setShow }=props
     <Text style={styles.title()}> {'Forgot Your \n Password?'}</Text>
     </View>
     <Text style={styles.bodytxt}> Dont Worry! Enter your Email for password restore </Text>
-      <Input  keyboardType='email-address' placeholder='Enter Your Email Adress' /> 
+      <Input keyboardType='email-address' placeholder='Enter Your Email Adress' /> 
       <Button alignItems='flex-end' width={3} height={6} text='send' />
     </>
     }

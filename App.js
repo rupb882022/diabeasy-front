@@ -3,16 +3,18 @@ import Drawer from './Routes/Drawer';
 import PatientLogin from './Pages/PatientLogin'
 import PersonalInfo1 from './Pages/PersonalInfo1'
 import SignUp from './Pages/SignUp';
+import GalleryPick from './Pages/ImagePicker/GalleryPick'
 export default function App() {
 
   return (
 
     <View style={styles.container}>
       <ImageBackground source={require('./images/backimg.png')} resizeMode='cover' style={styles.image}>
-        {/* <Drawer/> */}
+        <Drawer/>
         {/* <PatientLogin/> */}
-        <SignUp/>
+        {/* <SignUp/> */}
         {/* <PersonalInfo1/> */}
+      {/* <GalleryPick/> */}
       </ImageBackground>
     </View>
   );

@@ -33,6 +33,7 @@ export default function Input(props) {
                 regex.test(text) ? "" : setValid_lable("English letters only!");
                 break;
             case 'Password':
+                setValid_lable("Password does not match!")
                 break;
             default:
                 break;

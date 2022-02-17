@@ -1,15 +1,19 @@
 import { View, Text, Image, StyleSheet } from 'react-native';
 import React from 'react';
 import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
+import GalleryPick from '../Pages/ImagePicker/GalleryPick';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+
 export default function CustomDrawer(props) {
     return (
         <>
             <DrawerContentScrollView>
                 <View style={styles.header}>
-                <Image source={require('../images/profile_pictur.jpeg')}
+                {/* <Image source={require('../images/profile_pictur.jpeg')}
                     style={styles.image}
-                />
-                <Text style={styles.text}>hello,</Text>
+                /> */}
+                <GalleryPick />
+                <Text style={styles.text}>Hello,</Text>
                 <Text style={styles.text} >Itzik toledano</Text>
                 </View>
                 <DrawerItemList {...props} />
