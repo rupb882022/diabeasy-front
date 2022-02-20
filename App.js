@@ -4,6 +4,7 @@ import PatientLogin from './Pages/PatientLogin'
 import PersonalInfo1 from './Pages/PersonalInfo1'
 import SignUp from './Pages/SignUp';
 import GalleryPick from './Pages/ImagePicker/GalleryPick'
+import Maps from './Pages/Maps';
 export default function App() {
 
   return (
@@ -15,6 +16,7 @@ export default function App() {
         {/* <SignUp/> */}
         {/* <PersonalInfo1/> */}
       {/* <GalleryPick/> */}
+      {/* <Maps/> */}
       </ImageBackground>
     </View>
   );
