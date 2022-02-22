@@ -5,7 +5,9 @@ import { Constants } from 'expo-constants';
 import Button from '../../CTools/Button';
 import { Ionicons } from '@expo/vector-icons';
 
-export default function GalleryPick() {
+export default function GalleryPick(props) {
+  
+
   const [image, setImage] = useState(null);
 
   //waiting for permision
@@ -40,13 +42,13 @@ export default function GalleryPick() {
       <TouchableOpacity style={styles.pic} onPress={PickImage}>
         {image==null ? <Image style={styles.img} source={require('../../images/blankProfilePicture.png')}/>: 
         <Image source={{ uri: image }} style={styles.img} /> }
-        <View style={styles.icon}><Ionicons name="camera-reverse-outline"  size={35}  /></View>
+        <View style={styles.icon}><Ionicons name="camera-reverse-outline"  size={25}  /></View>
         <Text style={{alignSelf: 'center',justifyContent:'flex-start' }}>Tap To Edit </Text>
       </TouchableOpacity>
-      <Button text='go to gallery'
+      {/* <Button text='go to gallery'
         onPress={PickImage}
         style={styles.button}
-      />
+      /> */}
     </View>
   );
 }
@@ -57,13 +59,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
-  img: {
-    height: 200,
-    width: 200,
+  img:{
+    height: 100,
+    width: 100,
     borderRadius: 1000,
+    
   },
   pic: { justifyContent: 'center', flex: 1 },
   button: { justifyContent: 'flex-end' },
-  icon: { justifyContent:'flex-start',alignSelf: 'center', backgroundColor: 'gray',borderRadius:1000,padding:'1%',position:'relative',bottom:'5%' }
+  icon: { justifyContent:'flex-start',alignSelf: 'center', backgroundColor: 'gray',borderRadius:1000,padding:'1%',position:'relative',bottom:'10%' }
 
 });

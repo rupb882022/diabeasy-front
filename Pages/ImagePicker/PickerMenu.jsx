@@ -3,11 +3,11 @@ import RBSheet from "react-native-raw-bottom-sheet";
 
 import React from 'react';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import CameraUse from './CameraUse';
 import { MaterialCommunityIcons,AntDesign } from '@expo/vector-icons';
+
 const PickerMenu = React.forwardRef(({},ref)=>{
 const options =[
-{name:"   Take from camera",icon : <AntDesign name='camerao' size={27}/> ,onPress:()=>{ } },
+{name:"   Take from camera",icon : <AntDesign name='camerao' size={27}/> ,onPress:()=>{} },
 {name:"   Choose from gallery",icon :<MaterialCommunityIcons name='image-search-outline' size={27}/> , onPress:()=>{} }
 ]
 
