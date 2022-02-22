@@ -4,8 +4,9 @@ import RNPickerSelect from 'react-native-picker-select';
 
 export default function SelectBox(props) {
     const { items, onSelect,placeholder } = props
+    if(items.length>0){
     return (
-        <View style={{ flex: 0, width: '200%', position: 'absolute', right: '10%' }}>
+        <View style={{ flex: 1, width: '200%', position: 'absolute', right: '10%',top:'42%' }}>
             <RNPickerSelect
                 onValueChange={(value) => { onSelect(value) }}
                 items={items}
@@ -16,5 +17,7 @@ export default function SelectBox(props) {
                   }}
             />
         </View>
-    );
+    );}else{
+        return(<></>);
+    }
 }

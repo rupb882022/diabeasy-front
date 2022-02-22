@@ -71,6 +71,8 @@ export default function Drawer() {
                     ...options,
                     drawerIcon: () => (<AntDesign name="exclamationcircleo" size={24} color={color} />)
                 }} />
+
+                
             </Drawernav.Navigator>
         </NavigationContainer>
     );

@@ -1,9 +1,9 @@
 import { View, Text, StyleSheet } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Header from '../CTools/Header';
 import Button from '../CTools/Button'
 import Communications from "react-native-communications";
-import upiUrl from '../Routes/Url'
+import apiUrl from '../Routes/Url'
 import { Feather } from '@expo/vector-icons'; 
 
 
@@ -21,7 +21,7 @@ export default function PanicButton(props) {
     }
 
     if (!phone) {
-        fetch(upiUrl + `Patients?url=assistant_phone&id=${id}`, {
+        fetch(apiUrl + `Patients?url=assistant_phone&id=${id}`, {
             method: 'GET',
             headers: new Headers({
                 'Content-Type': 'appliction/json; charset=UTF-8',

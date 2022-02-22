@@ -9,7 +9,7 @@ export default function Input(props) {
 
     const { placeholder, secure = false, required = false, editable = true, textAlign = 'left', label, validtion, min = 0, max, alignItems, justifyContent, width, height, fontSize,
         keyboardType = 'default', type = '', selectBox_items = [], SelectBox_placeholder, mode = 'datetime', display = 'spinner', popup_title, date_format_hour = true,
-        getValue } = props
+        getValue,spellCheck=false } = props
 
     const [text, setText] = useState('');
     const [valid_lable, setValid_lable] = useState('');
@@ -78,7 +78,7 @@ export default function Input(props) {
 
             // maxLength={10}  max lengh of the text, char=1
             // placeholderTextColor='red'
-            // spellCheck={true/false}         If false, disables spell-check style (i.e. red underlines). The default value is inherited from autoCorrect
+            spellCheck={spellCheck}         //If false, disables spell-check style (i.e. red underlines). The default value is inherited from autoCorrect
             // inlineImageLeft='search_icon'
             // inlineImagePadding={icon_padding}
             />
