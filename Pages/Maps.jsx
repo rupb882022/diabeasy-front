@@ -1,14 +1,18 @@
-import { StyleSheet, Text, View,Dimensions, Alert, Vibration } from 'react-native'
-import React, { useEffect, useState,useRef } from 'react'
-import MapView, { Callout, Circle, Marker ,PROVIDER_GOOGLE,OverlayComponent} from 'react-native-maps'
-import { Entypo } from '@expo/vector-icons'; 
+import { StyleSheet, Text, View,Dimensions, Vibration ,Image} from 'react-native'
+import React, { useEffect, useState } from 'react'
+import MapView, { Callout, Circle, Marker ,PROVIDER_GOOGLE} from 'react-native-maps'
+import { SimpleLineIcons } from '@expo/vector-icons'; 
 import Header from '../CTools/Header';
 import Input from '../CTools/Input';
+import Button from '../CTools/Button';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import * as Location from 'expo-location';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import PopUp from '../CTools/PopUp';
 
 
-
-export default function Maps() {
+export default function Maps(props) {
+  const [location, setLocation] = useState({});
    const [distance,setDistance]= useState(0)
 
   const [pin,setPin]=useState({
@@ -17,14 +21,39 @@ export default function Maps() {
    })
 
    const [region,setRegion] = useState({
-		latitude: 32.34245547297243,
-		longitude: 34.911549397360595,
+		latitude: '',
+		longitude: '',
     latitudeDelta: 0.0125,
     longitudeDelta: 0.0121,
    })
 
-   
-  
+   const [show, setShow] = useState(false);
+
+
+   useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        console.log('Permission to access location was denied');
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      console.log(location);
+      setLocation(location)
+      setRegion({
+        latitude: location.coords.latitude,
+    longitude:location.coords.longitude,
+    latitudeDelta: 0.0125,
+    longitudeDelta: 0.0121,
+      });
+      setPin({
+        latitude: location.coords.latitude,
+        longitude:location.coords.longitude})
+    })
+    ();
+  }, []);
+
   return (
 <>
 
@@ -67,11 +96,13 @@ export default function Maps() {
         //components: "country:us",
 				//	types: "establishment",
 					radius: 10000,
-					location: `${region.latitude}, ${region.longitude}`
+				location: `${region.latitude}, ${region.longitude}`
+         // location: {latitude:region.latitude,longitude: region.longitude}
+
       }}
       styles={{container:{flex:0,position:'absolute',top:'9%',width:'100%',zIndex:1}}}
      // currentLocation={true} // Will add a 'Current location' button at the top of the predefined places list
-      //currentLocationLabel="Current location"
+     // currentLocationLabel="Current location"
       //nearbyPlacesAPI="GooglePlacesSearch"
      
     />
@@ -79,11 +110,19 @@ export default function Maps() {
 loadingEnabled={true}
 style={{flex: 0.9,marginBottom:'16%'}}
 initialRegion={{
-  latitude: 32.34245547297243,
-  longitude:34.911549397360595 ,
- latitudeDelta: 0.0125,
+  latitude:32.166313,
+  longitude:34.843311,
+ latitudeDelta: 0.9125,
  longitudeDelta: 0.0121,
 }}
+
+onUserLocationChange={(e)=>{//console.log("onUserLocationChange",e.nativeEvent)
+setRegion({  latitude: e.nativeEvent.coordinate.latitude,
+  longitude: e.nativeEvent.coordinate.longitude,
+  latitudeDelta:  0.0125,
+  longitudeDelta: 0.0121})
+}}
+
 showsUserLocation={true}
 showsMyLocationButton={true}
 nearbyPlacesAPI="GooglePlacesSearch"
@@ -102,7 +141,7 @@ provider='google'  //--> By delete this line, the maps provider will be Apple
  />
 </View>
 <Marker 
-coordinate={{latitude: region.latitude, longitude: region.longitude }}
+coordinate={region}
 title="I'm Here !"/>
 <Marker 
 coordinate={pin}
@@ -129,8 +168,34 @@ onDragEnd={(e)=>{
 center={pin} 
 radius={distance}
 />
+<TouchableOpacity 
+style={styles.info}
+onPress={() => setShow(!show)}
+>      
+<SimpleLineIcons name="info" size={28} color="black" />
+</TouchableOpacity> 
+ 
 </MapView>
-
+ {show ?     
+   <PopUp             
+   setShow={(show)=>setShow(show)}
+   width={80}
+    height={51}
+    element={
+      <>
+     <SimpleLineIcons name="info" size={28} color="black" />
+     <Text style={{marginBottom:'10%',fontWeight:'bold'}}> Instructions : </Text>
+     <Text>{ `1.Location must be Active for use this page!\n
+                (if it doesn't work go to setting->expo->active location)\n
+              2.Hold the pin and drag it to where you wanna be\n
+              3.Circle will apper after writing number for distance\n
+              4. stam stam stam`}</Text>
+     </>
+     }
+    button_txt='Close'
+    backgroundColor="#bbe4f2"
+    button_height='4'
+     /> : <></>}
 </>
   )
 }
@@ -144,6 +209,12 @@ const styles = StyleSheet.create({
   map: {
     width: Dimensions.get('window').width,
     height: Dimensions.get('window').height,
+  },
+  info:{
+alignItems:'flex-end',
+paddingTop:'2%',
+paddingRight:'2%'
+
   },
   // input:{
   //   borderRadius: 10,
