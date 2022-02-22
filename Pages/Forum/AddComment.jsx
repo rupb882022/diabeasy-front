@@ -31,7 +31,7 @@ export default function AddComment(props) {
       setShow(false);
     }
   }
-// #cheack status 415
+// #Nir  cheack status 415
   useEffect(() => {
     if (!show && comment && comment_value) {
       console.log("comment",JSON.stringify(comment))

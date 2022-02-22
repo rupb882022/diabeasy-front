@@ -81,7 +81,7 @@ export default function Forum() {
     >
     </Button>
   </View>;
-  console.log("popupSubject", popupSubject)
+
   //get all subject
   const get_subject_list = () => {
 

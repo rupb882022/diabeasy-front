@@ -7,6 +7,7 @@ import CustomDrawer from './CustomDrawer'
 import { Ionicons, Entypo, AntDesign,MaterialCommunityIcons  } from '@expo/vector-icons';
 import PanicButton from '../Pages/PanicButton';
 import Forum from '../Pages/Forum/Forum';
+import TabNav from './TabNav';
 
  
 const Drawernav = createDrawerNavigator();
@@ -74,6 +75,7 @@ export default function Drawer() {
 
                 
             </Drawernav.Navigator>
+
         </NavigationContainer>
     );
 }
