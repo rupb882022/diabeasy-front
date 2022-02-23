@@ -34,7 +34,7 @@ export default function Home({ navigation }) {
                 title='Home'
                 logo_image='heart'
                 flex={0.4}
-                image_width={30}
+                image_width={100}
                 image_heigt={50}
                 paddingRight={9}
                 possiton={68}
@@ -49,8 +49,7 @@ export default function Home({ navigation }) {
                 height={24}
                 textSize={30}
                 alignItems='center'
-                // onPress={() => navigation.navigate('Insert Data')}
-                onPress={() => navigation.navigate('Login')}
+                onPress={() => navigation.navigate('Insert Data')}
             />
 
             {/* user name */}

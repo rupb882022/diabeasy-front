@@ -6,6 +6,7 @@ import SignUp from '../Pages/SignUp';
 import Drawer from './Drawer';
 import PersonalInfo1 from '../Pages/PersonalInfo1'
 import PersonalInfo2 from '../Pages/PersonalInfo2'
+import Setting from '../Pages/Setting';
 
 const Stack=createNativeStackNavigator();
 
@@ -40,6 +41,7 @@ export default function Navigtor() {
         <Stack.Screen name="Login" options={{...options, headerLeft: null,transitionSpec: {open: config,close: config},}} component={Login}/>
         <Stack.Screen name="SignUp" options={{...options, headerLeft: null,transitionSpec: { open: config,close:config},}} component={SignUp}/>
         <Stack.Screen name="Drawer" options={{...options, headerLeft: null,transitionSpec: {open: config,close:config},}} component={Drawer}/>
+        <Stack.Screen name="Setting" options={{...options, headerLeft: null,transitionSpec: {open: config,close:config},}} component={Setting}/>
         <Stack.Screen name="PersonalInfo1" options={{...options, headerLeft: null,transitionSpec: {open: config,close:config},}} component={PersonalInfo1}/>
         <Stack.Screen name="PersonalInfo2" options={{...options, headerLeft: null,transitionSpec: {open: config,close:config},}} component={PersonalInfo2}/>
       </Stack.Navigator>

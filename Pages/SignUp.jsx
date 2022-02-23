@@ -4,14 +4,14 @@ import Header from '../CTools/Header'
 import Button from '../CTools/Button'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-
+//Todo fix css title header
 export default function SignUp({ navigation }) {
   return (
     <View style={styles.container}>
-      <Header style={styles.header}
+      <Header 
         title='Create your account'
         logo_image='diabeasy'
-        image_width={100}
+        image_width={200}
         image_heigt={200}
         justifyContent='flex-end'
         flexDirection="column-reverse"
@@ -45,6 +45,7 @@ export default function SignUp({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    width:'100%',
     justifyContent: 'flex-start',
 
   },

@@ -58,7 +58,7 @@ export default function PersonalInfo2({ navigation }) {
                     <Button
                         text="back"
                         width={12}
-                        height={2}
+                        height={4}
                         justifyContent='center'
                         onPress={() => navigation.goBack()}
                     />
@@ -68,7 +68,7 @@ export default function PersonalInfo2({ navigation }) {
                     <Button
                         text="Register"
                         width={8}
-                        height={2}
+                        height={4}
                         justifyContent='flex-start'
                         onPress={() => navigation.navigate('Drawer')}
                     />
@@ -84,12 +84,13 @@ const styles = StyleSheet.create({
     },
     Buttons: {
         flex: 1,
-        flexDirection: 'row'
+        flexDirection: 'row',
+        bottom:'2%'
     },
     back: {
         flex: 1,
         alignItems: 'center',
-      paddingBottom:'6%'
+      paddingBottom:'4%'
     },
     Register: {
         flex: 1,
