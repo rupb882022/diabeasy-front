@@ -5,11 +5,28 @@ import Input from '../CTools/Input';
 import Button from '../CTools/Button';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import ForgotPasswordPopUp from './ForgotPasswordPopUp';
+import { StatusBar } from 'expo-status-bar';
 
 export default function PatientLogin(props) {
     const [show, setShow] = useState(false);
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [validtionUser, setValidtionUser] = useState('');
+    console.log(validtionUser)
 
+    const checkUser = () => {
 
+        if (email == 1234) {
+            setValidtionUser('');
+        } else {
+            setValidtionUser("Opps.. worng email");
+        }
+        if (password == 1234) {
+            setValidtionUser('');
+        } else {
+            setValidtionUser("Opps.. worng password");
+        }
+    }
     return (
         <View style={styles.container}>
             <Header
@@ -22,7 +39,7 @@ export default function PatientLogin(props) {
                 paddingRight={25}
                 justifyContent='space-evenly'
                 line={false}
-                possiton={50}
+                possiton={60}
             />
             <View style={styles.inputs}>
                 <Input
@@ -41,6 +58,7 @@ export default function PatientLogin(props) {
                 <TouchableOpacity style={styles.forgotPassword} onPress={() => setShow(!show)}>
                     <Text >Forgot Password?</Text>
                 </TouchableOpacity>
+                <Text style={styles.validtionUser}>{validtionUser ? validtionUser : ''}</Text>
             </View>
 
             {show ?
@@ -55,8 +73,7 @@ export default function PatientLogin(props) {
                 height={4}
                 alignItems='center'
                 justifyContent='flex-end'
-
-
+                onPress={checkUser}
             />
 
             <Image
@@ -83,15 +100,24 @@ const styles = StyleSheet.create({
     inputs: {
         flex: 1,
         // position: 'relative',
-        // top:'11%',
-        alignContent:'stretch',
-        paddingTop:'15%'
-    
+        top: '5%',
+        alignContent: 'stretch',
+        paddingTop: '15%'
+
     },
     forgotPassword: {
         alignItems: 'flex-end',
         paddingRight: '12%',
         //justifyContent: 'flex-start'
     },
-    
+    validtionUser: {
+        alignSelf: 'center',
+        top:'15%',
+        fontSize:16,
+        color:'white',
+        borderColor:'white',
+        backgroundColor:'#ff9900',
+        borderWidth: 2,
+        borderRadius: 10000,
+    }
 });

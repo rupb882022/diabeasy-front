@@ -5,19 +5,19 @@ import PersonalInfo1 from './Pages/PersonalInfo1'
 import SignUp from './Pages/SignUp';
 import GalleryPick from './Pages/ImagePicker/GalleryPick'
 import TabNav from './Routes/TabNav';
-
+import Navigtor from './Routes/Navigtor';
 export default function App() {
 
   return (
 
     <View style={styles.container}>
       <ImageBackground source={require('./images/backimg.png')} resizeMode='cover' style={styles.image}>
-        <Drawer/>
+        {/* <Drawer/> */}
         {/* <PatientLogin/> */}
         {/* <SignUp/> */}
         {/* <PersonalInfo1/> */}
-      {/* <GalleryPick/> */}
-
+        {/* <GalleryPick/> */}
+        <Navigtor />
       </ImageBackground>
     </View>
   );
