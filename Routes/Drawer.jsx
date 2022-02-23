@@ -10,6 +10,7 @@ import Forum from '../Pages/Forum/Forum';
 import Maps from '../Pages/Maps';
 import TabNav from './TabNav';
 import Login from '../Pages/Login';
+import Loading from '../CTools/Loading';
 
  
 const Drawernav = createDrawerNavigator();
@@ -65,10 +66,6 @@ export default function Drawer() {
                     ...options,
                     drawerIcon: () => (<AntDesign name="exclamationcircleo" size={24} color={color} />)
                 }} />
-                           {/* <Drawernav.Screen name='Log out' component={Login} options={{
-                    ...options,
-                    drawerIcon: () => (<AntDesign name="exclamationcircleo" size={24} color={color} />)
-                }} /> */}
 
                 <Drawernav.Screen name='Sports location' component={Maps} options={{
                     ...options,

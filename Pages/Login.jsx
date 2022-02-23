@@ -6,22 +6,23 @@ import Button from '../CTools/Button';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import ForgotPasswordPopUp from './ForgotPasswordPopUp';
 import apiUrl from '../Routes/Url'
+import Loading from '../CTools/Loading';
 
 export default function Login({ navigation }) {
     const [show, setShow] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [validtionUser, setValidtionUser] = useState('');
-
+    const [loading, setLoading] = useState(false);
 
     const checkUser = () => {
         console.log("validtionUser", validtionUser);
         console.log("password", password);
         console.log("email", email);
 
-
+        setLoading(true);
         //get user details (id,image,full name)
-        console.log("url",apiUrl + `Patients?url=userDetails&email=${email}&password=${password}`);
+        console.log("url", apiUrl + `Patients?url=userDetails&email=${email}&password=${password}`);
         fetch(apiUrl + `Patients?url=userDetails&email=${email}&password=${password}`, {
             method: 'GET',
             headers: new Headers({
@@ -35,13 +36,16 @@ export default function Login({ navigation }) {
                 console.log("status code:", res.status)
             }
         }).then((resulte) => {
-            console.log("resulte",resulte)
+            console.log("resulte", resulte)
             if (resulte) {
-                navigation.navigate('Drawer')
-            }else {
+                setInterval(() => setLoading(false), 3500);
+                navigation.navigate('Drawer');
+            } else {
                 setValidtionUser("Opps.. worng password or Email");
+                setLoading(false);
                 return;
             }
+
 
         },
             (error) => {
@@ -50,6 +54,7 @@ export default function Login({ navigation }) {
     }
     return (
         <View style={styles.container}>
+            {loading && <Loading opacity={'#ffffffff'} />}
             <Header
                 title='Login'
                 logo_image='diabeasy'
@@ -75,10 +80,8 @@ export default function Login({ navigation }) {
                     secure={true}
                     justifyContent='flex-start'
                     getValue={setPassword}
-                // height={}
-                //width={}
                 />
-                <TouchableOpacity style={styles.forgotPassword} onPress={() => setShow(!show)}>
+                <TouchableOpacity style={styles.forgotPassword} onPress={() => setShow(true)}>
                     <Text >Forgot Password?</Text>
                 </TouchableOpacity>
                 {validtionUser ? <Text style={styles.validtionUser}> {validtionUser} </Text> : <></>}
@@ -89,16 +92,24 @@ export default function Login({ navigation }) {
                     setShow={(isShow) => setShow(isShow)}
                 />
                 : <></>}
-
-            <Button
-                text="LogIn"
-                width={20}
-                height={4}
-                alignItems='center'
-                justifyContent='flex-end'
-                onPress={checkUser}
-            />
-
+            <View style={styles.Buttons}>
+                <Button
+                    text="Sign In"
+                    width={12}
+                    height={4}
+                    alignItems='center'
+                    justifyContent='flex-end'
+                    onPress={checkUser}
+                />
+                <Button
+                    text="Sign Up"
+                    width={12}
+                    height={4}
+                    alignItems='center'
+                    justifyContent='flex-end'
+                    onPress={()=>navigation.navigate('SignUp')}
+                />
+            </View>
             <Image
                 style={styles.Image}
                 source={require('../images/login.JPG.png')}
@@ -112,7 +123,7 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
     },
     Image: {
-        height: '25%',
+        height: '27%',
         resizeMode: 'cover',
         width: '50%',
         alignSelf: 'center',
@@ -142,5 +153,9 @@ const styles = StyleSheet.create({
         backgroundColor: '#ff9900',
         borderWidth: 2,
         borderRadius: 10000,
+    },
+    Buttons:{
+        flexDirection:'row',
+        flex:0.8,
     }
 });
