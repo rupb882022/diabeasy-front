@@ -5,7 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Home from '../Pages/Home';
 import PanicButton from '../Pages/PanicButton';
 import Forum from '../Pages/Forum/Forum';
-import PatientLogin from '../Pages/PatientLogin';
+import Login from '../Pages/Login';
 import { Ionicons, Entypo, AntDesign,MaterialCommunityIcons  } from '@expo/vector-icons';
 
 const Tab=createBottomTabNavigator();
@@ -29,8 +29,8 @@ options={{
 }}
 />
 <Tab.Screen
-name="PatientLogin"
-component={PatientLogin}
+name="Login"
+component={Login}
 options={{
   // tabBarLabel:<Text>Patient Login</Text>,
   tabBarIcon:({color})=>(

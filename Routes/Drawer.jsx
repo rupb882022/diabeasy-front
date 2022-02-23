@@ -9,6 +9,7 @@ import PanicButton from '../Pages/PanicButton';
 import Forum from '../Pages/Forum/Forum';
 import Maps from '../Pages/Maps';
 import TabNav from './TabNav';
+import Login from '../Pages/Login';
 
  
 const Drawernav = createDrawerNavigator();
@@ -17,14 +18,6 @@ export default function Drawer() {
     //color of icons
     let color = "black"
 
-    //style of the drawer
-    const Theme = {
-        colors: {
-            ...DefaultTheme.colors,
-            background: 'transparent',
-            primary: '#ff650d',
-        },
-    };
 
     const options = {
         headerStyle: {
@@ -36,7 +29,6 @@ export default function Drawer() {
         },
     }
     return (
-        <NavigationContainer theme={Theme}>
             <Drawernav.Navigator drawerContent={props => <CustomDrawer {...props} />} screenOptions={({ navigation }) => ({
                 headerLeft: () => {
                     return (
@@ -73,6 +65,10 @@ export default function Drawer() {
                     ...options,
                     drawerIcon: () => (<AntDesign name="exclamationcircleo" size={24} color={color} />)
                 }} />
+                           {/* <Drawernav.Screen name='Log out' component={Login} options={{
+                    ...options,
+                    drawerIcon: () => (<AntDesign name="exclamationcircleo" size={24} color={color} />)
+                }} /> */}
 
                 <Drawernav.Screen name='Sports location' component={Maps} options={{
                     ...options,
@@ -80,7 +76,5 @@ export default function Drawer() {
                 }} />
                 
             </Drawernav.Navigator>
-
-        </NavigationContainer>
     );
 }
