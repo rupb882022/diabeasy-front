@@ -4,9 +4,10 @@ import InsertData from '../Pages/InsertData'
 import Home from '../Pages/Home'
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import CustomDrawer from './CustomDrawer'
-import { Ionicons, Entypo, AntDesign,MaterialCommunityIcons  } from '@expo/vector-icons';
+import { Ionicons, Entypo, AntDesign,MaterialCommunityIcons,MaterialIcons   } from '@expo/vector-icons';
 import PanicButton from '../Pages/PanicButton';
 import Forum from '../Pages/Forum/Forum';
+import Maps from '../Pages/Maps';
 import TabNav from './TabNav';
 
  
@@ -73,6 +74,10 @@ export default function Drawer() {
                     drawerIcon: () => (<AntDesign name="exclamationcircleo" size={24} color={color} />)
                 }} />
 
+                <Drawernav.Screen name='Sports location' component={Maps} options={{
+                    ...options,
+                    drawerIcon: () => (<MaterialIcons name="sports-tennis" size={24} color={color} />)
+                }} />
                 
             </Drawernav.Navigator>
 
