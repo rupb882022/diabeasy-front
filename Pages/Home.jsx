@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, Image } from 'react-native';
 import React from 'react';
 import Button from '../CTools/Button';
 import Header from '../CTools/Header';
-import upiUrl from '../Routes/Url'
+import Login from './Login';
 
 
 
@@ -49,7 +49,8 @@ export default function Home({ navigation }) {
                 height={24}
                 textSize={30}
                 alignItems='center'
-                onPress={() => navigation.navigate('Insert Data')}
+                // onPress={() => navigation.navigate('Insert Data')}
+                onPress={() => navigation.navigate('Login')}
             />
 
             {/* user name */}
