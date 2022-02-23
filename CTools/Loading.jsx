@@ -1,10 +1,7 @@
 import { View, Text, Image, ImageBackground } from 'react-native'
 import React from 'react'
-<<<<<<< HEAD
-// import * as Progress from 'react-native-progress'
-=======
  import * as Progress from 'react-native-progress'
->>>>>>> beckUp
+
 import PopUp from './PopUp'
 //#Nir loading not working in idan proj
 
