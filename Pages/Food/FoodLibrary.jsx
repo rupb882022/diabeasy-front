@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Switch, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, Switch } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import Input from '../../CTools/Input';
 import IngredientsList from './IngredientsList';

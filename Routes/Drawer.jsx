@@ -8,6 +8,7 @@ import { Ionicons, Entypo, AntDesign,MaterialCommunityIcons,MaterialIcons   } fr
 import PanicButton from '../Pages/PanicButton';
 import Forum from '../Pages/Forum/Forum';
 import Maps from '../Pages/Maps';
+import TabNav from './TabNav';
 
  
 const Drawernav = createDrawerNavigator();
@@ -77,7 +78,9 @@ export default function Drawer() {
                     ...options,
                     drawerIcon: () => (<MaterialIcons name="sports-tennis" size={24} color={color} />)
                 }} />
+                
             </Drawernav.Navigator>
+
         </NavigationContainer>
     );
 }

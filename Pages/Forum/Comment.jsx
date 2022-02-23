@@ -2,7 +2,7 @@ import { View, Text, Image, StyleSheet } from 'react-native'
 import React from 'react'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import moment from 'moment';
-
+// #Nir moment format show alert eror
 
 export default function Comment(props) {
 
@@ -11,7 +11,9 @@ export default function Comment(props) {
   let comment = comments[index];
   let propile_image = '';
 
+// #Nir how to make dinamic image and how to fix the image load
   if (comment.image) {
+    //#Nir cannot insert varible in require
     // propile_image = require(`'${comment.image}'`)
   }
   else { 

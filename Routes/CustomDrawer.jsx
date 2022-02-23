@@ -12,7 +12,9 @@ export default function CustomDrawer(props) {
                 {/* <Image source={require('../images/profile_pictur.jpeg')}
                     style={styles.image}
                 /> */}
-                <GalleryPick />
+                <GalleryPick
+                description={false}
+                />
                 <Text style={styles.text}>Hello,</Text>
                 <Text style={styles.text} >Itzik toledano</Text>
                 </View>
@@ -26,8 +28,9 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 20,
         fontWeight: 'bold',
-        paddingLeft: '5%',
+        paddingLeft: '7%',
         marginBottom: '2%',
+        bottom:'5%'
     },
     image: {
         width: 78,
@@ -40,11 +43,9 @@ const styles = StyleSheet.create({
     },
     header:{
         backgroundColor:"#54BCC0",
-        marginBottom:'5%',
+        marginBottom:'2%',
         width:'100%',
-        padding:'2%'
-        // bottom:'18%',
-        // height:'70%'
+        paddingTop:'5%'
     }
 }
 

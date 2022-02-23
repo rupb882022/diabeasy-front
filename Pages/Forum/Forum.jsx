@@ -1,4 +1,4 @@
-import { View, SectionList, SafeAreaView, StyleSheet, Text, } from 'react-native'
+import { View, SectionList, SafeAreaView, StyleSheet, Text, Switch } from 'react-native'
 import React, { useState } from 'react'
 import Header from '../../CTools/Header';
 import Button from '../../CTools/Button';
@@ -6,28 +6,66 @@ import PopUp from '../../CTools/PopUp';
 import Input from '../../CTools/Input';
 import MainComment from './MainComment';
 import apiUrl from '../../Routes/Url'
-
+import Loading from '../../CTools/Loading'
 
 export default function Forum() {
-  //pop up element
+
+  const [data, setData] = useState();
+  const [show, setShow] = useState(false);
+  const [subject, setSubject] = useState(false);
+  const [popupSubject, setPopupSubject] = useState(false);
+  const [subjectList, setSubjectList] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  //pop up element add new subject
   const element = <View>
     <Text style={{
       fontSize: 30, textAlign: 'center', color: 'white', fontWeight: 'bold', marginBottom: '3%', textShadowColor: '#187FA5',
       textShadowOffset: { width: 2, height: 2 },
       textShadowRadius: 1,
     }}>new subject</Text>
-    <Input
-      label='subject'
-      height={50}
-      width={130}
-      justifyContent='flex-start'
-      alignItems='flex-end'
-    />
+    <View style={{ flex: 1, flexDirection: 'row', alignContent: 'space-between', width: '100%' }}>
+      {popupSubject ?
+        <Input
+          label='Exist subject'
+          height={50}
+          type='selectBox'
+          getValue={(value) => setSubject(value)}
+          SelectBox_placeholder='Select subject...'
+          placeholder='Select subject...'
+          width={100}
+          justifyContent='flex-start'
+          alignItems='flex-end'
+          editable={false}
+          selectBox_items={popupSubject ? subjectList : []}
+        />
+        :
+        <Input
+          label='New subject'
+          height={50}
+          value={!popupSubject && ''}
+          width={100}
+          getValue={(value) => setSubject(value)}
+          justifyContent='flex-start'
+          alignItems='flex-end'
+          placeholder='type new subject...'
+        />
+      }
+      <Switch
+        style={{ alignSelf: 'center', marginLeft: '7%', marginTop: '3%' }}
+        trackColor={{ false: "#FFFFFF", true: "#3CA6CD" }}
+        thumbColor={popupSubject ? '#FFCF84' : "#3CA6CD"}
+        ios_backgroundColor='#FFCF84'
+        onValueChange={() => { setPopupSubject(!popupSubject) }}
+        value={popupSubject}
+      />
+
+    </View>
     <View style={{ flex: 3, justifyContent: 'flex-start' }}>
       <Input
         label='description'
         height={80}
-        width={160}
+        width={100}
         placholder='Write your question...'
         justifyContent='flex-start'
         alignItems='center'
@@ -35,22 +73,53 @@ export default function Forum() {
     </View>
     <Button
       text='ok'
+      justifyContent='center'
       alignItems='center'
-      width={25}
-      height={5}
-      onPress={() => (setShow(false))}
+      width={20}
+      height={3}
+      onPress={() => { setShow(false); }}
     >
     </Button>
   </View>;
 
+  //get all subject
+  const get_subject_list = () => {
 
-
-  const [data, setData] = useState();
-  const [show, setShow] = useState(false)
+    if (!subjectList) {
+      setLoading(true);
+      fetch(apiUrl + `Forum?type=subject`, {
+        method: 'GET',
+        headers: new Headers({
+          'Content-Type': 'appliction/json; charset=UTF-8',
+          'Accept': 'appliction/json; charset=UTF-8'
+        })
+      }).then(res => {
+        if (res && res.status == 200) {
+          return res.json();
+        } else {
+          // #todo cheack how to throw error
+          console.log("status code:", res.status)
+        }
+      }).then((resulte) => {
+        console.log("res", resulte)
+        if (resulte.length > 0) {
+          let tempList = resulte.map((x, i) => ({ itemKey: i, label: x, value: x }))
+          setSubjectList(tempList);
+          setLoading(false);
+        }
+      },
+        (error) => {
+          // #todo alert with error
+          console.log("error", error);
+          setLoading(false);
+        }
+      )
+    }
+  }
 
   //get all comments
   if (!data) {
-    fetch(apiUrl + `Forum`, {
+    fetch(apiUrl + `Forum?type=all`, {
       method: 'GET',
       headers: new Headers({
         'Content-Type': 'appliction/json; charset=UTF-8',
@@ -72,6 +141,7 @@ export default function Forum() {
           data: [resulte[0].value],
           exstraData: [{
             writer_id: resulte[0].userId,
+            comment_id: resulte[0].id,
             name: resulte[0].userName,
             date: resulte[0].date_time,
             comments: []
@@ -85,11 +155,11 @@ export default function Forum() {
             writer_id: resulte[i].userId,
             name: resulte[i].userName,
             date: resulte[i].date_time,
+            comment_id: resulte[i].id,
             comments: []
           }
           //set the index for comment and respon
           let Comments_Index = allComments.length - 1;
-          let exstraData_index = allComments[Comments_Index].exstraData.length - 1;
 
           if (resulte[i].subject == resulte[i - 1].subject) {
             //for new comment in the same subject
@@ -103,6 +173,17 @@ export default function Forum() {
                 name: resulte[i].userName,
                 date: resulte[i].date_time,
                 value: resulte[i].value
+              }
+
+              //find the index for right comment to respone
+              let exstraData_index = '';
+              for (let z = 0; z < allComments[Comments_Index].exstraData.length; z++) {
+                if (allComments[Comments_Index].exstraData[z].comment_id == resulte[i].Id_Continue_comment) {
+                  exstraData_index = z
+                  break;
+                } else {
+                  exstraData_index = 0
+                }
               }
               allComments[Comments_Index].exstraData[exstraData_index].comments.push(detials);
             }
@@ -118,18 +199,19 @@ export default function Forum() {
           }
         }
         setData(allComments);
+        setLoading(false);
       }
     },
       (error) => {
         console.log("error", error)
+        setLoading(false);
       })
 
   }
 
 
-
-
   return (<>
+  {loading&&<Loading/>}
     {data && <Header
       title="Forum"
       logo_image='forum'
@@ -150,11 +232,11 @@ export default function Forum() {
       />
     </SafeAreaView>}
     <View style={{ flex: 1, alignItems: 'center', justifyContent: "flex-start" }}>
-    {data && <Button
+      {data && <Button
         text='add subject'
         height={2}
         width={10}
-        onPress={() => setShow(true)}
+        onPress={() => { setShow(true); get_subject_list(); }}
       />}
       {show &&
         <PopUp

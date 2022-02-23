@@ -1,5 +1,5 @@
 import { View, Text, Modal, StyleSheet } from 'react-native';
-import React, { useState } from 'react';
+import React from 'react';
 import Button from './Button';
 export default function PopUp(props) {
 

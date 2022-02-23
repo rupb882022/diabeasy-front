@@ -5,6 +5,8 @@ import PersonalInfo1 from './Pages/PersonalInfo1'
 import SignUp from './Pages/SignUp';
 import GalleryPick from './Pages/ImagePicker/GalleryPick'
 import Maps from './Pages/Maps';
+import TabNav from './Routes/TabNav';
+
 export default function App() {
 
   return (

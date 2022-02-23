@@ -2,9 +2,9 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList } from 'react
 import React, { useState } from 'react'
 import Comment from './Comment';
 import PopUp from '../../CTools/PopUp';
-import Input from '../../CTools/Input';
-import { MaterialCommunityIcons, FontAwesome5, AntDesign, Entypo, Feather } from '@expo/vector-icons';
+import { MaterialCommunityIcons, AntDesign, Entypo, Feather } from '@expo/vector-icons';
 import moment from 'moment';
+import AddComment from './AddComment';
 
 export default function MainComment(props) {
 
@@ -12,7 +12,6 @@ export default function MainComment(props) {
 
   const { item, data, index } = props; //index= index of item in the current subject
   const [isopen, setIsopen] = useState(false);//respon comments
-  const [show, setShow] = useState(false);//pop up state
   const [showEdit, setShowEdit] = useState(false)//pop up editcomment user
 
   //find the index of subject(main comment)
@@ -31,7 +30,10 @@ export default function MainComment(props) {
   let date = data[data_Index].exstraData[index].date;
   //id of writer
   let writer_id = data[data_Index].exstraData[index].writer_id;
-
+  // comment id
+  let comment_id = data[data_Index].exstraData[index].comment_id;
+  //current subject
+  let subject=data[data_Index].subject
 
 
   return (<>
@@ -54,10 +56,11 @@ export default function MainComment(props) {
       <View style={styles.row}>
         <MaterialCommunityIcons style={styles.Icon} name="calendar-clock" size={20} />
         <Text style={styles.date}> {moment(date).format('MM-DD-YYYY')}</Text>
-        <TouchableOpacity style={styles.addComment} onPress={() => setShow(true)}>
-          <FontAwesome5 style={styles.Icon} name="comment-dots" size={20} />
-          <Text style={styles.addCommentText}>add comment</Text>
-        </TouchableOpacity>
+        <AddComment
+          comment_id={comment_id}
+          subject={subject}
+          name={name}
+        />
         <TouchableOpacity onPress={() => setIsopen(!isopen)} style={styles.numberComments}>
           {isopen ? <AntDesign name="up" size={20} style={styles.Icon} />
             : <AntDesign name="down" size={20} style={styles.Icon} />}
@@ -70,21 +73,7 @@ export default function MainComment(props) {
       renderItem={({ item, index }) => <Comment value={item} index={index} comments={comments} />}
       keyExtractor={(item, index) => item + index}
     />}
-    {show &&
-      <PopUp
-        title={'comment to ' + name}
-        backgroundColor='#d6f2fc'
-        isButton={true}
-        height={30}
-        element={
-          <View style={{ flex: 4, width: '100%', justifyContent: 'flex-start' }}>
-            <Input
-              label='content'
-              height={50}
-            />
-          </View>}
-        setShow={setShow}
-      />}
+
     {showEdit &&
       <PopUp
         animationType='fade'
@@ -170,21 +159,6 @@ const styles = StyleSheet.create({
     marginVertical: '2%',
     paddingLeft: '3%'
   },
-  addComment: {
-    textAlign: 'center',
-    flexDirection: 'row',
-    left: '8%',
-
-    color: '#666666',
-    fontSize: 12
-  },
-  addCommentText: {
-    color: '#666666',
-    fontSize: 12,
-    textAlign: 'left',
-    paddingTop: '3%',
-    marginLeft: '5%'
-  },
   name: {
     flexDirection: 'column',
     color: '#666666',
@@ -200,7 +174,7 @@ const styles = StyleSheet.create({
   },
   edit: {
     flexDirection: 'row',
-    left: '61%',
-    bottom: '20%'
+    left: '59%',
+    bottom: '25%'
   },
 });
