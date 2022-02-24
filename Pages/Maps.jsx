@@ -12,7 +12,7 @@ import PopUp from '../CTools/PopUp';
 
 
 export default function Maps(props) {
-  const [location, setLocation] = useState({});
+  const [location, setLocation] = useState();
    const [distance,setDistance]= useState(0)
 
   const [pin,setPin]=useState({
@@ -39,7 +39,7 @@ export default function Maps(props) {
       }
 
       let location = await Location.getCurrentPositionAsync({});
-      console.log(location);
+     
       setLocation(location)
       setRegion({
         latitude: location.coords.latitude,
@@ -53,7 +53,7 @@ export default function Maps(props) {
     })
     ();
   }, []);
-
+  console.log("*****",location);
   return (
 <>
 
@@ -78,7 +78,7 @@ export default function Maps(props) {
       GooglePlacesSearchQuery={{
         // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
         rankby: 'distance',
-        types:'gym', //'food',
+        types:'gym',//'food',
       }}      
       onPress={(data, details = null) => {
         // 'details' is provided when fetchDetails = true
@@ -106,22 +106,23 @@ export default function Maps(props) {
       //nearbyPlacesAPI="GooglePlacesSearch"
      
     />
-<MapView 
+{location&&<MapView 
 loadingEnabled={true}
 style={{flex: 0.9,marginBottom:'16%'}}
 initialRegion={{
-  latitude:32.166313,
-  longitude:34.843311,
- latitudeDelta: 0.9125,
+  latitude:location.coords.latitude,//32.166313,
+  longitude:location.coords.longitude,//34.843311,
+ latitudeDelta: 0.0125,
  longitudeDelta: 0.0121,
 }}
 
-onUserLocationChange={(e)=>{//console.log("onUserLocationChange",e.nativeEvent)
-setRegion({  latitude: e.nativeEvent.coordinate.latitude,
-  longitude: e.nativeEvent.coordinate.longitude,
-  latitudeDelta:  0.0125,
-  longitudeDelta: 0.0121})
-}}
+
+// onUserLocationChange={(e)=>{console.log("onUserLocationChange",e.nativeEvent)
+// setRegion({  latitude: e.nativeEvent.coordinate.latitude,
+//   longitude: e.nativeEvent.coordinate.longitude,
+//   latitudeDelta:  0.0125,
+//   longitudeDelta: 0.0121})
+// }}
 
 showsUserLocation={true}
 showsMyLocationButton={true}
@@ -130,6 +131,7 @@ nearbyPlacesAPI="GooglePlacesSearch"
 
 provider='google'  //--> By delete this line, the maps provider will be Apple
  >
+
    <View style={{alignSelf:'flex-start', position: 'absolute', top: 10, width: '38%',height:'15%' }}>
   <Input
   label='Radius:'
@@ -175,7 +177,7 @@ onPress={() => setShow(!show)}
 <SimpleLineIcons name="info" size={28} color="black" />
 </TouchableOpacity> 
  
-</MapView>
+</MapView>}
  {show ?     
    <PopUp             
    setShow={(show)=>setShow(show)}
