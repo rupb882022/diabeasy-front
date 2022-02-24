@@ -38,7 +38,7 @@ export default function Login({ navigation }) {
         }).then((resulte) => {
             console.log("resulte", resulte)
             if (resulte) {
-                setInterval(() => setLoading(false), 3500);
+                setInterval(() => setLoading(false), 1500);
                 navigation.navigate('Drawer');
             } else {
                 setValidtionUser("Opps.. worng password or Email");
@@ -66,6 +66,9 @@ export default function Login({ navigation }) {
                 justifyContent='space-evenly'
                 line={false}
                 possiton={60}
+                
+
+            
             />
             <View style={styles.inputs}>
                 <Input
@@ -133,10 +136,11 @@ const styles = StyleSheet.create({
     },
     inputs: {
         flex: 1,
-        // position: 'relative',
-        top: '5%',
+        //position: 'relative',
+       // top: '1%',
         alignContent: 'stretch',
-        paddingTop: '15%'
+        paddingTop: '20%',
+    
 
     },
     forgotPassword: {

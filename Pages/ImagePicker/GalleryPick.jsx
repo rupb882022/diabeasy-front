@@ -5,13 +5,16 @@ import { Constants } from 'expo-constants';
 import Button from '../../CTools/Button';
 import { Ionicons } from '@expo/vector-icons';
 
-export default function GalleryPick(props) {
-
+export default function GalleryPick(props,{navigation}) {
   const {description=true}=props
+
+  
+  //let urlImage = props.route.params.urlImage;
 
   const [image, setImage] = useState(null);
 
   //waiting for permision
+  
   useEffect(() => {
     (async ()=>{
     if (Platform.OS !== 'web') {
@@ -37,20 +40,25 @@ export default function GalleryPick(props) {
       setImage(result.uri)
     }
   }
+
+  //const back=()=>{navigation.navigate('PersonalInfo1',{params:image})}
 //Todo change icon
-  return (
+ return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.pic} onPress={PickImage}>
+     <TouchableOpacity style={styles.pic} onPress={PickImage}>
         {image==null ? <Image style={styles.img} source={require('../../images/blankProfilePicture.png')}/>: 
         <Image source={{ uri: image }} style={styles.img} /> }
         <View style={styles.icon}><Ionicons name="camera-reverse-outline"  size={25}  /></View>
         {description&&<Text style={{alignSelf: 'center',justifyContent:'flex-start' }}>Tap To Edit </Text>}
       </TouchableOpacity>
-      {/* <Button text='go to gallery'
-        onPress={PickImage}
-        style={styles.button}
-      /> */}
-    </View>
+
+      <Button text='DONE'
+      style={styles.button}
+    // onPress={() => navigation.navigate({name:'PersonalInfo1',imageUrl:image})}
+      onPress={()=> {navigation.navigatwe('PersonalInfo1')}}
+      /> 
+
+      </View>
   );
 }
 
@@ -61,13 +69,13 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   img:{
-    height: 100,
-    width: 100,
+    height: 250,
+    width: 250,
     borderRadius: 1000,
     
   },
   pic: { justifyContent: 'center', flex: 1 },
-  button: { justifyContent: 'flex-end' },
-  icon: { justifyContent:'flex-start',alignSelf: 'center', backgroundColor: 'gray',borderRadius:1000,padding:'1%',position:'relative',bottom:'13%' }
+ // button: { justifyContent: 'flex-end' },
+  icon: { justifyContent:'flex-start',alignSelf: 'center',borderRadius:1000,padding:'1%',position:'relative',bottom:'1%' }
 
 });

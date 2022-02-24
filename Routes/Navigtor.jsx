@@ -6,6 +6,8 @@ import SignUp from '../Pages/SignUp';
 import Drawer from './Drawer';
 import PersonalInfo1 from '../Pages/PersonalInfo1'
 import PersonalInfo2 from '../Pages/PersonalInfo2'
+import CameraUse from '../Pages/ImagePicker/CameraUse';
+import GalleryPick from '../Pages/ImagePicker/GalleryPick';
 
 const Stack=createNativeStackNavigator();
 
@@ -42,6 +44,9 @@ export default function Navigtor() {
         <Stack.Screen name="Drawer" options={{...options, headerLeft: null,transitionSpec: {open: config,close:config},}} component={Drawer}/>
         <Stack.Screen name="PersonalInfo1" options={{...options, headerLeft: null,transitionSpec: {open: config,close:config},}} component={PersonalInfo1}/>
         <Stack.Screen name="PersonalInfo2" options={{...options, headerLeft: null,transitionSpec: {open: config,close:config},}} component={PersonalInfo2}/>
+        <Stack.Screen name="CameraUse" options={{...options, headerLeft: null,transitionSpec: {open: config,close:config},}} component={CameraUse}/>
+        <Stack.Screen name="GalleryPick" options={{...options, headerLeft: null,transitionSpec: {open: config,close:config},}} component={GalleryPick}/>
+
       </Stack.Navigator>
       )
 }

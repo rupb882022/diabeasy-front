@@ -3,15 +3,20 @@ import { StyleSheet, Text, View, TouchableOpacity, Vibration } from 'react-nativ
 import { Camera } from 'expo-camera';
 import Button from '../../CTools/Button';
 import { Feather, SimpleLineIcons, AntDesign, Ionicons } from '@expo/vector-icons';
+import GalleryPick from './GalleryPick';
+import PopUp from '../../CTools/PopUp';
+import Gallery from './Gallery'
 
+export default function CameraUse(props,{route,navigation}) {
+// let image = route.params.image;
 
-export default function CameraUse(props) {
   const [hasPermission, setHasPermission] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [camera, setCamera] = useState(null);
-  const [picUri, setPicUri] = useState('https://reactjs.org/logo-og.png');
+  const [picUri, setPicUri] = useState(null);
   const [flashMode, setFlashMode] = useState('off')
-
+  //const [pickFromGallery, setPickFromGallery] = useState(false)
+  const [show, setShow] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -50,7 +55,10 @@ export default function CameraUse(props) {
             <Ionicons name="flash-off-outline" size={30} color="black" /> :
             <Ionicons name="flash-outline" size={30} color="black" />}
         </TouchableOpacity>  
-            <TouchableOpacity onPress={() => navigation.goBack()} style={styles.X}>
+
+            <TouchableOpacity
+             style={styles.X}
+            onPress={() => navigation.goBack()} >
           <Feather name="x" size={35} color="black" />
         </TouchableOpacity>
         </View>
@@ -86,6 +94,7 @@ export default function CameraUse(props) {
               const data = await camera.takePictureAsync();
               console.log(data.uri)
               setPicUri(data.uri)
+              setShow(true)
             };
             Vibration.vibrate(); //we can use vibration anywhere! 
           }} />
@@ -98,10 +107,27 @@ export default function CameraUse(props) {
           justifyContent='flex-end'
           // alignItems='flex-end'
           style={styles.button}
-        //onPress={}
-        />
+          onPress={() => {setShow(true)}}
+            />
+          
+       
+
+      {/* {pickFromGallery&&<GalleryPick/>} */}
+         {/* {picUri && navigation.navigate('GalleryPick')} */}
       </View>
+           {/* {picUri&&notshow&&<Gallery
+             setShow={(isShow) => setNotshow(isShow)}
+             picUri={picUri}  
+             show={!show}
+             />} */}
+
+             {show&&<Gallery
+             setShow={(isShow) => setShow(isShow)}
+             picUri={picUri}
+             />}
+
     </View>
+  
   );
 }
 

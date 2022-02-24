@@ -11,6 +11,7 @@ export default function PersonalInfo1(props) {
     const { route,navigation } = props
     let user = route.params.user;
 
+    //let image=route.params.urlImage;
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -92,7 +93,8 @@ export default function PersonalInfo1(props) {
                     element={<MaterialCommunityIcons name="camera-plus-outline" size={30} color="black" />}
                     width={5}
                     height={3}
-                    onPress={openSheet}
+                   // onPress={openSheet}
+                    onPress={()=>{navigation.navigate('CameraUse')}}
                 />
             </View>
 

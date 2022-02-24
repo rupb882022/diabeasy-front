@@ -9,12 +9,12 @@ export default function CustomDrawer(props) {
         <>
             <DrawerContentScrollView>
                 <View style={styles.header}>
-                {/* <Image source={require('../images/profile_pictur.jpeg')}
+                <Image source={require('../images/profile_pictur.jpeg')}
                     style={styles.image}
-                /> */}
-                <GalleryPick
-                description={false}
                 />
+                {/* <GalleryPick
+                description={false}
+                /> */}
                 <Text style={styles.text}>Hello,</Text>
                 <Text style={styles.text} >Itzik toledano</Text>
                 </View>
