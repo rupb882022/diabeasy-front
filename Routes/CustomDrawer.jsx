@@ -5,7 +5,7 @@ import GalleryPick from '../Pages/ImagePicker/GalleryPick';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import CameraUse from '../Pages/ImagePicker/CameraUse';
 export default function CustomDrawer(props) {
-    const{navigation}=props
+
     return (
         <>
             <DrawerContentScrollView>

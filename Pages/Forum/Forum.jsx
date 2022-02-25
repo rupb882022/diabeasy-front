@@ -7,6 +7,7 @@ import Input from '../../CTools/Input';
 import MainComment from './MainComment';
 import apiUrl from '../../Routes/Url'
 import Loading from '../../CTools/Loading'
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function Forum() {
 
@@ -117,8 +118,9 @@ export default function Forum() {
     }
   }
 
-  //get all comments
-  if (!data) {
+  const get_all_comments=()=>{
+  // if (!data) {
+    setLoading(true);
     fetch(apiUrl + `Forum?type=all`, {
       method: 'GET',
       headers: new Headers({
@@ -172,7 +174,8 @@ export default function Forum() {
                 writer_id: resulte[i].userId,
                 name: resulte[i].userName,
                 date: resulte[i].date_time,
-                value: resulte[i].value
+                value: resulte[i].value,
+                comment_id:resulte[i].id,
               }
 
               //find the index for right comment to respone
@@ -209,6 +212,14 @@ export default function Forum() {
 
   }
 
+  // get all comment every time when you user go into forum
+  useFocusEffect(
+    React.useCallback(() => {
+      console.log("*")
+      get_all_comments();
+    },[])
+  );
+  
 
   return (<>
   {loading&&<Loading/>}
@@ -225,7 +236,7 @@ export default function Forum() {
       <SectionList
         sections={data}
         keyExtractor={(item, index) => item + index}
-        renderItem={({ item, index }) => <MainComment item={item} index={index} data={data} />}
+        renderItem={({ item, index }) => <MainComment   getAllComments={get_all_comments} item={item} index={index} data={data} />}
         renderSectionHeader={({ section: { subject } }) => (
           <Text style={styles.header}>{subject}</Text>
         )}

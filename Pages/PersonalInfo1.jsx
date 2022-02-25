@@ -1,16 +1,20 @@
 import { View, StyleSheet, Text, TouchableOpacity, Image } from 'react-native';
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef,useEffect } from 'react';
 import Header from '../CTools/Header';
 import Input from '../CTools/Input';
 import Button from '../CTools/Button';
 import PickerMenu from './ImagePicker/PickerMenu';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-
+import Loading from '../CTools/Loading';
 
 export default function PersonalInfo1(props) {
     const { route,navigation } = props
     let user = route.params.user;
 
+    const [loading, setLoading] = useState(true);
+    useEffect(() => {
+      setInterval(() => setLoading(false), 1500);
+    },[])
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -32,6 +36,7 @@ export default function PersonalInfo1(props) {
 
     return (
         <View style={styles.container}>
+                  {loading && <Loading opacity={'#ffffffff'} />}
             <Header
                 title='Personal Info'
                 possiton={-15}
@@ -104,7 +109,7 @@ export default function PersonalInfo1(props) {
                     width={10}
                     height={2}
                     justifyContent='flex-start'
-                    onPress={()=>navigation.navigate('Drawer')}
+                    onPress={()=>{setLoading(true); navigation.navigate('Drawer')}}
                 /> :<>
                 <Text style={styles.txt}> 1/2</Text>
                 <Button
@@ -112,7 +117,7 @@ export default function PersonalInfo1(props) {
                     width={10}
                     height={2}
                     justifyContent='flex-start'
-                    onPress={()=>navigation.navigate('PersonalInfo2')}
+                    onPress={()=>{setLoading(true); navigation.navigate('PersonalInfo2')}}
                 /></>
                 }
             </View>

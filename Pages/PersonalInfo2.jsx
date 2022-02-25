@@ -1,12 +1,19 @@
 import { View, StyleSheet, Text } from 'react-native';
-import React from 'react';
+import React,{useEffect,useState} from 'react';
 import Header from '../CTools/Header';
 import Input from '../CTools/Input';
 import Button from '../CTools/Button';
+import Loading from '../CTools/Loading';
 
 export default function PersonalInfo2({ navigation }) {
+
+    const [loading, setLoading] = useState(true);
+    useEffect(() => {
+      setInterval(() => setLoading(false), 1500);
+    },[])
     return (
         <View style={styles.container}>
+                  {loading && <Loading opacity={'#ffffffff'} />}
             <Header
                 title='Medical Info'
                 possiton={-15}
@@ -60,7 +67,7 @@ export default function PersonalInfo2({ navigation }) {
                         width={12}
                         height={4}
                         justifyContent='center'
-                        onPress={() => navigation.goBack()}
+                        onPress={() => {setLoading(true); navigation.goBack()}}
                     />
                 </View>
                 <View style={styles.Register}>
@@ -70,7 +77,7 @@ export default function PersonalInfo2({ navigation }) {
                         width={8}
                         height={4}
                         justifyContent='flex-start'
-                        onPress={() => navigation.navigate('Drawer')}
+                        onPress={() =>{setLoading(true); navigation.navigate('Drawer')}}
                     />
                 </View>
             </View>

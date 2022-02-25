@@ -1,35 +1,22 @@
 import { View, Text, StyleSheet, Image } from 'react-native';
-import React from 'react';
+import React,{useEffect,useState} from 'react';
 import Button from '../CTools/Button';
 import Header from '../CTools/Header';
-import Login from './Login';
+import Loading from '../CTools/Loading';
 
 
 
 export default function Home({ navigation }) {
 
-// const test=()=>{
-
-//     fetch(upiUrl+"values",{
-//         method:'GET',
-//         headers:new Headers({
-//             'Content-Type':'appliction/json; charset=UTF-8',
-//             'Accept':'appliction/json; charset=UTF-8'
-//         })
-//     }).then(res=>{
-//         console.log("res",res)
-//         return res.json();
-//     }).then((resulte)=>{
-//         alert(resulte);
-//     },
-//     (error)=>{
-//         console.log("error",error)
-//     })
-// }
+    const [loading, setLoading] = useState(true);
+    useEffect(() => {
+      setInterval(() => setLoading(false), 1500);
+    },[])
 
 
     return (
         <View style={styles.container}>
+               {loading && <Loading opacity={'#ffffffff'} />}
             <Header
                 title='Home'
                 logo_image='heart'
