@@ -5,7 +5,7 @@ import { AntDesign } from '@expo/vector-icons';
 
 
 export default function DeleteComment(props) {
-  const { setShowEdit, id,getallcomment } = props
+  const { setShowEdit, id,getallcomment,respones } = props
 
 
   const deleteComment = () => {
@@ -33,11 +33,13 @@ export default function DeleteComment(props) {
 
   }
 
-  return (
+  return (<>
     <TouchableOpacity onPress={deleteComment}>
-      <Text >
+      <Text>
         <AntDesign name="delete" size={20} color="black" />
         delete
-      </Text></TouchableOpacity>
+      </Text>
+      </TouchableOpacity>
+        {respones&&<Text style={{textAlign:'center',fontSize:10}}>it will delete all respones</Text>}</>
   )
 }
