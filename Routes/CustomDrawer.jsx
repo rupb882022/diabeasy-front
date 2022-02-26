@@ -3,8 +3,9 @@ import React from 'react';
 import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
 import GalleryPick from '../Pages/ImagePicker/GalleryPick';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-
+import CameraUse from '../Pages/ImagePicker/CameraUse';
 export default function CustomDrawer(props) {
+
     return (
         <>
             <DrawerContentScrollView>
@@ -12,9 +13,8 @@ export default function CustomDrawer(props) {
                 <Image source={require('../images/profile_pictur.jpeg')}
                     style={styles.image}
                 />
-                {/* <GalleryPick
-                description={false}
-                /> */}
+
+
                 <Text style={styles.text}>Hello,</Text>
                 <Text style={styles.text} >Itzik toledano</Text>
                 </View>

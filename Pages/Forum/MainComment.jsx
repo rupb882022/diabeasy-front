@@ -2,17 +2,24 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList } from 'react
 import React, { useState } from 'react'
 import Comment from './Comment';
 import PopUp from '../../CTools/PopUp';
-import { MaterialCommunityIcons, AntDesign, Entypo, Feather } from '@expo/vector-icons';
+import { MaterialCommunityIcons, AntDesign, Entypo } from '@expo/vector-icons';
 import moment from 'moment';
 import AddComment from './AddComment';
+import UpdateComment from './UpdateComment';
+import DeleteComment from './DeleteComment';
+import Input from '../../CTools/Input';
+import Button from '../../CTools/Button';
+import apiUrl from '../../Routes/Url';
 
 export default function MainComment(props) {
 
   let user_id = 1//temp
 
-  const { item, data, index } = props; //index= index of item in the current subject
+  const { item, data, index, getAllComments } = props; //index= index of item in the current subject
   const [isopen, setIsopen] = useState(false);//respon comments
   const [showEdit, setShowEdit] = useState(false)//pop up editcomment user
+  const [changeComment, setChangeComment] = useState('');//for action on comment like delete or update
+  const [editText, setEditText] = useState(item)
 
   //find the index of subject(main comment)
   let data_Index = '';
@@ -33,8 +40,39 @@ export default function MainComment(props) {
   // comment id
   let comment_id = data[data_Index].exstraData[index].comment_id;
   //current subject
-  let subject=data[data_Index].subject
+  let subject = data[data_Index].subject
 
+
+
+
+  const updateComment = () => {
+    console.log("id", comment_id)
+    console.log("text", editText);
+    console.log(JSON.stringify({ subject: subject, value: editText }))
+    if(comments.length>0){
+      return;
+    }
+    fetch(apiUrl + `Forum?id=${comment_id}`, {
+      method: 'PUT',
+      headers: new Headers({
+        'Content-Type': 'appliction/json; charset=UTF-8',
+        'Accept': 'appliction/json; charset=UTF-8'
+      }),
+      body: JSON.stringify({ subject: subject, value: editText })
+    }).then(res => {
+      if (res && res.status == 200) {
+        return res.json();
+      } else {
+        console.log("status code:", res.status)
+      }
+    }).then((resulte) => {
+      //#Nir after update/post and delete call agine to get function?
+
+    },
+      (error) => {
+        console.log("error", error)
+      })
+  }
 
   return (<>
     <View style={styles.container} id={writer_id}>
@@ -44,14 +82,34 @@ export default function MainComment(props) {
         />
         <Text style={styles.name}>{name}</Text>
         {user_id == writer_id &&
-          <TouchableOpacity style={styles.edit} onPress={() => setShowEdit(!showEdit)}>
+          <TouchableOpacity style={styles.edit} onPress={() => setShowEdit(true)}>
             <Entypo name="dots-three-vertical" size={20} style={styles.Icon} />
           </TouchableOpacity>
-
         }
       </View>
       <View style={styles.row}>
-        <Text style={styles.text(16)}>{item}</Text>
+        {changeComment == 'update'&&comments.length==0 ?
+          <>
+            <Input
+              fontSize={14}
+              height={35}
+              width={170}
+              alignItems='flex-start'
+              setValue={item}
+              getValue={(value) => setEditText(value)}
+            />
+            <Button
+              alignItems='flex-end'
+              justifyContent='center'
+              width={5}
+              height={4}
+              radius={5}
+              color='white'
+              onPress={()=>{setChangeComment(''); updateComment();}}
+              element={<MaterialCommunityIcons name="circle-edit-outline" size={20} color="#2DAB5B" />}
+            />
+          </>
+          : <Text style={styles.text(16)}>{editText ? editText : item}</Text>}
       </View>
       <View style={styles.row}>
         <MaterialCommunityIcons style={styles.Icon} name="calendar-clock" size={20} />
@@ -70,7 +128,12 @@ export default function MainComment(props) {
     </View>
     {isopen && <FlatList
       data={comments}
-      renderItem={({ item, index }) => <Comment value={item} index={index} comments={comments} />}
+      renderItem={({ item, index }) =>
+        <Comment updateComment={updateComment}
+          getAllComments={getAllComments}
+          value={item}
+          index={index} comments={comments}
+        />}
       keyExtractor={(item, index) => item + index}
     />}
 
@@ -81,15 +144,15 @@ export default function MainComment(props) {
         height={15}
         width={40}
         element={<View style={{ flex: 1, width: '100%', justifyContent: 'space-evenly', alignItems: 'center' }}>
-          <TouchableOpacity onPress={() => setShowEdit(!showEdit)} style={{ marginRight: '10%' }}><Text>
-            <Feather name="edit-3" size={20} color="black" />
-            Edit
-          </Text></TouchableOpacity>
-          <TouchableOpacity onPress={() => setShowEdit(!showEdit)}>
-            <Text >
-              <AntDesign name="delete" size={20} color="black" />
-              delete
-            </Text></TouchableOpacity>
+          <UpdateComment
+            respones={comments.length>0}
+            setShowEdit={() => { setChangeComment('update'); setShowEdit(false) }}
+          />
+          <DeleteComment
+            id={comment_id}
+            respones={comments.length>0}
+            getallcomment={getAllComments}
+            setShowEdit={() => { setChangeComment('delete'); setShowEdit(false) }} />
         </View>}
       />
     }

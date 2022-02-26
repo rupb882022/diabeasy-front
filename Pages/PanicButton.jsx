@@ -14,32 +14,38 @@ export default function PanicButton(props) {
     id=1;
     const EmergancyCall = () => {
         console.log(phone)
+        getPhone();
         let Sphone=phone&&phone.toString();
         if(Sphone){
         Communications.phonecall(Sphone, true)
         }
     }
 
-    if (!phone) {
-        fetch(apiUrl + `Patients?url=assistant_phone&id=${id}`, {
-            method: 'GET',
-            headers: new Headers({
-                'Content-Type': 'appliction/json; charset=UTF-8',
-                'Accept': 'appliction/json; charset=UTF-8'
-            })
-        }).then(res => {
-            if (res && res.status == 200) {
-                return res.json();
-            } else {
-                console.log("status code:", res.status)
-            }
-        }).then((resulte) => {
-            setPhone(resulte);
-        },
-            (error) => {
-                console.log("error", error)
-            })
+    const getPhone=()=>{
+        if (!phone) {
+            fetch(apiUrl + `Patients?url=assistant_phone&id=${id}`, {
+                method: 'GET',
+                headers: new Headers({
+                    'Content-Type': 'appliction/json; charset=UTF-8',
+                    'Accept': 'appliction/json; charset=UTF-8'
+                })
+            }).then(res => {
+                if (res && res.status == 200) {
+                    return res.json();
+                } else {
+                    console.log("status code:", res.status)
+                }
+            }).then((resulte) => {
+                setPhone(resulte);
+            },
+                (error) => {
+                    console.log("error", error)
+                })
+        }
     }
+
+    //get phone number at every rander
+    getPhone();
     return (
         <View style={styles.container}>
             <Header

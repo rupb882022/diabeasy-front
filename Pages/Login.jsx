@@ -38,7 +38,9 @@ export default function Login({ navigation }) {
         }).then((resulte) => {
             console.log("resulte", resulte)
             if (resulte) {
-                setInterval(() => setLoading(false), 1500);
+
+
+                setInterval(() => setLoading(false), 2000);
                 navigation.navigate('Drawer');
             } else {
                 setValidtionUser("Opps.. worng password or Email");

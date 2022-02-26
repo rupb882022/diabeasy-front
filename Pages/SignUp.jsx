@@ -1,17 +1,25 @@
 import { StyleSheet, Text, View, Image } from 'react-native'
-import React from 'react'
+import React, {useState, useEffect } from 'react'
 import Header from '../CTools/Header'
 import Button from '../CTools/Button'
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import Loading from '../CTools/Loading';
 
-
+//Todo fix css title header
 export default function SignUp({ navigation }) {
+
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    setInterval(() => setLoading(false), 1500);
+  },[])
+
   return (
     <View style={styles.container}>
-      <Header style={styles.header}
+       {loading && <Loading opacity={'#ffffffff'} />}
+      <Header 
         title='Create your account'
         logo_image='diabeasy'
-        image_width={100}
+        image_width={200}
         image_heigt={200}
         justifyContent='flex-end'
         flexDirection="column-reverse"
@@ -25,11 +33,11 @@ export default function SignUp({ navigation }) {
 
 
       <View style={styles.buttons}>
-        <Button text='Patient' width={18} height={8} alignItems='center' onPress={()=>navigation.navigate('PersonalInfo1',{user:'Patient'})} />
-        <Button text='Doctor' width={18} height={8} alignItems='center' onPress={()=>navigation.navigate('PersonalInfo1',{user:'Doctor'})} />
+        <Button text='Patient' width={18} height={8} alignItems='center' onPress={()=>{setLoading(true); navigation.navigate('PersonalInfo1',{user:'Patient'})}} />
+        <Button text='Doctor' width={18} height={8} alignItems='center' onPress={()=>{setLoading(true); navigation.navigate('PersonalInfo1',{user:'Doctor'})}} />
       </View>
 
-      <TouchableOpacity style={styles.SignIn} onPress={() => navigation.navigate('Login')}>
+      <TouchableOpacity style={styles.SignIn} onPress={() =>{ navigation.navigate('Login')}}>
         <Text> Already have an account?  <Text style={{ color: 'blue' }}>Sign in</Text></Text>
       </TouchableOpacity>
 
@@ -45,6 +53,7 @@ export default function SignUp({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    width:'100%',
     justifyContent: 'flex-start',
 
   },

@@ -61,11 +61,11 @@ export default function Maps(props) {
    title='Sports locations'
    logo_image='graph'
    flex={0.2}
-   image_width={25}  
+   image_width={20}  
    //image_heigt={100}
    //image_margin={{ Bottom: -4}}
    //possiton={70}
-   marginLeft={10}
+   marginLeft={15}
    
    justifyContent='flex-start'/>
 

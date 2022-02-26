@@ -9,7 +9,9 @@ export default function Input(props) {
 
     const { placeholder, secure = false, required = false, editable = true, textAlign = 'left', label, validtion, min = 0, max, alignItems, justifyContent, width, height, fontSize,
         keyboardType = 'default', type = '', selectBox_items = [], SelectBox_placeholder, mode = 'datetime', display = 'spinner', popup_title, date_format_hour = true,
-        getValue,spellCheck=false } = props
+        getValue,spellCheck=false,setValue } = props
+
+      
 
     const [text, setText] = useState('');
     const [valid_lable, setValid_lable] = useState('');
@@ -59,6 +61,10 @@ export default function Input(props) {
         getValue && getValue(text);
     }, [text]);
 
+        //set the text from outside component at the first time in input
+        useEffect(() => {
+            setValue&&setText(setValue)
+        }, []);
     return (
         <View style={styles.possition(justifyContent, alignItems)}>
             <Text style={styles.label(width)}>{label}</Text>
