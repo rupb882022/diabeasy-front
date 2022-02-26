@@ -1,9 +1,8 @@
 import { View, Text, Image, ImageBackground } from 'react-native'
 import React from 'react'
  import * as Progress from 'react-native-progress'
-
 import PopUp from './PopUp'
-//#Nir loading not working in idan proj
+
 
 const element = <View style={{ flex: 1, justifyContent:'center' }}>
   <ImageBackground source={require('../images/headerLogo/diabeasy_logo.png')} style={{ width:'100%', justifyContent: 'center', alignItems: 'center', alignSelf: 'center',position:'absolute' }} resizeMode='center' >

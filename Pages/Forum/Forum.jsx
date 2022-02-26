@@ -212,7 +212,7 @@ export default function Forum() {
 
   }
 
-  // get all comment every time when you user go into forum
+  // get all comment every time when user go into the forum
   useFocusEffect(
     React.useCallback(() => {
       console.log("*")

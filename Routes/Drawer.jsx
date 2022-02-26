@@ -2,13 +2,15 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { TouchableOpacity } from 'react-native';
 import InsertData from '../Pages/InsertData'
 import Home from '../Pages/Home'
-import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import CustomDrawer from './CustomDrawer'
-import { Ionicons, Entypo, AntDesign, MaterialCommunityIcons, MaterialIcons,SimpleLineIcons } from '@expo/vector-icons';
+import { Ionicons, Entypo, AntDesign, MaterialCommunityIcons, MaterialIcons, SimpleLineIcons } from '@expo/vector-icons';
 import PanicButton from '../Pages/PanicButton';
 import Forum from '../Pages/Forum/Forum';
 import Maps from '../Pages/Maps';
 import Setting from '../Pages/Setting'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import React,{ useState } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 
 
 const Drawernav = createDrawerNavigator();
@@ -16,7 +18,17 @@ const Drawernav = createDrawerNavigator();
 export default function Drawer() {
     //color of icons
     let color = "black"
+    const [userDetails, setUserDetails] = useState();
 
+    //get user details from storge
+    const getData = async () => {
+        try {
+            const jsonValue = await AsyncStorage.getItem('userDetails')
+             jsonValue != null ? setUserDetails(JSON.parse(jsonValue)) : null;
+        } catch (e) {
+            console.log(e)
+        }
+    }
 
     const options = {
         headerStyle: {
@@ -27,8 +39,16 @@ export default function Drawer() {
             color: 'transparent',
         },
     }
+
+  // get user details after log in (it is not useEffect for case when user will log out to switch to diffrent account) TODO check log o
+  useFocusEffect(
+    React.useCallback(() => {
+      getData();
+    },[])
+  );
+  
     return (
-        <Drawernav.Navigator drawerContent={props => <CustomDrawer {...props} />} screenOptions={({ navigation }) => ({
+        <Drawernav.Navigator drawerContent={props => <CustomDrawer userDetails={userDetails?userDetails:''} {...props} />} screenOptions={({ navigation }) => ({
             headerLeft: () => {
                 return (
                     <TouchableOpacity
@@ -64,7 +84,7 @@ export default function Drawer() {
                 ...options,
                 drawerIcon: () => (<MaterialIcons name="sports-tennis" size={24} color={color} />)
             }} />
-            <Drawernav.Screen name='Panic Button' component={PanicButton} options={{
+            <Drawernav.Screen name='Emergency Call' component={PanicButton} options={{
                 ...options,
                 drawerIcon: () => (<AntDesign name="exclamationcircleo" size={24} color={color} />)
             }} />
