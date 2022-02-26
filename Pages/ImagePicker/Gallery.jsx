@@ -12,7 +12,7 @@ export default function Gallery(props,{navigation}) {
   
   //let urlImage = props.route.params.urlImage;
 
-  const [image, setImage] = useState(picUri.toString());
+  const [image, setImage] = useState(picUri);
   //const [picDetails,setPicDetails]=useState(picData)
   //const [counter,setCounter]=useState(0)
   //waiting for permision
@@ -39,7 +39,7 @@ export default function Gallery(props,{navigation}) {
       quality: 1,
       
     })
-    console.log('res=>',result);
+    console.log('ImagePicker=>',result);
     if (!result.cancelled) {
       setImage(result.uri)
       //setPicDetails(result)
@@ -54,9 +54,8 @@ ImgUpload(`${image}`
 }
 
 
-
+//#Nir check (!Request.Content.IsMimeMultipartContent()) in C#
 const ImgUpload = (imgUri, picName) => {
-  let urlAPI ='http://proj.ruppin.ac.il//bgroup88/test2/tar3/uploadpicture';
   let dataI = new FormData();
   dataI.append('picture', {
   uri: imgUri,
@@ -67,7 +66,9 @@ const ImgUpload = (imgUri, picName) => {
     method: 'POST',
     body: dataI,
     }
-    fetch(urlAPI, config)
+    console.log(upiUrl+"uploadpicture")
+    console.log(dataI)
+    fetch(upiUrl+"uploadpicture", config)
     .then((res) => {
     if (res.status == 201) {console.log('resstatus=>',res.status);return res.json(); }
     else {console.log(res.status);return res.err;}
@@ -75,18 +76,19 @@ const ImgUpload = (imgUri, picName) => {
     .then((responseData) => {
       console.log('responsData=>',responseData);
     if (responseData != "err") {
+      
+      console.log("picName",picName)
+      console.log("responseData",responseData)
     let picNameWOExt = picName.substring(0, picName.indexOf("."));
     let imageNameWithGUID = responseData.substring(responseData.indexOf(picNameWOExt),
     responseData.indexOf(".jpg") + 4);
     console.log(imageNameWithGUID);
-
     console.log("img uploaded successfully!");
     }
     else {alert('error uploding ...'); }
     })
-    .catch(err => {alert('err upload= ' + err); });
+    .catch(err => {console.log('err upload= ' + err); });
   }
-////////****************** */
 
 //Todo change icon
  return (

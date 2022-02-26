@@ -1,24 +1,29 @@
 import { View, StyleSheet, Text, TouchableOpacity, Image } from 'react-native';
-import React, { useState, useRef,useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Header from '../CTools/Header';
 import Input from '../CTools/Input';
 import Button from '../CTools/Button';
 import PickerMenu from './ImagePicker/PickerMenu';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Loading from '../CTools/Loading';
-
+import {flushSync} from 'react-dom'
 export default function PersonalInfo1(props) {
-    const { route,navigation } = props
+    const { route, navigation } = props
     let user = route.params.user;
-
-
+   const [name,setName]=useState('')
+   const [gender,setGender]=useState('')
+   const [birthDate,setBirthDate]=useState('')
+   const [email, setEmail] = useState('')
+   const [password, setPassword] = useState('')
+   const [validtion,setValidtion] = useState('')
     const [loading, setLoading] = useState(true);
-    useEffect(() => {
-      setInterval(() => setLoading(false), 1500);
-    },[])
 
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
+
+    useEffect(() => {
+        setInterval(() => setLoading(false), 1500);
+    }, [])
+
+
 
     const sheetRef = useRef(null);
     //close menu picture picker
@@ -33,11 +38,16 @@ export default function PersonalInfo1(props) {
             sheetRef.current.open();
         }
     };
-
+const passwordValid=(value)=>{
+    //wiil render the page at the end of function
+    flushSync(()=>{
+    password==value?setValidtion(''):setValidtion('not the same password')
+    })
+}
 
     return (
         <View style={styles.container}>
-                  {loading && <Loading opacity={'#ffffffff'} />}
+            {loading && <Loading opacity={'#d6f2fc'} />}
             <Header
                 title='Personal Info'
                 possiton={-15}
@@ -46,30 +56,46 @@ export default function PersonalInfo1(props) {
             />
             <Input
                 label='Name'
-                validtion='letters' />
+                validtion='letters'
+                required={true}
+                setValue={name}
+                getValue={(value) => setName(value)}
+            />
             {/* TODO validtion all inputs */}
             <Input
                 label='Email'
                 keyboardType='email-address'
                 getValue={(value) => setEmail(value)}
+                required={true}
+                keyboardType='email-address'
+                setValue={email}
             />
             <Input
                 label='Password'
                 secure={true}
                 getValue={(value) => setPassword(value)}
-
+                required={true}
+                setValue={password}
+            // TODO eye icon
             />
             <Input
                 label='Confirm Password'
                 secure={true}
+                required={true}
+                validLable={validtion&&validtion}
+                getValue={(value)=>{passwordValid(value)}}
             // validtion='password'
+            // TODO eye icon
             />
 
             <Input
                 label='Gender'
                 editable={false}
                 type='selectBox'
+                required={true}
+                setValue={gender}
                 SelectBox_placeholder='Gender'
+                getValue={(value) => setGender(value)}
                 selectBox_items={[
                     { itemKey: 0, label: 'Male', value: 'Male' },
                     { itemKey: 1, label: 'Female', value: 'Female' },
@@ -85,7 +111,9 @@ export default function PersonalInfo1(props) {
                 editable={false}
                 display='spinner'
                 date_format_hour={false}
-
+                required={true}
+                setValue={birthDate}
+                getValue={(value) => setBirthDate(value)}
             />
 
 
@@ -98,8 +126,8 @@ export default function PersonalInfo1(props) {
                     element={<MaterialCommunityIcons name="camera-plus-outline" size={30} color="black" />}
                     width={5}
                     height={3}
-                   // onPress={openSheet}
-                    onPress={()=>{navigation.navigate('CameraUse')}}
+                    // onPress={openSheet}
+                    onPress={() => { navigation.navigate('CameraUse') }}
                 />
             </View>
 
@@ -111,16 +139,16 @@ export default function PersonalInfo1(props) {
                     width={10}
                     height={2}
                     justifyContent='flex-start'
-                    onPress={()=>{setLoading(true); navigation.navigate('Drawer')}}
-                /> :<>
-                <Text style={styles.txt}> 1/2</Text>
-                <Button
-                    text="Next"
-                    width={10}
-                    height={2}
-                    justifyContent='flex-start'
-                    onPress={()=>{setLoading(true); navigation.navigate('PersonalInfo2')}}
-                /></>
+                    onPress={() => { setLoading(true); navigation.navigate('Drawer') }}
+                /> : <>
+                    <Text style={styles.txt}> 1/2</Text>
+                    <Button
+                        text="Next"
+                        width={10}
+                        height={2}
+                        justifyContent='flex-start'
+                        onPress={() => { setLoading(true); navigation.navigate('PersonalInfo2') }}
+                    /></>
                 }
             </View>
 

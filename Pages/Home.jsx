@@ -16,7 +16,7 @@ export default function Home({ navigation }) {
 
     return (
         <View style={styles.container}>
-               {loading && <Loading opacity={'#ffffffff'} />}
+               {loading && <Loading opacity={'#d6f2fc'} />}
             <Header
                 title='Home'
                 logo_image='heart'

@@ -46,10 +46,11 @@ export default function MainComment(props) {
 
 
   const updateComment = () => {
-    console.log("id", comment_id)
-    console.log("text", editText);
-    console.log(JSON.stringify({ subject: subject, value: editText }))
-    if(comments.length>0){
+    // console.log("id", comment_id)
+    // console.log("text", editText);
+    // console.log(JSON.stringify({ subject: subject, value: editText }))
+
+    if(comments.length==0){
       return;
     }
     fetch(apiUrl + `Forum?id=${comment_id}`, {
@@ -67,7 +68,7 @@ export default function MainComment(props) {
       }
     }).then((resulte) => {
       //#Nir after update/post and delete call agine to get function?
-
+console.log("resulte",resulte) //Todo  setEditText (resulte.value)
     },
       (error) => {
         console.log("error", error)

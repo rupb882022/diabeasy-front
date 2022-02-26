@@ -7,8 +7,8 @@ import GalleryPick from './GalleryPick';
 import PopUp from '../../CTools/PopUp';
 import Gallery from './Gallery'
 
-export default function CameraUse(props,{navigation}) {
-
+export default function CameraUse(props) {
+const {navigation}=props
 
   const [hasPermission, setHasPermission] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
@@ -52,15 +52,15 @@ export default function CameraUse(props,{navigation}) {
 
         <TouchableOpacity onPress={handleFlashMode} style={styles.flash}>
           {flashMode === 'off' ?
-            <Ionicons name="flash-off-outline" size={30} color="black" /> :
-            <Ionicons name="flash-outline" size={30} color="black" />}
+            <Ionicons name="flash-off-outline" size={30} color="white" /> :
+            <Ionicons name="flash-outline" size={30} color="white" />}
         </TouchableOpacity>  
 
          <TouchableOpacity
              style={styles.X}
-            //onPress={() => navigation.goBack()}
+            onPress={() => navigation.goBack()}
              >
-          <Feather name="x" size={35} color="black" />
+          <Feather name="x" size={35} color="white" />
         </TouchableOpacity>
         </View>
       </Camera>

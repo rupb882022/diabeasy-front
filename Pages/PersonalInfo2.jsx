@@ -13,7 +13,7 @@ export default function PersonalInfo2({ navigation }) {
     },[])
     return (
         <View style={styles.container}>
-                  {loading && <Loading opacity={'#ffffffff'} />}
+                  {loading && <Loading opacity={'#d6f2fc'} />}
             <Header
                 title='Medical Info'
                 possiton={-15}
@@ -24,23 +24,30 @@ export default function PersonalInfo2({ navigation }) {
                 label='Weight'
                 validtion='number'
                 keyboardType='number-pad'
-                placeholder='  kg' />
+                placeholder='  kg' 
+                required={true}/>
+                
             <Input
                 label='Height'
                 validtion='number'
                 keyboardType='number-pad'
                 placeholder='  cm'
+                required={true}
             />
             <Input
                 label='Insulin Type'
+                required={true}
             />
 
             <Input
-                label='Boules Value' />
+                label='Boules Value'
+
+                />
             <Input
                 label='injection spot'
                 editable={false}
                 type='selectBox'
+                required={true}
                 SelectBox_placeholder='Select spot of injection'
                 selectBox_items={[
                     { itemKey: 0, label: 'Arm', value: 'Arm' },
@@ -52,7 +59,9 @@ export default function PersonalInfo2({ navigation }) {
                 label='Emergency Contact Phone Number'
                 validtion='number'
                 keyboardType='number-pad'
-                placeholder='+972' />
+                placeholder='+972'
+                
+                />
 
             <Input
                 label='Add Your Doctor By Email'

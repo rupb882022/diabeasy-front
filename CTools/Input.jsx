@@ -9,14 +9,18 @@ export default function Input(props) {
 
     const { placeholder, secure = false, required = false, editable = true, textAlign = 'left', label, validtion, min = 0, max, alignItems, justifyContent, width, height, fontSize,
         keyboardType = 'default', type = '', selectBox_items = [], SelectBox_placeholder, mode = 'datetime', display = 'spinner', popup_title, date_format_hour = true,
-        getValue,spellCheck=false,setValue } = props
+        getValue,spellCheck=false,setValue,validLable } = props
 
       
 
-    const [text, setText] = useState('');
+    const [text, setText] = useState();
     const [valid_lable, setValid_lable] = useState('');
     const [showPopUp, setShowPopUp] = useState(false);
     const [selectBox, setSelectBox] = useState([]);
+    //for spicel valid lable that came outside of component
+  
+
+
 
     //if props validtion
     const checkTextInput = () => {
@@ -35,7 +39,7 @@ export default function Input(props) {
                 regex.test(text) ? "" : setValid_lable("English letters only!");
                 break;
             case 'Password':
-                setValid_lable("Password does not match!")
+                setValid_lable("   Password does not match!")
                 break;
             default:
                 break;
@@ -58,8 +62,9 @@ export default function Input(props) {
     }
     //get the text from input to outside component
     useEffect(() => {
+        validLable?setValid_lable(validLable):setValid_lable('')
         getValue && getValue(text);
-    }, [text]);
+    }, [text,validLable]);
 
         //set the text from outside component at the first time in input
         useEffect(() => {

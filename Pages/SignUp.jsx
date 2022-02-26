@@ -15,7 +15,7 @@ export default function SignUp({ navigation }) {
 
   return (
     <View style={styles.container}>
-       {loading && <Loading opacity={'#ffffffff'} />}
+       {loading && <Loading opacity={'#d6f2fc'} />}
       <Header 
         title='Create your account'
         logo_image='diabeasy'

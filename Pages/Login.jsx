@@ -1,5 +1,5 @@
 import { View, StyleSheet, Image, Text } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState, createContext } from 'react';
 import Header from '../CTools/Header';
 import Input from '../CTools/Input';
 import Button from '../CTools/Button';
@@ -7,7 +7,9 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import ForgotPasswordPopUp from './ForgotPasswordPopUp';
 import apiUrl from '../Routes/Url'
 import Loading from '../CTools/Loading';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
+//TODO add remmber me button
 export default function Login({ navigation }) {
     const [show, setShow] = useState(false);
     const [email, setEmail] = useState('');
@@ -16,13 +18,8 @@ export default function Login({ navigation }) {
     const [loading, setLoading] = useState(false);
 
     const checkUser = () => {
-        console.log("validtionUser", validtionUser);
-        console.log("password", password);
-        console.log("email", email);
-
         setLoading(true);
         //get user details (id,image,full name)
-        console.log("url", apiUrl + `Patients?url=userDetails&email=${email}&password=${password}`);
         fetch(apiUrl + `Patients?url=userDetails&email=${email}&password=${password}`, {
             method: 'GET',
             headers: new Headers({
@@ -36,27 +33,34 @@ export default function Login({ navigation }) {
                 console.log("status code:", res.status)
             }
         }).then((resulte) => {
-            console.log("resulte", resulte)
             if (resulte) {
-
-
                 setInterval(() => setLoading(false), 2000);
+                //globle save user detail 
+                storeData({id:resulte.id,image:resulte.profileimage,name:resulte.name})
                 navigation.navigate('Drawer');
             } else {
                 setValidtionUser("Opps.. worng password or Email");
                 setLoading(false);
                 return;
             }
-
-
         },
             (error) => {
                 console.log("error", error)
             })
     }
+
+    const storeData = async (value) => {
+        try {
+            const jsonValue = JSON.stringify(value)
+            await AsyncStorage.setItem('userDetails', jsonValue)
+        } catch (e) {
+            await AsyncStorage.setItem('eror', e)
+        }
+    }
+
     return (
         <View style={styles.container}>
-            {loading && <Loading opacity={'#ffffffff'} />}
+            {loading && <Loading opacity={'#d6f2fc'} />}
             <Header
                 title='Login'
                 logo_image='diabeasy'
@@ -68,9 +72,6 @@ export default function Login({ navigation }) {
                 justifyContent='space-evenly'
                 line={false}
                 possiton={60}
-                
-
-            
             />
             <View style={styles.inputs}>
                 <Input
@@ -112,7 +113,7 @@ export default function Login({ navigation }) {
                     height={4}
                     alignItems='center'
                     justifyContent='flex-end'
-                    onPress={()=>navigation.navigate('SignUp')}
+                    onPress={() => navigation.navigate('SignUp')}
                 />
             </View>
             <Image
@@ -138,11 +139,10 @@ const styles = StyleSheet.create({
     },
     inputs: {
         flex: 1,
-        //position: 'relative',
-       // top: '1%',
+        // position: 'relative',
+        top: '5%',
         alignContent: 'stretch',
-        paddingTop: '20%',
-    
+        paddingTop: '15%'
 
     },
     forgotPassword: {
@@ -160,8 +160,8 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderRadius: 10000,
     },
-    Buttons:{
-        flexDirection:'row',
-        flex:0.8,
+    Buttons: {
+        flexDirection: 'row',
+        flex: 0.8,
     }
 });

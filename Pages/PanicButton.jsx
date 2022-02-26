@@ -1,29 +1,41 @@
 import { View, Text, StyleSheet } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '../CTools/Header';
 import Button from '../CTools/Button'
 import Communications from "react-native-communications";
 import apiUrl from '../Routes/Url'
-import { Feather } from '@expo/vector-icons'; 
-
+import { Feather } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export default function PanicButton(props) {
     const [phone, setPhone] = useState();
-    // const {id}=props
-    id=1;
+    const [userDetails, setUserDetails] = useState();
+    const [alert, setAlert] = useState();
+
     const EmergancyCall = () => {
         console.log(phone)
         getPhone();
-        let Sphone=phone&&phone.toString();
-        if(Sphone){
-        Communications.phonecall(Sphone, true)
+        let Sphone = phone && phone.toString();
+        if (Sphone) {
+            Communications.phonecall(Sphone, true)
         }
     }
 
-    const getPhone=()=>{
-        if (!phone) {
-            fetch(apiUrl + `Patients?url=assistant_phone&id=${id}`, {
+    //get user details from storge
+    const getData = async () => {
+        try {
+            const jsonValue = await AsyncStorage.getItem('userDetails')
+            jsonValue != null ? setUserDetails(JSON.parse(jsonValue)) : null;
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    const getPhone = () => {
+        if (!phone && userDetails) {
+            fetch(apiUrl + `Patients?url=assistant_phone&id=${userDetails.id}`, {
                 method: 'GET',
                 headers: new Headers({
                     'Content-Type': 'appliction/json; charset=UTF-8',
@@ -36,7 +48,8 @@ export default function PanicButton(props) {
                     console.log("status code:", res.status)
                 }
             }).then((resulte) => {
-                setPhone(resulte);
+                resulte ? setPhone(resulte) : setAlert("sorry.. we did not found your energency person, you can go to setting page to add one")
+
             },
                 (error) => {
                     console.log("error", error)
@@ -44,23 +57,32 @@ export default function PanicButton(props) {
         }
     }
 
-    //get phone number at every rander
-    getPhone();
+    if (!userDetails) {
+        console.log("panic")
+        getData();
+    }
+
+    useEffect(() => {
+        //get phone number
+        getPhone();
+    }, [userDetails]);
+
+    //todo clear alert when emergency call is update in setting page
     return (
         <View style={styles.container}>
             <Header
                 title='Emergency Call'
                 logo_image='panic'
                 flex={0.2}
-                image_width={25}  
+                image_width={25}
                 image_heigt={100}
-                image_margin={{ Bottom: -4}}
+                image_margin={{ Bottom: -4 }}
                 possiton={70}
                 marginLeft={12}
             />
             <Button
                 // text='Panic Button'
-                element={<Feather style={{opacity:0.85, width:'100%',alignSelf:'flex-start'}} name="phone-call" size={105} color="white" />}
+                element={<Feather style={{ opacity: 0.85, width: '100%', alignSelf: 'flex-start' }} name="phone-call" size={105} color="white" />}
                 justifyContent='flex-start'
                 radius={1000}
                 width={16}
@@ -70,6 +92,13 @@ export default function PanicButton(props) {
                 color='#ff9900'
                 onPress={EmergancyCall}
             />
+            {alert && <View style={styles.alert_Container}>
+                <View style={styles.alert}>
+                    <Ionicons name="alert-circle-outline" size={28} color="black" />
+                    <Text style={styles.alertText}>
+                        {alert}</Text>
+                </View>
+            </View>}
         </View>
     );
 }
@@ -77,6 +106,26 @@ export default function PanicButton(props) {
 const styles = StyleSheet.create({
     container: {
         flex: 1
+    },
+    alertText: {
+        textAlign: 'center',
+        fontSize: 15,
+        fontWeight: 'bold',
+    },
+    alert: {
+        alignItems: 'center',
+        borderColor: '#ff9900',
+        position: 'relative',
+        borderRadius: 20,
+        borderWidth: 4,
+        backgroundColor: 'white',
+        overflow: 'hidden',
+        padding: '2%'
+    },
+    alert_Container: {
+        bottom: '35%',
+        paddingLeft: '5%',
+        paddingRight: '5%',
     }
 
 })
