@@ -1,32 +1,34 @@
-import { View, Text, StyleSheet, Platform, Image, TouchableOpacity } from 'react-native';
+import {Alert, View, Text, StyleSheet, Platform, Image, TouchableOpacity } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import * as ImagePicker from 'expo-image-picker'
 import { Constants } from 'expo-constants';
 import Button from '../../CTools/Button';
 import { Ionicons } from '@expo/vector-icons';
 import PopUp from '../../CTools/PopUp';
-
+import upiUrl from '../../Routes/Url';
 export default function Gallery(props,{navigation}) {
   const {description=true, picUri,show ,setShow}=props
 
   
   //let urlImage = props.route.params.urlImage;
 
-  const [image, setImage] = useState(picUri);
-
+  const [image, setImage] = useState(picUri.toString());
+  //const [picDetails,setPicDetails]=useState(picData)
+  //const [counter,setCounter]=useState(0)
   //waiting for permision
   useEffect(() => {
-      // {picUri!=null? setImage(picUri):<></>}
     (async ()=>{
     if (Platform.OS !== 'web') {
       const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
       if (status !== 'granted') {
         console.log(status);
-        alert('permission denied!')
+        Alert.alert('oops..','permission denied!')
       }
     }
   })
   }, [])
+
+  //useEffect(()=>{console.log('123=>',image)},[])
   
   //choose *only* picture
   const PickImage = async () => {
@@ -34,16 +36,58 @@ export default function Gallery(props,{navigation}) {
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
-      quality: 1
+      quality: 1,
+      
     })
     console.log('res=>',result);
     if (!result.cancelled) {
       setImage(result.uri)
+      //setPicDetails(result)
     }
   }
+////***************** */
+const btnImgUpload=()=>{
+console.log('waiting for answer: ');
+ImgUpload(`${image}`
+   ,'Profile_2.jpg')
+   
+}
 
-  //const sendData =(image)=>{navigation.navigate('PersonalInfo1')}
-//{picUri!=null? setImage(picUri):<></>}
+
+
+const ImgUpload = (imgUri, picName) => {
+  let urlAPI ='http://proj.ruppin.ac.il//bgroup88/test2/tar3/uploadpicture';
+  let dataI = new FormData();
+  dataI.append('picture', {
+  uri: imgUri,
+  name: picName,
+  type: 'image/jpg'
+  });
+  const config = {
+    method: 'POST',
+    body: dataI,
+    }
+    fetch(urlAPI, config)
+    .then((res) => {
+    if (res.status == 201) {console.log('resstatus=>',res.status);return res.json(); }
+    else {console.log(res.status);return res.err;}
+    })
+    .then((responseData) => {
+      console.log('responsData=>',responseData);
+    if (responseData != "err") {
+    let picNameWOExt = picName.substring(0, picName.indexOf("."));
+    let imageNameWithGUID = responseData.substring(responseData.indexOf(picNameWOExt),
+    responseData.indexOf(".jpg") + 4);
+    console.log(imageNameWithGUID);
+
+    console.log("img uploaded successfully!");
+    }
+    else {alert('error uploding ...'); }
+    })
+    .catch(err => {alert('err upload= ' + err); });
+  }
+////////****************** */
+
 //Todo change icon
  return (
 <>
@@ -64,7 +108,9 @@ element={
 
 <Button text='DONE'
 style={styles.button}
-// onPress={() => navigation.navigate({name:'PersonalInfo1',imageUrl:image})}
+onPress={btnImgUpload}
+
+//onPress={() => {navigation.navigate('PersonalInfo1')}}
 //onPress={()=> {image!=null? sendData(image): alert('picture not selected')}}
 /> 
 </>

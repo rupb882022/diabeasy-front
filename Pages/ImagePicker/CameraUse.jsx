@@ -7,16 +7,16 @@ import GalleryPick from './GalleryPick';
 import PopUp from '../../CTools/PopUp';
 import Gallery from './Gallery'
 
-export default function CameraUse(props,{route,navigation}) {
-// let image = route.params.image;
+export default function CameraUse(props,{navigation}) {
+
 
   const [hasPermission, setHasPermission] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [camera, setCamera] = useState(null);
   const [picUri, setPicUri] = useState(null);
   const [flashMode, setFlashMode] = useState('off')
-  //const [pickFromGallery, setPickFromGallery] = useState(false)
   const [show, setShow] = useState(false);
+ // const [dataPic, setDataPic] = useState(null);
 
   useEffect(() => {
     (async () => {
@@ -56,9 +56,10 @@ export default function CameraUse(props,{route,navigation}) {
             <Ionicons name="flash-outline" size={30} color="black" />}
         </TouchableOpacity>  
 
-            <TouchableOpacity
+         <TouchableOpacity
              style={styles.X}
-            onPress={() => navigation.goBack()} >
+            //onPress={() => navigation.goBack()}
+             >
           <Feather name="x" size={35} color="black" />
         </TouchableOpacity>
         </View>
@@ -92,8 +93,8 @@ export default function CameraUse(props,{route,navigation}) {
           onPress={async () => {
             if (camera) {
               const data = await camera.takePictureAsync();
-              console.log(data.uri)
               setPicUri(data.uri)
+             // setDataPic(data)
               setShow(true)
             };
             Vibration.vibrate(); //we can use vibration anywhere! 
@@ -110,20 +111,12 @@ export default function CameraUse(props,{route,navigation}) {
           onPress={() => {setShow(true)}}
             />
           
-       
-
-      {/* {pickFromGallery&&<GalleryPick/>} */}
-         {/* {picUri && navigation.navigate('GalleryPick')} */}
+      
       </View>
-           {/* {picUri&&notshow&&<Gallery
-             setShow={(isShow) => setNotshow(isShow)}
-             picUri={picUri}  
-             show={!show}
-             />} */}
-
-             {show&&<Gallery
-             setShow={(isShow) => setShow(isShow)}
-             picUri={picUri}
+       {show&&<Gallery
+       setShow={(isShow) => setShow(isShow)}
+       picUri={picUri}
+      // picData={picUri}
              />}
 
     </View>

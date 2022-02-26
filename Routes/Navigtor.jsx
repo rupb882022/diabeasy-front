@@ -8,6 +8,7 @@ import PersonalInfo1 from '../Pages/PersonalInfo1'
 import PersonalInfo2 from '../Pages/PersonalInfo2'
 import CameraUse from '../Pages/ImagePicker/CameraUse';
 import GalleryPick from '../Pages/ImagePicker/GalleryPick';
+import Gallery from '../Pages/ImagePicker/Gallery';
 
 const Stack=createNativeStackNavigator();
 
@@ -46,6 +47,7 @@ export default function Navigtor() {
         <Stack.Screen name="PersonalInfo2" options={{...options, headerLeft: null,transitionSpec: {open: config,close:config},}} component={PersonalInfo2}/>
         <Stack.Screen name="CameraUse" options={{...options, headerLeft: null,transitionSpec: {open: config,close:config},}} component={CameraUse}/>
         <Stack.Screen name="GalleryPick" options={{...options, headerLeft: null,transitionSpec: {open: config,close:config},}} component={GalleryPick}/>
+        <Stack.Screen name="Gallery" options={{...options, headerLeft: null,transitionSpec: {open: config,close:config},}} component={Gallery}/>
 
       </Stack.Navigator>
       )
