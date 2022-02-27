@@ -146,6 +146,7 @@ export default function Forum() {
             comment_id: resulte[0].id,
             name: resulte[0].userName,
             date: resulte[0].date_time,
+            image:resulte[0].profileimage,
             comments: []
           }]
         }];
@@ -158,6 +159,7 @@ export default function Forum() {
             name: resulte[i].userName,
             date: resulte[i].date_time,
             comment_id: resulte[i].id,
+            image:resulte[i].profileimage,
             comments: []
           }
           //set the index for comment and respon
@@ -176,6 +178,7 @@ export default function Forum() {
                 date: resulte[i].date_time,
                 value: resulte[i].value,
                 comment_id:resulte[i].id,
+                image:resulte[i].profileimage,
               }
 
               //find the index for right comment to respone

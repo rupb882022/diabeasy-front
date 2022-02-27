@@ -7,6 +7,7 @@ import DeleteComment from './DeleteComment';
 import Input from '../../CTools/Input';
 import Button from '../../CTools/Button';
 import PopUp from '../../CTools/PopUp';
+import ImageUri from '../../Routes/ImageUri';
 
 export default function Comment(props) {
   let user_id=1;
@@ -20,21 +21,18 @@ export default function Comment(props) {
   const [changeComment, setChangeComment] = useState('');//for action on comment like delete or update
   const [editText,setEditText]=useState(comment.value)
 
-// #Nir how to make dinamic image and how to fix the image load
+// #Nir  how to fix the image load
   if (comment.image) {
-    //#Nir cannot insert varible in require
-    // propile_image = require(`'${comment.image}'`)
+     propile_image =<Image source={{uri:ImageUri+comment.image}} style={styles.image(30, 30)}/> 
   }
   else { 
-    propile_image=require('../../images/profile_pictur.jpeg'); 
+    propile_image=<Image source={require('../../images/profile_pictur.jpeg')} style={styles.image(30, 30)}/>
   }
 
   return (<>
   <View style={styles.comments} id={comment.writer_id}>
     <View style={styles.row}>
-      <Image source={propile_image}
-        style={styles.image(30, 30)}
-      />
+      {propile_image}
       <Text style={styles.name}>{comment.name}</Text>
       {user_id == comment.writer_id &&
           <TouchableOpacity style={styles.edit} onPress={() => setShowEdit(true)}>

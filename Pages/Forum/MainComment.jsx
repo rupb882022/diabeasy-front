@@ -10,7 +10,7 @@ import DeleteComment from './DeleteComment';
 import Input from '../../CTools/Input';
 import Button from '../../CTools/Button';
 import apiUrl from '../../Routes/Url';
-
+import ImageUri from '../../Routes/ImageUri';
 export default function MainComment(props) {
 
   let user_id = 1//temp
@@ -41,16 +41,19 @@ export default function MainComment(props) {
   let comment_id = data[data_Index].exstraData[index].comment_id;
   //current subject
   let subject = data[data_Index].subject
+  //image
+  let image = data[data_Index].exstraData[index].image ?
+  <Image source={{ uri:ImageUri+data[data_Index].exstraData[index].image}}  style={styles.image(35, 35)} /> : 
+   <Image source={require('../../images/profile_pictur.jpeg')} style={styles.image(35, 35)} />
 
 
-
-
+console.log("image=>",data[data_Index].exstraData[index].image)
   const updateComment = () => {
     // console.log("id", comment_id)
     // console.log("text", editText);
     // console.log(JSON.stringify({ subject: subject, value: editText }))
 
-    if(comments.length==0){
+    if (comments.length == 0) {
       return;
     }
     fetch(apiUrl + `Forum?id=${comment_id}`, {
@@ -68,7 +71,7 @@ export default function MainComment(props) {
       }
     }).then((resulte) => {
       //#Nir after update/post and delete call agine to get function?
-console.log("resulte",resulte) //Todo  setEditText (resulte.value)
+      console.log("resulte", resulte) //Todo  setEditText (resulte.value)
     },
       (error) => {
         console.log("error", error)
@@ -78,9 +81,7 @@ console.log("resulte",resulte) //Todo  setEditText (resulte.value)
   return (<>
     <View style={styles.container} id={writer_id}>
       <View style={styles.row}>
-        <Image source={require('../../images/profile_pictur.jpeg')}
-          style={styles.image(35, 35)}
-        />
+        {image}
         <Text style={styles.name}>{name}</Text>
         {user_id == writer_id &&
           <TouchableOpacity style={styles.edit} onPress={() => setShowEdit(true)}>
@@ -89,7 +90,7 @@ console.log("resulte",resulte) //Todo  setEditText (resulte.value)
         }
       </View>
       <View style={styles.row}>
-        {changeComment == 'update'&&comments.length==0 ?
+        {changeComment == 'update' && comments.length == 0 ?
           <>
             <Input
               fontSize={14}
@@ -106,7 +107,7 @@ console.log("resulte",resulte) //Todo  setEditText (resulte.value)
               height={4}
               radius={5}
               color='white'
-              onPress={()=>{setChangeComment(''); updateComment();}}
+              onPress={() => { setChangeComment(''); updateComment(); }}
               element={<MaterialCommunityIcons name="circle-edit-outline" size={20} color="#2DAB5B" />}
             />
           </>
@@ -146,12 +147,12 @@ console.log("resulte",resulte) //Todo  setEditText (resulte.value)
         width={40}
         element={<View style={{ flex: 1, width: '100%', justifyContent: 'space-evenly', alignItems: 'center' }}>
           <UpdateComment
-            respones={comments.length>0}
+            respones={comments.length > 0}
             setShowEdit={() => { setChangeComment('update'); setShowEdit(false) }}
           />
           <DeleteComment
             id={comment_id}
-            respones={comments.length>0}
+            respones={comments.length > 0}
             getallcomment={getAllComments}
             setShowEdit={() => { setChangeComment('delete'); setShowEdit(false) }} />
         </View>}

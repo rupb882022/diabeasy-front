@@ -25,19 +25,19 @@ export default function PersonalInfo1(props) {
 
 
 
-    const sheetRef = useRef(null);
-    //close menu picture picker
-    const closeSheet = () => {
-        if (sheetRef.current) {
-            sheetRef.current.close();
-        }
-    };
-    //open menu picture picker
-    const openSheet = () => {
-        if (sheetRef.current) {
-            sheetRef.current.open();
-        }
-    };
+    // const sheetRef = useRef(null);
+    // //close menu picture picker
+    // const closeSheet = () => {
+    //     if (sheetRef.current) {
+    //         sheetRef.current.close();
+    //     }
+    // };
+    // //open menu picture picker
+    // const openSheet = () => {
+    //     if (sheetRef.current) {
+    //         sheetRef.current.open();
+    //     }
+    // };
 const passwordValid=(value)=>{
     //wiil render the page at the end of function
     flushSync(()=>{

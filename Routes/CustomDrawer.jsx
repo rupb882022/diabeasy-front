@@ -1,20 +1,19 @@
 import { View, Text, Image, StyleSheet } from 'react-native';
 import React from 'react';
 import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
-import GalleryPick from '../Pages/ImagePicker/GalleryPick';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import CameraUse from '../Pages/ImagePicker/CameraUse';
+import ImageUri from './ImageUri';
+
+
 export default function CustomDrawer(props) {
     const { userDetails } = props
 
-    // const image = userDetails.image ? <Image source={require(userDetails.image)} style={styles.image} /> :
-    //                                  <Image source={require('../images/profile_pictur.jpeg')} style={styles.image} />
+    const image = userDetails.image ? <Image source={{uri:ImageUri+userDetails.image}} style={styles.image} /> :
+                                     <Image source={require('../images/profile_pictur.jpeg')} style={styles.image} />
     return (
         <>
             <DrawerContentScrollView>
                 <View style={styles.header}>
-                  {/* {image} */}
-                  <Image source={require('../images/profile_pictur.jpeg')} style={styles.image} />
+                  {image}
                     {/* <GalleryPick
                         description={false}
                     /> */}
