@@ -152,7 +152,7 @@ const passwordValid=(value)=>{
                 }
             </View>
 
-            <PickerMenu ref={sheetRef} />
+            {/* <PickerMenu ref={sheetRef} /> */}
         </View>
     );
 }

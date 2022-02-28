@@ -6,61 +6,55 @@ import Input from '../../CTools/Input';
 import moment from 'moment';
 import Button from '../../CTools/Button';
 import apiUrl from '../../Routes/Url';
+import axios from "axios";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function AddComment(props) {
-  let user_id = 1//temp
-  const { comment_id, subject, name } = props
+  
+  const { comment_id, subject, name,getAllComments,userDetails } = props
   const [show, setShow] = useState(false);//pop up state
   const [comment_value, setComment_value] = useState();//comment text
   const [comment, setComment] = useState({});
 
+
+  
+
   const add_comment = () => {
-    if (comment_value) {
+    if (comment_value&& userDetails) {
       let doctor_id = '';
       let patient_id = '';
       //set the right user id
-      user_id % 2 == 0 ? doctor_id = user_id : patient_id = user_id;
+      userDetails.id % 2 == 0 ? doctor_id = userDetails.id : patient_id = userDetails.id;
 
       setComment({
         date_time: moment(new Date()).format('MM-DD-YYYY').toString(),
         subject: subject,
         value: comment_value,
-        Patients_id: user_id,
+        Patients_id: userDetails.id,
         Id_Continue_comment: comment_id,
       })
       setShow(false);
     }
   }
-  // #Nir  cheack status 415 and check about DTO
+  // #Nir check about DTO
   useEffect(() => {
     if (!show && comment && comment_value) {
-      console.log("comment", JSON.stringify(comment))
-      console.log(apiUrl + `forum?type=addComment`)
-      let temp = JSON.stringify(comment);
-      console.log("temp", temp)
-      fetch(apiUrl + `forum?type=addComment`, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: {
-          'Content-Type': 'appliction/json',
-          'Accept': 'appliction/json',
-        },
-        body:{temp}
-      }).then(res => {
-        if (res && res.status == 201) {
-          console.log(res.status)
-          return res.json();
+      const configurationObject = {
+        url: `${apiUrl}forum?type=addComment`,
+        method: "POST",
+        data:comment
+      };
+      axios(configurationObject)
+      .then((response) => {
+        if (response.status === 200||response.status===201) {
+          getAllComments()
         } else {
-          console.log("dataSend", res.dataSend)
-          console.log("data", res.data)
-          console.log("status code:", res.status)
+          throw new Error("An error has occurred");
         }
-      }).then((resulte) => {
-        console.log(resulte);
-      },
-        (error) => {
-          console.log("error", error)
-        })
+      })
+      .catch((error) => {
+        alert("An error has occurred"+error);
+      });
     }
   }, [comment]);
 

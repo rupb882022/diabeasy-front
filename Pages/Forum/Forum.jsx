@@ -1,5 +1,5 @@
 import { View, SectionList, SafeAreaView, StyleSheet, Text, Switch } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Header from '../../CTools/Header';
 import Button from '../../CTools/Button';
 import PopUp from '../../CTools/PopUp';
@@ -8,6 +8,9 @@ import MainComment from './MainComment';
 import apiUrl from '../../Routes/Url'
 import Loading from '../../CTools/Loading'
 import { useFocusEffect } from '@react-navigation/native';
+import axios from "axios";
+import moment from 'moment';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Forum() {
 
@@ -17,6 +20,24 @@ export default function Forum() {
   const [popupSubject, setPopupSubject] = useState(false);
   const [subjectList, setSubjectList] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [comment, setComment] = useState({});
+  const [commentValue, setCommentValue] = useState();
+
+  const [userDetails, setUserDetails] = useState();
+
+  //get user details from storge
+  const getData = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem('userDetails')
+      jsonValue != null ? setUserDetails(JSON.parse(jsonValue)) : null;
+    } catch (e) {
+      console.log(e)
+    }
+  }
+  if (!userDetails) {
+    getData();
+    console.log("@");
+  }
 
   //pop up element add new subject
   const element = <View>
@@ -58,7 +79,7 @@ export default function Forum() {
         thumbColor={popupSubject ? '#FFCF84' : "#3CA6CD"}
         ios_backgroundColor='#FFCF84'
         onValueChange={() => { setPopupSubject(!popupSubject) }}
-        value={popupSubject}
+        value={!commentValue && !subject ? popupSubject : ''}
       />
 
     </View>
@@ -67,9 +88,11 @@ export default function Forum() {
         label='description'
         height={80}
         width={100}
+        getValue={(value) => setCommentValue(value)}
         placholder='Write your question...'
-        justifyContent='flex-start'
+        justifyContent='center'
         alignItems='center'
+        validLable={!commentValue || !subject ? 'fill in subject and description' : ''}
       />
     </View>
     <Button
@@ -78,16 +101,60 @@ export default function Forum() {
       alignItems='center'
       width={20}
       height={3}
-      onPress={() => { setShow(false); }}
+      onPress={() => {
+        //if the new comment have subject and value
+        if (commentValue && subject&&userDetails) {
+          //if user is doctor or patient
+          if (userDetails.id % 2 == 0) {
+            setComment({
+              date_time: moment(new Date()).format('MM-DD-YYYY').toString(),
+              subject: subject,
+              value: commentValue,
+              Doctor_id: userDetails.id,
+            });
+          } else {
+            setComment({
+              date_time: moment(new Date()).format('MM-DD-YYYY').toString(),
+              subject: subject,
+              value: commentValue,
+              Patients_id: userDetails.id,
+            });
+          }
+          setShow(false);
+        }
+      }}
     >
     </Button>
   </View>;
 
+
+  useEffect(() => {
+    if (!show && comment && commentValue) {
+      const configurationObject = {
+        url: `${apiUrl}forum?type=addComment`,
+        method: "POST",
+        data: comment
+      };
+      axios(configurationObject)
+        .then((response) => {
+          if (response.status === 200 || response.status === 201) {
+            get_all_comments()
+          } else {
+            throw new Error("An error has occurred");
+          }
+        })
+        .catch((error) => {
+          alert("An error has occurred" + error);
+        });
+    }
+  }, [comment]);
+
+
+
   //get all subject
   const get_subject_list = () => {
 
-    if (!subjectList) {
-      setLoading(true);
+    // if (!subjectList) {
       fetch(apiUrl + `Forum?type=subject`, {
         method: 'GET',
         headers: new Headers({
@@ -106,34 +173,19 @@ export default function Forum() {
         if (resulte.length > 0) {
           let tempList = resulte.map((x, i) => ({ itemKey: i, label: x, value: x }))
           setSubjectList(tempList);
-          setLoading(false);
         }
       },
         (error) => {
           // #todo alert with error
           console.log("error", error);
-          setLoading(false);
+
         }
       )
     }
-  }
+  // }
 
-  const get_all_comments=()=>{
-  // if (!data) {
-    setLoading(true);
-    fetch(apiUrl + `Forum?type=all`, {
-      method: 'GET',
-      headers: new Headers({
-        'Content-Type': 'appliction/json; charset=UTF-8',
-        'Accept': 'appliction/json; charset=UTF-8'
-      })
-    }).then(res => {
-      if (res && res.status == 200) {
-        return res.json();
-      } else {
-        console.log("status code:", res.status)
-      }
-    }).then((resulte) => {
+  const buildForum = (resulte) => {
+    try {
       if (resulte.length > 0) {
         //first subject comment
         let allComments = [{
@@ -146,7 +198,7 @@ export default function Forum() {
             comment_id: resulte[0].id,
             name: resulte[0].userName,
             date: resulte[0].date_time,
-            image:resulte[0].profileimage,
+            image: resulte[0].profileimage,
             comments: []
           }]
         }];
@@ -159,7 +211,7 @@ export default function Forum() {
             name: resulte[i].userName,
             date: resulte[i].date_time,
             comment_id: resulte[i].id,
-            image:resulte[i].profileimage,
+            image: resulte[i].profileimage,
             comments: []
           }
           //set the index for comment and respon
@@ -177,8 +229,8 @@ export default function Forum() {
                 name: resulte[i].userName,
                 date: resulte[i].date_time,
                 value: resulte[i].value,
-                comment_id:resulte[i].id,
-                image:resulte[i].profileimage,
+                comment_id: resulte[i].id,
+                image: resulte[i].profileimage,
               }
 
               //find the index for right comment to respone
@@ -207,6 +259,30 @@ export default function Forum() {
         setData(allComments);
         setLoading(false);
       }
+    } catch (error) {
+      console.log(error)
+      setLoading(false);
+    }
+
+  }
+
+  const get_all_comments = () => {
+    // if (!data) {
+    setLoading(true);
+    fetch(apiUrl + `Forum?type=all`, {
+      method: 'GET',
+      headers: new Headers({
+        'Content-Type': 'appliction/json; charset=UTF-8',
+        'Accept': 'appliction/json; charset=UTF-8'
+      })
+    }).then(res => {
+      if (res && res.status == 200) {
+        return res.json();
+      } else {
+        console.log("status code:", res.status)
+      }
+    }).then((resulte) => {
+      buildForum(resulte)
     },
       (error) => {
         console.log("error", error)
@@ -218,14 +294,13 @@ export default function Forum() {
   // get all comment every time when user go into the forum
   useFocusEffect(
     React.useCallback(() => {
-      console.log("*")
       get_all_comments();
-    },[])
+    }, [])
   );
-  
+
 
   return (<>
-  {loading&&<Loading/>}
+    {loading && <Loading />}
     {data && <Header
       title="Forum"
       logo_image='forum'
@@ -239,7 +314,7 @@ export default function Forum() {
       <SectionList
         sections={data}
         keyExtractor={(item, index) => item + index}
-        renderItem={({ item, index }) => <MainComment   getAllComments={get_all_comments} item={item} index={index} data={data} />}
+        renderItem={({ item, index }) => <MainComment getAllComments={get_all_comments} userDetails={userDetails} item={item} index={index} data={data} />}
         renderSectionHeader={({ section: { subject } }) => (
           <Text style={styles.header}>{subject}</Text>
         )}
@@ -257,7 +332,6 @@ export default function Forum() {
           height={45}
           width={90}
           isButton={false}
-          button_txt='OK'
           button_textSize={16}
           setShow={setShow}
           backgroundColor='#d6f2fc'

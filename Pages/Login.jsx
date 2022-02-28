@@ -1,5 +1,5 @@
 import { View, StyleSheet, Image, Text } from 'react-native';
-import React, { useState, createContext } from 'react';
+import React, { useState,  } from 'react';
 import Header from '../CTools/Header';
 import Input from '../CTools/Input';
 import Button from '../CTools/Button';
@@ -8,14 +8,35 @@ import ForgotPasswordPopUp from './ForgotPasswordPopUp';
 import apiUrl from '../Routes/Url'
 import Loading from '../CTools/Loading';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Fontisto } from '@expo/vector-icons';
+import { useFocusEffect } from '@react-navigation/native';
 
-//TODO add remmber me button
+
+//TODO fix bug in rendering with effect and fix validtion label
 export default function Login({ navigation }) {
     const [show, setShow] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [validtionUser, setValidtionUser] = useState('');
     const [loading, setLoading] = useState(false);
+    const [saveUserDetails, setSaveUserDetails] = useState(false);
+
+
+    //get user details from storge
+    const getData = async () => {
+        try {
+            const jsonValue = await AsyncStorage.getItem('userDetails')
+             jsonValue != null ? setUserDetails(JSON.parse(jsonValue)) : null;
+        } catch (e) {
+            console.log(e)
+        }
+    }
+    const [userDetails, setUserDetails] = useState( getData());
+        //for case the app save details on user
+        if (userDetails&&userDetails.rememberMe) {
+            navigation.navigate('Drawer');
+        }
+
 
     const checkUser = () => {
         setLoading(true);
@@ -36,7 +57,7 @@ export default function Login({ navigation }) {
             if (resulte) {
                 setInterval(() => setLoading(false), 2000);
                 //globle save user detail 
-                storeData({id:resulte.id,image:resulte.profileimage,name:resulte.name})
+                storeData({ id: resulte.id, image: resulte.profileimage, name: resulte.name, rememberMe: saveUserDetails })
                 navigation.navigate('Drawer');
             } else {
                 setValidtionUser("Opps.. worng password or Email");
@@ -90,7 +111,23 @@ export default function Login({ navigation }) {
                 <TouchableOpacity style={styles.forgotPassword} onPress={() => setShow(true)}>
                     <Text >Forgot Password?</Text>
                 </TouchableOpacity>
-                {validtionUser ? <Text style={styles.validtionUser}> {validtionUser} </Text> : <></>}
+                <View style={styles.saveUserDetails}>
+
+                    <Button
+                        element={saveUserDetails ? <Fontisto name="checkbox-active" size={15} color="black" /> :
+                            <Fontisto name="checkbox-passive" size={15} color="black" />}
+                        width={6}
+                        height={6}
+                        radius={7}
+                        color='transparent'
+                        alignItems='center'
+                        borderColor='transparent'
+                        onPress={() => { setSaveUserDetails(!saveUserDetails) }}
+
+                    />
+                    <Text style={styles.saveUserDetailsText}>Remember me</Text>
+                    {validtionUser ? <Text style={styles.validtionUser}> {validtionUser} </Text> : <></>}
+                </View>
             </View>
 
             {show ?
@@ -163,5 +200,16 @@ const styles = StyleSheet.create({
     Buttons: {
         flexDirection: 'row',
         flex: 0.8,
+    },
+    saveUserDetails: {
+        justifyContent: 'center',
+        alignItems: 'baseline',
+        flexDirection: 'row',
+        width: '60%',
+        bottom: '7%'
+    },
+    saveUserDetailsText: {
+        marginRight: '5%',
+        right: '120%'
     }
 });

@@ -9,7 +9,7 @@ export default function Input(props) {
 
     const { placeholder, secure = false, required = false, editable = true, textAlign = 'left', label, validtion, min = 0, max, alignItems, justifyContent, width, height, fontSize,
         keyboardType = 'default', type = '', selectBox_items = [], SelectBox_placeholder, mode = 'datetime', display = 'spinner', popup_title, date_format_hour = true,
-        getValue,spellCheck=false,setValue,validLable } = props
+        getValue,spellCheck=false,setValue,validLable,flex } = props
 
       
 
@@ -44,7 +44,7 @@ export default function Input(props) {
             default:
                 break;
         }
-        text == '' && required ? setValid_lable("   please fill in some value") : '';
+        text == '' && required ? setValid_lable("      please fill in some value") : '';
     }
 
     //if date picker 
@@ -71,7 +71,7 @@ export default function Input(props) {
             setValue&&setText(setValue)
         }, []);
     return (
-        <View style={styles.possition(justifyContent, alignItems)}>
+        <View style={styles.possition(justifyContent, alignItems,flex)}>
             <Text style={styles.label(width)}>{label}</Text>
             <TextInput
                 style={styles.input(width, fontSize, height)}
@@ -133,9 +133,9 @@ export default function Input(props) {
 
 
 const styles = StyleSheet.create({
-    possition: (justifyContent = 'center', alignItems = 'center') => {
+    possition: (justifyContent = 'center', alignItems = 'center',flex=1) => {
         return {
-            flex: 1,
+            flex: flex,
             justifyContent: justifyContent,
             alignItems: alignItems,
         }

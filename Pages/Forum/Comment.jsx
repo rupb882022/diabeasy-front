@@ -8,12 +8,13 @@ import Input from '../../CTools/Input';
 import Button from '../../CTools/Button';
 import PopUp from '../../CTools/PopUp';
 import ImageUri from '../../Routes/ImageUri';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Comment(props) {
-  let user_id=1;
+
 
   //igone props.item bug in flatList use let comment from comment json
-  const { item, index, comments,getAllComments,updateComment } = props;
+  const { item, index, comments,getAllComments,updateComment,userDetails } = props;
   let comment = comments[index];
   let propile_image = '';
 
@@ -21,7 +22,10 @@ export default function Comment(props) {
   const [changeComment, setChangeComment] = useState('');//for action on comment like delete or update
   const [editText,setEditText]=useState(comment.value)
 
-// #Nir  how to fix the image load
+
+
+
+
   if (comment.image) {
      propile_image =<Image source={{uri:ImageUri+comment.image}} style={styles.image(30, 30)}/> 
   }
@@ -34,7 +38,7 @@ export default function Comment(props) {
     <View style={styles.row}>
       {propile_image}
       <Text style={styles.name}>{comment.name}</Text>
-      {user_id == comment.writer_id &&
+      {userDetails&&userDetails.id == comment.writer_id &&
           <TouchableOpacity style={styles.edit} onPress={() => setShowEdit(true)}>
             <Entypo name="dots-three-vertical" size={20} style={styles.Icon} />
           </TouchableOpacity>
