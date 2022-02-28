@@ -31,25 +31,28 @@ export default function AddComment(props) {
       setShow(false);
     }
   }
-// #Nir  cheack status 415 and check about DTO
+  // #Nir  cheack status 415 and check about DTO
   useEffect(() => {
     if (!show && comment && comment_value) {
-      console.log("comment",JSON.stringify(comment))
-      console.log(apiUrl+ `forum?type=add_comment`)
-      fetch(apiUrl + `forum?type=add_comment`, {
+      console.log("comment", JSON.stringify(comment))
+      console.log(apiUrl + `forum?type=addComment`)
+      let temp = JSON.stringify(comment);
+      console.log("temp", temp)
+      fetch(apiUrl + `forum?type=addComment`, {
         method: 'POST',
-        mode:'no-cors',
-        headers:{
-          'Content-Type':'appliction/json',
-          'Accept':'appliction/json',
-          'Accept-Encoding':'gzip, deflate, br',
-          'Connection':'keep-alive'
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'appliction/json',
+          'Accept': 'appliction/json',
         },
-        body:JSON.stringify(comment)
+        body:{temp}
       }).then(res => {
         if (res && res.status == 201) {
+          console.log(res.status)
           return res.json();
         } else {
+          console.log("dataSend", res.dataSend)
+          console.log("data", res.data)
           console.log("status code:", res.status)
         }
       }).then((resulte) => {
@@ -87,7 +90,7 @@ export default function AddComment(props) {
             />
             <View style={{ flex: 0.9, width: '100%', justifyContent: 'flex-start', flexDirection: 'row' }}>
               <Button
-                onPress={() => add_comment(comment_id)}
+                onPress={() => add_comment()}
                 text='ok'
                 height={3}
                 width={27}
