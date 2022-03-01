@@ -10,7 +10,8 @@ export default function PersonalInfo2({ navigation }) {
     const [loading, setLoading] = useState(true);
     useEffect(() => {
       setInterval(() => setLoading(false), 1500);
-    },[])
+    },[]);
+    
     return (
         <View style={styles.container}>
                   {loading && <Loading opacity={'#d6f2fc'} />}

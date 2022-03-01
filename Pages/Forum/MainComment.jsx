@@ -11,15 +11,19 @@ import Input from '../../CTools/Input';
 import Button from '../../CTools/Button';
 import apiUrl from '../../Routes/Url';
 import ImageUri from '../../Routes/ImageUri';
+import axios from "axios";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 export default function MainComment(props) {
 
-  let user_id = 1//temp
 
-  const { item, data, index, getAllComments } = props; //index= index of item in the current subject
+  const { item, data, index, getAllComments,userDetails } = props; //index= index of item in the current subject
   const [isopen, setIsopen] = useState(false);//respon comments
   const [showEdit, setShowEdit] = useState(false)//pop up editcomment user
   const [changeComment, setChangeComment] = useState('');//for action on comment like delete or update
   const [editText, setEditText] = useState(item)
+
+
 
   //find the index of subject(main comment)
   let data_Index = '';
@@ -47,43 +51,45 @@ export default function MainComment(props) {
    <Image source={require('../../images/profile_pictur.jpeg')} style={styles.image(35, 35)} />
 
 
-console.log("image=>",data[data_Index].exstraData[index].image)
   const updateComment = () => {
     // console.log("id", comment_id)
     // console.log("text", editText);
     // console.log(JSON.stringify({ subject: subject, value: editText }))
 
-    if (comments.length == 0) {
+//user can not edit comment if he have responses
+    if (comments.length != 0) {
       return;
     }
-    fetch(apiUrl + `Forum?id=${comment_id}`, {
-      method: 'PUT',
-      headers: new Headers({
-        'Content-Type': 'appliction/json; charset=UTF-8',
-        'Accept': 'appliction/json; charset=UTF-8'
-      }),
-      body: JSON.stringify({ subject: subject, value: editText })
-    }).then(res => {
-      if (res && res.status == 200) {
-        return res.json();
+let editComment={ subject: subject, value: editText }
+
+console.log(editComment);
+console.log( `${apiUrl}Forum?id=${comment_id}`);
+    const configurationObject = {
+      url: `${apiUrl}Forum?id=${comment_id}`,
+      method: "PUT",
+      data:editComment
+    };
+    axios(configurationObject)
+    .then((response) => {
+      console.log(response.status);
+      if (response.status === 200||response.status===201) {
+        getAllComments()
       } else {
-        console.log("status code:", res.status)
+        throw new Error("An error has occurred");
       }
-    }).then((resulte) => {
-      //#Nir after update/post and delete call agine to get function?
-      console.log("resulte", resulte) //Todo  setEditText (resulte.value)
-    },
-      (error) => {
-        console.log("error", error)
-      })
+    })
+    .catch((error) => {
+      alert("An error has occurred"+error);
+    });
   }
+
 
   return (<>
     <View style={styles.container} id={writer_id}>
       <View style={styles.row}>
         {image}
         <Text style={styles.name}>{name}</Text>
-        {user_id == writer_id &&
+        { userDetails&&userDetails.id == writer_id &&
           <TouchableOpacity style={styles.edit} onPress={() => setShowEdit(true)}>
             <Entypo name="dots-three-vertical" size={20} style={styles.Icon} />
           </TouchableOpacity>
@@ -120,6 +126,8 @@ console.log("image=>",data[data_Index].exstraData[index].image)
           comment_id={comment_id}
           subject={subject}
           name={name}
+          userDetails={userDetails}
+          getAllComments={getAllComments}
         />
         <TouchableOpacity onPress={() => setIsopen(!isopen)} style={styles.numberComments}>
           {isopen ? <AntDesign name="up" size={20} style={styles.Icon} />
@@ -134,6 +142,7 @@ console.log("image=>",data[data_Index].exstraData[index].image)
         <Comment updateComment={updateComment}
           getAllComments={getAllComments}
           value={item}
+          userDetails={userDetails}
           index={index} comments={comments}
         />}
       keyExtractor={(item, index) => item + index}

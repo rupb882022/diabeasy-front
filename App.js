@@ -6,6 +6,7 @@ import SignUp from './Pages/SignUp';
 import GalleryPick from './Pages/ImagePicker/GalleryPick'
 import Maps from './Pages/Maps';
 import TabNav from './Routes/TabNav';
+import ImageUri from './Routes/ImageUri'
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import Navigtor from './Routes/Navigtor';
 export default function App() {
@@ -17,11 +18,12 @@ export default function App() {
           primary: '#ff650d',
       },
   };
-
+console.log()
   return (
 
     <View style={styles.container}>
-      <ImageBackground source={require('./images/backimg.png')} resizeMode='cover' style={styles.image}>
+      {/* require('./images/backimg.png') */}
+      <ImageBackground source={{uri:ImageUri+'backimg.png'}} resizeMode='cover' style={styles.image}>
       <NavigationContainer theme={Theme}>
         {/* <Drawer/> */}
         {/* <Login/> */}

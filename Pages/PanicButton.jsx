@@ -32,7 +32,7 @@ export default function PanicButton(props) {
             console.log(e)
         }
     }
-
+console.log("userDetails",userDetails)
     const getPhone = () => {
         if (!phone && userDetails) {
             fetch(apiUrl + `Patients?url=assistant_phone&id=${userDetails.id}`, {
