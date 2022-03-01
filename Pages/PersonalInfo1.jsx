@@ -3,7 +3,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import Header from '../CTools/Header';
 import Input from '../CTools/Input';
 import Button from '../CTools/Button';
-import PickerMenu from './ImagePicker/PickerMenu';
+//import PickerMenu from './ImagePicker/PickerMenu';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Loading from '../CTools/Loading';
 import {flushSync} from 'react-dom'
@@ -127,7 +127,7 @@ const passwordValid=(value)=>{
                     width={5}
                     height={3}
                     // onPress={openSheet}
-                    onPress={() => { navigation.navigate('CameraUse') }}
+                    onPress={() => { navigation.navigate('CameraUse',{imageName:'profilePic'}) }}
                 />
             </View>
 
@@ -152,7 +152,7 @@ const passwordValid=(value)=>{
                 }
             </View>
 
-            <PickerMenu ref={sheetRef} />
+            {/* <PickerMenu ref={sheetRef} /> */}
         </View>
     );
 }

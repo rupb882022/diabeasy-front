@@ -8,7 +8,9 @@ import PopUp from '../../CTools/PopUp';
 import Gallery from './Gallery'
 
 export default function CameraUse(props) {
-const {navigation}=props
+const {navigation,route}=props
+
+let imageName =route.params.imageName;
 
   const [hasPermission, setHasPermission] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
@@ -92,7 +94,7 @@ const {navigation}=props
           style={styles.button}
           onPress={async () => {
             if (camera) {
-              const data = await camera.takePictureAsync();
+              const data = await camera.takePictureAsync({quality:0.2});
               setPicUri(data.uri)
              // setDataPic(data)
               setShow(true)
@@ -116,6 +118,7 @@ const {navigation}=props
        {show&&<Gallery
        setShow={(isShow) => setShow(isShow)}
        picUri={picUri}
+       imageName={imageName}
       // picData={picUri}
              />}
 

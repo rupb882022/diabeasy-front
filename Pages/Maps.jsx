@@ -91,7 +91,7 @@ export default function Maps(props) {
         });
       }}
       query={{
-        key: 'AIzaSyCV-2W1x_rZGIM8ZyvYpnFu6A5J_OQFyhU',
+        key: 'AIzaSyCV-2W1x_rZGIM8ZyvYpnFu6A5J_OQFyhU',//- API Google key.
         language: 'en',
         //components: "country:us",
 				//	types: "establishment",
@@ -116,7 +116,7 @@ initialRegion={{
  longitudeDelta: 0.0121,
 }}
 
-
+// *** if turn on the location will return every secend.
 // onUserLocationChange={(e)=>{console.log("onUserLocationChange",e.nativeEvent)
 // setRegion({  latitude: e.nativeEvent.coordinate.latitude,
 //   longitude: e.nativeEvent.coordinate.longitude,

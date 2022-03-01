@@ -6,8 +6,8 @@ import Button from '../../CTools/Button';
 import { Ionicons } from '@expo/vector-icons';
 import PopUp from '../../CTools/PopUp';
 import upiUrl from '../../Routes/Url';
-export default function Gallery(props,{navigation}) {
-  const {description=true, picUri,show ,setShow}=props
+export default function Gallery(props) {
+  const {description=true, picUri,show ,setShow,navigation,imageName}=props
 
   
   //let urlImage = props.route.params.urlImage;
@@ -47,9 +47,10 @@ export default function Gallery(props,{navigation}) {
   }
 ////***************** */
 const btnImgUpload=()=>{
+
 console.log('waiting for answer: ');
 ImgUpload(`${image}`
-   ,'Profile_2.jpg')
+   , imageName)
    
 }
 
@@ -65,6 +66,7 @@ const ImgUpload = (imgUri, picName) => {
   const config = {
     method: 'POST',
     body: dataI,
+
     }
     console.log(upiUrl+"uploadpicture")
     console.log(dataI)
