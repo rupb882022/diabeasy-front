@@ -10,9 +10,8 @@ import Loading from '../../CTools/Loading'
 import { useFocusEffect } from '@react-navigation/native';
 import axios from "axios";
 import moment from 'moment';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function Forum() {
+export default function Forum({route}) {
 
   const [data, setData] = useState();
   const [show, setShow] = useState(false);
@@ -23,21 +22,8 @@ export default function Forum() {
   const [comment, setComment] = useState({});
   const [commentValue, setCommentValue] = useState();
 
-  const [userDetails, setUserDetails] = useState();
+  let userDetails = route.params.userDetails;
 
-  //get user details from storge
-  const getData = async () => {
-    try {
-      const jsonValue = await AsyncStorage.getItem('userDetails')
-      jsonValue != null ? setUserDetails(JSON.parse(jsonValue)) : null;
-    } catch (e) {
-      console.log(e)
-    }
-  }
-  if (!userDetails) {
-    getData();
-    console.log("@");
-  }
 
   //pop up element add new subject
   const element = <View>

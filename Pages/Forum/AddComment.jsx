@@ -7,7 +7,6 @@ import moment from 'moment';
 import Button from '../../CTools/Button';
 import apiUrl from '../../Routes/Url';
 import axios from "axios";
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function AddComment(props) {
   

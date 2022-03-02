@@ -12,7 +12,6 @@ import Button from '../../CTools/Button';
 import apiUrl from '../../Routes/Url';
 import ImageUri from '../../Routes/ImageUri';
 import axios from "axios";
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function MainComment(props) {
 

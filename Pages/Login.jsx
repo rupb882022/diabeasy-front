@@ -31,12 +31,12 @@ export default function Login({ navigation }) {
             console.log(e)
         }
     }
+    
     const [userDetails, setUserDetails] = useState( getData());
         //for case the app save details on user
         if (userDetails&&userDetails.rememberMe) {
-            navigation.navigate('Drawer');
+            navigation.navigate('Drawer',{userDetails:userDetails});
         }
-
 
     const checkUser = () => {
         setLoading(true);
@@ -58,7 +58,7 @@ export default function Login({ navigation }) {
                 setInterval(() => setLoading(false), 2000);
                 //globle save user detail 
                 storeData({ id: resulte.id, image: resulte.profileimage, name: resulte.name, rememberMe: saveUserDetails })
-                navigation.navigate('Drawer');
+                navigation.navigate('Drawer',{userDetails:userDetails});
             } else {
                 setValidtionUser("Opps.. worng password or Email");
                 setLoading(false);
