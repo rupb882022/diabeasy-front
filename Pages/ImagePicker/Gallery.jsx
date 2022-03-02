@@ -6,15 +6,17 @@ import Button from '../../CTools/Button';
 import { Ionicons } from '@expo/vector-icons';
 import PopUp from '../../CTools/PopUp';
 import upiUrl from '../../Routes/Url';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+
 export default function Gallery(props) {
   const {description=true, picUri,show ,setShow,navigation,imageName}=props
 
-  
-  //let urlImage = props.route.params.urlImage;
-
+  const [userDetails, setUserDetails] = useState();
   const [image, setImage] = useState(picUri);
-  //const [picDetails,setPicDetails]=useState(picData)
-  //const [counter,setCounter]=useState(0)
+
+//const urlTry='http://proj.ruppin.ac.il//bgroup88/prod/test1/tar1/api/';
+
   //waiting for permision
   useEffect(() => {
     (async ()=>{
@@ -28,30 +30,45 @@ export default function Gallery(props) {
   })
   }, [])
 
-  //useEffect(()=>{console.log('123=>',image)},[])
-  
+useEffect(()=>{
+  getData();
+},[userDetails])
+
+  // get user details from storge
+  const getData = async () => {
+    try {
+        const jsonValue = await AsyncStorage.getItem('userDetails')
+        jsonValue != null ? setUserDetails(JSON.parse(jsonValue)) : null;
+    } catch (e) {
+        console.log(e)
+    }
+}
+    
+    
   //choose *only* picture
   const PickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
-      quality: 1,
-      
+      quality: 0.2,
     })
     console.log('ImagePicker=>',result);
     if (!result.cancelled) {
       setImage(result.uri)
-      //setPicDetails(result)
     }
   }
-////***************** */
-const btnImgUpload=()=>{
 
+const btnImgUpload=()=>{
+  //upload user picture
 console.log('waiting for answer: ');
 ImgUpload(`${image}`
-   , imageName)
-   
+   ,`${imageName}.jpg`)
+  
+ //imageName=='ingredientPic' || imageName=='recipePic' 
+  //complite code for recipe and imgredient
+
+  
 }
 
 
@@ -69,17 +86,18 @@ const ImgUpload = (imgUri, picName) => {
 
     }
     console.log(upiUrl+"uploadpicture")
-    console.log(dataI)
+    console.log('config => ',config);
+
     fetch(upiUrl+"uploadpicture", config)
     .then((res) => {
-    if (res.status == 201) {console.log('resstatus=>',res.status);return res.json(); }
+    if (res.status == 201) {console.log('resStatus=>',res.status);return res.json(); }
     else {console.log(res.status);return res.err;}
     })
     .then((responseData) => {
       console.log('responsData=>',responseData);
     if (responseData != "err") {
       
-      console.log("picName",picName)
+      console.log("LOGpicName1=> ",picName)
       console.log("responseData",responseData)
     let picNameWOExt = picName.substring(0, picName.indexOf("."));
     let imageNameWithGUID = responseData.substring(responseData.indexOf(picNameWOExt),
@@ -114,7 +132,6 @@ element={
 style={styles.button}
 onPress={btnImgUpload}
 
-//onPress={() => {navigation.navigate('PersonalInfo1')}}
 //onPress={()=> {image!=null? sendData(image): alert('picture not selected')}}
 /> 
 </>

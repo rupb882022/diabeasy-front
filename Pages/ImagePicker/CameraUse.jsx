@@ -10,7 +10,7 @@ import Gallery from './Gallery'
 export default function CameraUse(props) {
 const {navigation,route}=props
 
-let imageName =route.params.imageName;
+let imageName =route.params.imageName;  
 
   const [hasPermission, setHasPermission] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);

@@ -12,6 +12,8 @@ import Setting from '../Pages/Setting';
 import { CardStyleInterpolators } from '@react-navigation/stack';
 import Gallery from '../Pages/ImagePicker/Gallery';
 import CameraUse from '../Pages/ImagePicker/CameraUse';
+import CustomDrawer from './CustomDrawer';
+
 
 const Stack = createStackNavigator();
 
@@ -78,6 +80,8 @@ export default function Navigtor() {
       <Stack.Screen name="PersonalInfo2" screenOptions={options} component={PersonalInfo2} />
       <Stack.Screen name="Gallery" screenOptions={options} component={Gallery} />
       <Stack.Screen name="CameraUse" screenOptions={options} component={CameraUse} />
+      <Stack.Screen name="CustomDrawer" screenOptions={options} component={CustomDrawer} />
+
     </Stack.Navigator>
   )
 }

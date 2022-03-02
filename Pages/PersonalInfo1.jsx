@@ -119,16 +119,20 @@ const passwordValid=(value)=>{
 
             <View style={styles.uploadbutton}>
                 <Text>Upload Profile Picture</Text>
-
+         {user=='Doctor'?
                 <Button
-                    //element={<Image source={require('../images/icons/addPhotoIcon.png')} style={styles.logo} />}
-                    //element={<Image source={require('../images/icons/gallery.JPG.png')} style={styles.logo} />}
                     element={<MaterialCommunityIcons name="camera-plus-outline" size={30} color="black" />}
                     width={5}
                     height={3}
-                    // onPress={openSheet}
-                    onPress={() => { navigation.navigate('CameraUse',{imageName:'profilePic'}) }}
-                />
+                    onPress={() => { navigation.navigate('CameraUse',{imageName:'profileDoctor'}) }}
+                />:
+<Button
+                    element={<MaterialCommunityIcons name="camera-plus-outline" size={30} color="black" />}
+                    width={5}
+                    height={3}
+                    onPress={() => { navigation.navigate('CameraUse',{imageName:'profilePatient'}) }}
+                    />
+                }
             </View>
 
 

@@ -1,22 +1,36 @@
 import { View, Text, Image, StyleSheet } from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
 import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
 import ImageUri from './ImageUri';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
 export default function CustomDrawer(props) {
-    const { userDetails } = props
+    const { userDetails ,navigation} = props
 
-    const image = userDetails.image ? <Image source={{uri:ImageUri+userDetails.image}} style={styles.image} /> :
-                                     <Image source={require('../images/profile_pictur.jpeg')} style={styles.image} />
+     const image = userDetails.image ? <Image source={{uri:ImageUri+userDetails.image}} style={styles.image} /> :
+                                      <Image source={require('../images/profile_pictur.jpeg')} style={styles.image} />
+
+//        const [image,setImage] =useState( userDetails.image ? <Image source={{uri:ImageUri+userDetails.image}} style={styles.image} /> :
+//                                        <Image source={require('../images/profile_pictur.jpeg')} style={styles.image} />)
+
+const changePic=()=>{
+    if (userDetails.id % 2 == 0) {
+        navigation.navigate('CameraUse',{imageName:`profileDoctor${userDetails.id}`})
+    }
+    else{navigation.navigate('CameraUse',{imageName:`profilePatient${userDetails.id}`})
+}}
+
+
     return (
         <>
             <DrawerContentScrollView>
                 <View style={styles.header}>
+                 <TouchableOpacity 
+                 onPress={changePic}
+                 >
                   {image}
-                    {/* <GalleryPick
-                        description={false}
-                    /> */}
+                  </TouchableOpacity>
                     <Text style={styles.text}>Hello,</Text>
                     <Text style={styles.text} >{userDetails.name?userDetails.name:''}</Text>
                 </View>
