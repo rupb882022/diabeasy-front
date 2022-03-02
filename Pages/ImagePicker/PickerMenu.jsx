@@ -5,6 +5,7 @@ import React ,{forwardRef, useState} from 'react';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import { MaterialCommunityIcons,AntDesign } from '@expo/vector-icons';
 
+//todo Warning: Cannot update a component (`ForwardRef(BaseNavigationContainer)`) while rendering a different component (`Login`)
 const PickerMenu = forwardRef(({},ref)=>{
 const options =[
 {name:"   Take from camera",icon : <AntDesign name='camerao' size={27}/> ,onPress:()=>{} },
