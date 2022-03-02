@@ -93,14 +93,14 @@ export default function Forum({route}) {
           //if user is doctor or patient
           if (userDetails.id % 2 == 0) {
             setComment({
-              date_time: moment(new Date()).format('MM-DD-YYYY').toString(),
+              date_time: moment(new Date().toString()).format('MM-DD-YYYY').toString(),
               subject: subject,
               value: commentValue,
               Doctor_id: userDetails.id,
             });
           } else {
             setComment({
-              date_time: moment(new Date()).format('MM-DD-YYYY').toString(),
+              date_time: moment(new Date().toString()).format('MM-DD-YYYY').toString(),
               subject: subject,
               value: commentValue,
               Patients_id: userDetails.id,
@@ -151,7 +151,7 @@ export default function Forum({route}) {
         if (res && res.status == 200) {
           return res.json();
         } else {
-          // #todo cheack how to throw error
+          // #todo path to error page
           console.log("status code:", res.status)
         }
       }).then((resulte) => {

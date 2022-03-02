@@ -1,7 +1,7 @@
 import { View, Text, Image, StyleSheet } from 'react-native';
 import React from 'react';
 import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
-import ImageUri from './ImageUri';
+import {ImageUri} from './Url';
 
 
 export default function CustomDrawer(props) {

@@ -7,7 +7,7 @@ import DeleteComment from './DeleteComment';
 import Input from '../../CTools/Input';
 import Button from '../../CTools/Button';
 import PopUp from '../../CTools/PopUp';
-import ImageUri from '../../Routes/ImageUri';
+import {ImageUri} from '../../Routes/Url';
 
 export default function Comment(props) {
 

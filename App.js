@@ -6,7 +6,7 @@ import SignUp from './Pages/SignUp';
 import GalleryPick from './Pages/ImagePicker/GalleryPick'
 import Maps from './Pages/Maps';
 import TabNav from './Routes/TabNav';
-import ImageUri from './Routes/ImageUri'
+import {ImageUri} from './Routes/Url'
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import Navigtor from './Routes/Navigtor';
 export default function App() {

@@ -8,8 +8,7 @@ import PanicButton from '../Pages/PanicButton';
 import Forum from '../Pages/Forum/Forum';
 import Maps from '../Pages/Maps';
 import Setting from '../Pages/Setting'
-import React,{ useState } from 'react';
-import { useFocusEffect } from '@react-navigation/native';
+import React from 'react';
 
 
 const Drawernav = createDrawerNavigator();
@@ -20,7 +19,7 @@ export default function Drawer({route}) {
     let color = "black"
     // const [userDetails, setUserDetails] = useState();
 let userDetails= route.params.userDetails;
-
+console.log("drrrrrr",userDetails);
     const options = {
         headerStyle: {
             backgroundColor: 'transparent',
@@ -52,7 +51,7 @@ let userDetails= route.params.userDetails;
         })}>
 
             {/* list of items in the drawer */}
-            <Drawernav.Screen name='Home' component={Home} options={{
+            <Drawernav.Screen name='Home' component={Home} initialParams={{ userDetails: userDetails }} options={{
                 ...options,
                 drawerIcon: () => (<Ionicons name="ios-home-outline" size={24} color={color} />)
             }} />
@@ -62,11 +61,11 @@ let userDetails= route.params.userDetails;
             }} />
             <Drawernav.Screen name='Forum' component={Forum} initialParams={{ userDetails: userDetails }} options={{
                 ...options,
-                drawerIcon: () => (<MaterialCommunityIcons name="forum-outline" size={24} color={color} />)
+                drawerIcon: () => (<Ionicons name="chatbubbles-outline" size={24} color={color} />)
             }} />
             <Drawernav.Screen name='Sports location' component={Maps} options={{
                 ...options,
-                drawerIcon: () => (<MaterialIcons name="sports-tennis" size={24} color={color} />)
+                drawerIcon: () => (<Ionicons name="football-outline" size={24} color={color}  />)
             }} />
             <Drawernav.Screen name='Emergency Call' component={PanicButton} initialParams={{ userDetails: userDetails }} options={{
                 ...options,
@@ -74,7 +73,7 @@ let userDetails= route.params.userDetails;
             }} />
             <Drawernav.Screen name='Setting' component={Setting} options={{
                 ...options,
-                drawerIcon: () => (<SimpleLineIcons name="settings" size={24} color={color} />)
+                drawerIcon: () => (<Ionicons name="settings-outline" size={24} color={color} />)
             }} />
         </Drawernav.Navigator>
     );

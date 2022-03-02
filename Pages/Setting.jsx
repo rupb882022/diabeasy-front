@@ -5,11 +5,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Setting({ navigation }) {
 
-
+//TODO alert in catch 
   const storeData = async () => {
     try {
         await AsyncStorage.clear();
-        await navigation.navigate('Login');
+         navigation.navigate('Login');
     } catch (e) {
         await AsyncStorage.setItem('eror', e)
     }

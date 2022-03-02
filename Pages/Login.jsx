@@ -1,5 +1,5 @@
 import { View, StyleSheet, Image, Text } from 'react-native';
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '../CTools/Header';
 import Input from '../CTools/Input';
 import Button from '../CTools/Button';
@@ -12,7 +12,8 @@ import { Fontisto } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
 
 
-//TODO fix bug in rendering with effect 
+
+
 export default function Login({ navigation }) {
     const [show, setShow] = useState(false);
     const [email, setEmail] = useState('');
@@ -23,31 +24,33 @@ export default function Login({ navigation }) {
 
     //get user details from storge
     const getData = async () => {
-        console.log("userDetails",userDetails)
         try {
-            const jsonValue = await AsyncStorage.getItem('userDetails')
-            jsonValue != null ? setUserDetails(JSON.parse(jsonValue)) : null;    
+            const jsonValue = await AsyncStorage.getItem('userDetails');
+            console.log('jsonValue',jsonValue);
+           setUserDetails(JSON.parse(jsonValue));
+            console.log("userDetails", userDetails)
         } catch (e) {
             console.log(e)
         }
     }
     const [userDetails, setUserDetails] = useState();
 
-    const cheackStorge=()=>{
+    const cheackStorge = () => {
         console.log("@");
-             if (userDetails && userDetails.rememberMe) {
-                navigation.navigate('Drawer', { userDetails: userDetails });
-            }
+        if (userDetails && userDetails.rememberMe) {
+            navigation.navigate('Drawer', { userDetails: userDetails });
+        }
     }
-
-     //for case the app save details on user
-    useEffect(() => {
-         getData();
-    }, []);
+    //for case the app save user details on first sign in or when user logOut
+    useFocusEffect(
+        React.useCallback(() => {
+            getData();
+        })
+    );
 
     useEffect(() => {
         cheackStorge();
-   }, [userDetails]);
+    }, [userDetails]);
 
     const checkUser = () => {
         setLoading(true);
@@ -66,7 +69,9 @@ export default function Login({ navigation }) {
             }
         }).then((resulte) => {
             if (resulte) {
+                console.log("res=>",resulte)
                 setInterval(() => setLoading(false), 2000);
+                console.log("res=>",resulte)
                 //globle save user detail 
                 storeData({ id: resulte.id, image: resulte.profileimage, name: resulte.name, rememberMe: saveUserDetails })
             } else {
@@ -82,9 +87,11 @@ export default function Login({ navigation }) {
 
     const storeData = async (value) => {
         try {
+            console.log("value",value)
             const jsonValue = JSON.stringify(value)
             await AsyncStorage.setItem('userDetails', jsonValue)
-            await navigation.navigate('Drawer', { userDetails: userDetails });
+            console.log("jsonValue",jsonValue)
+             navigation.navigate('Drawer', { userDetails: jsonValue });
         } catch (e) {
             await AsyncStorage.setItem('eror', e)
             setValidtionUser("sorry, app lost connection, please try to sign in agine");
