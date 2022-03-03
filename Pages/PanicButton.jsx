@@ -1,17 +1,19 @@
 import { View, Text, StyleSheet } from 'react-native';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useContext } from 'react';
 import Header from '../CTools/Header';
 import Button from '../CTools/Button'
 import Communications from "react-native-communications";
 import apiUrl from '../Routes/Url'
 import { Feather } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
+import {UserContext} from '../CTools/UserDetailsHook'
 
 
-export default function PanicButton({ route }) {
+export default function PanicButton() {
     const [phone, setPhone] = useState();
     const [alert, setAlert] = useState();
-    let userDetails = route.params.userDetails;
+    const {userDetails} = useContext(UserContext);
+
 
     const EmergancyCall = () => {
         console.log(phone)

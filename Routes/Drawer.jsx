@@ -13,13 +13,14 @@ import React from 'react';
 
 const Drawernav = createDrawerNavigator();
 
-export default function Drawer({route}) {
+
+export default function Drawer() {
+
+
 
     //color of icons
     let color = "black"
-    // const [userDetails, setUserDetails] = useState();
-let userDetails= route.params.userDetails;
-console.log("drrrrrr",userDetails);
+  
     const options = {
         headerStyle: {
             backgroundColor: 'transparent',
@@ -29,52 +30,52 @@ console.log("drrrrrr",userDetails);
             color: 'transparent',
         },
     }
-  
-    return (
-        <Drawernav.Navigator drawerContent={props => <CustomDrawer userDetails={userDetails?userDetails:''} {...props} />} screenOptions={({ navigation }) => ({
-            headerLeft: () => {
-                return (
-                    <TouchableOpacity
-                        onPress={() => navigation.toggleDrawer()}>
-                        <Ionicons name="ios-menu"
-                            size={75}
-                            style={{
-                                height: 70,
-                                marginTop: '35%',
-                                marginLeft: '15%',
-                                color: '#1ea6d6'
-                            }}
-                        />
-                    </TouchableOpacity>
-                )
-            }
-        })}>
 
-            {/* list of items in the drawer */}
-            <Drawernav.Screen name='Home' component={Home} initialParams={{ userDetails: userDetails }} options={{
-                ...options,
-                drawerIcon: () => (<Ionicons name="ios-home-outline" size={24} color={color} />)
-            }} />
-            <Drawernav.Screen name='Insert Data' component={InsertData}  options={{
-                ...options,
-                drawerIcon: () => (<Entypo name="add-to-list" size={24} color={color} />)
-            }} />
-            <Drawernav.Screen name='Forum' component={Forum} initialParams={{ userDetails: userDetails }} options={{
-                ...options,
-                drawerIcon: () => (<Ionicons name="chatbubbles-outline" size={24} color={color} />)
-            }} />
-            <Drawernav.Screen name='Sports location' component={Maps} options={{
-                ...options,
-                drawerIcon: () => (<Ionicons name="football-outline" size={24} color={color}  />)
-            }} />
-            <Drawernav.Screen name='Emergency Call' component={PanicButton} initialParams={{ userDetails: userDetails }} options={{
-                ...options,
-                drawerIcon: () => (<AntDesign name="exclamationcircleo" size={24} color={color} />)
-            }} />
-            <Drawernav.Screen name='Setting' component={Setting} options={{
-                ...options,
-                drawerIcon: () => (<Ionicons name="settings-outline" size={24} color={color} />)
-            }} />
-        </Drawernav.Navigator>
+    return (
+            <Drawernav.Navigator drawerContent={props => <CustomDrawer {...props} />} screenOptions={({ navigation }) => ({
+                headerLeft: () => {
+                    return (
+                        <TouchableOpacity
+                            onPress={() => navigation.toggleDrawer()}>
+                            <Ionicons name="ios-menu"
+                                size={75}
+                                style={{
+                                    height: 70,
+                                    marginTop: '35%',
+                                    marginLeft: '15%',
+                                    color: '#1ea6d6'
+                                }}
+                            />
+                        </TouchableOpacity>
+                    )
+                }
+            })}>
+
+                {/* list of items in the drawer */}
+                <Drawernav.Screen name='Home' component={Home}  options={{
+                    ...options,
+                    drawerIcon: () => (<Ionicons name="ios-home-outline" size={24} color={color} />)
+                }} />
+                <Drawernav.Screen name='Insert Data' component={InsertData} options={{
+                    ...options,
+                    drawerIcon: () => (<Entypo name="add-to-list" size={24} color={color} />)
+                }} />
+                <Drawernav.Screen name='Forum' component={Forum}  options={{
+                    ...options,
+                    drawerIcon: () => (<Ionicons name="chatbubbles-outline" size={24} color={color} />)
+                }} />
+                <Drawernav.Screen name='Sports location' component={Maps} options={{
+                    ...options,
+                    drawerIcon: () => (<Ionicons name="football-outline" size={24} color={color} />)
+                }} />
+                <Drawernav.Screen name='Emergency Call' component={PanicButton}  options={{
+                    ...options,
+                    drawerIcon: () => (<AntDesign name="exclamationcircleo" size={24} color={color} />)
+                }} />
+                <Drawernav.Screen name='Setting' component={Setting} options={{
+                    ...options,
+                    drawerIcon: () => (<Ionicons name="settings-outline" size={24} color={color} />)
+                }} />
+            </Drawernav.Navigator>
     );
 }

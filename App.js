@@ -9,6 +9,8 @@ import TabNav from './Routes/TabNav';
 import {ImageUri} from './Routes/Url'
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import Navigtor from './Routes/Navigtor';
+import Global from './CTools/Global';
+
 export default function App() {
     //style of the drawer
     const Theme = {
@@ -22,15 +24,9 @@ console.log()
   return (
 
     <View style={styles.container}>
-      {/* require('./images/backimg.png') */}
       <ImageBackground source={{uri:ImageUri+'backimg.png'}} resizeMode='cover' style={styles.image}>
       <NavigationContainer theme={Theme}>
-        {/* <Drawer/> */}
-        {/* <Login/> */}
-        {/* <SignUp/> */}
-        {/* <PersonalInfo1/> */}
-        {/* <GalleryPick/> */}
-        <Navigtor />
+        <Global />
         </NavigationContainer>
       </ImageBackground>
     </View>

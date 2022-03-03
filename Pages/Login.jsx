@@ -1,5 +1,5 @@
 import { View, StyleSheet, Image, Text } from 'react-native';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useContext } from 'react';
 import Header from '../CTools/Header';
 import Input from '../CTools/Input';
 import Button from '../CTools/Button';
@@ -9,9 +9,7 @@ import apiUrl from '../Routes/Url'
 import Loading from '../CTools/Loading';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Fontisto } from '@expo/vector-icons';
-import { useFocusEffect } from '@react-navigation/native';
-
-
+import {UserContext} from '../CTools/UserDetailsHook'
 
 
 export default function Login({ navigation }) {
@@ -22,35 +20,29 @@ export default function Login({ navigation }) {
     const [loading, setLoading] = useState(false);
     const [saveUserDetails, setSaveUserDetails] = useState(false);
 
-    //get user details from storge
-    const getData = async () => {
-        try {
-            const jsonValue = await AsyncStorage.getItem('userDetails');
-            console.log('jsonValue',jsonValue);
-           setUserDetails(JSON.parse(jsonValue));
-            console.log("userDetails", userDetails)
-        } catch (e) {
-            console.log(e)
-        }
+   const {userDetails,setUserDetails} = useContext(UserContext);
+    
+     //get user details from storge
+  const getData = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem('userDetails');
+       setUserDetails(JSON.parse(jsonValue));
     }
-    const [userDetails, setUserDetails] = useState();
-
-    const cheackStorge = () => {
-        console.log("@");
-        if (userDetails && userDetails.rememberMe) {
-            navigation.navigate('Drawer', { userDetails: userDetails });
-        }
+    catch (e) {
+      console.log(e)
     }
-    //for case the app save user details on first sign in or when user logOut
-    useFocusEffect(
-        React.useCallback(() => {
-            getData();
-        })
-    );
+  }
 
-    useEffect(() => {
-        cheackStorge();
-    }, [userDetails]);
+  //for case the app save user details on first sign in or when user log Out
+  useEffect(() => {
+  if (!userDetails) {
+    getData();
+  } }, []);
+  useEffect(() => {
+    if (userDetails) {
+    navigation.navigate('Drawer');
+    }
+  }, [userDetails]);
 
     const checkUser = () => {
         setLoading(true);
@@ -69,11 +61,7 @@ export default function Login({ navigation }) {
             }
         }).then((resulte) => {
             if (resulte) {
-                console.log("res=>",resulte)
-                setInterval(() => setLoading(false), 2000);
-                console.log("res=>",resulte)
-                //globle save user detail 
-                storeData({ id: resulte.id, image: resulte.profileimage, name: resulte.name, rememberMe: saveUserDetails })
+                set_User_Details(resulte);
             } else {
                 setValidtionUser("Opps.. worng password or Email");
                 setLoading(false);
@@ -85,19 +73,25 @@ export default function Login({ navigation }) {
             })
     }
 
+   const set_User_Details = async (resulte) => {
+
+    //globle save user detail 
+    saveUserDetails && await storeData({ id: resulte.id, image: resulte.profileimage, name: resulte.name})
+    await setUserDetails({ id: resulte.id, image: resulte.profileimage, name: resulte.name })
+    setInterval(() => setLoading(false), 1000);
+    navigation.navigate('Drawer');
+  }
+
     const storeData = async (value) => {
         try {
-            console.log("value",value)
             const jsonValue = JSON.stringify(value)
             await AsyncStorage.setItem('userDetails', jsonValue)
-            console.log("jsonValue",jsonValue)
-             navigation.navigate('Drawer', { userDetails: jsonValue });
+            console.log("userDetails",jsonValue)
         } catch (e) {
             await AsyncStorage.setItem('eror', e)
             setValidtionUser("sorry, app lost connection, please try to sign in agine");
         }
     }
-
     return (
         <View style={styles.container}>
             {loading && <Loading opacity={'#d6f2fc'} />}
@@ -160,7 +154,7 @@ export default function Login({ navigation }) {
                     height={4}
                     alignItems='center'
                     justifyContent='flex-end'
-                    onPress={checkUser}
+                    onPress={()=>{checkUser()}}
                 />
                 <Button
                     text="Sign Up"

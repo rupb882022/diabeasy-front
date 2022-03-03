@@ -20,7 +20,7 @@ return(
           ref={ref}
           height={230}
           openDuration={250}
-          closeOnDragDown    //Todo move to styleSheet
+          closeOnDragDown    
           customStyles={{
             container: {
               borderTopRightRadius:20,

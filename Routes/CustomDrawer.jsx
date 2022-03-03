@@ -1,11 +1,15 @@
 import { View, Text, Image, StyleSheet } from 'react-native';
-import React, { useState } from 'react';
+
+import React,{useContext} from 'react';
+
 import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import {ImageUri} from './Url';
+import {UserContext} from '../CTools/UserDetailsHook'
 
 
 export default function CustomDrawer(props) {
+
     const { userDetails ,navigation} = props
 
      const image = userDetails.image ? <Image source={{uri:ImageUri+userDetails.image}} style={styles.image} /> :
@@ -21,6 +25,10 @@ const changePic=()=>{
     else{navigation.navigate('CameraUse',{imageName:`profilePatient${userDetails.id}`})
 }}
 
+    const {userDetails} = useContext(UserContext);
+    
+    const image = userDetails&&userDetails.image ? <Image source={{uri:ImageUri+userDetails.image}} style={styles.image} /> :
+                                     <Image source={require('../images/profile_pictur.jpeg')} style={styles.image} />
 
     return (
         <>
@@ -32,7 +40,7 @@ const changePic=()=>{
                   {image}
                   </TouchableOpacity>
                     <Text style={styles.text}>Hello,</Text>
-                    <Text style={styles.text} >{userDetails.name?userDetails.name:''}</Text>
+                    <Text style={styles.text} >{userDetails&&userDetails.name?userDetails.name:''}</Text>
                 </View>
                 <DrawerItemList {...props} />
             </DrawerContentScrollView>

@@ -1,5 +1,5 @@
 import { View, SectionList, SafeAreaView, StyleSheet, Text, Switch } from 'react-native'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect,useContext } from 'react'
 import Header from '../../CTools/Header';
 import Button from '../../CTools/Button';
 import PopUp from '../../CTools/PopUp';
@@ -10,8 +10,9 @@ import Loading from '../../CTools/Loading'
 import { useFocusEffect } from '@react-navigation/native';
 import axios from "axios";
 import moment from 'moment';
+import {UserContext} from '../../CTools/UserDetailsHook'
 
-export default function Forum({route}) {
+export default function Forum() {
 
   const [data, setData] = useState();
   const [show, setShow] = useState(false);
@@ -21,8 +22,9 @@ export default function Forum({route}) {
   const [loading, setLoading] = useState(true);
   const [comment, setComment] = useState({});
   const [commentValue, setCommentValue] = useState();
+  const {userDetails} = useContext(UserContext);
 
-  let userDetails = route.params.userDetails;
+
 
 
   //pop up element add new subject

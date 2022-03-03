@@ -9,7 +9,7 @@ export default function UpdateComment(props) {
 
   return (
 
-          <TouchableOpacity onPress={()=>{setShowEdit(); respones&&alert("cennot edit comment with respones");}} style={{ marginRight: '10%' }}><Text>
+          <TouchableOpacity onPress={()=>{setShowEdit(); respones&&alert("can not edit comment with respones");}} style={{ marginRight: '10%' }}><Text>
             <Feather name="edit-3" size={20} color="black" />
             Edit
           </Text></TouchableOpacity>
