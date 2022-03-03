@@ -15,8 +15,6 @@ export default function Gallery(props) {
   const [userDetails, setUserDetails] = useState();
   const [image, setImage] = useState(picUri);
 
-//const urlTry='http://proj.ruppin.ac.il//bgroup88/prod/test1/tar1/api/';
-
   //waiting for permision
   useEffect(() => {
     (async ()=>{
@@ -85,9 +83,6 @@ const ImgUpload = (imgUri, picName) => {
     body: dataI,
 
     }
-    console.log(upiUrl+"uploadpicture")
-    console.log('config => ',config);
-
     fetch(upiUrl+"uploadpicture", config)
     .then((res) => {
     if (res.status == 201) {console.log('resStatus=>',res.status);return res.json(); }
@@ -98,11 +93,10 @@ const ImgUpload = (imgUri, picName) => {
     if (responseData != "err") {
       
       console.log("LOGpicName1=> ",picName)
-      console.log("responseData",responseData)
     let picNameWOExt = picName.substring(0, picName.indexOf("."));
     let imageNameWithGUID = responseData.substring(responseData.indexOf(picNameWOExt),
     responseData.indexOf(".jpg") + 4);
-    console.log(imageNameWithGUID);
+    console.log('new pic name=> ',imageNameWithGUID);
     console.log("img uploaded successfully!");
     }
     else {alert('error uploding ...'); }
