@@ -1,33 +1,21 @@
 import { View, Text, StyleSheet, Image } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,useContext,createContext } from 'react';
 import Button from '../CTools/Button';
 import Header from '../CTools/Header';
 import Loading from '../CTools/Loading';
 import { Octicons } from '@expo/vector-icons';
-import { useFocusEffect } from '@react-navigation/native';
+import {UserContext} from '../CTools/UserDetailsHook'
+
 
 
 //TODO fix bug login logout and log in agine
 export default function Home(props) {
-    const { navigation, route } = props
-    const [loading, setLoading] = useState(true);
-    let userDetails = route.params.userDetails;
+    const { navigation} = props
+    const {userDetails} = useContext(UserContext);
 
-    useEffect(() => {
-        //handel memory leack erorrs
-        let abortController = new AbortController(); 
-            setInterval(() => setLoading(false), 1500);
-            return () => {  
-                abortController.abort();  
-                } 
-    }, [])
 
-    
-
-console.log("userDetailsllllloooooggggg",userDetails);
     return (
         <View style={styles.container}>
-            {loading && <Loading opacity={'#d6f2fc'} />}
             <Header
                 title='Home'
                 logo_image='heart'
@@ -50,7 +38,7 @@ console.log("userDetailsllllloooooggggg",userDetails);
                 alignItems='center'
                 onPress={() => navigation.navigate('Insert Data')}
             />
-            {userDetails?<Text style={styles.textHello}> Hello {userDetails.name}</Text>:''}
+            {userDetails && <Text style={styles.textHello}> Hello {userDetails.name}</Text>}
             <Image
                 style={styles.Image}
                 source={require('../images/home_img.webp.png')}

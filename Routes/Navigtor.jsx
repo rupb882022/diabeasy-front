@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react'
+import React, { useContext, useEffect } from 'react'
 import Login from '../Pages/Login'
 import { createStackNavigator } from '@react-navigation/stack';
 import SignUp from '../Pages/SignUp';
@@ -9,11 +8,14 @@ import PersonalInfo2 from '../Pages/PersonalInfo2'
 import Setting from '../Pages/Setting';
 import Gallery from '../Pages/ImagePicker/Gallery';
 import CameraUse from '../Pages/ImagePicker/CameraUse';
+import CustomDrawer from './CustomDrawer';
+
+
 
 const Stack = createStackNavigator();
 
 export default function Navigtor() {
-  const [userDetails, setUserDetails] = useState();
+
   const options = {
     // cardStyleInterpolator: forFade,
     headerStyle: {
@@ -26,10 +28,8 @@ export default function Navigtor() {
 
 
   return (
-
-    <Stack.Navigator initialRouteName='Login' screenOptions={{
-      headerShown: false,
-    }}>
+    <Stack.Navigator initialRouteName= 'Login'
+      screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Login" screenOptions={options} component={Login} />
       <Stack.Screen name="SignUp" screenOptions={options} component={SignUp} />
       <Stack.Screen name="Drawer" screenOptions={options} component={Drawer} />
@@ -38,6 +38,7 @@ export default function Navigtor() {
       <Stack.Screen name="PersonalInfo2" screenOptions={options} component={PersonalInfo2} />
       <Stack.Screen name="Gallery" screenOptions={options} component={Gallery} />
       <Stack.Screen name="CameraUse" screenOptions={options} component={CameraUse} />
+      <Stack.Screen name="CustomDrawer" screenOptions={options} component={CustomDrawer} />
     </Stack.Navigator>
   )
 }

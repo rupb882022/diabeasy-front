@@ -1,13 +1,14 @@
 import { View, Text, Image, StyleSheet } from 'react-native';
-import React from 'react';
+import React,{useContext} from 'react';
 import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
 import {ImageUri} from './Url';
+import {UserContext} from '../CTools/UserDetailsHook'
 
 
 export default function CustomDrawer(props) {
-    const { userDetails } = props
-
-    const image = userDetails.image ? <Image source={{uri:ImageUri+userDetails.image}} style={styles.image} /> :
+    const {userDetails} = useContext(UserContext);
+    
+    const image = userDetails&&userDetails.image ? <Image source={{uri:ImageUri+userDetails.image}} style={styles.image} /> :
                                      <Image source={require('../images/profile_pictur.jpeg')} style={styles.image} />
     return (
         <>
@@ -18,7 +19,7 @@ export default function CustomDrawer(props) {
                         description={false}
                     /> */}
                     <Text style={styles.text}>Hello,</Text>
-                    <Text style={styles.text} >{userDetails.name?userDetails.name:''}</Text>
+                    <Text style={styles.text} >{userDetails&&userDetails.name?userDetails.name:''}</Text>
                 </View>
                 <DrawerItemList {...props} />
             </DrawerContentScrollView>
