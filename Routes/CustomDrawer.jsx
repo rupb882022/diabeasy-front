@@ -1,7 +1,5 @@
 import { View, Text, Image, StyleSheet } from 'react-native';
-
 import React,{useContext} from 'react';
-
 import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import {ImageUri} from './Url';
@@ -10,9 +8,11 @@ import {UserContext} from '../CTools/UserDetailsHook'
 
 export default function CustomDrawer(props) {
 
-    const { userDetails ,navigation} = props
+    const { navigation} = props
+    const {userDetails} = useContext(UserContext);
 
-     const image = userDetails.image ? <Image source={{uri:ImageUri+userDetails.image}} style={styles.image} /> :
+    
+     const image = userDetails&&userDetails.image ? <Image source={{uri:ImageUri+userDetails.image}} style={styles.image} /> :
                                       <Image source={require('../images/profile_pictur.jpeg')} style={styles.image} />
 
 //        const [image,setImage] =useState( userDetails.image ? <Image source={{uri:ImageUri+userDetails.image}} style={styles.image} /> :
@@ -25,10 +25,8 @@ const changePic=()=>{
     else{navigation.navigate('CameraUse',{imageName:`profilePatient${userDetails.id}`})
 }}
 
-    const {userDetails} = useContext(UserContext);
     
-    const image = userDetails&&userDetails.image ? <Image source={{uri:ImageUri+userDetails.image}} style={styles.image} /> :
-                                     <Image source={require('../images/profile_pictur.jpeg')} style={styles.image} />
+  
 
     return (
         <>
