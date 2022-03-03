@@ -1,4 +1,6 @@
 //values
-// const upiUrl='http://proj.ruppin.ac.il//bgroup88/test2/tar3/api/'
 const upiUrl='http://proj.ruppin.ac.il//bgroup88/prod/api/'
+const ImageUri='http://proj.ruppin.ac.il//bgroup88/prod/uploadFiles/'
+
+export {ImageUri};
 export default upiUrl;

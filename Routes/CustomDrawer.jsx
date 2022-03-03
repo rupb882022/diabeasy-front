@@ -1,8 +1,8 @@
 import { View, Text, Image, StyleSheet } from 'react-native';
 import React, { useState } from 'react';
 import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
-import ImageUri from './ImageUri';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import {ImageUri} from './Url';
 
 
 export default function CustomDrawer(props) {

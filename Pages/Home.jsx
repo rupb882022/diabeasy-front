@@ -1,22 +1,33 @@
 import { View, Text, StyleSheet, Image } from 'react-native';
-import React,{useEffect,useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from '../CTools/Button';
 import Header from '../CTools/Header';
 import Loading from '../CTools/Loading';
+import { Octicons } from '@expo/vector-icons';
+import { useFocusEffect } from '@react-navigation/native';
 
 
-
-export default function Home({ navigation }) {
-
+//TODO fix bug login logout and log in agine
+export default function Home(props) {
+    const { navigation, route } = props
     const [loading, setLoading] = useState(true);
+    let userDetails = route.params.userDetails;
+
     useEffect(() => {
-      setInterval(() => setLoading(false), 1500);
-    },[])
+        //handel memory leack erorrs
+        let abortController = new AbortController(); 
+            setInterval(() => setLoading(false), 1500);
+            return () => {  
+                abortController.abort();  
+                } 
+    }, [])
 
+    
 
+console.log("userDetailsllllloooooggggg",userDetails);
     return (
         <View style={styles.container}>
-               {loading && <Loading opacity={'#d6f2fc'} />}
+            {loading && <Loading opacity={'#d6f2fc'} />}
             <Header
                 title='Home'
                 logo_image='heart'
@@ -25,22 +36,21 @@ export default function Home({ navigation }) {
                 image_heigt={50}
                 paddingRight={9}
                 possiton={68}
-                image_margin={{Bottom:5}}
+                image_margin={{ Bottom: 5 }}
             />
-   
+
             <Button
-                text='Insert Data'
+                // text='Insert Data'
                 justifyContent='flex-end'
                 radius={1000}
-                width={10}
-                height={24}
+                element={<Octicons name="plus" size={90} color="white" />}
+                width={20}
+                height={17}
                 textSize={30}
                 alignItems='center'
                 onPress={() => navigation.navigate('Insert Data')}
             />
-
-            {/* user name */}
-            <Text style={styles.textHello}>Hello Itzik</Text>
+            {userDetails?<Text style={styles.textHello}> Hello {userDetails.name}</Text>:''}
             <Image
                 style={styles.Image}
                 source={require('../images/home_img.webp.png')}
@@ -62,7 +72,7 @@ const styles = StyleSheet.create({
         paddingTop: '15%',
         fontWeight: 'bold',
         textShadowColor: 'white',
-        textShadowOffset: {width:2,height:2},
+        textShadowOffset: { width: 2, height: 2 },
         textShadowRadius: 3
     },
     Image: {

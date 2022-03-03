@@ -10,9 +10,8 @@ import DeleteComment from './DeleteComment';
 import Input from '../../CTools/Input';
 import Button from '../../CTools/Button';
 import apiUrl from '../../Routes/Url';
-import ImageUri from '../../Routes/ImageUri';
+import {ImageUri} from '../../Routes/Url';
 import axios from "axios";
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function MainComment(props) {
 

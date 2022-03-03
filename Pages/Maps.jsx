@@ -10,7 +10,7 @@ import * as Location from 'expo-location';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import PopUp from '../CTools/PopUp';
 
-
+//todo bag when radius is NAn
 export default function Maps(props) {
   const [location, setLocation] = useState();
    const [distance,setDistance]= useState(0)

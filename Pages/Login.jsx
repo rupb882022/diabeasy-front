@@ -1,5 +1,5 @@
 import { View, StyleSheet, Image, Text } from 'react-native';
-import React, { useState,  } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '../CTools/Header';
 import Input from '../CTools/Input';
 import Button from '../CTools/Button';
@@ -12,7 +12,8 @@ import { Fontisto } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
 
 
-//TODO fix bug in rendering with effect and fix validtion label
+
+
 export default function Login({ navigation }) {
     const [show, setShow] = useState(false);
     const [email, setEmail] = useState('');
@@ -21,22 +22,35 @@ export default function Login({ navigation }) {
     const [loading, setLoading] = useState(false);
     const [saveUserDetails, setSaveUserDetails] = useState(false);
 
-
     //get user details from storge
     const getData = async () => {
         try {
-            const jsonValue = await AsyncStorage.getItem('userDetails')
-             jsonValue != null ? setUserDetails(JSON.parse(jsonValue)) : null;
+            const jsonValue = await AsyncStorage.getItem('userDetails');
+            console.log('jsonValue',jsonValue);
+           setUserDetails(JSON.parse(jsonValue));
+            console.log("userDetails", userDetails)
         } catch (e) {
             console.log(e)
         }
     }
-    const [userDetails, setUserDetails] = useState( getData());
-        //for case the app save details on user
-        if (userDetails&&userDetails.rememberMe) {
-            navigation.navigate('Drawer');
-        }
+    const [userDetails, setUserDetails] = useState();
 
+    const cheackStorge = () => {
+        console.log("@");
+        if (userDetails && userDetails.rememberMe) {
+            navigation.navigate('Drawer', { userDetails: userDetails });
+        }
+    }
+    //for case the app save user details on first sign in or when user logOut
+    useFocusEffect(
+        React.useCallback(() => {
+            getData();
+        })
+    );
+
+    useEffect(() => {
+        cheackStorge();
+    }, [userDetails]);
 
     const checkUser = () => {
         setLoading(true);
@@ -55,10 +69,11 @@ export default function Login({ navigation }) {
             }
         }).then((resulte) => {
             if (resulte) {
+                console.log("res=>",resulte)
                 setInterval(() => setLoading(false), 2000);
+                console.log("res=>",resulte)
                 //globle save user detail 
                 storeData({ id: resulte.id, image: resulte.profileimage, name: resulte.name, rememberMe: saveUserDetails })
-                navigation.navigate('Drawer');
             } else {
                 setValidtionUser("Opps.. worng password or Email");
                 setLoading(false);
@@ -72,10 +87,14 @@ export default function Login({ navigation }) {
 
     const storeData = async (value) => {
         try {
+            console.log("value",value)
             const jsonValue = JSON.stringify(value)
             await AsyncStorage.setItem('userDetails', jsonValue)
+            console.log("jsonValue",jsonValue)
+             navigation.navigate('Drawer', { userDetails: jsonValue });
         } catch (e) {
             await AsyncStorage.setItem('eror', e)
+            setValidtionUser("sorry, app lost connection, please try to sign in agine");
         }
     }
 
@@ -126,10 +145,9 @@ export default function Login({ navigation }) {
 
                     />
                     <Text style={styles.saveUserDetailsText}>Remember me</Text>
-                    {validtionUser ? <Text style={styles.validtionUser}> {validtionUser} </Text> : <></>}
                 </View>
             </View>
-
+            {validtionUser ? <Text style={styles.validtionUser}> {validtionUser} </Text> : <></>}
             {show ?
                 <ForgotPasswordPopUp
                     setShow={(isShow) => setShow(isShow)}
@@ -188,9 +206,12 @@ const styles = StyleSheet.create({
         //justifyContent: 'flex-start'
     },
     validtionUser: {
+        // flex:0.15,
         alignSelf: 'center',
-        top: '15%',
+        top: '6%',
         fontSize: 16,
+        textAlign: 'center',
+        width: '76%',
         color: 'white',
         borderColor: 'white',
         backgroundColor: '#ff9900',

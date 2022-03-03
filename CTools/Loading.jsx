@@ -2,7 +2,7 @@ import { View, Text, Image, ImageBackground } from 'react-native'
 import React from 'react'
  import * as Progress from 'react-native-progress'
 import PopUp from './PopUp'
-import ImageUri from '../Routes/ImageUri';
+import {ImageUri} from '../Routes/Url';
 
 
 const element = <View style={{ flex: 1, justifyContent:'center' }}>

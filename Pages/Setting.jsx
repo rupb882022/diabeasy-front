@@ -5,10 +5,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Setting({ navigation }) {
 
-
+//TODO alert in catch 
   const storeData = async () => {
     try {
         await AsyncStorage.clear();
+         navigation.navigate('Login');
     } catch (e) {
         await AsyncStorage.setItem('eror', e)
     }
@@ -16,7 +17,7 @@ export default function Setting({ navigation }) {
 
   return (
     <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-      <TouchableOpacity onPress={() =>{storeData(); navigation.navigate('Login')}}> 
+      <TouchableOpacity onPress={() =>{storeData()}}> 
       <Text>log out</Text>
       </TouchableOpacity>
     </View>

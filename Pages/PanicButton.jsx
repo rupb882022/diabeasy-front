@@ -6,13 +6,12 @@ import Communications from "react-native-communications";
 import apiUrl from '../Routes/Url'
 import { Feather } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-export default function PanicButton(props) {
+export default function PanicButton({ route }) {
     const [phone, setPhone] = useState();
-    const [userDetails, setUserDetails] = useState();
     const [alert, setAlert] = useState();
+    let userDetails = route.params.userDetails;
 
     const EmergancyCall = () => {
         console.log(phone)
@@ -23,16 +22,6 @@ export default function PanicButton(props) {
         }
     }
 
-    //get user details from storge
-    const getData = async () => {
-        try {
-            const jsonValue = await AsyncStorage.getItem('userDetails')
-            jsonValue != null ? setUserDetails(JSON.parse(jsonValue)) : null;
-        } catch (e) {
-            console.log(e)
-        }
-    }
-console.log("userDetails",userDetails)
     const getPhone = () => {
         if (!phone && userDetails) {
             fetch(apiUrl + `Patients?url=assistant_phone&id=${userDetails.id}`, {
@@ -56,12 +45,6 @@ console.log("userDetails",userDetails)
                 })
         }
     }
-
-    if (!userDetails) {
-        console.log("panic")
-        getData();
-    }
-
     useEffect(() => {
         //get phone number
         getPhone();
