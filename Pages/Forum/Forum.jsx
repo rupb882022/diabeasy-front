@@ -119,7 +119,7 @@ export default function Forum() {
   useEffect(() => {
     if (!show && comment && commentValue) {
       const configurationObject = {
-        url: `${apiUrl}forum?type=addComment`,
+        url: `${apiUrl}forum/addComment`,
         method: "POST",
         data: comment
       };
@@ -132,7 +132,7 @@ export default function Forum() {
           }
         })
         .catch((error) => {
-          alert("An error has occurred" + error);
+          alert(error);
         });
     }
   }, [comment]);
@@ -143,7 +143,7 @@ export default function Forum() {
   const get_subject_list = () => {
 
     // if (!subjectList) {
-      fetch(apiUrl + `Forum?type=subject`, {
+      fetch(apiUrl + `Forum/GetAllsubjects`, {
         method: 'GET',
         headers: new Headers({
           'Content-Type': 'appliction/json; charset=UTF-8',
@@ -257,7 +257,7 @@ export default function Forum() {
   const get_all_comments = () => {
     // if (!data) {
     setLoading(true);
-    fetch(apiUrl + `Forum?type=all`, {
+    fetch(apiUrl + `Forum`, {
       method: 'GET',
       headers: new Headers({
         'Content-Type': 'appliction/json; charset=UTF-8',

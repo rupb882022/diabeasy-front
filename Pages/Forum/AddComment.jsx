@@ -52,7 +52,7 @@ export default function AddComment(props) {
         }
       })
       .catch((error) => {
-        alert("An error has occurred"+error);
+        alert(error);
       });
     }
   }, [comment]);

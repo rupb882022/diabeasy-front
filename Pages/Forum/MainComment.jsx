@@ -62,9 +62,9 @@ export default function MainComment(props) {
 let editComment={ subject: subject, value: editText }
 
 console.log(editComment);
-console.log( `${apiUrl}Forum?id=${comment_id}`);
+console.log( `${apiUrl}Forum/${comment_id}`);
     const configurationObject = {
-      url: `${apiUrl}Forum?id=${comment_id}`,
+      url: `${apiUrl}Forum/${comment_id}`,
       method: "PUT",
       data:editComment
     };
@@ -78,7 +78,7 @@ console.log( `${apiUrl}Forum?id=${comment_id}`);
       }
     })
     .catch((error) => {
-      alert("An error has occurred"+error);
+      alert(error);
     });
   }
 

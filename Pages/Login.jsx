@@ -40,14 +40,16 @@ export default function Login({ navigation }) {
   } }, []);
   useEffect(() => {
     if (userDetails) {
+        setLoading(true)
     navigation.navigate('Drawer');
+    setInterval(() => setLoading(false), 2000);
     }
   }, [userDetails]);
 
     const checkUser = () => {
         setLoading(true);
         //get user details (id,image,full name)
-        fetch(apiUrl + `Patients?url=userDetails&email=${email}&password=${password}`, {
+        fetch(apiUrl + `Patients/userDetails/${email}/${password}`, {
             method: 'GET',
             headers: new Headers({
                 'Content-Type': 'appliction/json; charset=UTF-8',
