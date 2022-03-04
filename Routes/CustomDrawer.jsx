@@ -15,8 +15,6 @@ export default function CustomDrawer(props) {
      const image = userDetails&&userDetails.image ? <Image source={{uri:ImageUri+userDetails.image}} style={styles.image} /> :
                                       <Image source={require('../images/profile_pictur.jpeg')} style={styles.image} />
 
-//        const [image,setImage] =useState( userDetails.image ? <Image source={{uri:ImageUri+userDetails.image}} style={styles.image} /> :
-//                                        <Image source={require('../images/profile_pictur.jpeg')} style={styles.image} />)
 
 const changePic=()=>{
     if (userDetails.id % 2 == 0) {
@@ -37,7 +35,6 @@ const changePic=()=>{
                  >
                   {image}
                   </TouchableOpacity>
-                    <Text style={styles.text}>Hello,</Text>
                     <Text style={styles.text} >{userDetails&&userDetails.name?userDetails.name:''}</Text>
                 </View>
                 <DrawerItemList {...props} />
@@ -48,18 +45,24 @@ const changePic=()=>{
 const styles = StyleSheet.create({
 
     text: {
-        fontSize: 20,
+        fontSize: 26,
         fontWeight: 'bold',
-        paddingLeft: '7%',
-        marginBottom: '2%',
-        bottom: '5%'
+        marginBottom: '5%',
+        color:'white',
+        alignSelf:'flex-end',
+        padding:'4%',
+        textShadowColor: '#1ea6d6',
+        textShadowOffset: { width: 2, height: 2 },
+        textShadowRadius: 1,
     },
     image: {
         width: 78,
         height: 80,
         borderRadius: 1000,
-        alignSelf: 'center',
-        marginTop: '10%',
+        alignSelf: 'flex-start',
+        // marginTop: '10%',
+        padding:'5%',
+        margin:'5%',
         borderColor: "white",
         borderWidth: 2
     },
@@ -67,7 +70,9 @@ const styles = StyleSheet.create({
         backgroundColor: "#54BCC0",
         marginBottom: '2%',
         width: '100%',
-        paddingTop: '5%'
+        paddingTop: '5%',
+        paddingBottom: '5%',
+        flexDirection:'row'
     }
 }
 

@@ -1,18 +1,25 @@
 import { View, Text, StyleSheet, Image } from 'react-native';
-import React, { useEffect, useState,useContext,createContext } from 'react';
+import React, { useEffect, useState, useContext, createContext } from 'react';
 import Button from '../CTools/Button';
 import Header from '../CTools/Header';
 import Loading from '../CTools/Loading';
 import { Octicons } from '@expo/vector-icons';
-import {UserContext} from '../CTools/UserDetailsHook'
+import { UserContext } from '../CTools/UserDetailsHook'
+import Moment from 'moment';
 
 
-
-//TODO fix bug login logout and log in agine
 export default function Home(props) {
-    const { navigation} = props
-    const {userDetails} = useContext(UserContext);
+    const { navigation } = props
+    const { userDetails } = useContext(UserContext);
+    const [helloText, setHelloText] = useState();
 
+    if (!helloText) {
+        let hour = Moment(new Date()).format('HH:mm');
+        console.log(hour);
+      hour>='6:00'&&hour<'12:00'?setHelloText("Good Morning"):
+      hour>='12:00'&&hour<'18:00'?setHelloText("Good Afternoon"):
+      setHelloText("Good Evning");
+    }
 
     return (
         <View style={styles.container}>
@@ -23,7 +30,7 @@ export default function Home(props) {
                 image_width={100}
                 image_heigt={50}
                 paddingRight={9}
-                possiton={68}
+                possiton={55}
                 image_margin={{ Bottom: 5 }}
             />
 
@@ -38,7 +45,8 @@ export default function Home(props) {
                 alignItems='center'
                 onPress={() => navigation.navigate('Insert Data')}
             />
-            {userDetails && <Text style={styles.textHello}> Hello {userDetails.name}</Text>}
+            {userDetails &&<><Text style={styles.textHello}>{helloText}</Text>
+             <Text style={styles.textName}>{userDetails.name}</Text></>}
             <Image
                 style={styles.Image}
                 source={require('../images/home_img.webp.png')}
@@ -48,10 +56,10 @@ export default function Home(props) {
 }
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        flex: 2,
         justifyContent: 'center',
     },
-    textHello: {
+    textName: {
         color: '#1ea6d6',
         alignSelf: 'flex-start',
         fontSize: 32,
@@ -63,10 +71,23 @@ const styles = StyleSheet.create({
         textShadowOffset: { width: 2, height: 2 },
         textShadowRadius: 3
     },
+    textHello: {
+        color: '#1ea6d6',
+        alignSelf: 'flex-start',
+        fontSize: 32,
+        paddingLeft: '4%',
+        top:'5%',
+        fontWeight: 'bold',
+        textShadowColor: 'white',
+        textShadowOffset: { width: 2, height: 2 },
+        textShadowRadius: 3,
+    },
     Image: {
-        height: '25%',
+        flex:0.7,
+        // position:'absolute',
+        height: '28%',
         resizeMode: 'cover',
-        width: '40%',
+        width: '46%',
         alignSelf: 'flex-end',
         opacity: 0.95
     }

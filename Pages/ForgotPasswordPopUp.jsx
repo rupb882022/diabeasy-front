@@ -15,13 +15,23 @@ export default function ForgotPasswordPopUp(props) {
   const [loading, setLoading] = useState(false);
   const [validtion, setValidtion] = useState('')
   const [password, setPassword] = useState('')
-
+  const [approve, setApprove] = useState('')
 
   const passwordValid = (value) => {
     //wiil render the page at the end of function
     flushSync(() => {
       password == value ? setValidtion('') : setValidtion('not the same password')
     })
+  }
+
+  const checkCode=()=>{
+if(password==code){
+  setApprove(true)
+  setValidtion('')
+}else{
+  setApprove(false)
+  setValidtion('not the right code')
+}
   }
 
   const getPassword = () => {
@@ -83,9 +93,9 @@ export default function ForgotPasswordPopUp(props) {
           </View>
           <Text style={styles.bodytxt}> Dont Worry! Enter your Email for password restore </Text>
           <View style={styles.mail}>
-            {!code ? <Input
+            {!approve ? <Input
               keyboardType='email-address'
-              placeholder='Enter Your Email Adress'
+              placeholder={!code?'Enter Your Email Adress':'enter 4 digits code..'}
               getValue={(value) => { setMail(value) }}
               width={98}
               height={50}
@@ -135,7 +145,7 @@ export default function ForgotPasswordPopUp(props) {
               width={24}
               height={6}
               text='send'
-              onPress={getPassword}
+              onPress={code?checkCode:getPassword}
             />
             <Button
               alignItems='center'
