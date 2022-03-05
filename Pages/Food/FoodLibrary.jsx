@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Input from '../../CTools/Input';
 import IngredientsList from './IngredientsList';
 import upiUrl from '../../Routes/Url'
+import Header from '../../CTools/Header';
 export default function FoodLibrary() {
     const [isRecipes, setIsisRecipes] = useState(false);
     const [category, setCategory] = useState('');
@@ -40,23 +41,32 @@ export default function FoodLibrary() {
         (list)
     }, [selectList]);
 
-    return (
-
+    return (<>
         <View style={styles.continer}>
+        <Header
+        title="Recipes"
+        logo_image='recipes'
+        flex={0.4}
+        image_heigt={0}
+        image_width={40}
+        paddingRight={5}
+        possiton={55}
+    />
             <View style={styles.input}>
                 <Input
-                    label='category'
+                    label='Category'
                     editable={false}
                     getValue={(value) => setCategory(value)}
                     type='selectBox'
+                    height={50}
                     SelectBox_placeholder='Select category'
                     selectBox_items={list} />
                 <Text style={styles.text}>ingredients</Text>
                 <Switch
                     style={styles.switch}
                     trackColor={{ false: "#FFFFFF", true: "#FFFFFF" }}
-                    thumbColor={isRecipes ? '#ff650d' : "#3CA6CD"}
-                    ios_backgroundColor='#ff9000'
+                    thumbColor={isRecipes ? "#FFCF84" : "#3CA6CD"}
+                    ios_backgroundColor="#FFCF84"
                     onValueChange={() => { setIsisRecipes(!isRecipes) }}
                     value={isRecipes}
                 />
@@ -72,21 +82,18 @@ export default function FoodLibrary() {
             </View>
         </View >
 
-    );
+        </>);
 }
 const styles = StyleSheet.create({
     continer: {
-        flex: 1,
-        width: '110%',
-        height: '100%',
-        paddingRight: '2%',
-        paddingLeft: '2%'
+        flex: 10,
     },
     input: {
-        marginTop: '2%',
-        flex: 0.3,
+        marginRight: '2%',
+        flex: 0.2,
         flexDirection: 'row',
-        alignItems: 'baseline',
+        alignItems: 'flex-start',
+        bottom:'8%'
     },
     switch: {
         justifyContent: 'center',
@@ -99,6 +106,6 @@ const styles = StyleSheet.create({
         marginRight: "2%"
     },
     cards: {
-        flex: 1
+        flex: 2
     }
 })

@@ -11,7 +11,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Fontisto } from '@expo/vector-icons';
 import {UserContext} from '../CTools/UserDetailsHook'
 
-
+//TODO change remmeber me to checkbox
 export default function Login({ navigation }) {
     const [show, setShow] = useState(false);
     const [email, setEmail] = useState('');

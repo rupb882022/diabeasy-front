@@ -1,9 +1,10 @@
-import { View, Text, StyleSheet, Image,TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
 import Card from '../../CTools/Card';
 import FlipCard from 'react-native-flip-card'
 import Input from '../../CTools/Input';
 import { Ionicons } from '@expo/vector-icons';
+import CheckBox from '../../CTools/CheckBox';
 
 
 export default function ingredient(props) {
@@ -13,7 +14,7 @@ export default function ingredient(props) {
 
   return (
     <View style={styles.container}>
-       {/* {favorite?
+      {/* {favorite?
         <TouchableOpacity onPress={()=>setFavorite(false)}> <Ionicons name="heart-sharp" size={24} color="black" /> </TouchableOpacity> : 
         <TouchableOpacity onPress={()=>setFavorite(true)}> <Ionicons name="heart-outline" size={24} color="black" /> </TouchableOpacity>
         } */}
@@ -26,16 +27,17 @@ export default function ingredient(props) {
         flip={false}  //start side flase=face true=back
         clickable={true}>
         <View style={styles.face}>
-          <View style={{flexDirection:'row',alignItems:'center',justifyContent:'center'}}>
-         <Text style={{ fontSize: 25, textAlign: 'center',paddingLeft:'13%' }}>{name}
-         </Text>
-         {favorite?
-          <TouchableOpacity onPress={()=>setFavorite(false)}><Ionicons style={styles.icon} name="heart-sharp" size={24} color="black" /></TouchableOpacity> :
-          <TouchableOpacity onPress={()=>setFavorite(true)}><Ionicons style={styles.icon} name="heart-outline" size={24} color="black" /></TouchableOpacity> 
-         }
-         </View>
+          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+            <Text style={{ fontSize: 25, textAlign: 'center', paddingLeft: '13%' }}>{name}
+            </Text>
+            {favorite ?
+              <TouchableOpacity onPress={() => setFavorite(false)}><Ionicons style={styles.icon} name="heart-sharp" size={24} color="#FF3C3C" /></TouchableOpacity> :
+              <TouchableOpacity onPress={() => setFavorite(true)}><Ionicons style={styles.icon} name="heart-outline" size={24} color="black" /></TouchableOpacity>
+            }
+          </View>
           <Image style={styles.image} source={{ uri: image }} />
           <Text style={styles.textFront}>30.5 Carbs 100g</Text>
+          {/* <Text style={{textAlign:'center'}}>cooking method</Text> */}
         </View>
 
         <View style={styles.back}>
@@ -54,12 +56,17 @@ export default function ingredient(props) {
                 { itemKey: 2, label: 'cup', value: 'cup' },
               ]} />
             <Input
-              label='amount'
-              validtion='number'
+              label='Amount'
+              // validtion='number'
+              justifyContent='flex-start'
               keyboardType='decimal-pad'
               height={40}
               width={100}
             />
+            <View style={styles.checkbox}>
+              <CheckBox />
+              <Text style={styles.checkBoxText}>Add</Text>
+            </View>
           </View>
         </View>
       </FlipCard>
@@ -119,8 +126,19 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFCF84",
 
   },
-  icon:{
-alignSelf:'flex-end',
-left:'70%' 
- }
+  icon: {
+    alignSelf: 'flex-end',
+    left: '70%'
+  },
+  checkbox: {
+    // justifyContent: 'flex-start',
+    bottom: '5%',
+    flexDirection: 'row',
+    paddingLeft: '30%'
+  }, checkBoxText: {
+    textAlign: 'left',
+    paddingRight: '50%',
+    fontSize: 11,
+    alignSelf: 'flex-end'
+  }
 })

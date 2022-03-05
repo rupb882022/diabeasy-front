@@ -54,7 +54,7 @@ export default function Footer(props) {
         <TouchableOpacity style={{ paddingTop: '1%' }} onPress={()=>handelClick('Emergency Call')}>
           <View style={styles.col}>
             <AntDesign name="exclamationcircleo" size={30} color={color.call} />
-            <Text style={styles.color(color.call)}>quick call</Text>
+            <Text style={styles.color(color.call)}>Quick Call</Text>
           </View>
         </TouchableOpacity>
       </View>
