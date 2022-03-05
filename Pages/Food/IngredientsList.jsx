@@ -7,6 +7,7 @@ export default function IngredientsList(props) {
     const json = [{ name: 'Bamba', image: 'https://www.dutyfree.co.il/media/catalog/product/cache/3/image/9df78eab33525d08d6e5fb8d27136e95/2/4/249875__249877.jpg' },
     { name: 'Bamba', image: 'https://www.dutyfree.co.il/media/catalog/product/cache/3/image/9df78eab33525d08d6e5fb8d27136e95/2/4/249875__249877.jpg' },
     { name: 'Bamba', image: 'https://www.dutyfree.co.il/media/catalog/product/cache/3/image/9df78eab33525d08d6e5fb8d27136e95/2/4/249875__249877.jpg' },
+    { name: 'Bamba', image: 'https://www.dutyfree.co.il/media/catalog/product/cache/3/image/9df78eab33525d08d6e5fb8d27136e95/2/4/249875__249877.jpg' },
 
     { name: 'Bamba', image: 'https://www.dutyfree.co.il/media/catalog/product/cache/3/image/9df78eab33525d08d6e5fb8d27136e95/2/4/249875__249877.jpg' },
     { name: 'Bamba', image: 'https://www.dutyfree.co.il/media/catalog/product/cache/3/image/9df78eab33525d08d6e5fb8d27136e95/2/4/249875__249877.jpg' },

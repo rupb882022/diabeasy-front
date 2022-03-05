@@ -2,8 +2,9 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { TouchableOpacity } from 'react-native';
 import InsertData from '../Pages/InsertData'
 import Home from '../Pages/Home'
+import FoodLibrary from '../Pages/Food/FoodLibrary copy'
 import CustomDrawer from './CustomDrawer'
-import { Ionicons, Entypo, AntDesign, MaterialCommunityIcons, MaterialIcons, SimpleLineIcons } from '@expo/vector-icons';
+import { Ionicons, Entypo, AntDesign, Fontisto } from '@expo/vector-icons';
 import PanicButton from '../Pages/PanicButton';
 import Forum from '../Pages/Forum/Forum';
 import Maps from '../Pages/Maps';
@@ -67,6 +68,10 @@ export default function Drawer() {
                 <Drawernav.Screen name='Sports location' component={Maps} options={{
                     ...options,
                     drawerIcon: () => (<Ionicons name="football-outline" size={24} color={color} />)
+                }} />
+                  <Drawernav.Screen name='Recipes' component={FoodLibrary}  options={{
+                    ...options,
+                    drawerIcon: () => (<Fontisto name="prescription" size={24} color={color} />)
                 }} />
                 <Drawernav.Screen name='Emergency Call' component={PanicButton}  options={{
                     ...options,

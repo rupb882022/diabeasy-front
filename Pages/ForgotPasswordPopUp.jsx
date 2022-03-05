@@ -26,6 +26,7 @@ export default function ForgotPasswordPopUp(props) {
 
   const checkCode=()=>{
 if(password==code){
+  //need to check if doctor or patient code%2==0
   setApprove(true)
   setValidtion('')
 }else{

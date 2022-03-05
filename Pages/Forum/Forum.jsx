@@ -27,6 +27,7 @@ export default function Forum() {
 
 
 //todo add cencel opption
+
   //pop up element add new subject
   const element = <View>
     <Text style={{
@@ -71,10 +72,10 @@ export default function Forum() {
       />
 
     </View>
-    <View style={{ flex: 3, justifyContent: 'flex-start' }}>
+    <View style={{ flex: 3, justifyContent: 'flex-start',paddingBottom:'5%' }}>
       <Input
         placeholder='description..'
-        height={80}
+        height={70}
         width={100}
         getValue={(value) => setCommentValue(value)}
         justifyContent='center'
@@ -82,6 +83,15 @@ export default function Forum() {
         validLable={!commentValue || !subject ? '    fill in subject and description' : ''}
       />
     </View>
+    <View style={{flexDirection:'row'}}>
+    <Button
+       text='cancel'
+       justifyContent='center'
+       alignItems='center'
+       width={10}
+       height={3}
+       onPress={()=> setShow(false)}
+    />
     <Button
       text='ok'
       justifyContent='center'
@@ -112,6 +122,7 @@ export default function Forum() {
       }}
     >
     </Button>
+    </View>
   </View>;
 
 
