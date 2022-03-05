@@ -162,6 +162,6 @@ const styles = StyleSheet.create({
         paddingTop: '1%',
         fontSize: 16,
         color: '#ff9000',
-        fontWeight: 'bold',
+        // fontWeight: 'bold',
     }
 });

@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList } from 'react
 import React, { useState } from 'react'
 import Comment from './Comment';
 import PopUp from '../../CTools/PopUp';
-import { MaterialCommunityIcons, AntDesign, Entypo } from '@expo/vector-icons';
+import { MaterialCommunityIcons, AntDesign, Entypo,Feather } from '@expo/vector-icons';
 import moment from 'moment';
 import AddComment from './AddComment';
 import UpdateComment from './UpdateComment';
@@ -113,7 +113,7 @@ console.log( `${apiUrl}Forum/${comment_id}`);
               radius={5}
               color='white'
               onPress={() => { setChangeComment(''); updateComment(); }}
-              element={<MaterialCommunityIcons name="circle-edit-outline" size={20} color="#2DAB5B" />}
+              element={<Feather name="check-circle" size={20} color="#2DAB5B" />}
             />
           </>
           : <Text style={styles.text(16)}>{editText ? editText : item}</Text>}
@@ -150,10 +150,11 @@ console.log( `${apiUrl}Forum/${comment_id}`);
     {showEdit &&
       <PopUp
         animationType='fade'
+        backgroundColor='#FCEBD6'
         isButton={false}
-        height={15}
+        height={19}
         width={40}
-        element={<View style={{ flex: 1, width: '100%', justifyContent: 'space-evenly', alignItems: 'center' }}>
+        element={<View style={{ flex: 3, width: '100%', justifyContent:'space-between', alignItems: 'center' }}>
           <UpdateComment
             respones={comments.length > 0}
             setShowEdit={() => { setChangeComment('update'); setShowEdit(false) }}
@@ -163,6 +164,7 @@ console.log( `${apiUrl}Forum/${comment_id}`);
             respones={comments.length > 0}
             getallcomment={getAllComments}
             setShowEdit={() => { setChangeComment('delete'); setShowEdit(false) }} />
+            <TouchableOpacity style={styles.cancel} onPress={()=>{setShowEdit(false); setChangeComment('');} }><Text style={{textAlign:'center'}}>cancel</Text></TouchableOpacity>
         </View>}
       />
     }
@@ -247,7 +249,14 @@ const styles = StyleSheet.create({
   },
   edit: {
     flexDirection: 'row',
-    left: '59%',
+    left: '57%',
     bottom: '25%'
+  },
+  cancel:{
+    backgroundColor:'#F76729',
+    width:'130%',
+    flex: 1,
+    justifyContent:'center',
+    marginTop:'2%',
   },
 });

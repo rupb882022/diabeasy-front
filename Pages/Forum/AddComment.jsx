@@ -39,7 +39,7 @@ export default function AddComment(props) {
   useEffect(() => {
     if (!show && comment && comment_value) {
       const configurationObject = {
-        url: `${apiUrl}forum?type=addComment`,
+        url: `${apiUrl}forum/addComment`,
         method: "POST",
         data:comment
       };
@@ -76,18 +76,18 @@ export default function AddComment(props) {
             <Input
               getValue={(value) => setComment_value(value)}
               required={true}
-              label='content'
+              placeholder='content..'
               height={110}
               justifyContent='flex-strat'
               spellCheck={true}
             />
-            <View style={{ flex: 0.9, width: '100%', justifyContent: 'flex-start', flexDirection: 'row' }}>
+            <View style={{ flex: 0.9, width: '100%', justifyContent: 'flex-start', flexDirection: 'row-reverse' }}>
               <Button
                 onPress={() => add_comment()}
                 text='ok'
                 height={3}
                 width={27}
-                alignItems='flex-end'
+                alignItems='flex-start'
                 justifyContent='flex-end'
               />
               <Button
@@ -95,7 +95,7 @@ export default function AddComment(props) {
                 text='cancel'
                 height={3}
                 width={14}
-                alignItems='flex-start'
+                alignItems='flex-end'
                 justifyContent='flex-end'
               />
             </View>
