@@ -11,8 +11,6 @@ export default function InsertData({navigation}) {
 
     //for date time placeholder
     const today = new Date();
-    //pop up food
-    const [show, setShow] = useState(false);
     return (
         <View style={styles.container}>
 
@@ -60,21 +58,12 @@ export default function InsertData({navigation}) {
             <Button
                 text="food library"
                 width={5}
-                onPress={()=>{setShow(true)}}
+                onPress={()=>navigation.navigate('Recipes')}
                 height={2}
                 alignItems='flex-end'
                 justifyContent='flex-start'
             />
             </View>
-            {show?
-            <PopUp
-            width={100}
-            Button={true}
-            backgroundColor='#40C5CA'
-            height={95}
-            setShow={setShow}
-            element={<FoodLibrary/>}
-            />:<></>}
             <Button
                 text="save"
                 width={10}

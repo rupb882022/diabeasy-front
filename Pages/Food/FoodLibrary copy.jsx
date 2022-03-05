@@ -46,11 +46,11 @@ export default function FoodLibrary() {
         <Header
         title="Recipes"
         logo_image='recipes'
-        flex={0.3}
+        flex={0.4}
         image_heigt={0}
         image_width={40}
         paddingRight={5}
-        possiton={70}
+        possiton={55}
     />
             <View style={styles.input}>
                 <Input
@@ -58,14 +58,15 @@ export default function FoodLibrary() {
                     editable={false}
                     getValue={(value) => setCategory(value)}
                     type='selectBox'
+                    height={50}
                     SelectBox_placeholder='Select category'
                     selectBox_items={list} />
                 <Text style={styles.text}>ingredients</Text>
                 <Switch
                     style={styles.switch}
                     trackColor={{ false: "#FFFFFF", true: "#FFFFFF" }}
-                    thumbColor={isRecipes ? '#ff650d' : "#3CA6CD"}
-                    ios_backgroundColor='#ff9000'
+                    thumbColor={isRecipes ? "#FFCF84" : "#3CA6CD"}
+                    ios_backgroundColor="#FFCF84"
                     onValueChange={() => { setIsisRecipes(!isRecipes) }}
                     value={isRecipes}
                 />
@@ -91,8 +92,8 @@ const styles = StyleSheet.create({
         marginRight: '2%',
         flex: 0.2,
         flexDirection: 'row',
-        alignItems: 'baseline',
-        bottom:'15%'
+        alignItems: 'flex-start',
+        bottom:'8%'
     },
     switch: {
         justifyContent: 'center',
@@ -105,6 +106,6 @@ const styles = StyleSheet.create({
         marginRight: "2%"
     },
     cards: {
-        flex: 1
+        flex: 2
     }
 })

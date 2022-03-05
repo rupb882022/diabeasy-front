@@ -105,7 +105,7 @@ export default function Maps(props) {
       />
       {location && <MapView
         loadingEnabled={true}
-        style={{ flex: 0.9, marginBottom: '16%' }}
+        style={{ flex: 0.9, marginBottom: '5%' }}
         initialRegion={{
           latitude: location.coords.latitude,//32.166313,
           longitude: location.coords.longitude,//34.843311,

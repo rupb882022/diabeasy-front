@@ -6,7 +6,7 @@ export default function Card(props) {
     const { name, image, index } = props
     return (
         <FlipCard
-            style={styles.card(index)}
+            // style={styles.card(index)}
             friction={15} //The friction of card animation
             perspective={1000} //The amount of perspective applied to the flip transformation
             flipHorizontal={true}
@@ -53,32 +53,34 @@ export default function Card(props) {
     );
 }
 const styles = StyleSheet.create({
-    card: (index) => {
-        //the two first cards witout exstra posttion
-        let bottom=0
-       if(index>=2){
-        bottom=38
-           if(index%2==0){
-               bottom*=index;
-           }else{
-            bottom*=(index-1);
-           }
-       }
-        return {
-            borderWidth: 2,
-            flex: 0.6,
-            width: '95%',
-            borderColor: 'white',
-            bottom: bottom,
-        }
-    },
+    // card: (index) => {
+    //     //the two first cards witout exstra posttion
+    //     let bottom=0
+    //    if(index>=2){
+    //     bottom=38
+    //        if(index%2==0){
+    //            bottom*=index;
+    //        }else{
+    //         bottom*=(index-1);
+    //        }
+    //    }
+    //     return {
+    //         borderWidth: 2,
+    //         flex: 0.6,
+    //         width: '95%',
+    //         borderColor: 'white',
+    //         bottom: bottom,
+    //     }
+    // },
     image: {
-        width: '100%',
-        height: '80%',
+        width: 100,
+        height: 100,
         resizeMode: 'contain',
     },
     face: {
         flex: 1,
+        width: 100,
+        height: 100,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: 'white'
