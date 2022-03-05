@@ -62,7 +62,7 @@ export default function PanicButton() {
                 image_width={25}
                 image_heigt={100}
                 image_margin={{ Bottom: -4 }}
-                possiton={70}
+                possiton={60}
                 marginLeft={12}
             />
             <Button

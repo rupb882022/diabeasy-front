@@ -13,7 +13,7 @@ export default function Home(props) {
     const { userDetails } = useContext(UserContext);
     const [helloText, setHelloText] = useState();
 
-  
+
 
 
 
@@ -22,10 +22,10 @@ export default function Home(props) {
         let array = hour.split(":");
         hour = (parseInt(array[0], 10) * 60 * 60) + (parseInt(array[1], 10) * 60) + parseInt(array[2], 10)
         console.log(hour);
-        
-      hour>=21600&&hour<43200?setHelloText("Good morning")://21600="06:00:00"
-      hour>=43200&&hour<64800?setHelloText("Good afternoon")://43200=12:00:00
-      setHelloText("Good evning");//64800=18:00
+
+        hour >= 21600 && hour < 43200 ? setHelloText("Good morning") ://21600="06:00:00"
+            hour >= 43200 && hour < 64800 ? setHelloText("Good afternoon") ://43200=12:00:00
+                setHelloText("Good evning");//64800=18:00
     }
 
     return (
@@ -33,27 +33,28 @@ export default function Home(props) {
             <Header
                 title='Home'
                 logo_image='heart'
-                flex={0.4}
+                flex={0.5}
                 image_width={100}
                 image_heigt={50}
                 paddingRight={9}
-                possiton={55}
+                possiton={50}
                 image_margin={{ Bottom: 5 }}
             />
-
-            <Button
-                // text='Insert Data'
-                justifyContent='flex-end'
-                radius={1000}
-                element={<Octicons name="plus" size={90} color="white" />}
-                width={20}
-                height={17}
-                textSize={30}
-                alignItems='center'
-                onPress={() => navigation.navigate('Insert Data')}
-            />
-            {userDetails &&<><Text style={styles.textHello}>{helloText}</Text>
-             <Text style={styles.textName}>{userDetails.name}</Text></>}
+            <View style={{flex:1.8,paddingTop:'10%'}}>
+                <Button
+                    // text='Insert Data'
+                    justifyContent='flex-end'
+                    radius={1000}
+                    element={<Octicons name="plus" size={90} color="white" />}
+                    width={20}
+                    height={17}
+                    textSize={30}
+                    alignItems='center'
+                    onPress={() => navigation.navigate('Insert Data')}
+                />
+                {userDetails && <><Text style={styles.textHello}>{helloText}</Text>
+                    <Text style={styles.textName}>{userDetails.name}</Text></>}
+            </View>
             <Image
                 style={styles.Image}
                 source={require('../images/home_img.webp.png')}
@@ -63,15 +64,14 @@ export default function Home(props) {
 }
 const styles = StyleSheet.create({
     container: {
-        flex: 2,
-        justifyContent: 'center',
+        flex: 1,
+        justifyContent: 'center'
     },
     textName: {
         color: '#1ea6d6',
         alignSelf: 'flex-start',
         fontSize: 32,
         paddingLeft: '5%',
-        paddingBottom: '5%',
         paddingTop: '15%',
         fontWeight: 'bold',
         textShadowColor: 'white',
@@ -83,19 +83,19 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-start',
         fontSize: 32,
         paddingLeft: '4%',
-        top:'5%',
+        top: '10%',
         fontWeight: 'bold',
         textShadowColor: 'white',
         textShadowOffset: { width: 2, height: 2 },
         textShadowRadius: 3,
     },
     Image: {
-        flex:0.7,
+        flex: 0.8,
         // position:'absolute',
-        height: '28%',
-        resizeMode: 'cover',
-        width: '46%',
+        resizeMode: 'center',
+        width: '40%',
+        top: '1%',
         alignSelf: 'flex-end',
-        opacity: 0.95
+        opacity: 0.95,
     }
 });

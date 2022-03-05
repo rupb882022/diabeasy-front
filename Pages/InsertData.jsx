@@ -21,7 +21,7 @@ export default function InsertData({navigation}) {
                 logo_image='infusion'
                 image_width={30}
                 image_heigt={125}
-                possiton={55}
+                possiton={48}
                 marginLeft={2}
                 image_margin={{ Bottom: -5 }}
             />

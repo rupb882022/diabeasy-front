@@ -67,7 +67,7 @@ export default function Maps(props) {
         image_width={20}
         //image_heigt={100}
         //image_margin={{ Bottom: -4}}
-        //possiton={70}
+        possiton={65}
         marginLeft={15}
         justifyContent='flex-start' />
 

@@ -25,9 +25,6 @@ export default function Forum() {
   const {userDetails} = useContext(UserContext);
 
 
-
-//todo add cencel opption
-
   //pop up element add new subject
   const element = <View>
     <Text style={{
@@ -306,7 +303,7 @@ export default function Forum() {
       image_heigt={80}
       image_width={30}
       paddingRight={8}
-      possiton={60}
+      possiton={48}
     />}
     {data && <SafeAreaView style={styles.container}>
       <SectionList

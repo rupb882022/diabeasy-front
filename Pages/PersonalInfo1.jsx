@@ -9,6 +9,7 @@ import Loading from '../CTools/Loading';
 import {flushSync} from 'react-dom'
 export default function PersonalInfo1(props) {
     const { route, navigation } = props
+
     let user = route.params.user;
    const [name,setName]=useState('')
    const [gender,setGender]=useState('')
@@ -67,7 +68,6 @@ const passwordValid=(value)=>{
                 keyboardType='email-address'
                 getValue={(value) => setEmail(value)}
                 required={true}
-                keyboardType='email-address'
                 setValue={email}
             />
             <Input
