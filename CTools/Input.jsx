@@ -9,7 +9,7 @@ export default function Input(props) {
 
     const { placeholder, secure = false, required = false, editable = true, textAlign = 'left', label, validtion, min = 0, max, alignItems, justifyContent, width, height, fontSize,
         keyboardType = 'default', type = '', selectBox_items = [], SelectBox_placeholder, mode = 'datetime', display = 'spinner', popup_title, date_format_hour = true,
-        getValue,spellCheck=false,setValue,validLable,flex } = props
+        getValue,spellCheck=false,setValue,validLable,flex,  multiline=false, numberOfLines} = props
 
       
 
@@ -86,7 +86,8 @@ export default function Input(props) {
                 editable={editable} //disable clikc
                 clearButtonMode='while-editing'    //'never', 'while-editing', 'unless-editing', 'always'
                 keyboardType={keyboardType}             //'default', 'email-address', 'numeric', 'phone-pad', 'ascii-capable', 'numbers-and-punctuation', 'url', 'number-pad', 'name-phone-pad', 'decimal-pad', 'twitter', 'web-search', 'visible-password'
-
+                multiline={multiline}
+                numberOfLines={numberOfLines}
 
             // maxLength={10}  max lengh of the text, char=1
             // placeholderTextColor='red'

@@ -13,7 +13,7 @@ export default function Footer(props) {
       case 'Home':
         setColor({ home: activeColor, sports: 'black', forum: 'black', call: 'black' })
         break;
-      case 'Sports location':
+      case 'Sports Location':
         setColor({ home: 'black', sports: activeColor, forum: 'black', call: 'black' })
         // navigation.navigate('Sports location');
         break;
@@ -39,7 +39,7 @@ export default function Footer(props) {
             <Text style={styles.color(color.home)}>Home</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={()=>handelClick('Sports location')}>
+        <TouchableOpacity onPress={()=>handelClick('Sports Location')}>
           <View style={{ flexDirection: 'column', alignItems: 'center' }}>
             <Ionicons name="football-outline" size={30} color={color.sports} />
             <Text style={styles.color(color.sports)}>Sport</Text>

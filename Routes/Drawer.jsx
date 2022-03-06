@@ -11,7 +11,7 @@ import Maps from '../Pages/Maps';
 import Setting from '../Pages/Setting'
 import React from 'react';
 import Footer from './Footer';
-
+import Prescriptions from '../Pages/Prescriptions';
 
 const Drawernav = createDrawerNavigator();
 
@@ -82,6 +82,12 @@ const {navigation}=props
                 ...options,
                 drawerIcon: () => (<Ionicons name="settings-outline" size={24} color={color} />)
             }} />
+            <Drawernav.Screen name='Prescriptions' component={Prescriptions} options={{
+                ...options,
+                drawerIcon: () => (<AntDesign name="medicinebox" size={24} color={color} />)
+            }} />
+
+            
         </Drawernav.Navigator>
         <Footer
         navigation={navigation}
