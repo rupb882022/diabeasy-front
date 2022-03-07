@@ -4,8 +4,6 @@ import Header from '../CTools/Header';
 import Input from '../CTools/Input';
 import Button from '../CTools/Button';
 import Moment from 'moment';
-import PopUp from '../CTools/PopUp';
-import FoodLibrary from './Food/FoodLibrary';
 
 export default function InsertData({navigation}) {
 

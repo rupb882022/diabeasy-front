@@ -25,7 +25,6 @@ export default function Card(props) {
             </View>
             {/* Back Side */}
             <View style={styles.back}>
-                <View>
                     <Text style={styles.backTitle}>Carbohydrates: 34</Text>
                     <Input
                         label='Unit of measure'
@@ -46,7 +45,6 @@ export default function Card(props) {
                         height={40}
                         width={100}
                     />
-                </View>
             </View>
         </FlipCard>
 
