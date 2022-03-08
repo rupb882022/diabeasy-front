@@ -77,16 +77,15 @@ const {navigation}=props
             <Drawernav.Screen name='Emergency Call' component={PanicButton} options={{
                 ...options,
                 drawerIcon: () => (<AntDesign name="exclamationcircleo" size={24} color={color} />)
+            }} /> 
+            <Drawernav.Screen name='Prescriptions' component={Prescriptions} options={{
+                ...options,
+                drawerIcon: () => (<AntDesign name="medicinebox" size={24} color={color} />)
             }} />
             <Drawernav.Screen name='Setting' component={Setting} options={{
                 ...options,
                 drawerIcon: () => (<Ionicons name="settings-outline" size={24} color={color} />)
             }} />
-            <Drawernav.Screen name='Prescriptions' component={Prescriptions} options={{
-                ...options,
-                drawerIcon: () => (<AntDesign name="medicinebox" size={24} color={color} />)
-            }} />
-
             
         </Drawernav.Navigator>
         <Footer

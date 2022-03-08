@@ -8,13 +8,15 @@ import PopUp from '../../CTools/PopUp';
 import upiUrl from '../../Routes/Url';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { UserContext } from '../../CTools/UserDetailsHook';
+import Loading from '../../CTools/Loading';
 
 export default function Gallery(props) {
   const {description=true, picUri,show ,setShow,navigation,imageName,page,donePicture,setDonePicture}=props
 
   const {userDetails, setUserDetails} = useContext(UserContext);
   const [image, setImage] = useState(picUri);
-
+  const [loading, setLoading] = useState(false);
+  
   //waiting for permision
   useEffect(() => {
     (async ()=>{
@@ -73,6 +75,7 @@ const ImgUpload = (imgUri, picName) => {
     }
     fetch(upiUrl+"uploadpicture", config)
     .then((res) => {
+      setLoading(true)
     if (res.status == 201) {console.log('resStatus=>',res.status);return res.json(); }
     else {console.log(res.status);return res.err;}
     })
@@ -86,6 +89,7 @@ const ImgUpload = (imgUri, picName) => {
     responseData.indexOf(".jpg") + 4);
     console.log('new pic name=> ',imageNameWithGUID);
     console.log("img uploaded successfully!");   
+    setLoading(false)
    setDonePicture(true)
    setShow(false)
    console.log('DONE!');
@@ -123,6 +127,7 @@ button_txt='Cancle'
 backgroundColor="#bbe4f2"
 button_height='4'
 />
+{loading&&<Loading opacity={'#d6f2fc'}/>}
  </>
   );
 }
