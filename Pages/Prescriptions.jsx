@@ -1,4 +1,4 @@
-import { View, Text ,StyleSheet,Image, ScrollView, ViewBase} from 'react-native'
+import { View, Text ,StyleSheet,Image, ScrollView, Switch} from 'react-native'
 import React, { useState } from 'react'
 import Header from '../CTools/Header';
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
@@ -10,6 +10,8 @@ export default function Prescriptions(props) {
 const {navigation} =props
 
 const [show, setShow] = useState(false);
+const [popupSubject, setPopupSubject] = useState(false);
+
 
 const [prescriptions,setPrescription]=useState([
 {id: 1, date_time:'01/01/2022', subject:'new prescription',value: 'need more insullin'  },
@@ -74,24 +76,43 @@ source={require('../images/welcom_man.JPG.png')}
     <View >
 <Text style={styles.popuptitle}> {'New Prescription'}</Text>
 <View style={styles.inputs}>
-<Input 
-placeholder='select your medicine'
+{popupSubject?<Input 
+placeholder='Choose your medicine'
 type='selectBox'
-label='Medicine'
+label='Subject / Medicine'
 editable={false}
 SelectBox_placeholder='Select your medicine'
 //justifyContent='flex-start'
 alignItems='flex-start'
-//alignSelf='flex-start'
-width='100%'
+alignSelf='flex-start'
+width='70%'
 height='80%'
 flex={0.2}
 selectBox_items={[
     { itemKey: 0, label: 'insulin-1', value: 'insulin-1' },
     { itemKey: 1, label: 'insulin-2', value: 'insulin-2' },
     { itemKey: 2, label: 'insulin-3', value: 'insulin-3' },
-]}/>
-
+]}/>:
+<Input 
+placeholder='Write your medicine'
+label='Subject / Medicine'
+SelectBox_placeholder='Select your medicine'
+//justifyContent='flex-start'
+alignItems='flex-start'
+alignSelf='flex-start'
+width='70%'
+height='80%'
+flex={0.2}
+/>
+   }
+    <Switch
+        style={{ alignSelf: 'center', marginLeft: '7%', marginTop: '3%' ,alignSelf:'flex-end'}}
+        trackColor={{ false: "#FFFFFF", true: "#3CA6CD" }}
+        thumbColor={popupSubject ? '#FFCF84' : "#3CA6CD"}
+        ios_backgroundColor='#FFCF84'
+        onValueChange={() => { setPopupSubject(!popupSubject) }}
+        //value={!commentValue && !subject ? popupSubject : ''}
+      />
 <Input
 placeholder='Write to your doctor...'
 label='Something else?'
@@ -121,6 +142,8 @@ width={20}
 </View>
 </View>}
 />:<></>}
+
+
     </View>
   )
 }

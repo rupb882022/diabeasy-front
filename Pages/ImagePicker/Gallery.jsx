@@ -1,5 +1,5 @@
 import {Alert, View, Text, StyleSheet, Platform, Image, TouchableOpacity } from 'react-native';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useContext } from 'react';
 import * as ImagePicker from 'expo-image-picker'
 import { Constants } from 'expo-constants';
 import Button from '../../CTools/Button';
@@ -7,12 +7,12 @@ import { Ionicons } from '@expo/vector-icons';
 import PopUp from '../../CTools/PopUp';
 import upiUrl from '../../Routes/Url';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import { UserContext } from '../../CTools/UserDetailsHook';
 
 export default function Gallery(props) {
-  const {description=true, picUri,show ,setShow,navigation,imageName}=props
+  const {description=true, picUri,show ,setShow,navigation,imageName,page,donePicture,setDonePicture}=props
 
-  const [userDetails, setUserDetails] = useState();
+  const {userDetails, setUserDetails} = useContext(UserContext);
   const [image, setImage] = useState(picUri);
 
   //waiting for permision
@@ -28,19 +28,8 @@ export default function Gallery(props) {
   })
   }, [])
 
-useEffect(()=>{
-  getData();
-},[userDetails])
 
-  // get user details from storge
-  const getData = async () => {
-    try {
-        const jsonValue = await AsyncStorage.getItem('userDetails')
-        jsonValue != null ? setUserDetails(JSON.parse(jsonValue)) : null;
-    } catch (e) {
-        console.log(e)
-    }
-}
+
     
     
   //choose *only* picture
@@ -64,10 +53,9 @@ ImgUpload(`${image}`
    ,`${imageName}.jpg`)
   
  //imageName=='ingredientPic' || imageName=='recipePic' 
-  //complite code for recipe and imgredient
-
-  
+  //complite code for recipe and imgredient 
 }
+
 
 
 //#Nir check (!Request.Content.IsMimeMultipartContent()) in C#
@@ -97,7 +85,10 @@ const ImgUpload = (imgUri, picName) => {
     let imageNameWithGUID = responseData.substring(responseData.indexOf(picNameWOExt),
     responseData.indexOf(".jpg") + 4);
     console.log('new pic name=> ',imageNameWithGUID);
-    console.log("img uploaded successfully!");
+    console.log("img uploaded successfully!");   
+   setDonePicture(true)
+   setShow(false)
+   console.log('DONE!');
     }
     else {alert('error uploding ...'); }
     })
@@ -124,9 +115,7 @@ element={
 
 <Button text='DONE'
 style={styles.button}
-onPress={btnImgUpload}
-
-//onPress={()=> {image!=null? sendData(image): alert('picture not selected')}}
+onPress={image?btnImgUpload:alert('picture not selected')}
 /> 
 </>
 }
