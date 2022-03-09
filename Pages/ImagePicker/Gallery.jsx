@@ -9,8 +9,8 @@ import upiUrl from '../../Routes/Url';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-export default function Gallery(props) {
-  const {description=true, picUri,show ,setShow,navigation,imageName}=props
+export default function Gallery(props,{navigation}) {
+  const {description=true, picUri,show ,setShow,imageName}=props
 
   const [userDetails, setUserDetails] = useState();
   const [image, setImage] = useState(picUri);
@@ -68,7 +68,6 @@ ImgUpload(`${image}`
 
   
 }
-
 
 //#Nir check (!Request.Content.IsMimeMultipartContent()) in C#
 const ImgUpload = (imgUri, picName) => {

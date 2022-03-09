@@ -39,7 +39,11 @@ export default function Input(props) {
                 regex.test(text) ? "" : setValid_lable("English letters only!");
                 break;
             case 'Password':
-                setValid_lable("   Password does not match!")
+                if(text.length<8){
+                setValid_lable("   minimum 8 digit and letters")
+                }else{
+                    setValid_lable("") 
+                }
                 break;
             default:
                 break;

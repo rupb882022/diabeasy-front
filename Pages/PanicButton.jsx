@@ -26,7 +26,7 @@ export default function PanicButton() {
 
     const getPhone = () => {
         if (!phone && userDetails) {
-            fetch(apiUrl + `Patients/assistant_phone/${userDetails.id}`, {
+            fetch(apiUrl + `User/assistant_phone/${userDetails.id}`, {
                 method: 'GET',
                 headers: new Headers({
                     'Content-Type': 'appliction/json; charset=UTF-8',
