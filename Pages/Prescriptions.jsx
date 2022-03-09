@@ -7,31 +7,24 @@ import PopUp from '../CTools/PopUp';
 import Input from '../CTools/Input';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { UserContext } from '../CTools/UserDetailsHook';
-import upiUrl from '../Routes/Url'
+import upiUrl from '../Routes/Url';
+import Moment from 'moment';
+import * as Progress from 'react-native-progress';
+
 
 export default function Prescriptions(props) {
 const {navigation} =props
 
 const [show, setShow] = useState(false);
 const [showDetails, setShowDetails] = useState(false);
-const [idDetails, setIdDetails] = useState(0);
 const {userDetails} = useContext(UserContext);
-
+const [popupElement, setPopupElement] = useState();
 const [popupSubject, setPopupSubject] = useState(false);
-
-const [prescriptions,setPrescription]=useState([
-
-  {"id":1,"date_time":"2022-02-01T00:00:00","subject":"insulin num1","value":"need more please"},
-{"id":2,"date_time":"2022-02-10T00:00:00","subject":"more stickers","value":"stikers are running out"},
-{"id":4,"date_time":"2022-03-01T00:00:00","subject":"ritalin and insulin","value":"everything done"},
-{"id":5,"date_time":"2022-03-10T00:00:00","subject":"more stickers","value":"have 10 mor"},
-{"id":6,"date_time":"2022-03-15T00:00:00","subject":"indulin num 2","value":"need more"},
-{"id":7,"date_time":"2022-03-20T00:00:00","subject":"num 3 insulinush","value":"what else???"}
-])
-//"http://localhost:52665/api/Prescription/3"
+const [prescriptions,setPrescriptions]=useState([])
+const [loading, setLoading] = useState(false);
 
 const getPrescriptions = () => {
-  if(!prescriptions){
+  setLoading(true)
       fetch(upiUrl + `Prescription/${userDetails.id}`, {
           method: 'GET',
           headers: new Headers({
@@ -39,26 +32,34 @@ const getPrescriptions = () => {
               'Accept': 'appliction/json; charset=UTF-8'
           })
       }).then(res => {
+        console.log("r=> ",res.status);
           if (res && res.status == 200) {
               return res.json();
           } else {
               console.log("status code:", res.status)
+              setLoading(false)
+              return;
           }
       }).then((result) => {
-        console.log('result=>', result);
-         prescriptions(resulte)
+       // console.log('result=>', result);
+        setPrescriptions(result)
+        setLoading(false)
       },
           (error) => {
               console.log("error", error)
+              setLoading(false)
           })
-        }
+        
+        
 }
 useEffect(() => {
   //get all user prescription
-
+  // if(prescriptions==[]){}
   getPrescriptions()
-}, []);
+  console.log("pres=>",prescriptions);
 
+ 
+}, []);
 
 
 const element = <View>
@@ -89,7 +90,7 @@ const element = <View>
     <Input
       label= 'Write new subject/medicine'
       height={50}
-      value={!popupSubject && ''}
+     // value={!popupSubject && ''}
       width={100}
       //getValue={(value) => setSubject(value)}
       justifyContent='flex-start'
@@ -161,15 +162,20 @@ const element = <View>
 </View>
 </View>
 
-
-
-
 let icon=<MaterialCommunityIcons name="pill" size={24} color="black"/>;
-
 const btnPrescDetails=(id)=>{
-id-=1;
-setIdDetails(id);
- setShowDetails(true);
+// id-=1;
+setShowDetails(true);
+const onePrescription=prescriptions.find(x=>x.id ===id)
+setPopupElement( 
+<>
+<Text style={{textAlign:'center',fontWeight:'bold',fontSize:30,marginBottom:'10%'}}> {onePrescription.subject} </Text>
+<Text style={{textAlign:'center',marginBottom:'5%'}}> Request details: </Text>
+<Text style={{textAlign:'center',fontSize:20}}>{onePrescription.value} </Text>
+<Text style={{textAlign:'center',marginTop:'10%'}}>request from : {Moment(onePrescription.date_time).format('DD/MM/YYYY')} </Text>
+</>
+)
+
 }
 
   return (
@@ -184,12 +190,11 @@ setIdDetails(id);
         />
         <Text style={styles.title}>Your last request:</Text>
 <ScrollView style={styles.list}> 
-<View style={styles.viewcon}>
-{prescriptions.map(item=>(
-  
+<View >
+{prescriptions&&prescriptions.map((item)=>(
 <View key={item.id} style={styles.oneItem}>
   <TouchableOpacity onPress={()=>{btnPrescDetails(item.id)}}>
-<Text style={{fontWeight:'bold',fontSize:20,textAlign:'center'}}>{icon} - Request from {item.date_time}</Text>
+<Text style={{fontWeight:'bold',fontSize:20,textAlign:'center'}}>{icon} - Request from {Moment(item.date_time).format('DD/MM/YYYY')}</Text>
 </TouchableOpacity>
 </View>
 ))
@@ -204,8 +209,6 @@ height={4}
 alignItems='center'
 justifyContent='flex-end'
 onPress={() => setShow(true)}
-
-//justifyContent='flex-end'
 />
 
 <Image
@@ -224,21 +227,27 @@ source={require('../images/welcom_man.JPG.png')}
           button_justifyContent='flex-start'
         />}
 
-{showDetails && prescriptions&&
+{showDetails && prescriptions &&
       <PopUp
       height={45}
       width={90}
       setShow={setShowDetails}
       backgroundColor='#d6f2fc'
-text='dasdasdsa'
-element={<>
-<Text style={{textAlign:'center',fontWeight:'bold',fontSize:30,marginBottom:'10%'}} >{prescriptions[idDetails].subject} </Text>
-<Text style={{textAlign:'center',marginBottom:'5%'}}> Request details: </Text>
-<Text style={{textAlign:'center',fontSize:20}}>{prescriptions[idDetails].value} </Text>
-<Text style={{textAlign:'center',marginTop:'10%'}}>request from : {prescriptions[idDetails].date_time} </Text>
-</>
-}
+element={popupElement}
 />}
+{ loading && <View style={styles.progress}>
+            <Progress.Bar
+              width={255}
+              height={15}
+              borderRadius={5}
+              borderColor={"#bbe4f2"}
+              color='#69BEDC' //#FFCF84-orange
+              useNativeDriver={true}
+              borderWidth={2}
+              indeterminate={true}
+              animationConfig={{ bounciness: 20 }}
+            />
+          </View>}
 
 </View>
   )
@@ -269,17 +278,15 @@ flex:0.5,
  
   },
   oneItem:{
-// borderWidth:1,
-// marginBottom:'2%',
-// marginLeft:'2%'
-margin:'3%',
+
+marginBottom:'5%',
 justifyContent:'flex-start'
   },
   title:{
     alignSelf:'center',
     position:'absolute',
     top:'10%',
-    fontSize:20,
+    fontSize:30,
     fontWeight:'bold',
   },
   popuptitle:{
@@ -304,11 +311,7 @@ justifyContent:'flex-start'
     
     
   },
-  inputs:{
-    justifyContent:'flex-start',
-    flex:1,
 
-  }
   
 
 });

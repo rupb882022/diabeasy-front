@@ -8,7 +8,8 @@ import PopUp from '../../CTools/PopUp';
 import upiUrl from '../../Routes/Url';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { UserContext } from '../../CTools/UserDetailsHook';
-import Loading from '../../CTools/Loading';
+import * as Progress from 'react-native-progress';
+
 
 export default function Gallery(props) {
   const {description=true, picUri,show ,setShow,navigation,imageName,page,donePicture,setDonePicture}=props
@@ -73,9 +74,9 @@ const ImgUpload = (imgUri, picName) => {
     body: dataI,
 
     }
+     setLoading(true)
     fetch(upiUrl+"uploadpicture", config)
     .then((res) => {
-      setLoading(true)
     if (res.status == 201) {console.log('resStatus=>',res.status);return res.json(); }
     else {console.log(res.status);return res.err;}
     })
@@ -93,10 +94,15 @@ const ImgUpload = (imgUri, picName) => {
    setDonePicture(true)
    setShow(false)
    console.log('DONE!');
+   
     }
-    else {alert('error uploding ...'); }
+    else {alert('error uploding ...');
+    setLoading(false)
+  }
     })
-    .catch(err => {console.log('err upload= ' + err); });
+    .catch(err => {console.log('err upload= ' + err);     
+    setLoading(false)
+  });
   }
 
 //Todo change icon
@@ -121,13 +127,25 @@ element={
 style={styles.button}
 onPress={image?btnImgUpload:alert('picture not selected')}
 /> 
+{ loading && <View style={styles.progress}>
+            <Progress.Bar
+              width={255}
+              height={15}
+              borderRadius={5}
+              borderColor={"#bbe4f2"}
+              color='#69BEDC' //#FFCF84-orange
+              useNativeDriver={true}
+              borderWidth={2}
+              indeterminate={true}
+              animationConfig={{ bounciness: 20 }}
+            />
+          </View>}
 </>
 }
 button_txt='Cancle'
 backgroundColor="#bbe4f2"
 button_height='4'
 />
-{loading&&<Loading opacity={'#d6f2fc'}/>}
  </>
   );
 }
