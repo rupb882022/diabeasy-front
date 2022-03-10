@@ -10,6 +10,7 @@ import { UserContext } from '../CTools/UserDetailsHook';
 import upiUrl from '../Routes/Url';
 import Moment from 'moment';
 import * as Progress from 'react-native-progress';
+import axios from "axios";
 
 
 export default function Prescriptions(props) {
@@ -22,6 +23,10 @@ const [popupElement, setPopupElement] = useState();
 const [popupSubject, setPopupSubject] = useState(false);
 const [prescriptions,setPrescriptions]=useState([])
 const [loading, setLoading] = useState(false);
+const [subject, setSubject] = useState(false);
+const [reqValue, setReqValue] = useState(false);
+const [request, setRequest] = useState({});
+
 
 const getPrescriptions = () => {
   setLoading(true)
@@ -32,7 +37,7 @@ const getPrescriptions = () => {
               'Accept': 'appliction/json; charset=UTF-8'
           })
       }).then(res => {
-        console.log("r=> ",res.status);
+        console.log("res=> ",res.status);
           if (res && res.status == 200) {
               return res.json();
           } else {
@@ -54,12 +59,32 @@ const getPrescriptions = () => {
 }
 useEffect(() => {
   //get all user prescription
-  // if(prescriptions==[]){}
   getPrescriptions()
   console.log("pres=>",prescriptions);
-
- 
 }, []);
+
+
+useEffect(() => {
+  if (!show && request&&reqValue) {
+    const configurationObject = {
+      url:upiUrl+'Prescription/addRequest',
+      method: "POST",
+      data: request
+    };
+    console.log('DATA=>', request);
+    axios(configurationObject)
+      .then((response) => {
+        if (response.status === 200 || response.status === 201) {
+          getPrescriptions();
+        } else {
+          throw new Error("An error has occurred");
+        }
+      })
+      .catch((error) => {
+        alert(error);
+      });
+  }
+}, [request]);
 
 
 const element = <View>
@@ -74,7 +99,7 @@ const element = <View>
       label='Choose your medicine'
       height={50}
       type='selectBox'
-      //getValue={(value) => setSubject(value)}
+      getValue={(value) => setSubject(value)}
       SelectBox_placeholder='Select medicine...'
       placeholder='Select medicine from list...'
       width={100}
@@ -92,7 +117,7 @@ const element = <View>
       height={50}
      // value={!popupSubject && ''}
       width={100}
-      //getValue={(value) => setSubject(value)}
+      getValue={(value) => setSubject(value)}
       justifyContent='flex-start'
       alignItems='flex-end'
       placeholder='type new subject/medicine...'
@@ -116,10 +141,10 @@ const element = <View>
     numberOfLines={4}
     height={70}
     width={100}
-   // getValue={(value) => setCommentValue(value)}
+    getValue={(value) => setReqValue(value)}
     justifyContent='center'
     alignItems='center'
-   // validLable={!commentValue || !subject ? '    fill in subject and description' : ''}
+    validLable={!reqValue || !subject ? '    fill subject and description' : ''}
   />
 </View>
 <View style={{flexDirection:'row'}}>
@@ -137,26 +162,18 @@ const element = <View>
   alignItems='center'
   width={20}
   height={3}
-  // onPress={() => {
-  //   if (commentValue && subject&&userDetails) {
-  //     if (userDetails.id % 2 == 0) {
-  //       setComment({
-  //         date_time: moment(new Date().toString()).format('MM-DD-YYYY').toString(),
-  //         subject: subject,
-  //         value: commentValue,
-  //         Doctor_id: userDetails.id,
-  //       });
-  //     } else {
-  //       setComment({
-  //         date_time: moment(new Date().toString()).format('MM-DD-YYYY').toString(),
-  //         subject: subject,
-  //         value: commentValue,
-  //         Patients_id: userDetails.id,
-  //       });
-  //     }
-  //     setShow(false);
-  //   }
-  // }}
+   onPress={() => {
+    if (reqValue && subject && userDetails) {
+        setRequest({
+          date_time: Moment(new Date().toString()).format('MM-DD-YYYY H:mm').toString(),
+          subject: subject,
+          value: reqValue,
+          Patients_id: userDetails.id,
+          Doctor_id : 2        //todo change doctor id to real id
+        });
+      setShow(false);
+    }
+  }}
 >
 </Button>
 </View>
@@ -172,7 +189,7 @@ setPopupElement(
 <Text style={{textAlign:'center',fontWeight:'bold',fontSize:30,marginBottom:'10%'}}> {onePrescription.subject} </Text>
 <Text style={{textAlign:'center',marginBottom:'5%'}}> Request details: </Text>
 <Text style={{textAlign:'center',fontSize:20}}>{onePrescription.value} </Text>
-<Text style={{textAlign:'center',marginTop:'10%'}}>request from : {Moment(onePrescription.date_time).format('DD/MM/YYYY')} </Text>
+<Text style={{textAlign:'center',marginTop:'10%'}}>request from : {Moment(onePrescription.date_time).format('DD/MM/YYYY H:mm')} </Text>
 </>
 )
 
@@ -202,6 +219,20 @@ setPopupElement(
 }
 </View>
 </ScrollView>
+{ loading && <View style={styles.progress}>
+            <Progress.Bar
+              width={255}
+              height={15}
+              borderRadius={5}
+              borderColor={"#bbe4f2"}
+              color='#FFCF84' //-orange
+              useNativeDriver={true}
+              borderWidth={2}
+              indeterminate={true}
+              animationConfig={{ bounciness: 20 }}
+            />
+          </View>}
+
 <Button 
 text='New prescription request'
 width={12}
@@ -233,21 +264,9 @@ source={require('../images/welcom_man.JPG.png')}
       width={90}
       setShow={setShowDetails}
       backgroundColor='#d6f2fc'
-element={popupElement}
+      element={popupElement}
 />}
-{ loading && <View style={styles.progress}>
-            <Progress.Bar
-              width={255}
-              height={15}
-              borderRadius={5}
-              borderColor={"#bbe4f2"}
-              color='#69BEDC' //#FFCF84-orange
-              useNativeDriver={true}
-              borderWidth={2}
-              indeterminate={true}
-              animationConfig={{ bounciness: 20 }}
-            />
-          </View>}
+
 
 </View>
   )
@@ -307,10 +326,14 @@ justifyContent:'flex-start'
   },
   popupbuttons:{
     flexDirection:'row',
-    //justifyContent:'flex-end'
-    
-    
+    //justifyContent:'flex-end' 
   },
+  progress: {
+    width: '97%',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    
+  }
 
   
 
