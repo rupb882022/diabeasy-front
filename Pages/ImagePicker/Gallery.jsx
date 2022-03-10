@@ -6,7 +6,6 @@ import Button from '../../CTools/Button';
 import { Ionicons } from '@expo/vector-icons';
 import PopUp from '../../CTools/PopUp';
 import upiUrl from '../../Routes/Url';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { UserContext } from '../../CTools/UserDetailsHook';
 import * as Progress from 'react-native-progress';
 

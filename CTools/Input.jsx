@@ -9,16 +9,17 @@ export default function Input(props) {
 
     const { placeholder, secure = false, required = false, editable = true, textAlign = 'left', label, validtion, min = 0, max, alignItems, justifyContent, width, height, fontSize,
         keyboardType = 'default', type = '', selectBox_items = [], SelectBox_placeholder, mode = 'datetime', display = 'spinner', popup_title, date_format_hour = true,
-        getValue,spellCheck=false,setValue,validLable,flex,  multiline=false, numberOfLines} = props
+        getValue, spellCheck = false, setValue, validLable, flex, multiline = false, numberOfLines } = props
 
-      
+
 
     const [text, setText] = useState();
     const [valid_lable, setValid_lable] = useState('');
     const [showPopUp, setShowPopUp] = useState(false);
     const [selectBox, setSelectBox] = useState([]);
+    const [selectValue, setSelectValue] = useState();
     //for spicel valid lable that came outside of component
-  
+
 
 
 
@@ -39,10 +40,10 @@ export default function Input(props) {
                 regex.test(text) ? "" : setValid_lable("English letters only!");
                 break;
             case 'Password':
-                if(text.length<8){
-                setValid_lable("   minimum 8 digit and letters")
-                }else{
-                    setValid_lable("") 
+                if (text&&text.length < 8) {
+                    setValid_lable("   minimum 8 digit and letters")
+                } else {
+                    setValid_lable("")
                 }
                 break;
             default:
@@ -66,16 +67,18 @@ export default function Input(props) {
     }
     //get the text from input to outside component
     useEffect(() => {
-        validLable?setValid_lable(validLable):setValid_lable('')
-        getValue && getValue(text);
-    }, [text,validLable]);
+        validLable ? setValid_lable(validLable) : setValid_lable('')
 
-        //set the text from outside component at the first time in input
-        useEffect(() => {
-            setValue&&setText(setValue)
-        }, []);
+        type=='selectBox'?getValue&&getValue(selectValue):
+        getValue && getValue(text);
+    }, [text, validLable]);
+
+    //set the text from outside component at the first time in input
+    useEffect(() => {
+        setValue && setText(setValue)
+    }, []);
     return (
-        <View style={styles.possition(justifyContent, alignItems,flex)}>
+        <View style={styles.possition(justifyContent, alignItems, flex)}>
             <Text style={styles.label(width)}>{label}</Text>
             <TextInput
                 style={styles.input(width, fontSize, height)}
@@ -93,9 +96,9 @@ export default function Input(props) {
                 multiline={multiline}
                 numberOfLines={numberOfLines}
 
-            // maxLength={10}  max lengh of the text, char=1
-            // placeholderTextColor='red'
-            spellCheck={spellCheck}         //If false, disables spell-check style (i.e. red underlines). The default value is inherited from autoCorrect
+                // maxLength={10}  max lengh of the text, char=1
+                // placeholderTextColor='red'
+                spellCheck={spellCheck}         //If false, disables spell-check style (i.e. red underlines). The default value is inherited from autoCorrect
             // inlineImageLeft='search_icon'
             // inlineImagePadding={icon_padding}
             />
@@ -127,6 +130,7 @@ export default function Input(props) {
                 /> : <></>}
             {selectBox.length > 0 ?
                 <SelectBox
+                    selectValue={(value) => {setSelectValue(value)}}
                     placeholder={SelectBox_placeholder}
                     onSelect={(value) => { setText(value) }}
                     items={selectBox_items}
@@ -138,7 +142,7 @@ export default function Input(props) {
 
 
 const styles = StyleSheet.create({
-    possition: (justifyContent = 'center', alignItems = 'center',flex=1) => {
+    possition: (justifyContent = 'center', alignItems = 'center', flex = 1) => {
         return {
             flex: flex,
             justifyContent: justifyContent,

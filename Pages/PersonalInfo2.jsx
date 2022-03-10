@@ -33,8 +33,8 @@ export default function PersonalInfo2(props) {
             let moreInfo = {
                 weight: weight,
                 height: height,
-                id_insulinTypeShort: insulinTypeShort,
-                id_insulinTypeLong:insulinTypeLong,
+                InsulinType_id: insulinTypeShort,
+                InsulinType_long_id:insulinTypeLong,
                 phoneNumber: phoneNumber,
                 mailDoctor: mailDoctor
             }
@@ -84,7 +84,7 @@ export default function PersonalInfo2(props) {
         }).then((resulte) => {
             let longType=[];
             let shortType=[];
-           resulte.map(x=>{  let obj={itemKey:x.id,label:x.name, value:x.id}
+           resulte.map((x,i)=>{  let obj={itemKey:i,label:x.name, value:x.id}
           x.type=='short'? shortType.push(obj):longType.push(obj)
         })
         console.log("longType========>",longType);
@@ -132,6 +132,19 @@ export default function PersonalInfo2(props) {
                 getValue={(value) => setHeight(value)}
             /> 
 </View>
+<Input
+                label='Emergency Contact Phone Number'
+                validtion='number'
+                keyboardType='number-pad'
+                placeholder='+972'
+                getValue={(value) => setPhoneNumber(value)}
+            />
+
+            <Input
+                label='Add Your Doctor By Email'
+                keyboardType='email-address'
+                getValue={(value) => setMailDoctor(value)}
+            />
             <Input
                 label='Short insulin type'
                 required={true}
@@ -164,19 +177,7 @@ export default function PersonalInfo2(props) {
                     { itemKey: 2, label: 'Leg', value: 'Leg' },
                     { itemKey: 3, label: 'Buttock', value: 'Buttock' },
                 ]} /> */}
-            <Input
-                label='Emergency Contact Phone Number'
-                validtion='number'
-                keyboardType='number-pad'
-                placeholder='+972'
-                getValue={(value) => setPhoneNumber(value)}
-            />
-
-            <Input
-                label='Add Your Doctor By Email'
-                keyboardType='email-address'
-                getValue={(value) => setMailDoctor(value)}
-            />
+       
 
 
             {/* Register Page Button */}

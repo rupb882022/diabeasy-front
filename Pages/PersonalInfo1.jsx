@@ -73,6 +73,7 @@ export default function PersonalInfo1(props) {
 
 
     const RegisterUser = () => {
+        
         if (FirstName && email && password && gender && birthDate) {
          let userDetilas = {
                 firstName: FirstName,
@@ -178,9 +179,9 @@ export default function PersonalInfo1(props) {
                 SelectBox_placeholder='Gender'
                 getValue={(value) => setGender(value)}
                 selectBox_items={[
-                    { itemKey: 0, label: 'Male', value: 'M' },
-                    { itemKey: 1, label: 'Female', value: 'F' },
-                    { itemKey: 2, label: 'Other', value: 'O' },
+                    { itemKey: 0, label: 'Male', value: 'm' },
+                    { itemKey: 1, label: 'Female', value: 'f' },
+                    { itemKey: 2, label: 'Other', value: 'o' },
                 ]} />
 
             <Input
@@ -234,7 +235,6 @@ export default function PersonalInfo1(props) {
                     /></>
                 }
             </View>
-            {/* <PickerMenu ref={sheetRef} /> */}
         </View>
     );
 }
