@@ -158,7 +158,7 @@ export default function Maps(props) {
 
         </Marker>
         <Circle
-          center={pin}
+          center={region}
           radius={distance}
         />
         <TouchableOpacity

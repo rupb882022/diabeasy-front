@@ -1,5 +1,5 @@
 import {Alert, View, Text, StyleSheet, Platform, Image, TouchableOpacity } from 'react-native';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useContext } from 'react';
 import * as ImagePicker from 'expo-image-picker'
 import { Constants } from 'expo-constants';
 import Button from '../../CTools/Button';
@@ -7,14 +7,19 @@ import { Ionicons } from '@expo/vector-icons';
 import PopUp from '../../CTools/PopUp';
 import upiUrl from '../../Routes/Url';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { UserContext } from '../../CTools/UserDetailsHook';
+import * as Progress from 'react-native-progress';
 
 
-export default function Gallery(props,{navigation}) {
-  const {description=true, picUri,show ,setShow,imageName}=props
 
-  const [userDetails, setUserDetails] = useState();
+export default function Gallery(props) {
+  const {description=true, picUri,show ,setShow,navigation,imageName,page,donePicture,setDonePicture}=props
+
+
+  const {userDetails, setUserDetails} = useContext(UserContext);
   const [image, setImage] = useState(picUri);
-
+  const [loading, setLoading] = useState(false);
+  
   //waiting for permision
   useEffect(() => {
     (async ()=>{
@@ -28,19 +33,8 @@ export default function Gallery(props,{navigation}) {
   })
   }, [])
 
-useEffect(()=>{
-  getData();
-},[userDetails])
 
-  // get user details from storge
-  const getData = async () => {
-    try {
-        const jsonValue = await AsyncStorage.getItem('userDetails')
-        jsonValue != null ? setUserDetails(JSON.parse(jsonValue)) : null;
-    } catch (e) {
-        console.log(e)
-    }
-}
+
     
     
   //choose *only* picture
@@ -64,10 +58,11 @@ ImgUpload(`${image}`
    ,`${imageName}.jpg`)
   
  //imageName=='ingredientPic' || imageName=='recipePic' 
-  //complite code for recipe and imgredient
-
-  
+  //complite code for recipe and imgredient 
 }
+
+
+
 
 //#Nir check (!Request.Content.IsMimeMultipartContent()) in C#
 const ImgUpload = (imgUri, picName) => {
@@ -82,6 +77,7 @@ const ImgUpload = (imgUri, picName) => {
     body: dataI,
 
     }
+     setLoading(true)
     fetch(upiUrl+"uploadpicture", config)
     .then((res) => {
     if (res.status == 201) {console.log('resStatus=>',res.status);return res.json(); }
@@ -96,11 +92,20 @@ const ImgUpload = (imgUri, picName) => {
     let imageNameWithGUID = responseData.substring(responseData.indexOf(picNameWOExt),
     responseData.indexOf(".jpg") + 4);
     console.log('new pic name=> ',imageNameWithGUID);
-    console.log("img uploaded successfully!");
+    console.log("img uploaded successfully!");   
+    setLoading(false)
+   setDonePicture(true)
+   setShow(false)
+   console.log('DONE!');
+   
     }
-    else {alert('error uploding ...'); }
+    else {alert('error uploding ...');
+    setLoading(false)
+  }
     })
-    .catch(err => {console.log('err upload= ' + err); });
+    .catch(err => {console.log('err upload= ' + err);     
+    setLoading(false)
+  });
   }
 
 //Todo change icon
@@ -123,10 +128,21 @@ element={
 
 <Button text='DONE'
 style={styles.button}
-onPress={btnImgUpload}
-
-//onPress={()=> {image!=null? sendData(image): alert('picture not selected')}}
+onPress={image?btnImgUpload:alert('picture not selected')}
 /> 
+{ loading && <View style={styles.progress}>
+            <Progress.Bar
+              width={255}
+              height={15}
+              borderRadius={5}
+              borderColor={"#bbe4f2"}
+              color='#69BEDC' //#FFCF84-orange
+              useNativeDriver={true}
+              borderWidth={2}
+              indeterminate={true}
+              animationConfig={{ bounciness: 20 }}
+            />
+          </View>}
 </>
 }
 button_txt='Cancle'

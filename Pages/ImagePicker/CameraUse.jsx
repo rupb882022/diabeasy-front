@@ -6,7 +6,6 @@ import { Feather, SimpleLineIcons, AntDesign, Ionicons } from '@expo/vector-icon
 import GalleryPick from './GalleryPick';
 import PopUp from '../../CTools/PopUp';
 import Gallery from './Gallery'
-
 export default function CameraUse(props) {
 const {navigation,route}=props
 
@@ -19,6 +18,12 @@ let imageName =route.params.imageName;
   const [flashMode, setFlashMode] = useState('off')
   const [show, setShow] = useState(false);
  // const [dataPic, setDataPic] = useState(null);
+ const [donePicture, setDonePicture] = useState(false);
+
+useEffect(()=>{
+console.log('done?=>',donePicture);
+donePicture?navigation.goBack():'';
+ },[donePicture])
 
   useEffect(() => {
     (async () => {
@@ -119,7 +124,7 @@ let imageName =route.params.imageName;
        setShow={(isShow) => setShow(isShow)}
        picUri={picUri}
        imageName={imageName}
-      // picData={picUri}
+       setDonePicture={(donePicture)=>setDonePicture(donePicture)}
              />}
 
     </View>

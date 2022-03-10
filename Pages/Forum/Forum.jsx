@@ -73,6 +73,8 @@ export default function Forum() {
     <View style={{ flex: 3, justifyContent: 'flex-start',paddingBottom:'5%' }}>
       <Input
         placeholder='description..'
+        multiline={true}
+        numberOfLines={4}
         height={70}
         width={100}
         getValue={(value) => setCommentValue(value)}
