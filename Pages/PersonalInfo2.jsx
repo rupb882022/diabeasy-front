@@ -15,12 +15,12 @@ export default function PersonalInfo2(props) {
     const [weight, setWeight] = useState();
     const [height, setHeight] = useState();
     const [insulinTypeShort, setInsulinTypeShort] = useState();
-    const [insulinTypeLong,setInsulinTypeLong]=useState();
+    const [insulinTypeLong, setInsulinTypeLong] = useState(null);
     // const [spot, setSpot] = useState();
-    const [phoneNumber, setPhoneNumber] = useState();
-    const [mailDoctor, setMailDoctor] = useState();
-    const [selectInsulinLong, setSelectInsulinLong] = useState();
-    const [selectInsuliShort, setSelectInsulinShort] = useState();
+    const [phoneNumber, setPhoneNumber] = useState(null);
+    const [mailDoctor, setMailDoctor] = useState(null);
+    const [selectInsulinLong, setSelectInsulinLong] = useState(null);
+    const [selectInsuliShort, setSelectInsulinShort] = useState(null);
 
     useEffect(() => {
         setInterval(() => setLoading(false), 1500);
@@ -34,7 +34,7 @@ export default function PersonalInfo2(props) {
                 weight: weight,
                 height: height,
                 InsulinType_id: insulinTypeShort,
-                InsulinType_long_id:insulinTypeLong,
+                InsulinType_long_id: insulinTypeLong,
                 phoneNumber: phoneNumber,
                 mailDoctor: mailDoctor
             }
@@ -47,6 +47,7 @@ export default function PersonalInfo2(props) {
         }
     }
     const RegisterUser = (userDetilas) => {
+        console.log("apiUrl",`${apiUrl}User/RegisterUser`);
         const configurationObject = {
             url: `${apiUrl}User/RegisterUser`,
             method: "POST",
@@ -54,8 +55,8 @@ export default function PersonalInfo2(props) {
         };
         axios(configurationObject)
             .then((response) => {
-                console.log("status=",response.status)
-                console.log("status=",response)
+                console.log("status=", response.status)
+                console.log("status=", response)
                 if (response.status === 200 || response.status === 201) {
                     navigation.navigate('Login') //Todo approve the register
                 } else {
@@ -63,7 +64,7 @@ export default function PersonalInfo2(props) {
                 }
             })
             .catch((error) => {
-                alert(error);
+                console.log(error);
             });
     }
 
@@ -75,21 +76,20 @@ export default function PersonalInfo2(props) {
                 'Accept': 'appliction/json; charset=UTF-8'
             })
         }).then(res => {
-            console.log("res",res.status)
+            console.log("res", res.status)
             if (res && res.status == 200) {
                 return res.json();
             } else {
                 console.log("status code:", res.status)
             }
         }).then((resulte) => {
-            let longType=[];
-            let shortType=[];
-           resulte.map((x,i)=>{  let obj={itemKey:i,label:x.name, value:x.id}
-          x.type=='short'? shortType.push(obj):longType.push(obj)
-        })
-        console.log("longType========>",longType);
-        console.log("shortType",shortType);
-        setSelectInsulinLong(longType);
+            let longType = [];
+            let shortType = [];
+            resulte.map((x, i) => {
+                let obj = { itemKey: i, label: x.name, value: x.id }
+                x.type == 'short' ? shortType.push(obj) : longType.push(obj)
+            })
+            setSelectInsulinLong(longType);
             setSelectInsulinShort(shortType);
         },
             (error) => {
@@ -97,7 +97,7 @@ export default function PersonalInfo2(props) {
             })
     }
 
-    if(!selectInsuliShort&&!selectInsulinLong){
+    if (!selectInsuliShort && !selectInsulinLong) {
         getInsulinType();
     }
     return (
@@ -105,66 +105,67 @@ export default function PersonalInfo2(props) {
             {loading && <Loading opacity={'#d6f2fc'} />}
             <Header
                 title='Medical Info'
-                possiton={-15}
+                possiton={-10}
                 marginLeft={4}
                 line={false}
             />
-                        <View style={{flexDirection:'row',flex:1,marginLeft:'6%'}}>
-            <Input
-                label='Weight'
-                width={70}
-                alignItems='center'
-                validtion='number'
-                keyboardType='number-pad'
-                placeholder='  kg'
-                required={true}
-                getValue={(value) => setWeight(value)}
-            />
+            <View style={styles.inputs}>
+                <View style={{ flexDirection: 'row', flex: 1, marginLeft: '6%' }}>
+                    <Input
+                        label='Weight'
+                        width={70}
+                        alignItems='center'
+                        validtion='number'
+                        keyboardType='number-pad'
+                        placeholder='  kg'
+                        required={true}
+                        getValue={(value) => setWeight(value)}
+                    />
 
-            <Input
-                label='Height'
-                validtion='number'
-                keyboardType='number-pad'
-                placeholder='cm'
-                width={70}
-                alignItems='flex-start'
-                required={true}
-                getValue={(value) => setHeight(value)}
-            /> 
-</View>
-<Input
-                label='Emergency Contact Phone Number'
-                validtion='number'
-                keyboardType='number-pad'
-                placeholder='+972'
-                getValue={(value) => setPhoneNumber(value)}
-            />
+                    <Input
+                        label='Height'
+                        validtion='number'
+                        keyboardType='number-pad'
+                        placeholder='cm'
+                        width={70}
+                        alignItems='flex-start'
+                        required={true}
+                        getValue={(value) => setHeight(value)}
+                    />
+                </View>
+                <Input
+                    label='Emergency Contact Phone Number'
+                    validtion='number'
+                    keyboardType='number-pad'
+                    placeholder='+972'
+                    getValue={(value) => setPhoneNumber(value)}
+                />
 
-            <Input
-                label='Add Your Doctor By Email'
-                keyboardType='email-address'
-                getValue={(value) => setMailDoctor(value)}
-            />
-            <Input
-                label='Short insulin type'
-                required={true}
-                type='selectBox'
-                editable={false}
-                getValue={(value) => setInsulinTypeShort(value)}
-                SelectBox_placeholder='Select short insulin type'
-                selectBox_items={selectInsuliShort}
-            />
-                  <Input
-                label='Long insulin type'
-                required={true}
-                type='selectBox'
-                selectSide='right'
-                editable={false}
-                getValue={(value) => setInsulinTypeLong(value)}
-                SelectBox_placeholder='Select long insulin type'
-                selectBox_items={selectInsulinLong}
-            />
-            {/* <Input
+                <Input
+                    label='Add Your Doctor By Email'
+                    keyboardType='email-address'
+                    getValue={(value) => setMailDoctor(value)}
+                />
+                <Input
+                    label='Short insulin type'
+                    required={true}
+                    type='selectBox'
+                    editable={false}
+                    getValue={(value) => setInsulinTypeShort(value)}
+                    SelectBox_placeholder='Select short insulin type'
+                    selectBox_items={selectInsuliShort}
+                />
+                <Input
+                    label='Long insulin type'
+                    required={true}
+                    type='selectBox'
+                    selectSide='right'
+                    editable={false}
+                    getValue={(value) => setInsulinTypeLong(value)}
+                    SelectBox_placeholder='Select long insulin type'
+                    selectBox_items={selectInsulinLong}
+                />
+                {/* <Input
                 label='injection spot'
                 editable={false}
                 type='selectBox'
@@ -177,8 +178,8 @@ export default function PersonalInfo2(props) {
                     { itemKey: 2, label: 'Leg', value: 'Leg' },
                     { itemKey: 3, label: 'Buttock', value: 'Buttock' },
                 ]} /> */}
-       
 
+            </View>
 
             {/* Register Page Button */}
             <View style={styles.Buttons}>
@@ -197,7 +198,7 @@ export default function PersonalInfo2(props) {
                         text="Register"
                         width={8}
                         height={4}
-                        justifyContent='flex-start'
+                        justifyContent='center'
                         onPress={checkRegister}
                     />
                 </View>
@@ -223,11 +224,16 @@ const styles = StyleSheet.create({
     Register: {
         flex: 1,
         alignItems: 'flex-end',
-        marginRight: '10%'
+        marginRight: '10%',
+        marginBottom:'7%'
     },
     txt: {
         paddingRight: '3%',
-        paddingBottom: '1%'
+        top: '20%'
     },
-
+    inputs: {
+        flex: 4,
+        justifyContent: 'flex-start',
+        bottom: '2%'
+    }
 });

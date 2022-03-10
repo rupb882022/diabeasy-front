@@ -1,5 +1,5 @@
-import { View, StyleSheet, Text, TouchableOpacity, Image } from 'react-native';
-import React, { useState, useRef, useEffect } from 'react';
+import { View, StyleSheet, Text } from 'react-native';
+import React, { useState, useEffect } from 'react';
 import Header from '../CTools/Header';
 import Input from '../CTools/Input';
 import Button from '../CTools/Button';
@@ -11,7 +11,7 @@ import apiUrl from '../Routes/Url'
 import axios from "axios";
 
 
-
+//Todo beutiful alert!
 export default function PersonalInfo1(props) {
     const { route, navigation } = props
 
@@ -23,6 +23,7 @@ export default function PersonalInfo1(props) {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [validtion, setValidtion] = useState('')
+    const [image, setImage] = useState('')
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -30,30 +31,34 @@ export default function PersonalInfo1(props) {
     }, [])
 
 
-
-    // const sheetRef = useRef(null);
-    // //close menu picture picker
-    // const closeSheet = () => {
-    //     if (sheetRef.current) {
-    //         sheetRef.current.close();
-    //     }
-    // };
-    // //open menu picture picker
-    // const openSheet = () => {
-    //     if (sheetRef.current) {
-    //         sheetRef.current.open();
-    //     }
-    // };
-
     const passwordValid = (value) => {
         //wiil render the page at the end of function
         flushSync(() => {
             password == value ? setValidtion('') : setValidtion('not the same password')
         })
     }
-
+    const checkValid = () => {
+        //valid short names
+        console.log("FirstName.length1", FirstName.length);
+        if ((FirstName && FirstName.length < 2) || (LastName && LastName.length < 2)) {
+            alert('minimum 2 letters for first and last name')
+            console.log("FirstName.length", FirstName.length);
+            return false;
+        }
+        //valid worng mail
+        if (email && (!email.includes("@") || !email.includes("."))) {
+            alert("worng email input")
+            return false;
+        }
+        if (!FirstName || !email || !password || !gender || !birthDate) {
+            alert("please fill in all details");
+            return false;
+        }
+        return true;
+    }
     const nextPage = () => {
-        if (FirstName && email && password && gender && birthDate) {
+
+        if (checkValid()) {
             setLoading(true);
             navigation.navigate('PersonalInfo2',
                 {
@@ -66,16 +71,13 @@ export default function PersonalInfo1(props) {
                         BirthDate: birthDate
                     }
                 })
-        } else {
-            alert("please fill in all details");
         }
     }
 
 
     const RegisterUser = () => {
-        
-        if (FirstName && email && password && gender && birthDate) {
-         let userDetilas = {
+        if (checkValid()) {
+            let userDetilas = {
                 firstName: FirstName,
                 lastName: LastName,
                 email: email,
@@ -88,7 +90,7 @@ export default function PersonalInfo1(props) {
                 method: "POST",
                 data: userDetilas
             };
-            console.log("userDetilas",userDetilas);
+            console.log("userDetilas", userDetilas);
             axios(configurationObject)
                 .then((response) => {
                     console.log("status=", response.status)
@@ -104,15 +106,13 @@ export default function PersonalInfo1(props) {
                 .catch((error) => {
                     if (error.status === 409) {
                         console.log("response2", response);
-                    }else{
-                    console.log(error);
+                    } else {
+                        console.log(error);
                     }
                 })
         }
-        else {
-            alert("please fill in all details");
-        }
     }
+
 
     //Todo fix validtion label in last and first name
     return (
@@ -128,7 +128,6 @@ export default function PersonalInfo1(props) {
                 <Input
                     label='First Name'
                     validtion='letters'
-                    required={true}
                     setValue={FirstName}
                     width={55}
                     getValue={(value) => setFirstName(value)}
@@ -137,7 +136,6 @@ export default function PersonalInfo1(props) {
                 <Input
                     label='Last Name'
                     validtion='letters'
-                    required={true}
                     setValue={LastName}
                     width={75}
                     getValue={(value) => setLastName(value)}
@@ -201,41 +199,55 @@ export default function PersonalInfo1(props) {
 
             <View style={styles.uploadbutton}>
                 <Text>Upload Profile Picture</Text>
-                {user == 'Doctor' ?
                     <Button
                         element={<MaterialCommunityIcons name="camera-plus-outline" size={30} color="black" />}
                         width={5}
                         height={3}
-                        onPress={() => { navigation.navigate('CameraUse', { imageName: 'profileDoctor' }) }}
-                    /> :
-                    <Button
-                        element={<MaterialCommunityIcons name="camera-plus-outline" size={30} color="black" />}
-                        width={5}
-                        height={3}
-                        onPress={() => { navigation.navigate('CameraUse', { imageName: 'profilePatient' }) }}
-                    />
-                }
+                        onPress={() => { navigation.navigate('CameraUse', { imageName: user == 'Doctor' ? 'profileDoctor':'profilePatient' }) }}
+                    /> 
             </View>
 
-            <View style={styles.Next}>
-                {user == "Doctor" ? <Button
-                    text="Register"
-                    width={10}
-                    height={2}
-                    justifyContent='flex-start'
-                    onPress={RegisterUser}
-                /> : <>
-                    <Text style={styles.txt}> 1/2</Text>
+            <View style={styles.Buttons}>
+                <View style={styles.back}>
                     <Button
-                        text="Next"
-                        width={10}
-                        height={2}
-                        justifyContent='flex-start'
-                        onPress={nextPage}
-                    /></>
+                        text="back"
+                        width={12}
+                        height={4}
+                        justifyContent='center'
+                        onPress={() => { setLoading(true); navigation.goBack() }}
+                    />
+                </View>
+
+                {user == "Doctor" ?<>
+                <View style={styles.Register}>
+                        <Button
+                            text="Register"
+                            width={10}
+                            height={4}
+                            alignItems='center'
+                            justifyContent='flex-start'
+                            onPress={RegisterUser}
+                        />  
+                        </View>
+                        </> 
+                         :
+                          <>
+                        <View style={styles.txt}>
+                            <Text>1/2</Text>
+                        </View>
+                        <View style={styles.Next}>
+                            <Button
+                                alignItems='flex-end'
+                                text="Next"
+                                width={12}
+                                height={4}
+                                justifyContent='flex-start'
+                                onPress={nextPage}
+                            /></View></>
                 }
             </View>
         </View>
+
     );
 }
 const styles = StyleSheet.create({
@@ -245,12 +257,13 @@ const styles = StyleSheet.create({
         top: '2%'
     },
     Next: {
-        flex: 1.3,
+        flex: 1,
         alignItems: 'flex-end',
-        marginRight: '5%'
+        marginRight: '13%',
+        marginTop: '6%'
     },
     txt: {
-        paddingRight: '3%',
+        left: '150%',
         paddingBottom: '1%'
     },
     uploadbutton: {
@@ -260,6 +273,23 @@ const styles = StyleSheet.create({
     logo: {
         width: 40,
         height: 40
+    },
+    Buttons: {
+        flex: 1,
+        flexDirection: 'row',
+        bottom: '2%',
+        marginLeft: '2%'
+    },
+    back: {
+        flex: 1,
+        alignItems: 'center',
+        paddingBottom: '4%'
+    },
+    Register:{
+        flex: 1,
+        alignItems: 'flex-end',
+        marginRight: '13%',
+        marginTop: '5%'
     }
 
 });
