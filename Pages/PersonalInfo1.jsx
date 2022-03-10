@@ -7,6 +7,11 @@ import Button from '../CTools/Button';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Loading from '../CTools/Loading';
 import { flushSync } from 'react-dom'
+import apiUrl from '../Routes/Url'
+import axios from "axios";
+
+
+
 export default function PersonalInfo1(props) {
     const { route, navigation } = props
 
@@ -47,28 +52,68 @@ export default function PersonalInfo1(props) {
         })
     }
 
-const nextPage=()=>{
-    console.log("FirstName",FirstName);
-    console.log("email",email);
-    console.log("password",password);
-    console.log("gender",gender);
-    console.log("birthDate",birthDate);
+    const nextPage = () => {
         if (FirstName && email && password && gender && birthDate) {
             setLoading(true);
             navigation.navigate('PersonalInfo2',
-                {userInfo:{
-                    FirstName: FirstName,
-                    LastName:LastName,
-                    Email: email,
-                    Password: password,
-                    Gender: gender,
-                    BirthDate: birthDate
-                }})
-        }else{
+                {
+                    userInfo: {
+                        firstName: FirstName,
+                        lastName: LastName,
+                        email: email,
+                        password: password,
+                        gender: gender,
+                        BirthDate: birthDate
+                    }
+                })
+        } else {
             alert("please fill in all details");
         }
-}
-//Todo fix validtion label in last and first name
+    }
+
+
+    const RegisterUser = () => {
+        if (FirstName && email && password && gender && birthDate) {
+         let userDetilas = {
+                firstName: FirstName,
+                lastName: LastName,
+                email: email,
+                password: password,
+                gender: gender,
+                BirthDate: birthDate
+            }
+            const configurationObject = {
+                url: `${apiUrl}User/RegisterUser`,
+                method: "POST",
+                data: userDetilas
+            };
+            console.log("userDetilas",userDetilas);
+            axios(configurationObject)
+                .then((response) => {
+                    console.log("status=", response.status)
+                    console.log("status=", response)
+                    if (response.status === 200 || response.status === 201) {
+                        navigation.navigate('Login') //Todo approve the register
+                    } else if (response.status === 409) {
+                        console.log("response2", response);
+                    } else {
+                        throw new Error("An error has occurred");
+                    }
+                })
+                .catch((error) => {
+                    if (error.status === 409) {
+                        console.log("response2", response);
+                    }else{
+                    console.log(error);
+                    }
+                })
+        }
+        else {
+            alert("please fill in all details");
+        }
+    }
+
+    //Todo fix validtion label in last and first name
     return (
         <View style={styles.container}>
             {loading && <Loading opacity={'#d6f2fc'} />}
@@ -78,25 +123,25 @@ const nextPage=()=>{
                 marginLeft={4}
                 line={false}
             />
-            <View style={{flexDirection:'row',flex:1,alignItems:'space-around'}}>
-            <Input
-                label='First Name'
-                validtion='letters'
-                required={true}
-                setValue={FirstName}
-                width={55}
-                getValue={(value) => setFirstName(value)}
-                alignItems='center'
-            />
-             <Input
-                label='Last Name'
-                validtion='letters'
-                required={true}
-                setValue={LastName}
-                width={75}
-                getValue={(value) => setLastName(value)}
-                alignItems='flex-start'
-            />
+            <View style={{ flexDirection: 'row', flex: 1, alignItems: 'space-around' }}>
+                <Input
+                    label='First Name'
+                    validtion='letters'
+                    required={true}
+                    setValue={FirstName}
+                    width={55}
+                    getValue={(value) => setFirstName(value)}
+                    alignItems='center'
+                />
+                <Input
+                    label='Last Name'
+                    validtion='letters'
+                    required={true}
+                    setValue={LastName}
+                    width={75}
+                    getValue={(value) => setLastName(value)}
+                    alignItems='flex-start'
+                />
             </View>
             <Input
                 label='Email'
@@ -133,9 +178,9 @@ const nextPage=()=>{
                 SelectBox_placeholder='Gender'
                 getValue={(value) => setGender(value)}
                 selectBox_items={[
-                    { itemKey: 0, label: 'Male', value: 'Male' },
-                    { itemKey: 1, label: 'Female', value: 'Female' },
-                    { itemKey: 2, label: 'Other', value: 'Other' },
+                    { itemKey: 0, label: 'Male', value: 'M' },
+                    { itemKey: 1, label: 'Female', value: 'F' },
+                    { itemKey: 2, label: 'Other', value: 'O' },
                 ]} />
 
             <Input
@@ -177,7 +222,7 @@ const nextPage=()=>{
                     width={10}
                     height={2}
                     justifyContent='flex-start'
-                    onPress={() => { setLoading(true); navigation.navigate('Drawer') }}
+                    onPress={RegisterUser}
                 /> : <>
                     <Text style={styles.txt}> 1/2</Text>
                     <Button

@@ -39,7 +39,7 @@ export default function Footer(props) {
             <Text style={styles.color(color.home)}>Home</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={()=>handelClick('Sports location')}>
+        <TouchableOpacity onPress={()=>handelClick('Sports Location')}>
           <View style={{ flexDirection: 'column', alignItems: 'center' }}>
             <Ionicons name="football-outline" size={30} color={color.sports} />
             <Text style={styles.color(color.sports)}>Sport</Text>

@@ -16,7 +16,7 @@ export default function PersonalInfo2(props) {
     const [height, setHeight] = useState();
     const [insulinTypeShort, setInsulinTypeShort] = useState();
     const [insulinTypeLong,setInsulinTypeLong]=useState();
-    const [spot, setSpot] = useState();
+    // const [spot, setSpot] = useState();
     const [phoneNumber, setPhoneNumber] = useState();
     const [mailDoctor, setMailDoctor] = useState();
     const [selectInsulinLong, setSelectInsulinLong] = useState();
@@ -27,14 +27,14 @@ export default function PersonalInfo2(props) {
     }, []);
 
     const checkRegister = () => {
-        if (insulinTypeShort &&insulinTypeLong&& height && weight) {
+        //if only insulinTypeShort it is means that user use Pump
+        if (insulinTypeShort && height && weight) {
             setLoading(true);
             let moreInfo = {
                 weight: weight,
                 height: height,
-                insulinTypeShort: insulinTypeShort,
-                insulinTypeLong:insulinTypeLong,
-                spot: spot,
+                id_insulinTypeShort: insulinTypeShort,
+                id_insulinTypeLong:insulinTypeLong,
                 phoneNumber: phoneNumber,
                 mailDoctor: mailDoctor
             }
@@ -54,6 +54,8 @@ export default function PersonalInfo2(props) {
         };
         axios(configurationObject)
             .then((response) => {
+                console.log("status=",response.status)
+                console.log("status=",response)
                 if (response.status === 200 || response.status === 201) {
                     navigation.navigate('Login') //Todo approve the register
                 } else {
@@ -82,7 +84,7 @@ export default function PersonalInfo2(props) {
         }).then((resulte) => {
             let longType=[];
             let shortType=[];
-           resulte.map(x=>{  let obj={itemKey:x.id,label:x.name, value:x.name}
+           resulte.map(x=>{  let obj={itemKey:x.id,label:x.name, value:x.id}
           x.type=='short'? shortType.push(obj):longType.push(obj)
         })
         console.log("longType========>",longType);
@@ -136,7 +138,7 @@ export default function PersonalInfo2(props) {
                 type='selectBox'
                 editable={false}
                 getValue={(value) => setInsulinTypeShort(value)}
-                SelectBox_placeholder='Select spot of injection'
+                SelectBox_placeholder='Select short insulin type'
                 selectBox_items={selectInsuliShort}
             />
                   <Input
@@ -146,10 +148,10 @@ export default function PersonalInfo2(props) {
                 selectSide='right'
                 editable={false}
                 getValue={(value) => setInsulinTypeLong(value)}
-                SelectBox_placeholder='Select spot of injection'
+                SelectBox_placeholder='Select long insulin type'
                 selectBox_items={selectInsulinLong}
             />
-            <Input
+            {/* <Input
                 label='injection spot'
                 editable={false}
                 type='selectBox'
@@ -161,8 +163,7 @@ export default function PersonalInfo2(props) {
                     { itemKey: 1, label: 'Belly', value: 'Belly' },
                     { itemKey: 2, label: 'Leg', value: 'Leg' },
                     { itemKey: 3, label: 'Buttock', value: 'Buttock' },
-                ]} />
-
+                ]} /> */}
             <Input
                 label='Emergency Contact Phone Number'
                 validtion='number'
