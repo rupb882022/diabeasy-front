@@ -50,10 +50,10 @@ export default function Header(props) {
     <>
       <View style={styles.container(flex, flexDirection, alignItems, justifyContent, possiton)}>
         <Text style={styles.title(paddingRight, marginLeft)}>{title}</Text>
-        <Image
+        {logo_image&&<Image
           style={styles.Image(image_heigt, image_width, image_marginTop, image_marginBottom)}
           source={icon}
-        />
+        />}
       </View>
       {line ? <View style={styles.line(possiton)}></View> : <></>}
     </>
