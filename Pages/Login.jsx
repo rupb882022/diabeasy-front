@@ -49,7 +49,7 @@ export default function Login({ navigation }) {
     const checkUser = () => {
         setLoading(true);
         //get user details (id,image,full name)
-        fetch(apiUrl + `Patients/userDetails/${email}/${password}`, {
+        fetch(apiUrl + `User/userDetails/${email}/${password}`, {
             method: 'GET',
             headers: new Headers({
                 'Content-Type': 'appliction/json; charset=UTF-8',

@@ -10,7 +10,6 @@ export default function Global() {
   const {userDetails, setUserDetails} = loginHook();
   
 
-
   return (
     <UserContext.Provider value={{userDetails,setUserDetails}}>
       <Navigtor/>

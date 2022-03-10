@@ -14,10 +14,6 @@ export default function ingredient(props) {
 
   return (
     <View style={styles.container}>
-      {/* {favorite?
-        <TouchableOpacity onPress={()=>setFavorite(false)}> <Ionicons name="heart-sharp" size={24} color="black" /> </TouchableOpacity> : 
-        <TouchableOpacity onPress={()=>setFavorite(true)}> <Ionicons name="heart-outline" size={24} color="black" /> </TouchableOpacity>
-        } */}
       <FlipCard
         // style={styles.card(index)}
         friction={15} //The friction of card animation
@@ -72,18 +68,6 @@ export default function ingredient(props) {
       </FlipCard>
     </View>
 
-
-
-
-
-
-    // <View style={styles.container}>
-    // <Card
-    //   name={name}
-    //   image={image}
-    //   index={index}
-    // />
-    // </View>
   );
 }
 

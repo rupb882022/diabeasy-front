@@ -22,6 +22,7 @@ export default function Forum() {
   const [loading, setLoading] = useState(true);
   const [comment, setComment] = useState({});
   const [commentValue, setCommentValue] = useState();
+  
   const {userDetails} = useContext(UserContext);
 
 
