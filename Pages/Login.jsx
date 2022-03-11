@@ -64,6 +64,7 @@ export default function Login({ navigation }) {
         }).then((resulte) => {
             if (resulte) {
                 set_User_Details(resulte);
+                setValidtionUser("")
             } else {
                 setValidtionUser("Opps.. worng password or Email");
                 setLoading(false);

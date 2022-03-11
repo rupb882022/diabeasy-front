@@ -22,7 +22,7 @@ let imageName =route.params.imageName;
 
 useEffect(()=>{
 console.log('done?=>',donePicture);
-donePicture?navigation.goBack():'';
+donePicture?navigation.goBack('',{pic:picUri}):'';
  },[donePicture])
 
   useEffect(() => {

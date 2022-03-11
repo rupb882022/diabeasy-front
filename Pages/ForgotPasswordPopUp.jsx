@@ -40,8 +40,8 @@ if(password==code){
     if (mail) {
       setLoading(true)
       let tempMail=mail.replace(".","=");
-      console.log(`${apiUrl}Patients/getPassword/${tempMail}`);
-      fetch(apiUrl + `Patients/getPassword/${tempMail}`,{
+      console.log(`${apiUrl}User/getPassword/${tempMail}`);
+      fetch(apiUrl + `User/getPassword/${tempMail}`,{
         method: 'GET',
         headers: new Headers({
           'Content-Type': 'appliction/json; charset=UTF-8',
@@ -67,7 +67,7 @@ if(password==code){
           setLoading(false)
         })
 
-      // axios.get(apiUrl + `Patients?url=getPassword&mail=${mail}`)
+      // axios.get(apiUrl + `User?url=getPassword&mail=${mail}`)
       //   .then(res => {
       //     console.log(res);
       //     console.log("status code:", res.status)

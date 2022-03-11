@@ -9,6 +9,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { UserContext } from '../CTools/UserDetailsHook';
 import upiUrl from '../Routes/Url';
 import Moment from 'moment';
+import Loading from '../CTools/Loading';
 import * as Progress from 'react-native-progress';
 
 
@@ -25,7 +26,7 @@ const [loading, setLoading] = useState(false);
 
 const getPrescriptions = () => {
   setLoading(true)
-      fetch(upiUrl + `Prescription/${userDetails.id}`, {
+      fetch(upiUrl + `User/Prescription/${userDetails.id}`, {
           method: 'GET',
           headers: new Headers({
               'Content-Type': 'appliction/json; charset=UTF-8',
@@ -54,7 +55,7 @@ const getPrescriptions = () => {
 }
 useEffect(() => {
   //get all user prescription
-  // if(prescriptions==[]){}
+  // if(prescriptions==[]){
   getPrescriptions()
   console.log("pres=>",prescriptions);
 
@@ -235,7 +236,9 @@ source={require('../images/welcom_man.JPG.png')}
       backgroundColor='#d6f2fc'
 element={popupElement}
 />}
-{ loading && <View style={styles.progress}>
+{ loading &&<Loading/>}
+
+{/* <View style={styles.progress}>
             <Progress.Bar
               width={255}
               height={15}
@@ -247,7 +250,8 @@ element={popupElement}
               indeterminate={true}
               animationConfig={{ bounciness: 20 }}
             />
-          </View>}
+          </View> */}
+          
 
 </View>
   )

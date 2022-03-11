@@ -14,7 +14,6 @@ import axios from "axios";
 //Todo beutiful alert!
 export default function PersonalInfo1(props) {
     const { route, navigation } = props
-
     let user = route.params.user;
     const [FirstName, setFirstName] = useState('')
     const [LastName, setLastName] = useState('')
@@ -23,7 +22,6 @@ export default function PersonalInfo1(props) {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [validtion, setValidtion] = useState('')
-    const [image, setImage] = useState('')
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -199,12 +197,12 @@ export default function PersonalInfo1(props) {
 
             <View style={styles.uploadbutton}>
                 <Text>Upload Profile Picture</Text>
-                    <Button
-                        element={<MaterialCommunityIcons name="camera-plus-outline" size={30} color="black" />}
-                        width={5}
-                        height={3}
-                        onPress={() => { navigation.navigate('CameraUse', { imageName: user == 'Doctor' ? 'profileDoctor':'profilePatient' }) }}
-                    /> 
+                <Button
+                    element={<MaterialCommunityIcons name="camera-plus-outline" size={30} color="black" />}
+                    width={5}
+                    height={3}
+                    onPress={() => { navigation.navigate('CameraUse', { imageName: user == 'Doctor' ? 'profileDoctor' : 'profilePatient' }) }}
+                />
             </View>
 
             <View style={styles.Buttons}>
@@ -218,8 +216,8 @@ export default function PersonalInfo1(props) {
                     />
                 </View>
 
-                {user == "Doctor" ?<>
-                <View style={styles.Register}>
+                {user == "Doctor" ? <>
+                    <View style={styles.Register}>
                         <Button
                             text="Register"
                             width={10}
@@ -227,11 +225,11 @@ export default function PersonalInfo1(props) {
                             alignItems='center'
                             justifyContent='flex-start'
                             onPress={RegisterUser}
-                        />  
-                        </View>
-                        </> 
-                         :
-                          <>
+                        />
+                    </View>
+                </>
+                    :
+                    <>
                         <View style={styles.txt}>
                             <Text>1/2</Text>
                         </View>
@@ -285,7 +283,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingBottom: '4%'
     },
-    Register:{
+    Register: {
         flex: 1,
         alignItems: 'flex-end',
         marginRight: '13%',

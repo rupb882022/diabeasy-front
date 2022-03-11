@@ -41,8 +41,7 @@ export default function GalleryPick(props,{navigation}) {
     }
   }
 
-  //const back=()=>{navigation.navigate('PersonalInfo1',{params:image})}
-//Todo change icon
+//Todo change icon and text
  return (
     <View style={styles.container}>
      <TouchableOpacity style={styles.pic} onPress={PickImage}>
