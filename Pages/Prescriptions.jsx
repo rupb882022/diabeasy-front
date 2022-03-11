@@ -66,11 +66,11 @@ useEffect(() => {
   console.log("pres=>",prescriptions);
 }, []);
 
-
+//todo get function for exist medical
 useEffect(() => {
   if (!show && request&&reqValue) {
     const configurationObject = {
-      url:upiUrl+'Prescription/addRequest',
+      url:upiUrl+'User/Prescription/addRequest',
       method: "POST",
       data: request
     };
@@ -127,6 +127,7 @@ const element = <View>
     />
   }
   <Switch
+  //Todo fix bug in Switch change
     style={{ alignSelf: 'center', marginLeft: '7%', marginTop: '3%' }}
     trackColor={{ false: "#FFFFFF", true: "#3CA6CD" }}
     thumbColor={popupSubject ? '#FFCF84' : "#3CA6CD"}
@@ -247,7 +248,7 @@ onPress={() => setShow(true)}
 
 <Image
 style={styles.Image}
-source={require('../images/welcom_man.JPG.png')}
+source={require('../images/prescriptions.png')}
 />
 {show &&
         <PopUp
@@ -301,8 +302,8 @@ const styles = StyleSheet.create({
      resizeMode: 'cover',
      alignSelf: 'center',
      opacity: 0.95,
-    paddingTop: '23%',
-    width: '32%',
+    paddingTop: '30%',
+    width: '50%',
     height: '100%',
     // justifyContent: 'flex-start',
     // alignItems: 'flex-start',
