@@ -9,6 +9,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { UserContext } from '../CTools/UserDetailsHook';
 import upiUrl from '../Routes/Url';
 import Moment from 'moment';
+import Loading from '../CTools/Loading';
 import * as Progress from 'react-native-progress';
 import axios from "axios";
 
@@ -30,7 +31,7 @@ const [request, setRequest] = useState({});
 
 const getPrescriptions = () => {
   setLoading(true)
-      fetch(upiUrl + `Prescription/${userDetails.id}`, {
+      fetch(upiUrl + `User/Prescription/${userDetails.id}`, {
           method: 'GET',
           headers: new Headers({
               'Content-Type': 'appliction/json; charset=UTF-8',
@@ -59,6 +60,10 @@ const getPrescriptions = () => {
 }
 useEffect(() => {
   //get all user prescription
+<<<<<<< HEAD
+=======
+  // if(prescriptions==[]){
+>>>>>>> tal
   getPrescriptions()
   console.log("pres=>",prescriptions);
 }, []);
@@ -266,7 +271,26 @@ source={require('../images/welcom_man.JPG.png')}
       backgroundColor='#d6f2fc'
       element={popupElement}
 />}
+<<<<<<< HEAD
 
+=======
+{ loading &&<Loading/>}
+
+{/* <View style={styles.progress}>
+            <Progress.Bar
+              width={255}
+              height={15}
+              borderRadius={5}
+              borderColor={"#bbe4f2"}
+              color='#69BEDC' //#FFCF84-orange
+              useNativeDriver={true}
+              borderWidth={2}
+              indeterminate={true}
+              animationConfig={{ bounciness: 20 }}
+            />
+          </View> */}
+          
+>>>>>>> tal
 
 </View>
   )
