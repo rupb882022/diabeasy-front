@@ -60,10 +60,8 @@ const getPrescriptions = () => {
 }
 useEffect(() => {
   //get all user prescription
-<<<<<<< HEAD
-=======
+
   // if(prescriptions==[]){
->>>>>>> tal
   getPrescriptions()
   console.log("pres=>",prescriptions);
 }, []);
@@ -271,9 +269,7 @@ source={require('../images/welcom_man.JPG.png')}
       backgroundColor='#d6f2fc'
       element={popupElement}
 />}
-<<<<<<< HEAD
 
-=======
 { loading &&<Loading/>}
 
 {/* <View style={styles.progress}>
@@ -290,7 +286,7 @@ source={require('../images/welcom_man.JPG.png')}
             />
           </View> */}
           
->>>>>>> tal
+
 
 </View>
   )
