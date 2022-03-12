@@ -1,6 +1,5 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import React, { useState, useEffect } from 'react';
-import Card from '../../CTools/Card';
 import FlipCard from 'react-native-flip-card'
 import Input from '../../CTools/Input';
 import { Ionicons } from '@expo/vector-icons';
@@ -22,26 +21,26 @@ export default function ingredient(props) {
   const [favorite, setFavorite] = useState(false);
   const [crabs, setCrabs] = useState();
   const [amount, setAmount] = useState();
-
+console.log("UnitOfMeasure",UnitOfMeasure);
 
   useEffect(() => {
-    console.log("amount",amount);
-    console.log("unit",unit);
+    // console.log("amount",amount);
+    // console.log("unit",unit);
     if(amount&&unit){
-    //clac crabs when user select Unit Of Measure
-    let temp = UnitOfMeasure.find(x => x.name == unit)
-  
-    console.log("temp",temp);
-    let calc= unit=="grams"?temp.carbs*parseFloat(amount/100):temp.carbs*amount
-    //if there is a unit for ingredient
-    calc && setCrabs(calc.toFixed(1))
-
+    calcCarbs(amount,unit)
   }}, [unit,amount]);
 
-
+const calcCarbs=(amount,unit)=>{
+      //clac crabs when user select Unit Of Measure
+      let temp = UnitOfMeasure.find(x => x.name == unit)
+      // console.log("temp",temp);
+      let calc= unit=="grams"?temp.carbs*parseFloat(amount/100):temp.carbs*amount
+      //if there is a unit for ingredient
+      calc && setCrabs(calc.toFixed(1))
+}
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} id={id}>
       <FlipCard
         // style={styles.card(index)}
         friction={15} //The friction of card animation
@@ -51,8 +50,8 @@ export default function ingredient(props) {
         flip={false}  //start side flase=face true=back
         clickable={true}>
         <View style={styles.face}>
-          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-            <Text style={{ fontSize: 25, textAlign: 'center', paddingLeft: '13%' }}>{name}
+          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+            <Text style={styles.frontTitle}>{name}
             </Text>
             {favorite ?
               <TouchableOpacity onPress={() => setFavorite(false)}><Ionicons style={styles.icon} name="heart-sharp" size={24} color="#FF3C3C" /></TouchableOpacity> :
@@ -60,7 +59,11 @@ export default function ingredient(props) {
             }
           </View>
           <Image style={styles.image} source={{ uri: image }} />
-          <Text style={styles.textFront}>30.5 Carbs 100g</Text>
+          <View style={styles.details}>
+          <Text style={styles.textFront}>{UnitOfMeasure[0].suger} suger </Text> 
+          <Text style={styles.textFront} > {UnitOfMeasure[0].carbs} Carbs  </Text> 
+          <Text style={styles.textFront}>{UnitOfMeasure[0].weightInGrams} g </Text>
+          </View>
           {/* <Text style={{textAlign:'center'}}>cooking method</Text> */}
         </View>
 
@@ -100,24 +103,26 @@ export default function ingredient(props) {
 const styles = StyleSheet.create({
   container: {
     paddingBottom: '5%',
-    paddingLeft: '3%',
-    width: '50%'
+    // paddingLeft: '3%',
+    width: '100%',
+    
   },
   image: {
-    width: '80%',
+    width: '35%',
     height: '70%',
-    alignSelf: 'center',
+// alignSelf:'flex-start',
     resizeMode: 'contain',
   },
+  //todo full width element
   face: {
-    width: 160,
+    width: '100%',
     height: 160,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
+    
   },
   faceTitle: {
     fontSize: 20,
     textAlign: 'center',
-
   },
   back: {
     flex: 1,
@@ -132,13 +137,16 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   textFront: {
-    textAlign: 'center',
-    backgroundColor: "#FFCF84",
-
+   fontSize:19
+  },
+  details:{
+flexDirection:'row',
+justifyContent:'space-evenly',
+backgroundColor: "#FFCF84",
   },
   icon: {
-    alignSelf: 'flex-end',
-    left: '70%'
+    textAlign: 'center',
+  paddingRight:'2%'
   },
   checkbox: {
     // justifyContent: 'flex-start',
@@ -150,5 +158,10 @@ const styles = StyleSheet.create({
     paddingRight: '50%',
     fontSize: 11,
     alignSelf: 'flex-end'
+  },
+  frontTitle:{
+     fontSize: 25,
+     textAlign:'left',
+      paddingLeft: '8%' 
   }
 })

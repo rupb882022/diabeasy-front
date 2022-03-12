@@ -1,33 +1,10 @@
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import React, { useState } from 'react';
 import Ingredient from './Ingredient';
-import apiUrl from '../../Routes/Url'
 
 export default function IngredientsList(props) {
     const { foodList } = props
 
-    const [ingredient, setIngredient] = useState();
-
-
-    // fetch(apiUrl + `Food/`, {
-    //     method: 'GET',
-    //     headers: new Headers({
-    //         'Content-Type': 'appliction/json; charset=UTF-8',
-    //         'Accept': 'appliction/json; charset=UTF-8'
-    //     })
-    // }).then(res => {
-    //     if (res && res.status == 200) {
-    //         return res.json();
-    //     } else {
-    //         console.log("status code:", res.status)
-    //     }
-    // }).then((resulte) => {
-    //     resulte ? setPhone(resulte) : setAlert("sorry.. we did not found your energency person, you can go to setting page to add one")
-
-    // },
-    //     (error) => {
-    //         console.log("error", error)
-    //     })
 
     const list = foodList ? foodList.map((x, i) =>
         <Ingredient
@@ -50,8 +27,8 @@ export default function IngredientsList(props) {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: 'transparent',
-        paddingLeft: 10,
-        paddingRight: 10,
+        paddingLeft: 15,
+        paddingRight: 15,
     },
     viewContainer: {
         flexDirection: 'row',
