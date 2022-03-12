@@ -20,35 +20,32 @@ export default function ingredient(props) {
   const [unit, setUnit] = useState();
   const [favorite, setFavorite] = useState(false);
   const [crabs, setCrabs] = useState();
+  const [suger, setSuger] = useState();
   const [amount, setAmount] = useState();
-console.log("UnitOfMeasure",UnitOfMeasure);
+  const [weightInGrams, setWeightInGrams] = useState();
 
   useEffect(() => {
     // console.log("amount",amount);
     // console.log("unit",unit);
-    if(amount&&unit){
-    calcCarbs(amount,unit)
-  }}, [unit,amount]);
+    if (amount && unit) {
+      calcDetails(amount, unit)
+    }
+  }, [unit, amount]);
 
-const calcCarbs=(amount,unit)=>{
-      //clac crabs when user select Unit Of Measure
-      let temp = UnitOfMeasure.find(x => x.name == unit)
-      // console.log("temp",temp);
-      let calc= unit=="grams"?temp.carbs*parseFloat(amount/100):temp.carbs*amount
-      //if there is a unit for ingredient
-      calc && setCrabs(calc.toFixed(1))
-}
+  const calcDetails = (amount, unit) => {
+    //clac crabs when user select Unit Of Measure
+    let temp = UnitOfMeasure.find(x => x.name == unit)
+    let crabs = unit == "grams" ? temp.carbs * parseFloat(amount / 100) : temp.carbs * amount
+    let suger = unit == "grams" ? temp.suger * parseFloat(amount / 100) : temp.suger * amount
+console.log("temp",temp);
+    //if there is a unit for ingredient
+    crabs && setCrabs(crabs.toFixed(1))
+    suger&&setSuger(suger.toFixed(1))
+    temp&&setWeightInGrams(temp.weightInGrams)
+  }
 
   return (
     <View style={styles.container} id={id}>
-      <FlipCard
-        // style={styles.card(index)}
-        friction={15} //The friction of card animation
-        perspective={1000} //The amount of perspective applied to the flip transformation
-        flipHorizontal={true}
-        flipVertical={false} //If you set false, a card not flip to vertical. If you set true both flipHorizontal and flipVertical , a card flip to diagonal.
-        flip={false}  //start side flase=face true=back
-        clickable={true}>
         <View style={styles.face}>
           <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
             <Text style={styles.frontTitle}>{name}
@@ -58,33 +55,32 @@ const calcCarbs=(amount,unit)=>{
               <TouchableOpacity onPress={() => setFavorite(true)}><Ionicons style={styles.icon} name="heart-outline" size={24} color="black" /></TouchableOpacity>
             }
           </View>
-          <Image style={styles.image} source={{ uri: image }} />
-          <View style={styles.details}>
-          <Text style={styles.textFront}>{UnitOfMeasure[0].suger} suger </Text> 
-          <Text style={styles.textFront} > {UnitOfMeasure[0].carbs} Carbs  </Text> 
-          <Text style={styles.textFront}>{UnitOfMeasure[0].weightInGrams} g </Text>
-          </View>
-          {/* <Text style={{textAlign:'center'}}>cooking method</Text> */}
-        </View>
 
-        <View style={styles.back}>
-          <Text style={styles.backTitle}>Carbohydrates: {crabs && crabs}</Text>
-          <View style={{ width: '90%' }}>
+          <View style={styles.row}>
+            <Image style={styles.image} source={{ uri: image }} />
+            <View style={styles.details}>
+              <Text style={styles.textFront}>{suger?suger:UnitOfMeasure[0].suger} suger </Text>
+              <Text style={styles.textFront} >{crabs?crabs:UnitOfMeasure[0].carbs} Carbs  </Text>
+              <Text style={styles.textFront}>{weightInGrams?weightInGrams:UnitOfMeasure[0].weightInGrams} g </Text>
+            </View>
+          </View>
+          <View style={styles.faceFooter}>
             <Input
-              label='Unit of measure'
-              height={40}
+              placeholder=  {  UnitOfMeasure[0].name}
+              height={50}
               width={100}
+              flex={0.4}
               editable={false}
               type='selectBox'
               getValue={(value) => setUnit(value)}
               SelectBox_placeholder='Select Unit of measure'
               selectBox_items={selectUnit} />
             <Input
-              label='Amount'
+              placeholder='Amount'
               // validtion='number'
-              justifyContent='flex-start'
               keyboardType='decimal-pad'
-              height={40}
+              height={50}
+              flex={0.25}
               width={100}
               getValue={(value) => setAmount(value)}
             />
@@ -94,7 +90,6 @@ const calcCarbs=(amount,unit)=>{
             </View>
           </View>
         </View>
-      </FlipCard>
     </View>
 
   );
@@ -103,65 +98,61 @@ const calcCarbs=(amount,unit)=>{
 const styles = StyleSheet.create({
   container: {
     paddingBottom: '5%',
-    // paddingLeft: '3%',
     width: '100%',
-    
   },
   image: {
     width: '35%',
-    height: '70%',
-// alignSelf:'flex-start',
+    height: '90%',
+    justifyContent: 'center',
     resizeMode: 'contain',
   },
-  //todo full width element
   face: {
     width: '100%',
     height: 160,
     backgroundColor: 'white',
-    
+
   },
   faceTitle: {
     fontSize: 20,
     textAlign: 'center',
   },
-  back: {
-    flex: 1,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    backgroundColor: "#FFCF84",
-    paddingTop: '5%'
-  },
-  backTitle: {
-    marginBottom: '2%',
-    fontSize: 16,
-    fontWeight: 'bold'
-  },
   textFront: {
-   fontSize:19
+    fontSize: 16,
+    marginTop: '10%'
   },
-  details:{
-flexDirection:'row',
-justifyContent:'space-evenly',
-backgroundColor: "#FFCF84",
+  details: {
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
   },
   icon: {
     textAlign: 'center',
-  paddingRight:'2%'
+    paddingRight: '2%'
   },
   checkbox: {
-    // justifyContent: 'flex-start',
-    bottom: '5%',
     flexDirection: 'row',
-    paddingLeft: '30%'
-  }, checkBoxText: {
-    textAlign: 'left',
-    paddingRight: '50%',
-    fontSize: 11,
-    alignSelf: 'flex-end'
+    flex: 0.2,
+    alignSelf: 'center',
+    paddingRight:'2%',
+    right:'2%'
   },
-  frontTitle:{
-     fontSize: 25,
-     textAlign:'left',
-      paddingLeft: '8%' 
+  checkBoxText: {
+    textAlign: 'left',
+  },
+  frontTitle: {
+    fontSize: 22,
+    top:'1%',
+    fontWeight:'bold',
+    paddingLeft: '35%'
+  }, 
+  row: {
+    flex: 1,
+    flexDirection: 'row'
+  }, 
+  faceFooter: {
+    flex: 0.4,
+    justifyContent:'space-evenly',
+    flexDirection: 'row',
+    backgroundColor: "#FFCF84",
+    paddingLeft: '2%'
   }
 })

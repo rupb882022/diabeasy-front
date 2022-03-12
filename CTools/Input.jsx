@@ -7,7 +7,7 @@ import SelectBox from './SelectBox';
 
 export default function Input(props) {
 
-    const { placeholder, secure = false, required = false, editable = true, textAlign = 'left', label, validtion, min = 0, max, alignItems, justifyContent, width, height, fontSize,
+    const { placeholder, secure = false, required = false, editable = true, textAlign = 'left', label, validtion, min = 0, max, alignItems, justifyContent, width, height, fontSize= 14,
         keyboardType = 'default', type = '', selectBox_items = [], SelectBox_placeholder, mode = 'datetime', display = 'spinner', popup_title, date_format_hour = true,
         getValue, spellCheck = false, setValue, validLable, flex, multiline = false, numberOfLines } = props
 
@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
             alignItems: alignItems,
         }
     },
-    input: (width = 75, fontSize = 16, height = 40) => {
+    input: (width = 75, fontSize, height = 40) => {
         return {
             // borderWidth: 1,
             backgroundColor: 'white',

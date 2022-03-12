@@ -8,7 +8,7 @@ export default function CheckBox(props) {
   const {ischeck=false,getvalue}=props;
 
   const [check, setCheck] = useState(ischeck);
-console.log(check);
+
   return (
     <Button
     element={check ? <Fontisto name="checkbox-active" size={15} color="black" /> :

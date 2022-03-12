@@ -12,7 +12,7 @@ export default function FoodLibrary() {
     const [list, setList] = useState();
     const [foodList, setFoodList] = useState();
     const [ingredient, setIngredient] = useState();
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
 
 
     useEffect(() => {
