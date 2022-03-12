@@ -29,7 +29,7 @@ export default function Login({ navigation }) {
        setUserDetails(JSON.parse(jsonValue));
     }
     catch (e) {
-      console.log(e)
+      console.log("E=>",e)
     }
   }
 
@@ -190,7 +190,7 @@ const styles = StyleSheet.create({
         marginTop: '10%'
     },
     inputs: {
-        flex: 1,
+        flex: 1.2,
         // position: 'relative',
         top: '5%',
         alignContent: 'stretch',

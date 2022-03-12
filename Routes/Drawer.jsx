@@ -1,5 +1,5 @@
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, Text } from 'react-native';
 import InsertData from '../Pages/InsertData'
 import Home from '../Pages/Home'
 import FoodLibrary from '../Pages/Food/FoodLibrary'
@@ -18,7 +18,7 @@ const Drawernav = createDrawerNavigator();
 
 export default function Drawer(props) {
 
-const {navigation}=props
+    const { navigation } = props
 
     //color of icons
     let color = "black"
@@ -74,10 +74,14 @@ const {navigation}=props
                 ...options,
                 drawerIcon: () => (<Fontisto name="prescription" size={24} color={color} />)
             }} />
+            {/* <Drawernav.Screen name='Food' component={FoodLibrary} options={{
+                ...options,
+                drawerIcon: () => (<Ionicons name="fast-food-outline" size={24} color={color} /> )
+            }} /> */}
             <Drawernav.Screen name='Emergency Call' component={PanicButton} options={{
                 ...options,
                 drawerIcon: () => (<AntDesign name="exclamationcircleo" size={24} color={color} />)
-            }} /> 
+            }} />
             <Drawernav.Screen name='Prescriptions' component={Prescriptions} options={{
                 ...options,
                 drawerIcon: () => (<AntDesign name="medicinebox" size={24} color={color} />)
@@ -86,10 +90,10 @@ const {navigation}=props
                 ...options,
                 drawerIcon: () => (<Ionicons name="settings-outline" size={24} color={color} />)
             }} />
-            
+
         </Drawernav.Navigator>
         <Footer
-        navigation={navigation}
+            navigation={navigation}
         />
     </>
     );

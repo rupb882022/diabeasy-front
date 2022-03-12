@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Card from '../../CTools/Card';
 import FlipCard from 'react-native-flip-card'
 import Input from '../../CTools/Input';
@@ -8,8 +8,36 @@ import CheckBox from '../../CTools/CheckBox';
 
 
 export default function ingredient(props) {
-  const { name, image, index } = props
+  const { name, image, id, UnitOfMeasure } = props
+
+  const selectUnit = [];
+  UnitOfMeasure.map(x => selectUnit.push(
+    {
+      itemKey: x.id,
+      label: x.name,
+      value: x.name
+    }))
+
+  const [unit, setUnit] = useState();
   const [favorite, setFavorite] = useState(false);
+  const [crabs, setCrabs] = useState();
+  const [amount, setAmount] = useState();
+
+
+  useEffect(() => {
+    console.log("amount",amount);
+    console.log("unit",unit);
+    if(amount&&unit){
+    //clac crabs when user select Unit Of Measure
+    let temp = UnitOfMeasure.find(x => x.name == unit)
+  
+    console.log("temp",temp);
+    let calc= unit=="grams"?temp.carbs*parseFloat(amount/100):temp.carbs*amount
+    //if there is a unit for ingredient
+    calc && setCrabs(calc.toFixed(1))
+
+  }}, [unit,amount]);
+
 
 
   return (
@@ -37,7 +65,7 @@ export default function ingredient(props) {
         </View>
 
         <View style={styles.back}>
-          <Text style={styles.backTitle}>Carbohydrates: 34</Text>
+          <Text style={styles.backTitle}>Carbohydrates: {crabs && crabs}</Text>
           <View style={{ width: '90%' }}>
             <Input
               label='Unit of measure'
@@ -45,12 +73,9 @@ export default function ingredient(props) {
               width={100}
               editable={false}
               type='selectBox'
+              getValue={(value) => setUnit(value)}
               SelectBox_placeholder='Select Unit of measure'
-              selectBox_items={[
-                { itemKey: 0, label: 'unit', value: 'unit' },
-                { itemKey: 1, label: 'grams', value: 'grams' },
-                { itemKey: 2, label: 'cup', value: 'cup' },
-              ]} />
+              selectBox_items={selectUnit} />
             <Input
               label='Amount'
               // validtion='number'
@@ -58,6 +83,7 @@ export default function ingredient(props) {
               keyboardType='decimal-pad'
               height={40}
               width={100}
+              getValue={(value) => setAmount(value)}
             />
             <View style={styles.checkbox}>
               <CheckBox />

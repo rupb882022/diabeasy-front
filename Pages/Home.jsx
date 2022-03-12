@@ -21,8 +21,6 @@ export default function Home(props) {
         let hour = Moment(new Date()).format('HH:mm:ss');
         let array = hour.split(":");
         hour = (parseInt(array[0], 10) * 60 * 60) + (parseInt(array[1], 10) * 60) + parseInt(array[2], 10)
-        console.log(hour);
-
         hour >= 21600 && hour < 43200 ? setHelloText("Good morning") ://21600="06:00:00"
             hour >= 43200 && hour < 64800 ? setHelloText("Good afternoon") ://43200=12:00:00
                 setHelloText("Good evening");//64800=18:00
