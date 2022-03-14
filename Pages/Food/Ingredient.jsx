@@ -29,19 +29,25 @@ export default function ingredient(props) {
     // console.log("unit",unit);
     if (amount && unit) {
       calcDetails(amount, unit)
+    }else{
+       setCrabs(null)
+      setSuger(null)
+      setWeightInGrams(null)
     }
   }, [unit, amount]);
 
   const calcDetails = (amount, unit) => {
+    console.log("UnitOfMeasure",UnitOfMeasure)
     //clac crabs when user select Unit Of Measure
     let temp = UnitOfMeasure.find(x => x.name == unit)
     let crabs = unit == "grams" ? temp.carbs * parseFloat(amount / 100) : temp.carbs * amount
     let suger = unit == "grams" ? temp.suger * parseFloat(amount / 100) : temp.suger * amount
+    let weightInGrams=unit == "grams"? amount:temp.weightInGrams*amount
 console.log("temp",temp);
     //if there is a unit for ingredient
     crabs && setCrabs(crabs.toFixed(1))
     suger&&setSuger(suger.toFixed(1))
-    temp&&setWeightInGrams(temp.weightInGrams)
+    temp&&setWeightInGrams(weightInGrams)
   }
 
   return (
@@ -66,9 +72,10 @@ console.log("temp",temp);
           </View>
           <View style={styles.faceFooter}>
             <Input
-              placeholder=  {  UnitOfMeasure[0].name}
+              placeholder={UnitOfMeasure[0].name}
               height={50}
               width={100}
+              textAlign='center'
               flex={0.4}
               editable={false}
               type='selectBox'
@@ -78,6 +85,7 @@ console.log("temp",temp);
             <Input
               placeholder='Amount'
               // validtion='number'
+              textAlign='center'
               keyboardType='decimal-pad'
               height={50}
               flex={0.25}
@@ -99,6 +107,11 @@ const styles = StyleSheet.create({
   container: {
     paddingBottom: '5%',
     width: '100%',
+    shadowOffset: {
+      width: -1,
+      height: 1
+    },
+    shadowOpacity:50,
   },
   image: {
     width: '35%',

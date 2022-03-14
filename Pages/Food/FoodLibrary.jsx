@@ -5,8 +5,10 @@ import IngredientsList from './IngredientsList';
 import apiUrl from '../../Routes/Url'
 import Header from '../../CTools/Header';
 import Loading from '../../CTools/Loading'
-export default function FoodLibrary() {
+import Button from '../../CTools/Button';
+export default function FoodLibrary({navigation}) {
 
+//Todo serch by food name
     const [isRecipes, setIsisRecipes] = useState(false);
     const [category, setCategory] = useState('');
     const [list, setList] = useState();
@@ -16,31 +18,31 @@ export default function FoodLibrary() {
 
 
     useEffect(() => {
-    if (!ingredient && !isRecipes) {
-        setLoading(true)
-        console.log("*");
-        fetch(apiUrl + `Food/getIngredients`, {
-            method: 'GET',
-            headers: new Headers({
-                'Content-Type': 'appliction/json; charset=UTF-8',
-                'Accept': 'appliction/json; charset=UTF-8'
-            })
-        }).then(res => {
-            if (res && res.status == 200) {
-                return res.json();
-            } else {
-                console.log("status code:", res.status)
-            }
-        }).then((resulte) => {
-            setIngredient(resulte)
-            setLoading(false)
-        },
-            (error) => {
-                console.log("error", error)
+        if (!ingredient && !isRecipes) {
+            setLoading(true)
+            console.log("*");
+            fetch(apiUrl + `Food/getIngredients`, {
+                method: 'GET',
+                headers: new Headers({
+                    'Content-Type': 'appliction/json; charset=UTF-8',
+                    'Accept': 'appliction/json; charset=UTF-8'
+                })
+            }).then(res => {
+                if (res && res.status == 200) {
+                    return res.json();
+                } else {
+                    console.log("status code:", res.status)
+                }
+            }).then((resulte) => {
+                setIngredient(resulte)
                 setLoading(false)
-            })
-    } 
-},[]);
+            },
+                (error) => {
+                    console.log("error", error)
+                    setLoading(false)
+                })
+        }
+    }, []);
 
 
     useEffect(() => {
@@ -58,7 +60,8 @@ export default function FoodLibrary() {
                     console.log("status code:", res.status)
                 }
             }).then((resulte) => {
-                let temp = resulte.map(x => ({ itemKey: x.id, label: x.name, value: x.name }))
+                console.log("resulte",resulte);
+                let temp = resulte.map(x => ({ itemKey: x.id, label: x.name, value: x.id }))
                 setList(temp);
             },
                 (error) => {
@@ -68,19 +71,20 @@ export default function FoodLibrary() {
     }, []);
 
     useEffect(() => {
-        if(ingredient){
-        //fillter by category
-        let List = ingredient.filter(x =>
-            x.category.length < 1 ?
-                x.category[0] == category :
-                x.category.find(z => z == category)
-        );
-        setFoodList(List);
+        if (ingredient) {
+            //fillter by category
+            let List = ingredient.filter(x =>
+                x.category.length < 1 ?
+                    x.category[0].id == category :
+                    x.category.find(z => z.id == category)
+            );
+            setFoodList(List);
         }
+  
     }, [category]);
 
     return (<>
-       {loading && <Loading opacity={'#d6f2fc'} />}
+        {loading && <Loading opacity={'#d6f2fc'} />}
         <View style={styles.continer}>
             <Header
                 title="Recipes"
@@ -91,7 +95,7 @@ export default function FoodLibrary() {
                 paddingRight={5}
                 possiton={55}
             />
-            <View style={styles.input}>
+            <View style={styles.input_category}>
                 <Input
                     label='Category'
                     editable={false}
@@ -111,6 +115,37 @@ export default function FoodLibrary() {
                 />
                 <Text style={styles.text}>recipes</Text>
             </View>
+            <View style={styles.input_freeText}>
+                <Input
+                    placeholder='food name'
+                    height={50}
+                    flex={1}
+                />
+                <View style={{ flexDirection: 'row', flex: 1, paddingTop: '2.5%', paddingRight: '5%' }}>
+                    <Button
+                        width={8}
+                        height={5}
+                        radius={5}
+                        textSize={14}
+                        text='Serch'
+                        alignItems='flex-start'
+                    />
+                    <View style={{flex:1,right:'40%'}}>
+                        <Button
+                            textSize={14}
+                            width={7}
+                            height={5}
+                            radius={5}
+                            text='Add new'
+                            alignItems='flex-start'
+                            onPress={()=>navigation.navigate('AddNewFood',{categoryList:list,isRecipes:isRecipes})}
+                        />
+                     
+                    </View>
+                    {/* <Text style={{alignSelf:'center',left:'20%',textAlign:'right'}}>
+                        {isRecipes?'recipe':'ingredient'}</Text> */}
+                </View>
+            </View>
             <View style={styles.cards}>
                 {category ?
                     isRecipes ?
@@ -129,7 +164,14 @@ const styles = StyleSheet.create({
     continer: {
         flex: 10,
     },
-    input: {
+    input_category: {
+        marginRight: '2%',
+        flex: 0.2,
+        flexDirection: 'row',
+        alignItems: 'flex-start',
+        bottom: '8%'
+    },
+    input_freeText: {
         marginRight: '2%',
         flex: 0.2,
         flexDirection: 'row',
@@ -147,6 +189,6 @@ const styles = StyleSheet.create({
         marginRight: "2%"
     },
     cards: {
-        flex: 2
-    }
+        flex: 2,
+        }
 })
