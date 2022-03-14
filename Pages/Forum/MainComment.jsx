@@ -111,7 +111,7 @@ console.log( `${apiUrl}Forum/${comment_id}`);
               width={5}
               height={4}
               radius={5}
-              color='red'
+              color='white'
               onPress={() => { setChangeComment(''); updateComment(); }}
               element={<Feather name="check-circle" size={20} color="#2DAB5B" />}
             />
