@@ -27,6 +27,7 @@ const [loading, setLoading] = useState(false);
 const [subject, setSubject] = useState(false);
 const [reqValue, setReqValue] = useState(false);
 const [request, setRequest] = useState({});
+const [allSubjects, setAllSubjects] = useState();
 
 
 const getPrescriptions = () => {
@@ -49,6 +50,7 @@ const getPrescriptions = () => {
       }).then((result) => {
        // console.log('result=>', result);
         setPrescriptions(result)
+        GetAllsubjects(result)
         setLoading(false)
       },
           (error) => {
@@ -60,13 +62,10 @@ const getPrescriptions = () => {
 }
 useEffect(() => {
   //get all user prescription
-
-  // if(prescriptions==[]){
   getPrescriptions()
   console.log("pres=>",prescriptions);
 }, []);
 
-//todo get function for exist medical
 useEffect(() => {
   if (!show && request&&reqValue) {
     const configurationObject = {
@@ -90,6 +89,16 @@ useEffect(() => {
 }, [request]);
 
 
+const GetAllsubjects=(res)=>{
+let arr=[];
+res.map((x)=>{
+arr.push(x.subject)})
+let distinct=arr.filter((val,i,self)=> self.indexOf(val) === i );
+let allSub=distinct.map((x,i)=>({ itemKey: i, label: x, value: x}))
+setAllSubjects(allSub);
+}
+
+
 const element = <View>
 <Text style={{
   fontSize: 30, textAlign: 'center', color: 'white', fontWeight: 'bold', marginBottom: '3%', textShadowColor: '#187FA5',
@@ -109,16 +118,12 @@ const element = <View>
       justifyContent='flex-start'
       alignItems='flex-end'
       editable={false}
-      selectBox_items={[
-        { itemKey: 0, label: 'insulin-1', value: 'insulin-1' },
-        { itemKey: 1, label: 'insulin-2', value: 'insulin-2' },
-        { itemKey: 2, label: 'insulin-3', value: 'insulin-3' },
-    ]}/>
+      selectBox_items={allSubjects}/>
     :
     <Input
       label= 'Write new subject/medicine'
       height={50}
-     // value={!popupSubject && ''}
+      value={!popupSubject && ''}
       width={100}
       getValue={(value) => setSubject(value)}
       justifyContent='flex-start'
@@ -127,13 +132,12 @@ const element = <View>
     />
   }
   <Switch
-  //Todo fix bug in Switch change
     style={{ alignSelf: 'center', marginLeft: '7%', marginTop: '3%' }}
     trackColor={{ false: "#FFFFFF", true: "#3CA6CD" }}
     thumbColor={popupSubject ? '#FFCF84' : "#3CA6CD"}
     ios_backgroundColor='#FFCF84'
     onValueChange={() => { setPopupSubject(!popupSubject) }}
-   // value={!commentValue && !subject ? popupSubject : ''}
+    value={!reqValue || !subject ? popupSubject : ''}
   />
 
 </View>
