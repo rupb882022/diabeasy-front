@@ -14,6 +14,7 @@ export default function Home(props) {
     const [helloText, setHelloText] = useState();
 
 
+    console.log("userD=>",userDetails);
 
 
 

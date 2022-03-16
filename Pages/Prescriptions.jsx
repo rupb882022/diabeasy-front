@@ -30,7 +30,9 @@ const [request, setRequest] = useState({});
 const [allSubjects, setAllSubjects] = useState();
 
 
+
 const getPrescriptions = () => {
+  
   setLoading(true)
       fetch(upiUrl + `User/Prescription/${userDetails.id}`, {
           method: 'GET',
