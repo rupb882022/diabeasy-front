@@ -1,13 +1,16 @@
 import { View, Text, StyleSheet, Switch } from 'react-native';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useContext } from 'react';
 import Input from '../../CTools/Input';
 import IngredientsList from './IngredientsList';
 import apiUrl from '../../Routes/Url'
 import Header from '../../CTools/Header';
 import Loading from '../../CTools/Loading'
 import Button from '../../CTools/Button';
+import { UserContext } from '../../CTools/UserDetailsHook'
+
 export default function FoodLibrary({navigation}) {
 
+    const { userDetails } = useContext(UserContext);
 //Todo serch by food name
     const [isRecipes, setIsisRecipes] = useState(false);
     const [category, setCategory] = useState('');
@@ -15,10 +18,10 @@ export default function FoodLibrary({navigation}) {
     const [foodList, setFoodList] = useState();
     const [ingredient, setIngredient] = useState();
     const [loading, setLoading] = useState(true);
-
+  
 
     useEffect(() => {
-        if (!ingredient && !isRecipes) {
+        if (!ingredient) {
             setLoading(true)
             console.log("*");
             fetch(apiUrl + `Food/getIngredients`, {
@@ -34,6 +37,7 @@ export default function FoodLibrary({navigation}) {
                     console.log("status code:", res.status)
                 }
             }).then((resulte) => {
+                console.log("resulte",resulte);
                 setIngredient(resulte)
                 setLoading(false)
             },
@@ -60,7 +64,6 @@ export default function FoodLibrary({navigation}) {
                     console.log("status code:", res.status)
                 }
             }).then((resulte) => {
-                console.log("resulte",resulte);
                 let temp = resulte.map(x => ({ itemKey: x.id, label: x.name, value: x.id }))
                 setList(temp);
             },
@@ -138,7 +141,7 @@ export default function FoodLibrary({navigation}) {
                             radius={5}
                             text='Add new'
                             alignItems='flex-start'
-                            onPress={()=>navigation.navigate('AddNewFood',{categoryList:list,isRecipes:isRecipes})}
+                            onPress={()=>navigation.navigate('AddNewFood',{categoryList:list,isRecipes:isRecipes,userId:userDetails.id})}
                         />
                      
                     </View>

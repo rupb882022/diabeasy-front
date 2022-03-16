@@ -36,14 +36,16 @@ export default function ingredient(props) {
     }
   }, [unit, amount]);
 
+
+
   const calcDetails = (amount, unit) => {
-    console.log("UnitOfMeasure",UnitOfMeasure)
+    
     //clac crabs when user select Unit Of Measure
     let temp = UnitOfMeasure.find(x => x.name == unit)
     let crabs = unit == "grams" ? temp.carbs * parseFloat(amount / 100) : temp.carbs * amount
     let suger = unit == "grams" ? temp.suger * parseFloat(amount / 100) : temp.suger * amount
     let weightInGrams=unit == "grams"? amount:temp.weightInGrams*amount
-console.log("temp",temp);
+
     //if there is a unit for ingredient
     crabs && setCrabs(crabs.toFixed(1))
     suger&&setSuger(suger.toFixed(1))
@@ -66,7 +68,7 @@ console.log("temp",temp);
             <Image style={styles.image} source={{ uri: image }} />
             <View style={styles.details}>
               <Text style={styles.textFront}>{suger?suger:UnitOfMeasure[0].suger} suger </Text>
-              <Text style={styles.textFront} >{crabs?crabs:UnitOfMeasure[0].carbs} Carbs  </Text>
+              <Text style={styles.textFront} >{crabs?crabs:UnitOfMeasure[0].carbs} Carbohydrates  </Text>
               <Text style={styles.textFront}>{weightInGrams?weightInGrams:UnitOfMeasure[0].weightInGrams} g </Text>
             </View>
           </View>
@@ -131,7 +133,7 @@ const styles = StyleSheet.create({
   },
   textFront: {
     fontSize: 16,
-    marginTop: '10%'
+    marginTop: '5%'
   },
   details: {
     flexDirection: 'column',
@@ -166,6 +168,6 @@ const styles = StyleSheet.create({
     justifyContent:'space-evenly',
     flexDirection: 'row',
     backgroundColor: "#FFCF84",
-    paddingLeft: '2%'
+    paddingLeft: '5%'
   }
 })
