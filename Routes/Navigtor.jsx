@@ -10,7 +10,7 @@ import Gallery from '../Pages/ImagePicker/Gallery';
 import CameraUse from '../Pages/ImagePicker/CameraUse';
 import CustomDrawer from './CustomDrawer';
 import AddNewFood from '../Pages/Food/AddNewFood';
-
+import DoctorHome from '../Pages/Doctor/DoctorHome';
 const Stack = createStackNavigator();
 
 export default function Navigtor() {
@@ -39,6 +39,8 @@ export default function Navigtor() {
       <Stack.Screen name="CameraUse" screenOptions={options} component={CameraUse} />
       <Stack.Screen name="CustomDrawer" screenOptions={options} component={CustomDrawer} />
       <Stack.Screen name="AddNewFood" screenOptions={options} component={AddNewFood} />
+      <Stack.Screen name="DoctorHome" screenOptions={options} component={DoctorHome} />
+
     </Stack.Navigator>
   )
 }
