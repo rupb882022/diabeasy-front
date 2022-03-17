@@ -7,7 +7,7 @@ import PopUp from '../CTools/PopUp';
 import Input from '../CTools/Input';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { UserContext } from '../CTools/UserDetailsHook';
-import upiUrl from '../Routes/Url';
+import apiUrl from '../Routes/Url';
 import Moment from 'moment';
 import Loading from '../CTools/Loading';
 import * as Progress from 'react-native-progress';
@@ -30,11 +30,9 @@ const [request, setRequest] = useState({});
 const [allSubjects, setAllSubjects] = useState();
 
 
-
 const getPrescriptions = () => {
-  
   setLoading(true)
-      fetch(upiUrl + `User/Prescription/${userDetails.id}`, {
+      fetch(apiUrl + `User/Prescription/${userDetails.id}`, {
           method: 'GET',
           headers: new Headers({
               'Content-Type': 'appliction/json; charset=UTF-8',
@@ -71,7 +69,7 @@ useEffect(() => {
 useEffect(() => {
   if (!show && request&&reqValue) {
     const configurationObject = {
-      url:upiUrl+'User/Prescription/addRequest',
+      url:apiUrl+'User/Prescription/addRequest',
       method: "POST",
       data: request
     };
