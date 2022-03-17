@@ -52,7 +52,7 @@ export default function AddNewFood(props) {
 
   const saveFood = () => {
 
-    food = {
+    let food = {
       userId:userId,
       name: name,
       category: category,
@@ -61,24 +61,27 @@ export default function AddNewFood(props) {
       suger: suger,
       weightInGrams: weightInGrams
     }
+    console.log("food", food);
+
 
     const configurationObject = {
-      url: `${apiUrl}User/RegisterUser`,
+      url: `${apiUrl}Food/AddIngredient`,
       method: "POST",
       data: food
     };
 
-    console.log("food", food);
-    // axios(configurationObject)
-    //   .then((response) => {
-    //     if (response) {
-    //       //todo check respone show up in food list
-    //       navigation.goBack()
-    //     }
-    //   })
-    //   .catch((error) => {
+   
+    axios(configurationObject)
+      .then((response) => {
+        if (response) {
+          console.log("response",response);
+          //todo check respone show up in food list
+          navigation.goBack()
+        }
+      })
+      .catch((error) => {
 
-    //   })
+      })
 
   }
 
@@ -112,19 +115,18 @@ export default function AddNewFood(props) {
       />
       <Input
         label='suger'
-        validtion='number'
+        // validtion='number'
         keyboardType='numbers-and-punctuation'
         getValue={(value) => setSuger(value)}
       />
       <Input
         label='carbohydrates'
-        validtion='number'
+        // validtion='number'
         keyboardType='numbers-and-punctuation'
         getValue={(value) => setCrabs(value)}
       />
       <Input
         label='weightInGrams'
-        setValue={unit==5?100:''}
         validtion='number'
         keyboardType='numbers-and-punctuation'
         getValue={(value) => setWeightInGrams(value)}

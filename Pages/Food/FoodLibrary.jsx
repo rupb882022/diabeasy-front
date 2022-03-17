@@ -7,6 +7,7 @@ import Header from '../../CTools/Header';
 import Loading from '../../CTools/Loading'
 import Button from '../../CTools/Button';
 import { UserContext } from '../../CTools/UserDetailsHook'
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function FoodLibrary({navigation}) {
 
@@ -20,34 +21,34 @@ export default function FoodLibrary({navigation}) {
     const [loading, setLoading] = useState(true);
   
 
-    useEffect(() => {
-        if (!ingredient) {
-            setLoading(true)
-            console.log("*");
-            fetch(apiUrl + `Food/getIngredients`, {
-                method: 'GET',
-                headers: new Headers({
-                    'Content-Type': 'appliction/json; charset=UTF-8',
-                    'Accept': 'appliction/json; charset=UTF-8'
-                })
-            }).then(res => {
-                if (res && res.status == 200) {
-                    return res.json();
-                } else {
-                    console.log("status code:", res.status)
-                }
-            }).then((resulte) => {
-                console.log("resulte",resulte);
-                setIngredient(resulte)
-                setLoading(false)
-            },
-                (error) => {
-                    console.log("error", error)
+    
+    useFocusEffect(
+        React.useCallback(() => {
+                setLoading(true)
+                console.log("*");
+                fetch(apiUrl + `Food/getIngredients`, {
+                    method: 'GET',
+                    headers: new Headers({
+                        'Content-Type': 'appliction/json; charset=UTF-8',
+                        'Accept': 'appliction/json; charset=UTF-8'
+                    })
+                }).then(res => {
+                    if (res && res.status == 200) {
+                        return res.json();
+                    } else {
+                        console.log("status code:", res.status)
+                    }
+                }).then((resulte) => {
+                    console.log("resulte",resulte);
+                    setIngredient(resulte)
                     setLoading(false)
-                })
-        }
-    }, []);
-
+                },
+                    (error) => {
+                        console.log("error", error)
+                        setLoading(false)
+                    })
+        }, [])
+      );
 
     useEffect(() => {
         if (!list) {
@@ -83,20 +84,17 @@ export default function FoodLibrary({navigation}) {
             );
             setFoodList(List);
         }
-  
     }, [category]);
 
     return (<>
         {loading && <Loading opacity={'#d6f2fc'} />}
         <View style={styles.continer}>
             <Header
-                title="Recipes"
-                logo_image='recipes'
+                title={isRecipes ? 'Recipe' : 'Ingredient'}
                 flex={0.4}
-                image_heigt={0}
-                image_width={40}
+                marginLeft={isRecipes ? 0 : 7}
                 paddingRight={5}
-                possiton={55}
+                possiton={50}
             />
             <View style={styles.input_category}>
                 <Input

@@ -66,7 +66,7 @@ export default function Forum() {
         thumbColor={popupSubject ? '#FFCF84' : "#3CA6CD"}
         ios_backgroundColor='#FFCF84'
         onValueChange={() => { setPopupSubject(!popupSubject) }}
-        value={!commentValue && !subject ? popupSubject : ''}
+        value={!commentValue || !subject ? popupSubject : ''}
       />
 
     </View>
@@ -80,7 +80,7 @@ export default function Forum() {
         getValue={(value) => setCommentValue(value)}
         justifyContent='center'
         alignItems='center'
-        validLable={!commentValue || !subject ? '    fill in subject and description' : ''}
+        validLable={!commentValue || !subject ? ' fill in subject and description' : ''}
       />
     </View>
     <View style={{flexDirection:'row'}}>

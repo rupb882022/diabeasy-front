@@ -4,7 +4,6 @@ import PopUp from '../CTools/PopUp';
 import Input from '../CTools/Input';
 import Button from '../CTools/Button';
 import apiUrl from '../Routes/Url';
-import axios from "axios";
 import { flushSync } from 'react-dom'
 import * as Progress from 'react-native-progress'
 
@@ -66,17 +65,8 @@ if(password==code){
           console.log("error", error)
           setLoading(false)
         })
-
-      // axios.get(apiUrl + `User?url=getPassword&mail=${mail}`)
-      //   .then(res => {
-      //     console.log(res);
-      //     console.log("status code:", res.status)
-      //   }).catch((error) => {
-      //     alert(error);
-      //   });
     }
   }
-  console.log("code", code)
   return (
     <PopUp
       style={styles.container}
