@@ -7,7 +7,7 @@ import CheckBox from '../../CTools/CheckBox';
 
 
 export default function ingredient(props) {
-  const { name, image, id, UnitOfMeasure } = props
+  const { name, image, id, UnitOfMeasure,addToMyListFood } = props
 
   const selectUnit = [];
   UnitOfMeasure.map(x => selectUnit.push(
@@ -19,10 +19,11 @@ export default function ingredient(props) {
 
   const [unit, setUnit] = useState();
   const [favorite, setFavorite] = useState(false);
-  const [crabs, setCrabs] = useState();
+  const [carbs, setCrabs] = useState();
   const [suger, setSuger] = useState();
   const [amount, setAmount] = useState();
   const [weightInGrams, setWeightInGrams] = useState();
+  
 
   useEffect(() => {
     // console.log("amount",amount);
@@ -30,9 +31,9 @@ export default function ingredient(props) {
     if (amount && unit) {
       calcDetails(amount, unit)
     }else{
-       setCrabs(null)
-      setSuger(null)
-      setWeightInGrams(null)
+       setCrabs(0)
+      setSuger(0)
+      setWeightInGrams(0)
     }
   }, [unit, amount]);
 
@@ -40,15 +41,15 @@ export default function ingredient(props) {
 
   const calcDetails = (amount, unit) => {
     
-    //clac crabs when user select Unit Of Measure
+    //clac carbs when user select Unit Of Measure
     let temp = UnitOfMeasure.find(x => x.name == unit)
-    let crabs = unit == "grams" ? temp.carbs * parseFloat(amount / 100) : temp.carbs * amount
+    let carbs = unit == "grams" ? temp.carbs * parseFloat(amount / 100) : temp.carbs * amount
     let suger = unit == "grams" ? temp.suger * parseFloat(amount / 100) : temp.suger * amount
     let weightInGrams=unit == "grams"? amount:temp.weightInGrams*amount
-
+  
     //if there is a unit for ingredient
-    crabs && setCrabs(crabs.toFixed(1))
-    suger&&setSuger(suger.toFixed(1))
+    carbs && setCrabs(carbs.toFixed(1))
+     suger!=0&&setSuger(suger.toFixed(1))
     temp&&setWeightInGrams(weightInGrams)
   }
 
@@ -68,7 +69,7 @@ export default function ingredient(props) {
             <Image style={styles.image} source={{ uri: image }} />
             <View style={styles.details}>
               <Text style={styles.textFront}>{suger?suger:UnitOfMeasure[0].suger} suger </Text>
-              <Text style={styles.textFront} >{crabs?crabs:UnitOfMeasure[0].carbs} Carbohydrates  </Text>
+              <Text style={styles.textFront} >{carbs?carbs:UnitOfMeasure[0].carbs} Carbohydrates  </Text>
               <Text style={styles.textFront}>{weightInGrams?weightInGrams:UnitOfMeasure[0].weightInGrams} g </Text>
             </View>
           </View>
@@ -95,7 +96,10 @@ export default function ingredient(props) {
               getValue={(value) => setAmount(value)}
             />
             <View style={styles.checkbox}>
-              <CheckBox />
+              <CheckBox 
+              getvalue={(value)=>{addToMyListFood({id:id,name:name,carbs:carbs,suger:suger,add:value})}}
+              disable={unit&&amount?false:true}
+              />
               <Text style={styles.checkBoxText}>Add</Text>
             </View>
           </View>
