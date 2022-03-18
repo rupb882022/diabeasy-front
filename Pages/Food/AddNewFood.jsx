@@ -6,6 +6,7 @@ import Input from '../../CTools/Input';
 import Header from '../../CTools/Header';
 import apiUrl from '../../Routes/Url'
 import axios from "axios";
+import Alert from '../../CTools/Alert';
 
 export default function AddNewFood(props) {
   const { navigation, route } = props
@@ -21,6 +22,7 @@ export default function AddNewFood(props) {
   const [suger, setSuger] = useState();
   const [weightInGrams, setWeightInGrams] = useState();
   const [unitList, setUnitList] = useState();
+  const [alert, setAlert] = useState()
 
   useEffect(() => {
     if (!unitList) {
@@ -51,7 +53,7 @@ export default function AddNewFood(props) {
   }, []);
 
   const saveFood = () => {
-
+if(name&&category&&unit&&crabs&&suger&&weightInGrams){
     let food = {
       userId:userId,
       name: name,
@@ -77,15 +79,30 @@ export default function AddNewFood(props) {
           console.log("response",response);
           //todo check respone show up in food list
           navigation.goBack()
+        }else{
+          throw new Error(response.status);
         }
       })
       .catch((error) => {
-
+        setAlert(
+          <Alert text="sorry somting is got worng try agine later"
+          type='worng'
+          time={2000}
+          bottom={110}
+          />)
+          console.log(error);
       })
-
+    }else{
+      setAlert(
+        <Alert text="please fill in all details"
+        type='alert'
+        time={2500}
+        bottom={80}
+        />)
+    }
   }
 
-  return (
+  return (<>
     <View style={styles.container}>
       <Header
         title={isRecipe ? 'Add Recipe' : 'Add Ingredient'}
@@ -159,6 +176,7 @@ export default function AddNewFood(props) {
         </View>
       </View>
     </View>
+      {alert&&alert}</>
   )
 }
 const styles = StyleSheet.create({

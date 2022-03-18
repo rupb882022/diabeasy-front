@@ -9,9 +9,9 @@ import Loading from '../CTools/Loading';
 import { flushSync } from 'react-dom'
 import apiUrl from '../Routes/Url'
 import axios from "axios";
+import Alert from '../CTools/Alert';
 
 
-//Todo beutiful alert!
 export default function PersonalInfo1(props) {
     const { route, navigation } = props
     let user = route.params.user;
@@ -23,6 +23,7 @@ export default function PersonalInfo1(props) {
     const [password, setPassword] = useState('')
     const [validtion, setValidtion] = useState('')
     const [loading, setLoading] = useState(true);
+    const [alert, setAlert] = useState()
 
     useEffect(() => {
         setInterval(() => setLoading(false), 1500);
@@ -37,19 +38,34 @@ export default function PersonalInfo1(props) {
     }
     const checkValid = () => {
         //valid short names
-        console.log("FirstName.length1", FirstName.length);
+
         if ((FirstName && FirstName.length < 2) || (LastName && LastName.length < 2)) {
-            alert('minimum 2 letters for first and last name')
+            setAlert(
+                <Alert text="minimum 2 letters for first and last name"
+                type='alert'
+                time={2500}
+                bottom={80}
+                />)
             console.log("FirstName.length", FirstName.length);
             return false;
         }
         //valid worng mail
         if (email && (!email.includes("@") || !email.includes("."))) {
-            alert("worng email input")
+            setAlert(
+                <Alert text="worng email input"
+                type='alert'
+                time={2000}
+                bottom={80}
+                />)
             return false;
         }
         if (!FirstName || !email || !password || !gender || !birthDate) {
-            alert("please fill in all details");
+            setAlert(
+                <Alert text="please fill in all details"
+                type='alert'
+                time={2500}
+                bottom={80}
+                />)
             return false;
         }
         return true;
@@ -96,15 +112,31 @@ export default function PersonalInfo1(props) {
                     if (response.status === 200 || response.status === 201) {
                         navigation.navigate('Login') //Todo approve the register
                     } else if (response.status === 409) {
-                        console.log("response2", response);
+                        setAlert(
+                            <Alert text="email is allready exist"
+                            type='alert'
+                            time={2000}
+                            bottom={80}
+                            />)
                     } else {
                         throw new Error("An error has occurred");
                     }
                 })
                 .catch((error) => {
                     if (error.status === 409) {
-                        console.log("response2", response);
+                        setAlert(
+                            <Alert text="email is allready exist"
+                            type='alert'
+                            time={2000}
+                            bottom={80}
+                            />)
                     } else {
+                        setAlert(
+                            <Alert text="sorry somting is got wotng try agine later"
+                            type='worng'
+                            time={2000}
+                            bottom={80}
+                            />)
                         console.log(error);
                     }
                 })
@@ -113,7 +145,7 @@ export default function PersonalInfo1(props) {
 
 
     //Todo fix validtion label in last and first name
-    return (
+    return (<>
         <View style={styles.container}>
             {loading && <Loading opacity={'#d6f2fc'} />}
             <Header
@@ -245,7 +277,8 @@ export default function PersonalInfo1(props) {
                 }
             </View>
         </View>
-
+        {alert&&alert}
+</>
     );
 }
 const styles = StyleSheet.create({
@@ -281,7 +314,7 @@ const styles = StyleSheet.create({
     back: {
         flex: 1,
         alignItems: 'center',
-        paddingBottom: '4%'
+        paddingBottom: '4%',
     },
     Register: {
         flex: 1,

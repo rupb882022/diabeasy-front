@@ -126,6 +126,7 @@ export default function FoodLibrary({ navigation }) {
 
     return (<>
         {loading && <Loading opacity={'#d6f2fc'} />}
+
         <View style={styles.continer}>
             <Header
                 title={isRecipes ? 'Recipe' : 'Ingredient'}

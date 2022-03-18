@@ -11,6 +11,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import axios from "axios";
 import moment from 'moment';
 import {UserContext} from '../../CTools/UserDetailsHook'
+import Alert from '../../CTools/Alert';
 
 export default function Forum() {
 
@@ -22,7 +23,8 @@ export default function Forum() {
   const [loading, setLoading] = useState(true);
   const [comment, setComment] = useState({});
   const [commentValue, setCommentValue] = useState();
-  
+  const [alert, setAlert] = useState()
+
   const {userDetails} = useContext(UserContext);
 
 
@@ -142,7 +144,13 @@ export default function Forum() {
           }
         })
         .catch((error) => {
-          alert(error);
+          setAlert(
+            <Alert text="sorry somting is got worng try agine later"
+            type='worng'
+            time={2000}
+            bottom={110}
+            />)
+          console.log(error);
         });
     }
   }, [comment]);
@@ -174,7 +182,12 @@ export default function Forum() {
         }
       },
         (error) => {
-          // #todo alert with error
+          setAlert(
+            <Alert text="sorry somting is got worng try agine later"
+            type='worng'
+            time={2000}
+            bottom={110}
+            />)
           console.log("error", error);
 
         }
@@ -283,6 +296,12 @@ export default function Forum() {
       buildForum(resulte)
     },
       (error) => {
+        setAlert(
+          <Alert text="sorry somting is got worng try agine later"
+          type='worng'
+          time={2000}
+          bottom={110}
+          />)
         console.log("error", error)
         setLoading(false);
       })
@@ -337,7 +356,7 @@ export default function Forum() {
           button_justifyContent='flex-start'
         />}
     </View>
-  </>
+    {alert&&alert}</>
   );
 }
 

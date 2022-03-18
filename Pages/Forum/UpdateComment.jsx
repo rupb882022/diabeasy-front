@@ -1,7 +1,7 @@
 import { View, Text ,TouchableOpacity,StyleSheet} from 'react-native'
 import React from 'react'
 import { Feather } from '@expo/vector-icons';
-import apiUrl from '../../Routes/Url';
+
 
 //TODO change alert
 export default function UpdateComment(props) {

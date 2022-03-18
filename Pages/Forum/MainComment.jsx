@@ -12,6 +12,7 @@ import Button from '../../CTools/Button';
 import apiUrl from '../../Routes/Url';
 import {ImageUri} from '../../Routes/Url';
 import axios from "axios";
+import Alert from '../../CTools/Alert';
 
 export default function MainComment(props) {
 
@@ -21,6 +22,7 @@ export default function MainComment(props) {
   const [showEdit, setShowEdit] = useState(false)//pop up editcomment user
   const [changeComment, setChangeComment] = useState('');//for action on comment like delete or update
   const [editText, setEditText] = useState(item)
+  const [alert, setAlert] = useState()
 
 
 
@@ -78,6 +80,12 @@ console.log( `${apiUrl}Forum/${comment_id}`);
       }
     })
     .catch((error) => {
+      setAlert(
+        <Alert text="sorry somting is got worng try agine later"
+        type='worng'
+        time={2000}
+        bottom={110}
+        />)
       alert(error);
     });
   }
@@ -168,7 +176,7 @@ console.log( `${apiUrl}Forum/${comment_id}`);
         </View>}
       />
     }
-  </>
+ {alert&&alert}</>
   );
 
 }

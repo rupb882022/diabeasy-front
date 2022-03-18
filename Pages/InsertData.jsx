@@ -8,6 +8,7 @@ import { UserContext } from '../CTools/UserDetailsHook'
 import axios from "axios";
 import Loading from '../CTools/Loading';
 import apiUrl from '../Routes/Url'
+import Alert from '../CTools/Alert';
 
 export default function InsertData({ navigation }) {
 
@@ -16,7 +17,7 @@ export default function InsertData({ navigation }) {
 
     const { userDetails } = useContext(UserContext);
     const [loading, setLoading] = useState(false);
-
+    const [alert, setAlert] = useState()
     const [dateTime, setDateTime] = useState(today);
     const [sugarLevel, setsugarLevel] = useState();
     const [spot, setSpot] = useState();
@@ -39,7 +40,7 @@ export default function InsertData({ navigation }) {
                 value_of_ingection: injectionValue,
                 Patients_id: userDetails.id
             }
-            console.log("details", detials);
+
 
             const configurationObject = {
                 url: apiUrl + 'User/InsertData',
@@ -50,26 +51,37 @@ export default function InsertData({ navigation }) {
                 .then((response) => {
                     setLoading(false)
                     if (response.status === 201) {
-                        alert("details Save!")
+                        setAlert(
+                            <Alert 
+                            text="details Save!"
+                            type='success'
+                            />)
                     } else {
                         throw new Error("An error has occurred");
                     }
                 })
                 .catch((error) => {
-                    //todo beauteful alert
-                    alert(error);
+                    setAlert(
+                        <Alert text="sorry somting is got wotng try agine later"
+                        type='worng'
+                        />)
+                    console.log(error);
                     setLoading(false)
                 });
-              
+
         } else {
-            alert("suger level value is required")
+            setAlert(
+            <Alert text="suger level value is required"
+            type='alert'
+            time={3000}
+            />)
         }
     }
-
 
     return (
         <View style={styles.container}>
             {loading && <Loading />}
+            {alert&&alert}
             <Header
                 title='Insert Data'
                 logo_image='infusion'
