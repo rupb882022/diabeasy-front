@@ -4,18 +4,24 @@ import FlipCard from 'react-native-flip-card'
 import Input from '../../CTools/Input';
 import { Ionicons } from '@expo/vector-icons';
 import CheckBox from '../../CTools/CheckBox';
+import Button from '../../CTools/Button';
 
 
 export default function ingredient(props) {
   const { name, image, id, UnitOfMeasure,addToMyListFood } = props
 
   const selectUnit = [];
+
+
+  //every render of ingredient
+  useEffect(() => {
   UnitOfMeasure.map(x => selectUnit.push(
     {
       itemKey: x.id,
       label: x.name,
       value: x.name
     }))
+  });
 
   const [unit, setUnit] = useState();
   const [favorite, setFavorite] = useState(false);
@@ -36,7 +42,6 @@ export default function ingredient(props) {
       setWeightInGrams(0)
     }
   }, [unit, amount]);
-
 
 
   const calcDetails = (amount, unit) => {
@@ -96,11 +101,19 @@ export default function ingredient(props) {
               getValue={(value) => setAmount(value)}
             />
             <View style={styles.checkbox}>
-              <CheckBox 
+              {/* <CheckBox 
               getvalue={(value)=>{addToMyListFood({id:id,name:name,carbs:carbs,suger:suger,add:value})}}
               disable={unit&&amount?false:true}
               />
-              <Text style={styles.checkBoxText}>Add</Text>
+              <Text style={styles.checkBoxText}>Add</Text> */}
+              <Button
+              width={25}
+              height={3}
+              radius={5}
+              text='add'
+              textSize={12}
+              onPress={()=>{addToMyListFood({id:id,name:name,carbs:carbs,suger:suger,add:true})}}
+              />
             </View>
           </View>
         </View>
@@ -151,8 +164,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flex: 0.2,
     alignSelf: 'center',
-    paddingRight:'2%',
-    right:'2%'
+    // paddingRight:'2%',
+    // right:'2%'
   },
   checkBoxText: {
     textAlign: 'left',
@@ -172,6 +185,6 @@ const styles = StyleSheet.create({
     justifyContent:'space-evenly',
     flexDirection: 'row',
     backgroundColor: "#FFCF84",
-    paddingLeft: '5%'
+    paddingLeft: '2%'
   }
 })

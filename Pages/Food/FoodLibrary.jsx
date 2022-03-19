@@ -9,6 +9,8 @@ import Button from '../../CTools/Button';
 import { UserContext } from '../../CTools/UserDetailsHook'
 import { useFocusEffect } from '@react-navigation/native';
 import PopUp from '../../CTools/PopUp';
+import Alert from '../../CTools/Alert';
+
 
 export default function FoodLibrary({ navigation }) {
 
@@ -22,7 +24,8 @@ export default function FoodLibrary({ navigation }) {
     const [loading, setLoading] = useState(true);
     const [show, setShow] = useState(false);
     const [myFoodList, setMyFoodList] = useState([]);
-    const [myFoodDtails, setmyFoodDtails] = useState({ carbs: 0 , suger: 0 });
+    const [myFoodDtails, setmyFoodDtails] = useState({ carbs: 0.0, suger: 0.0 });
+    const [alert, setAlert] = useState();
 
     //get all Ingredients 
     useFocusEffect(
@@ -92,27 +95,59 @@ export default function FoodLibrary({ navigation }) {
         console.log("foodJson", food);
         let temp
         let tempDetails = myFoodDtails
-        let carbs=tempDetails.carbs
-        let suger=tempDetails.suger
+        let carbs = parseFloat(tempDetails.carbs)
+        let suger =parseFloat(tempDetails.suger)
+
+
+        //check if food need to add or delete
         if (food.add) {
+            console.log("carbs type1=>",typeof(carbs));
+            //cheak if user fill in unit and amount
+            if (food.suger != 0 || food.carbs != 0) {
+
+                //check if item is allready in the list
+                if (myFoodList.find(x => x.id == food.id)) {
+                    setAlert(<Alert text={isRecipes ? 'Recipe' : 'Ingredient' + 'is allready in your list'}
+                        type='alert'
+                        time={3000}
+                        bottom={50} />)
+                    return;
+                }
+                setAlert(
+                    <Alert text={isRecipes ? 'Recipe' : 'Ingredient' + ' add to list'}
+                        type='success'
+                        bottom={50}
+                    />)
+
+            } else {
+                setAlert(<Alert text={'select unit and amount to add food item'}
+                    type='alert'
+                    time={3000}
+                    bottom={50} />)
+                return;
+            }
             temp = myFoodList;
             temp.push(food);
-            carbs +=parseFloat(food.carbs)
-            food.suger!=0? suger+= parseFloat(food.suger):suger;
-        } else {
+            carbs += parseFloat(food.carbs)
+             suger += parseFloat(food.suger) 
+        }//if food item was delete 
+        else {
             temp = myFoodList.filter(x => x.id != food.id)
-            carbs -= parseFloat(food.carbs)
-            food.suger!=0?suger-= parseFloat(food.suger):suger;
+            console.log("temp",temp);
+            console.log("food.carbs type=>",typeof(food.carbs));
+            console.log("food.carbs=>", food.carbs);
+            console.log("carbs",carbs);
+            carbs = (carbs - food.carbs)
+            food.suger != 0 ? suger -= food.suger : suger;
+            console.log("carbs type=>",typeof(carbs));
         }
-
-    console.log("****",{carbs:carbs,suger:suger});
-        setmyFoodDtails({carbs:carbs,suger:suger})
+        setmyFoodDtails({ carbs: carbs, suger: suger })
         setMyFoodList(temp);
     }
-
+    console.log("myFoodDtails", myFoodDtails);
     const ListElement = myFoodList.length > 0 ? <>{myFoodList.map((x, i) => <View key={i} style={{ alignSelf: 'flex-start' }}>
         <View style={styles.listRow}>
-            <TouchableOpacity onPress={() => {addToMyListFood({ id: x.id,name:x.name,carbs:x.carbs, suger:x.suger , add: false })}}
+            <TouchableOpacity onPress={() => { addToMyListFood({ id: x.id, name: x.name, carbs: x.carbs, suger: x.suger, add: false }) }}
             ><Text style={styles.exit}> X</Text></TouchableOpacity>
             <Text style={styles.mylistvar}>{x.name}</Text>
             <Text style={styles.mylist}> Carbohydrates:</Text><Text style={styles.mylistvar}>{x.carbs}</Text>
@@ -139,7 +174,7 @@ export default function FoodLibrary({ navigation }) {
                 <Input
                     label='Category'
                     editable={false}
-                    getValue={(value) => setCategory(value)}
+                    getValue={(value) => { setFoodList([]); setCategory(value); }}
                     type='selectBox'
                     height={50}
                     SelectBox_placeholder='Select category'
@@ -215,7 +250,7 @@ export default function FoodLibrary({ navigation }) {
                 />
             </View>
         </View>
-
+        {alert && alert}
     </>);
 }
 const styles = StyleSheet.create({
@@ -255,11 +290,11 @@ const styles = StyleSheet.create({
     },
     mylist: {
         paddingLeft: '2%',
-        fontSize:15
+        fontSize: 15
     },
     mylistvar: {
         fontWeight: 'bold',
-        fontSize:15
+        fontSize: 15
     },
     exit: {
         textAlign: 'right',
@@ -270,10 +305,10 @@ const styles = StyleSheet.create({
     }, listRow: {
         flexDirection: 'row',
         paddingTop: '5%',
-        paddingBottom:'2%',
+        paddingBottom: '2%',
         width: 300,
         borderBottomWidth: 1,
         borderRadius: 10,
-        flexWrap:'wrap'
+        flexWrap: 'wrap'
     }
 })

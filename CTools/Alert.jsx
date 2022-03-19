@@ -45,14 +45,7 @@ export default function Alert(props) {
   const element = alertByType();
   return (
     <View
-      style={{
-        position: 'absolute',
-        bottom: bottom,
-        left: 0,
-        right: 0,
-        flexDirection: 'row',
-        zIndex:100
-      }}>
+      style={styles.container(bottom)}>
       <Animated.View
         style={{
           opacity,
@@ -95,8 +88,16 @@ const styles = StyleSheet.create({
       fontSize: 16,
       paddingLeft: '2%'
     }
+  },
+  container:(bottom)=>{
+    return {position: 'absolute',
+    bottom: bottom,
+    left: 0,
+    right: 0,
+    flexDirection: 'row',
+    zIndex:100
   }
-
+  }
 })
 
 
