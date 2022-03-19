@@ -160,7 +160,7 @@ let editComment={ subject: subject, value: editText }
             setShowEdit={() => { setChangeComment('update'); setShowEdit(false); 
             comments.length > 0&&setAlert(
               <Alert text="can not edit comment with respones"
-              type='alert'
+              type='info'
               time={2500}
               bottom={110}
               />); 
