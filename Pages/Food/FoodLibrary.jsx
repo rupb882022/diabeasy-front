@@ -48,6 +48,7 @@ export default function FoodLibrary({ navigation }) {
                 }
             }).then((resulte) => {
                 setIngredient(resulte)
+                setFoodList(resulte)
                 setLoading(false)
             },
                 (error) => {
