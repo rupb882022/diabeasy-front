@@ -26,12 +26,13 @@ export default function FoodLibrary({ navigation }) {
     const [myFoodList, setMyFoodList] = useState([]);
     const [myFoodDtails, setmyFoodDtails] = useState({ carbs: 0.0, suger: 0.0 });
     const [alert, setAlert] = useState();
+    const [serchByName, setSerchByName] = useState();
 
     //get all Ingredients 
     useFocusEffect(
         React.useCallback(() => {
             setLoading(true)
-            fetch(apiUrl + `Food/getIngredients`, {
+            fetch(apiUrl + `Food/getIngredients/all`, {
                 method: 'GET',
                 headers: new Headers({
                     'Content-Type': 'appliction/json; charset=UTF-8',
@@ -41,13 +42,20 @@ export default function FoodLibrary({ navigation }) {
                 if (res && res.status == 200) {
                     return res.json();
                 } else {
+                   
                     console.log("status code:", res.status)
+                    throw new error(res.body)
                 }
             }).then((resulte) => {
                 setIngredient(resulte)
                 setLoading(false)
             },
                 (error) => {
+                    setAlert(
+                        <Alert text='sorry somting is not working try agine later'
+                            type='worng'
+                            bottom={50}
+                        />)
                     console.log("error", error)
                     setLoading(false)
                 })
@@ -67,6 +75,7 @@ export default function FoodLibrary({ navigation }) {
                     return res.json();
                 } else {
                     console.log("status code:", res.status)
+                    throw new error(res.body)
                 }
             }).then((resulte) => {
                 let temp = resulte.map(x => ({ itemKey: x.id, label: x.name, value: x.id }))
@@ -90,21 +99,67 @@ export default function FoodLibrary({ navigation }) {
         }
     }, [category]);
 
+    const Serch_food_by_name = () => {
+        console.log("serchByName",serchByName);
+        if(serchByName){
+        setLoading(true)
+        console.log(apiUrl + `Food/getIngredients/${serchByName}`);
+        fetch(apiUrl + `Food/getIngredients/${serchByName}`, {
+            method: 'GET',
+            headers: new Headers({
+                'Content-Type': 'appliction/json; charset=UTF-8',
+                'Accept': 'appliction/json; charset=UTF-8'
+            })
+        }).then(res => {
+            if (res && res.status == 200) {
+                return res.json();
+            } else {
+                console.log("status code:", res.status)
+            }
+        }).then((resulte) => {
+            console.log(resulte);
+            setFoodList(resulte)
+            setLoading(false)
+        },
+            (error) => {
+                setAlert(
+                    <Alert text='sorry somting is not working try agine later'
+                        type='worng'
+                        bottom={50}
+                    />)
+                console.log("error", error)
+                setLoading(false)
+            })
+    }else{
+        setAlert(
+            <Alert text='cannot serch with empty value'
+                type='alert'
+                bottom={50}
+            />)
+    }
+}
+
+    //calc Dtails for food list
+    const calc_myFoodDtails = (list) => {
+        let carbs = 0
+        let suger = 0
+        if (list.length > 0)
+            list.map(x => {
+                carbs += parseFloat(x.carbs)
+                suger += parseFloat(x.suger)
+            })
+        carbs = carbs.toFixed(1)
+        suger = suger.toFixed(1)
+        setmyFoodDtails({ carbs: carbs, suger: suger })
+    }
+
     //insert food to my list
     const addToMyListFood = (food) => {
-        console.log("foodJson", food);
         let temp
-        let tempDetails = myFoodDtails
-        let carbs = parseFloat(tempDetails.carbs)
-        let suger =parseFloat(tempDetails.suger)
-
-
         //check if food need to add or delete
         if (food.add) {
-            console.log("carbs type1=>",typeof(carbs));
             //cheak if user fill in unit and amount
             if (food.suger != 0 || food.carbs != 0) {
-
                 //check if item is allready in the list
                 if (myFoodList.find(x => x.id == food.id)) {
                     setAlert(<Alert text={isRecipes ? 'Recipe' : 'Ingredient' + 'is allready in your list'}
@@ -118,7 +173,6 @@ export default function FoodLibrary({ navigation }) {
                         type='success'
                         bottom={50}
                     />)
-
             } else {
                 setAlert(<Alert text={'select unit and amount to add food item'}
                     type='alert'
@@ -128,23 +182,15 @@ export default function FoodLibrary({ navigation }) {
             }
             temp = myFoodList;
             temp.push(food);
-            carbs += parseFloat(food.carbs)
-             suger += parseFloat(food.suger) 
         }//if food item was delete 
         else {
             temp = myFoodList.filter(x => x.id != food.id)
-            console.log("temp",temp);
-            console.log("food.carbs type=>",typeof(food.carbs));
-            console.log("food.carbs=>", food.carbs);
-            console.log("carbs",carbs);
-            carbs = (carbs - food.carbs)
-            food.suger != 0 ? suger -= food.suger : suger;
-            console.log("carbs type=>",typeof(carbs));
         }
-        setmyFoodDtails({ carbs: carbs, suger: suger })
         setMyFoodList(temp);
+        calc_myFoodDtails(temp);
     }
-    console.log("myFoodDtails", myFoodDtails);
+
+    //pop up with list of food element
     const ListElement = myFoodList.length > 0 ? <>{myFoodList.map((x, i) => <View key={i} style={{ alignSelf: 'flex-start' }}>
         <View style={styles.listRow}>
             <TouchableOpacity onPress={() => { addToMyListFood({ id: x.id, name: x.name, carbs: x.carbs, suger: x.suger, add: false }) }}
@@ -195,6 +241,7 @@ export default function FoodLibrary({ navigation }) {
                     placeholder='food name'
                     height={50}
                     flex={1}
+                    getValue={(value) => setSerchByName(value) }
                 />
                 <View style={{ flexDirection: 'row', flex: 1, paddingTop: '1.5%', paddingRight: '5%' }}>
                     <Button
@@ -204,6 +251,7 @@ export default function FoodLibrary({ navigation }) {
                         textSize={14}
                         text='Serch'
                         alignItems='flex-start'
+                        onPress={Serch_food_by_name}
                     />
                     <View style={{ flex: 1, right: '40%' }}>
                         <Button
@@ -222,7 +270,7 @@ export default function FoodLibrary({ navigation }) {
                 </View>
             </View>
             <View style={styles.cards}>
-                {category ?
+                {foodList ?
                     isRecipes ?
                         <></> :
                         <IngredientsList
