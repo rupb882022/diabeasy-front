@@ -106,14 +106,14 @@ export default function Forum() {
           //if user is doctor or patient
           if (userDetails.id % 2 == 0) {
             setComment({
-              date_time: moment(new Date().toString()).format('MM-DD-YYYY').toString(),
+              date_time: moment(new Date().toString()).format("DD/MM/YYYY"),
               subject: subject,
               value: commentValue,
               Doctor_id: userDetails.id,
             });
           } else {
             setComment({
-              date_time: moment(new Date().toString()).format('MM-DD-YYYY').toString(),
+              date_time: moment(new Date().toString()).format("DD/MM/YYYY"),
               subject: subject,
               value: commentValue,
               Patients_id: userDetails.id,
@@ -271,7 +271,7 @@ export default function Forum() {
         setLoading(false);
       }
     } catch (error) {
-      console.log(error)
+      // console.log(error)
       setLoading(false);
     }
 
@@ -331,7 +331,14 @@ export default function Forum() {
       <SectionList
         sections={data}
         keyExtractor={(item, index) => item + index}
-        renderItem={({ item, index }) => <MainComment getAllComments={get_all_comments} userDetails={userDetails} item={item} index={index} data={data} />}
+        renderItem={({ item, index }) => <MainComment 
+                                        getAllComments={get_all_comments} 
+                                        userDetails={userDetails} 
+                                        item={item} 
+                                        index={index} 
+                                        data={data} 
+                                        setAlert={(value)=>{ console.log("secound",value); setAlert(value)}}
+                                        />}
         renderSectionHeader={({ section: { subject } }) => (
           <Text style={styles.header}>{subject}</Text>
         )}

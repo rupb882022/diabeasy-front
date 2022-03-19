@@ -1,7 +1,7 @@
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
 import { MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
-import moment from 'moment';// #Nir moment format show alert eror
+import moment from 'moment';
 import UpdateComment from './UpdateComment';
 import DeleteComment from './DeleteComment';
 import Input from '../../CTools/Input';
@@ -10,8 +10,6 @@ import PopUp from '../../CTools/PopUp';
 import { ImageUri } from '../../Routes/Url';
 
 export default function Comment(props) {
-
-
   //igone props.item bug in flatList use let comment from comment json
   const { item, index, comments, getAllComments, updateComment, userDetails } = props;
   let comment = comments[index];
@@ -20,9 +18,6 @@ export default function Comment(props) {
   const [showEdit, setShowEdit] = useState(false)//pop up editcomment user
   const [changeComment, setChangeComment] = useState('');//for action on comment like delete or update
   const [editText, setEditText] = useState(comment.value)
-
-
-
 
 
   if (comment.image) {
@@ -69,7 +64,7 @@ export default function Comment(props) {
       </View>
       <View style={styles.row}>
         <MaterialCommunityIcons style={styles.Icon} name="calendar-clock" size={20} />
-        <Text style={styles.date}>{moment(comment.date).format('MM-DD-YYYY')}</Text>
+        <Text style={styles.date}>{moment(comment.date.toString()).format("DD/MM/YYYY")}</Text>
       </View>
 
     </View>

@@ -15,18 +15,20 @@ import Alert from '../../CTools/Alert';
 export default function FoodLibrary({ navigation }) {
 
     const { userDetails } = useContext(UserContext);
-    //Todo serch by food name
-    const [isRecipes, setIsisRecipes] = useState(false);
-    const [category, setCategory] = useState('');
-    const [list, setList] = useState();
-    const [foodList, setFoodList] = useState();
-    const [ingredient, setIngredient] = useState();
+//todo clean input of serch after click or serch by category and food name
     const [loading, setLoading] = useState(true);
     const [show, setShow] = useState(false);
-    const [myFoodList, setMyFoodList] = useState([]);
-    const [myFoodDtails, setmyFoodDtails] = useState({ carbs: 0.0, suger: 0.0 });
     const [alert, setAlert] = useState();
-    const [serchByName, setSerchByName] = useState();
+
+    const [isRecipes, setIsisRecipes] = useState(false);
+
+    const [serchByName, setSerchByName] = useState();//the chosen name of food for serch
+    const [category, setCategory] = useState('');//the chosen category
+    const [list, setList] = useState();//category list
+    const [foodList, setFoodList] = useState();//food cards list
+    const [ingredient, setIngredient] = useState();//all ingredient from DB
+    const [myFoodList, setMyFoodList] = useState([]);//the chosen food list
+    const [myFoodDtails, setmyFoodDtails] = useState({ carbs: 0.0, suger: 0.0 });//the details on chosen food list
 
     //get all Ingredients 
     useFocusEffect(
@@ -118,7 +120,6 @@ export default function FoodLibrary({ navigation }) {
                 console.log("status code:", res.status)
             }
         }).then((resulte) => {
-            console.log(resulte);
             setFoodList(resulte)
             setLoading(false)
         },
