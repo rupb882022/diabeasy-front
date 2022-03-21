@@ -49,6 +49,7 @@ export default function FoodLibrary({ navigation }) {
                     throw new error(res.body)
                 }
             }).then((resulte) => {
+                console.log("resulte",resulte);
                 setIngredient(resulte)
                 setFoodList(resulte)
                 setLoading(false)

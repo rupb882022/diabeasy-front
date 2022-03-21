@@ -140,7 +140,7 @@ export default function InsertData({ navigation }) {
                 <Button
                     text="food library"
                     width={5}
-                    onPress={() => navigation.navigate('Recipes')}
+                    onPress={() => navigation.navigate('Food')}
                     height={2}
                     alignItems='flex-end'
                     justifyContent='flex-start'

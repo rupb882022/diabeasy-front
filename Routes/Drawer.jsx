@@ -8,11 +8,14 @@ import { Ionicons, Entypo, AntDesign, Fontisto } from '@expo/vector-icons';
 import PanicButton from '../Pages/PanicButton';
 import Forum from '../Pages/Forum/Forum';
 import Maps from '../Pages/Maps';
+import Login from '../Pages/Login'
 import Setting from '../Pages/Setting'
-import React from 'react';
+import React,{useContext} from 'react';
 import Footer from './Footer';
 import Prescriptions from '../Pages/Prescriptions';
 import DoctorHome from '../Pages/Doctor/DoctorHome';
+import {UserContext} from '../CTools/UserDetailsHook'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Drawernav = createDrawerNavigator();
 
@@ -20,6 +23,7 @@ const Drawernav = createDrawerNavigator();
 export default function Drawer(props) {
 
     const { navigation } = props
+    const {setUserDetails} = useContext(UserContext);
 
     //color of icons
     let color = "black"
@@ -34,6 +38,17 @@ export default function Drawer(props) {
         },
     }
 
+    const storeData = async () => {
+        try {
+            await AsyncStorage.clear();
+            const jsonValue = await AsyncStorage.getItem('userDetails');
+            setUserDetails(null);
+            console.log('jsonValue333',jsonValue);
+              navigation.navigate('Login');
+        } catch (e) {
+            await AsyncStorage.setItem('eror', e)
+        }
+    }
     return (<>
         <Drawernav.Navigator drawerContent={props => <CustomDrawer {...props} />} screenOptions={({ navigation }) => ({
             headerLeft: () => {
@@ -71,14 +86,14 @@ export default function Drawer(props) {
                 ...options,
                 drawerIcon: () => (<Ionicons name="football-outline" size={24} color={color} />)
             }} />
-            <Drawernav.Screen name='Recipes' component={FoodLibrary} options={{
+            {/* <Drawernav.Screen name='Recipes' component={FoodLibrary} options={{
                 ...options,
                 drawerIcon: () => (<Fontisto name="prescription" size={24} color={color} />)
-            }} />
-            {/* <Drawernav.Screen name='Food' component={FoodLibrary} options={{
+            }} /> */}
+            <Drawernav.Screen name='Food' component={FoodLibrary} options={{
                 ...options,
                 drawerIcon: () => (<Ionicons name="fast-food-outline" size={24} color={color} /> )
-            }} /> */}
+            }} />
             <Drawernav.Screen name='Emergency Call' component={PanicButton} options={{
                 ...options,
                 drawerIcon: () => (<AntDesign name="exclamationcircleo" size={24} color={color} />)
@@ -91,6 +106,10 @@ export default function Drawer(props) {
                 ...options,
                 drawerIcon: () => (<Ionicons name="settings-outline" size={24} color={color} />)
             }} />
+                {/* <Drawernav.Screen onPress={()=>{storeData()}} name='Log Out' component={Login} options={{
+                ...options,
+                drawerIcon: () => (<AntDesign name="logout" size={24} color={color} />)
+            }} /> */}
             <Drawernav.Screen name='DoctorHome' component={DoctorHome} options={{
                 ...options,
                 drawerIcon: () => (<Ionicons name="ios-home-outline" size={24} color={color} />)

@@ -337,7 +337,7 @@ export default function Forum() {
                                         item={item} 
                                         index={index} 
                                         data={data} 
-                                        setAlert={(value)=>{ console.log("secound",value); setAlert(value)}}
+                                        setAlert={(value)=>{ setAlert(value)}}
                                         />}
         renderSectionHeader={({ section: { subject } }) => (
           <Text style={styles.header}>{subject}</Text>
