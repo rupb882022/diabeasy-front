@@ -326,10 +326,10 @@ source={require('../images/prescriptions.png')}
       element={ 
          <>
          {popupElement}
-         <View style={{alignItems:'flex-end',justifyContent:'flex-end',flexDirection:'row'}}>
+         <View style={{alignItems:'flex-end',justifyContent:'flex-end',flexDirection:'row',paddingTop:'20%'}}>
          <Button text='Reject'/>
          <Button text='Accept'/>
-         <Button text='Cancle'/>
+         <Button text='Cancle' onPress={()=> setShowDetails(false)}/>
          </View>
        </> }
       isButton={false}
