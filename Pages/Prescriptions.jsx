@@ -12,6 +12,7 @@ import Moment from 'moment';
 import Loading from '../CTools/Loading';
 import * as Progress from 'react-native-progress';
 import axios from "axios";
+import { useFocusEffect } from '@react-navigation/native';
 
 
 export default function Prescriptions(props) {
@@ -29,19 +30,44 @@ const [reqValue, setReqValue] = useState(false);
 const [request, setRequest] = useState({});
 const [allSubjects, setAllSubjects] = useState();
 
+//let url=upiUrl + `User/Prescription/${userDetails.id}`;
+//let isDoctor=false;
+console.log('userDe=>',userDetails);
 
+useFocusEffect(
+  React.useCallback(() => {
+     if (userDetails.id%2==0&&userDetails.patientID) {
+    getPrescriptions();
+    //setLoading(false)
+   // console.log('1');
+  }
+else{setPrescriptions([])}
+}, [userDetails])
+);
 
 const getPrescriptions = () => {
-  
-  setLoading(true)
-      fetch(upiUrl + `User/Prescription/${userDetails.id}`, {
+ // console.log('2');
+    setLoading(true)
+    let isDoctor=userDetails.id%2==0;
+    let url;
+  if (userDetails.patientID) {
+    url=upiUrl + `User/Prescription/${userDetails.patientID}`;
+  } 
+// else if(isDoctor){
+//   setPrescriptions([])
+//    return;}
+else{
+  url=upiUrl + `User/Prescription/${userDetails.id}`;
+}
+  console.log('url=> ',url);
+      fetch(url, {
           method: 'GET',
           headers: new Headers({
               'Content-Type': 'appliction/json; charset=UTF-8',
               'Accept': 'appliction/json; charset=UTF-8'
           })
       }).then(res => {
-        console.log("res=> ",res.status);
+        console.log("res88=> ",res.status);
           if (res && res.status == 200) {
               return res.json();
           } else {
@@ -50,26 +76,29 @@ const getPrescriptions = () => {
               return;
           }
       }).then((result) => {
-       // console.log('result=>', result);
+        console.log('result=>', result);
         setPrescriptions(result)
         GetAllsubjects(result)
+      //  console.log('3');
         setLoading(false)
       },
           (error) => {
               console.log("error", error)
               setLoading(false)
-          })
-        
-        
+          }) 
 }
+
 useEffect(() => {
-  //get all user prescription
-  getPrescriptions()
+  //get all user prescriptionn
+  if (!prescriptions&&userDetails.id%2!=0) {
+    getPrescriptions()
   console.log("pres=>",prescriptions);
+  }
 }, []);
 
 useEffect(() => {
   if (!show && request&&reqValue) {
+    console.log('5');
     const configurationObject = {
       url:upiUrl+'User/Prescription/addRequest',
       method: "POST",
@@ -243,7 +272,7 @@ setPopupElement(
             />
           </View>}
 
-<Button 
+{userDetails.id%2!=0&&<Button 
 text='New prescription request'
 width={12}
 height={4}
@@ -251,7 +280,7 @@ alignItems='center'
 justifyContent='flex-end'
 onPress={() => setShow(true)}
 />
-
+}
 <Image
 style={styles.Image}
 source={require('../images/prescriptions.png')}
@@ -268,7 +297,7 @@ source={require('../images/prescriptions.png')}
           button_justifyContent='flex-start'
         />}
 
-{showDetails && prescriptions &&
+{showDetails && prescriptions && //userDetails.id%2!=0 &&
       <PopUp
       height={45}
       width={90}
@@ -276,6 +305,8 @@ source={require('../images/prescriptions.png')}
       backgroundColor='#d6f2fc'
       element={popupElement}
 />}
+
+
 
 { loading &&<Loading/>}
 

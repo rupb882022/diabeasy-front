@@ -17,7 +17,7 @@ const [patients,setPatients]=useState([])
 const [element,setElement]=useState()
 
 useEffect(()=>{
-// setLoading(true)
+ setLoading(true)
 //console.log(upiUrl + `User/Doctor/${userDetails.id}`);
       fetch(upiUrl + `User/Doctor/${userDetails.id}`, {
           method: 'GET',
@@ -31,17 +31,17 @@ useEffect(()=>{
               return res.json();
           } else {
               console.log("status code:", res.status)
-           //   setLoading(false)
+              setLoading(false)
               return;
           }
       }).then((result) => {
-       console.log('result=>', result);
+     //  console.log('result=>', result);
         setPatients(result)
-      //  setLoading(false)
+        setLoading(false)
       },
           (error) => {
               console.log("error=>", error)
-             // setLoading(false)
+              setLoading(false)
           })
 },[])
 
@@ -88,24 +88,13 @@ let element= patients.map((p,i)=>
 key={i}
 p={p}
 whileClick={whileClick}
-//setPatients={setPatients()}
 />)
 setElement(element)}
 ,[patients])
 
-//const [color,setColor]=useState(styles.imageWhite)
-
-//const clickCurrentPatient=(id)=>{
- // console.log('id-',p.id  );
- //let Patient = patients.find(x=>x.id==id)
- //Patient.select=true;
-//setColor(styles.imageWhite(color))}
 
 const whileClick=(id)=>{
-  //console.log("id",id);
-
-  let select=false;
-
+let select=false;
 //select is present the x.select- it will handel with  patientID(true/false)
 let arr= patients.map(x=> {
 if (x.id!=id) {
@@ -116,7 +105,6 @@ x.select=!x.select; select=x.select }
 return x}) 
 //console.log('arr',arr);
 setPatients(arr)
-
 let temp=select?Object.assign({},userDetails,{patientID:id}):Object.assign({},userDetails,{patientID:null})// patient id already added to userdetails by press on patient circle
 setUserDetails(temp);
 }
