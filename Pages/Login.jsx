@@ -38,6 +38,7 @@ export default function Login({ navigation }) {
   if (!userDetails) {
     getData();
   } }, []);
+
   useEffect(() => {
     if (userDetails) {
         setLoading(true)
