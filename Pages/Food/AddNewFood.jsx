@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet,ScrollView } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import Button from '../../CTools/Button'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -76,8 +76,8 @@ if(name&&category&&unit&&crabs&&suger&&weightInGrams){
     axios(configurationObject)
       .then((response) => {
         if (response) {
-          console.log("response",response);
-          //todo check respone show up in food list
+          console.log("response",response.status);
+
           navigation.goBack()
         }else{
           throw new Error(response.status);

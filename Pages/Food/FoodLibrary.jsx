@@ -28,13 +28,14 @@ export default function FoodLibrary({ navigation }) {
     const [foodList, setFoodList] = useState();//food cards list
     const [ingredient, setIngredient] = useState();//all ingredient from DB
     const [myFoodList, setMyFoodList] = useState([]);//the chosen food list
-    const [myFoodDtails, setmyFoodDtails] = useState({ carbs: 0.0, suger: 0.0 });//the details on chosen food list
+    const [myFoodDtails, setmyFoodDtails] = useState({ carbs: 0.0, suger: 0.0,food:[]});//the details on chosen food list
 
     //get all Ingredients 
     useFocusEffect(
         React.useCallback(() => {
+            console.log(apiUrl + `Food/getIngredients/all/${userDetails?userDetails.id:0}`);
             setLoading(true)
-            fetch(apiUrl + `Food/getIngredients/all`, {
+            fetch(apiUrl + `Food/getIngredients/all/${userDetails?userDetails.id:0}`, {
                 method: 'GET',
                 headers: new Headers({
                     'Content-Type': 'appliction/json; charset=UTF-8',
@@ -49,7 +50,6 @@ export default function FoodLibrary({ navigation }) {
                     throw new error(res.body)
                 }
             }).then((resulte) => {
-                console.log("resulte",resulte);
                 setIngredient(resulte)
                 setFoodList(resulte)
                 setLoading(false)
@@ -104,11 +104,9 @@ export default function FoodLibrary({ navigation }) {
     }, [category]);
 
     const Serch_food_by_name = () => {
-        console.log("serchByName",serchByName);
         if(serchByName){
         setLoading(true)
-        console.log(apiUrl + `Food/getIngredients/${serchByName}`);
-        fetch(apiUrl + `Food/getIngredients/${serchByName}`, {
+        fetch(apiUrl + `Food/getIngredients/${serchByName}/${userDetails?userDetails.id:0}`, {
             method: 'GET',
             headers: new Headers({
                 'Content-Type': 'appliction/json; charset=UTF-8',
@@ -144,6 +142,7 @@ export default function FoodLibrary({ navigation }) {
 
     //calc Dtails for food list
     const calc_myFoodDtails = (list) => {
+        console.log("list",list);
         let carbs = 0
         let suger = 0
         if (list.length > 0)
