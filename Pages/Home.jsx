@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, Image } from 'react-native';
-import React, { useEffect, useState, useContext, createContext } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import Button from '../CTools/Button';
 import Header from '../CTools/Header';
 import Loading from '../CTools/Loading';
@@ -14,7 +14,6 @@ export default function Home(props) {
     const [helloText, setHelloText] = useState();
 
 
-    console.log("userD=>",userDetails);
 
 
 

@@ -7,7 +7,7 @@ export default function SelectBox(props) {
     if(items.length>0){
 
     return (
-        <View style={{ flex: 1, width: '220%', position: 'absolute', right: '10%',top:'42%' }}>
+        <View style={{ flex: 1, width: '240%', position: 'absolute', right: '10%',top:'42%' }}>
             <RNPickerSelect
                 onValueChange={(value,index) => {selectValue(value);  onSelect(index!=0&&items?items[index-1].label:null) }}
                 items={items}

@@ -7,6 +7,7 @@ import moment from 'moment';
 import Button from '../../CTools/Button';
 import apiUrl from '../../Routes/Url';
 import axios from "axios";
+import Alert from '../../CTools/Alert';
 
 export default function AddComment(props) {
   
@@ -14,9 +15,9 @@ export default function AddComment(props) {
   const [show, setShow] = useState(false);//pop up state
   const [comment_value, setComment_value] = useState();//comment text
   const [comment, setComment] = useState({});
+  const [alert, setAlert] = useState()
 
 
-  
 
   const add_comment = () => {
     if (comment_value&& userDetails) {
@@ -35,7 +36,7 @@ export default function AddComment(props) {
       setShow(false);
     }
   }
-  // #Nir check about DTO
+
   useEffect(() => {
     if (!show && comment && comment_value) {
       const configurationObject = {
@@ -52,12 +53,16 @@ export default function AddComment(props) {
         }
       })
       .catch((error) => {
-        alert(error);
+        setAlert(
+          <Alert text="sorry somting is got worng try agine later"
+          type='worng'
+          time={2000}
+          bottom={110}
+          />)
+          console.log(error);
       });
     }
   }, [comment]);
-
-
 
 
   return (<>
@@ -101,7 +106,7 @@ export default function AddComment(props) {
             </View>
           </View>}
       />}
-  </>
+ {alert&&alert}</>
 
   )
 }

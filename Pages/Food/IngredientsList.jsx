@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import Ingredient from './Ingredient';
 
 export default function IngredientsList(props) {
-    const { foodList } = props
+    const { foodList,addToMyListFood } = props
 
 
     const list = foodList ? foodList.map((x, i) =>
@@ -13,6 +13,7 @@ export default function IngredientsList(props) {
             name={x.name}
             image={x.image}
             UnitOfMeasure={x.UnitOfMeasure}
+            addToMyListFood={(value)=>{addToMyListFood(value)}}
         />
     ) : <></>
 

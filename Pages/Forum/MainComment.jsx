@@ -12,11 +12,12 @@ import Button from '../../CTools/Button';
 import apiUrl from '../../Routes/Url';
 import {ImageUri} from '../../Routes/Url';
 import axios from "axios";
+import Alert from '../../CTools/Alert';
 
 export default function MainComment(props) {
 
 
-  const { item, data, index, getAllComments,userDetails } = props; //index= index of item in the current subject
+  const { item, data, index, getAllComments,userDetails,setAlert } = props; //index= index of item in the current subject
   const [isopen, setIsopen] = useState(false);//respon comments
   const [showEdit, setShowEdit] = useState(false)//pop up editcomment user
   const [changeComment, setChangeComment] = useState('');//for action on comment like delete or update
@@ -51,18 +52,12 @@ export default function MainComment(props) {
 
 
   const updateComment = () => {
-    // console.log("id", comment_id)
-    // console.log("text", editText);
-    // console.log(JSON.stringify({ subject: subject, value: editText }))
-
 //user can not edit comment if he have responses
     if (comments.length != 0) {
       return;
     }
 let editComment={ subject: subject, value: editText }
 
-console.log(editComment);
-console.log( `${apiUrl}Forum/${comment_id}`);
     const configurationObject = {
       url: `${apiUrl}Forum/${comment_id}`,
       method: "PUT",
@@ -78,7 +73,13 @@ console.log( `${apiUrl}Forum/${comment_id}`);
       }
     })
     .catch((error) => {
-      alert(error);
+      setAlert(
+        <Alert text="sorry somting is got worng try agine later"
+        type='worng'
+        time={2000}
+        bottom={110}
+        />)
+      console.log(error);
     });
   }
 
@@ -120,7 +121,7 @@ console.log( `${apiUrl}Forum/${comment_id}`);
       </View>
       <View style={styles.row}>
         <MaterialCommunityIcons style={styles.Icon} name="calendar-clock" size={20} />
-        <Text style={styles.date}> {moment(date).format('MM-DD-YYYY')}</Text>
+        <Text style={styles.date}> {date&&moment(date.toString()).format("DD/MM/YYYY")}</Text>
         <AddComment
           comment_id={comment_id}
           subject={subject}
@@ -156,8 +157,14 @@ console.log( `${apiUrl}Forum/${comment_id}`);
         width={40}
         element={<View style={{ flex: 3, width: '100%', justifyContent:'space-between', alignItems: 'center' }}>
           <UpdateComment
-            respones={comments.length > 0}
-            setShowEdit={() => { setChangeComment('update'); setShowEdit(false) }}
+            setShowEdit={() => { setChangeComment('update'); setShowEdit(false); 
+            comments.length > 0&&setAlert(
+              <Alert text="can not edit comment with respones"
+              type='info'
+              time={2500}
+              bottom={110}
+              />); 
+            }}
           />
           <DeleteComment
             id={comment_id}
@@ -168,7 +175,7 @@ console.log( `${apiUrl}Forum/${comment_id}`);
         </View>}
       />
     }
-  </>
+ </>
   );
 
 }

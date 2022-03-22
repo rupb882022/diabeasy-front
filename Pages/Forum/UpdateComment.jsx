@@ -1,14 +1,14 @@
-import { View, Text ,TouchableOpacity,StyleSheet} from 'react-native'
+import { Text ,TouchableOpacity,StyleSheet} from 'react-native'
 import React from 'react'
 import { Feather } from '@expo/vector-icons';
-import apiUrl from '../../Routes/Url';
+
 
 //TODO change alert
 export default function UpdateComment(props) {
-  const {setShowEdit,respones}=props
+  const {setShowEdit}=props
 
   return (
-          <TouchableOpacity style={styles.UpdateComment} onPress={()=>{setShowEdit(); respones&&alert("can not edit comment with respones");}}>
+          <TouchableOpacity style={styles.UpdateComment} onPress={()=>{setShowEdit();}}>
             <Text style={{marginRight:'10%'}}>
             <Feather name="edit-3" size={20} color="black" />
             Edit

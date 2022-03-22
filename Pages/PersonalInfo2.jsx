@@ -6,6 +6,7 @@ import Button from '../CTools/Button';
 import Loading from '../CTools/Loading';
 import axios from "axios";
 import apiUrl from '../Routes/Url'
+import Alert from '../CTools/Alert';
 
 export default function PersonalInfo2(props) {
     const { route, navigation } = props
@@ -21,6 +22,7 @@ export default function PersonalInfo2(props) {
     const [mailDoctor, setMailDoctor] = useState(null);
     const [selectInsulinLong, setSelectInsulinLong] = useState(null);
     const [selectInsuliShort, setSelectInsulinShort] = useState(null);
+    const [alert, setAlert] = useState()
 
     useEffect(() => {
         setInterval(() => setLoading(false), 1500);
@@ -39,11 +41,14 @@ export default function PersonalInfo2(props) {
                 mailDoctor: mailDoctor
             }
             let userDetilas = Object.assign({}, userInfo, moreInfo)
-            console.log("userDetilas", userDetilas);
             RegisterUser(userDetilas);
-
         } else {
-            alert("please fill in the required detilas\n weight,height,insulin type")
+            setAlert(
+                <Alert text="please fill in the required detilas weight,height,insulin type"
+                type='alert'
+                time={3000}
+                bottom={110}
+                />)
         }
     }
     const RegisterUser = (userDetilas) => {
@@ -56,7 +61,6 @@ export default function PersonalInfo2(props) {
         axios(configurationObject)
             .then((response) => {
                 console.log("status=", response.status)
-                console.log("status=", response)
                 if (response.status === 200 || response.status === 201) {
                     navigation.navigate('Login') //Todo approve the register
                 } else {
@@ -64,6 +68,12 @@ export default function PersonalInfo2(props) {
                 }
             })
             .catch((error) => {
+                setAlert(
+                    <Alert text="sorry somting is got wotng try agine later"
+                    type='worng'
+                    time={2000}
+                    bottom={110}
+                    />)
                 console.log(error);
             });
     }
@@ -100,7 +110,7 @@ export default function PersonalInfo2(props) {
     if (!selectInsuliShort && !selectInsulinLong) {
         getInsulinType();
     }
-    return (
+    return (<>
         <View style={styles.container}>
             {loading && <Loading opacity={'#d6f2fc'} />}
             <Header
@@ -204,6 +214,7 @@ export default function PersonalInfo2(props) {
                 </View>
             </View>
         </View>
+        {alert&&alert}</>
     );
 }
 const styles = StyleSheet.create({

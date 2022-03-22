@@ -4,25 +4,32 @@ import FlipCard from 'react-native-flip-card'
 import Input from '../../CTools/Input';
 import { Ionicons } from '@expo/vector-icons';
 import CheckBox from '../../CTools/CheckBox';
+import Button from '../../CTools/Button';
 
 
 export default function ingredient(props) {
-  const { name, image, id, UnitOfMeasure } = props
+  const { name, image, id, UnitOfMeasure,addToMyListFood } = props
 
   const selectUnit = [];
+
+
+  //every render of ingredient
+  useEffect(() => {
   UnitOfMeasure.map(x => selectUnit.push(
     {
       itemKey: x.id,
       label: x.name,
       value: x.name
     }))
+  });
 
   const [unit, setUnit] = useState();
   const [favorite, setFavorite] = useState(false);
-  const [crabs, setCrabs] = useState();
+  const [carbs, setCrabs] = useState();
   const [suger, setSuger] = useState();
   const [amount, setAmount] = useState();
   const [weightInGrams, setWeightInGrams] = useState();
+  
 
   useEffect(() => {
     // console.log("amount",amount);
@@ -30,25 +37,24 @@ export default function ingredient(props) {
     if (amount && unit) {
       calcDetails(amount, unit)
     }else{
-       setCrabs(null)
-      setSuger(null)
-      setWeightInGrams(null)
+       setCrabs(0)
+      setSuger(0)
+      setWeightInGrams(0)
     }
   }, [unit, amount]);
 
 
-
   const calcDetails = (amount, unit) => {
     
-    //clac crabs when user select Unit Of Measure
+    //clac carbs when user select Unit Of Measure
     let temp = UnitOfMeasure.find(x => x.name == unit)
-    let crabs = unit == "grams" ? temp.carbs * parseFloat(amount / 100) : temp.carbs * amount
+    let carbs = unit == "grams" ? temp.carbs * parseFloat(amount / 100) : temp.carbs * amount
     let suger = unit == "grams" ? temp.suger * parseFloat(amount / 100) : temp.suger * amount
     let weightInGrams=unit == "grams"? amount:temp.weightInGrams*amount
-
+  
     //if there is a unit for ingredient
-    crabs && setCrabs(crabs.toFixed(1))
-    suger&&setSuger(suger.toFixed(1))
+    carbs && setCrabs(carbs.toFixed(1))
+     suger!=0&&setSuger(suger.toFixed(1))
     temp&&setWeightInGrams(weightInGrams)
   }
 
@@ -68,7 +74,7 @@ export default function ingredient(props) {
             <Image style={styles.image} source={{ uri: image }} />
             <View style={styles.details}>
               <Text style={styles.textFront}>{suger?suger:UnitOfMeasure[0].suger} suger </Text>
-              <Text style={styles.textFront} >{crabs?crabs:UnitOfMeasure[0].carbs} Carbohydrates  </Text>
+              <Text style={styles.textFront} >{carbs?carbs:UnitOfMeasure[0].carbs} Carbohydrates  </Text>
               <Text style={styles.textFront}>{weightInGrams?weightInGrams:UnitOfMeasure[0].weightInGrams} g </Text>
             </View>
           </View>
@@ -95,8 +101,19 @@ export default function ingredient(props) {
               getValue={(value) => setAmount(value)}
             />
             <View style={styles.checkbox}>
-              <CheckBox />
-              <Text style={styles.checkBoxText}>Add</Text>
+              {/* <CheckBox 
+              getvalue={(value)=>{addToMyListFood({id:id,name:name,carbs:carbs,suger:suger,add:value})}}
+              disable={unit&&amount?false:true}
+              />
+              <Text style={styles.checkBoxText}>Add</Text> */}
+              <Button
+              width={25}
+              height={3}
+              radius={5}
+              text='add'
+              textSize={12}
+              onPress={()=>{addToMyListFood({id:id,name:name,carbs:carbs,suger:suger,add:true})}}
+              />
             </View>
           </View>
         </View>
@@ -147,8 +164,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flex: 0.2,
     alignSelf: 'center',
-    paddingRight:'2%',
-    right:'2%'
+    // paddingRight:'2%',
+    // right:'2%'
   },
   checkBoxText: {
     textAlign: 'left',
@@ -168,6 +185,6 @@ const styles = StyleSheet.create({
     justifyContent:'space-evenly',
     flexDirection: 'row',
     backgroundColor: "#FFCF84",
-    paddingLeft: '5%'
+    paddingLeft: '2%'
   }
 })

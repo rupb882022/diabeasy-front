@@ -7,7 +7,7 @@ import PopUp from '../CTools/PopUp';
 import Input from '../CTools/Input';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { UserContext } from '../CTools/UserDetailsHook';
-import upiUrl from '../Routes/Url';
+import apiUrl from '../Routes/Url';
 import Moment from 'moment';
 import Loading from '../CTools/Loading';
 import * as Progress from 'react-native-progress';
@@ -100,7 +100,7 @@ useEffect(() => {
   if (!show && request&&reqValue) {
     console.log('5');
     const configurationObject = {
-      url:upiUrl+'User/Prescription/addRequest',
+      url:apiUrl+'User/Prescription/addRequest',
       method: "POST",
       data: request
     };

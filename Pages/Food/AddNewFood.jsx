@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet,ScrollView } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import Button from '../../CTools/Button'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -6,6 +6,7 @@ import Input from '../../CTools/Input';
 import Header from '../../CTools/Header';
 import apiUrl from '../../Routes/Url'
 import axios from "axios";
+import Alert from '../../CTools/Alert';
 
 export default function AddNewFood(props) {
   const { navigation, route } = props
@@ -21,6 +22,7 @@ export default function AddNewFood(props) {
   const [suger, setSuger] = useState();
   const [weightInGrams, setWeightInGrams] = useState();
   const [unitList, setUnitList] = useState();
+  const [alert, setAlert] = useState()
 
   useEffect(() => {
     if (!unitList) {
@@ -51,8 +53,8 @@ export default function AddNewFood(props) {
   }, []);
 
   const saveFood = () => {
-
-    food = {
+if(name&&category&&unit&&crabs&&suger&&weightInGrams){
+    let food = {
       userId:userId,
       name: name,
       category: category,
@@ -61,28 +63,46 @@ export default function AddNewFood(props) {
       suger: suger,
       weightInGrams: weightInGrams
     }
+    console.log("food", food);
+
 
     const configurationObject = {
-      url: `${apiUrl}User/RegisterUser`,
+      url: `${apiUrl}Food/AddIngredient`,
       method: "POST",
       data: food
     };
 
-    console.log("food", food);
-    // axios(configurationObject)
-    //   .then((response) => {
-    //     if (response) {
-    //       //todo check respone show up in food list
-    //       navigation.goBack()
-    //     }
-    //   })
-    //   .catch((error) => {
+   
+    axios(configurationObject)
+      .then((response) => {
+        if (response) {
+          console.log("response",response.status);
 
-    //   })
-
+          navigation.goBack()
+        }else{
+          throw new Error(response.status);
+        }
+      })
+      .catch((error) => {
+        setAlert(
+          <Alert text="sorry somting is got worng try agine later"
+          type='worng'
+          time={2000}
+          bottom={110}
+          />)
+          console.log(error);
+      })
+    }else{
+      setAlert(
+        <Alert text="please fill in all details"
+        type='alert'
+        time={2500}
+        bottom={80}
+        />)
+    }
   }
 
-  return (
+  return (<>
     <View style={styles.container}>
       <Header
         title={isRecipe ? 'Add Recipe' : 'Add Ingredient'}
@@ -112,19 +132,18 @@ export default function AddNewFood(props) {
       />
       <Input
         label='suger'
-        validtion='number'
+        // validtion='number'
         keyboardType='numbers-and-punctuation'
         getValue={(value) => setSuger(value)}
       />
       <Input
         label='carbohydrates'
-        validtion='number'
+        // validtion='number'
         keyboardType='numbers-and-punctuation'
         getValue={(value) => setCrabs(value)}
       />
       <Input
         label='weightInGrams'
-        setValue={unit==5?100:''}
         validtion='number'
         keyboardType='numbers-and-punctuation'
         getValue={(value) => setWeightInGrams(value)}
@@ -157,6 +176,7 @@ export default function AddNewFood(props) {
         </View>
       </View>
     </View>
+      {alert&&alert}</>
   )
 }
 const styles = StyleSheet.create({

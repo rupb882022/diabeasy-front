@@ -11,6 +11,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import axios from "axios";
 import moment from 'moment';
 import {UserContext} from '../../CTools/UserDetailsHook'
+import Alert from '../../CTools/Alert';
 
 export default function Forum() {
 
@@ -22,7 +23,8 @@ export default function Forum() {
   const [loading, setLoading] = useState(true);
   const [comment, setComment] = useState({});
   const [commentValue, setCommentValue] = useState();
-  
+  const [alert, setAlert] = useState()
+
   const {userDetails} = useContext(UserContext);
 
 
@@ -66,7 +68,7 @@ export default function Forum() {
         thumbColor={popupSubject ? '#FFCF84' : "#3CA6CD"}
         ios_backgroundColor='#FFCF84'
         onValueChange={() => { setPopupSubject(!popupSubject) }}
-        value={!commentValue && !subject ? popupSubject : ''}
+        value={!commentValue || !subject ? popupSubject : ''}
       />
 
     </View>
@@ -80,7 +82,7 @@ export default function Forum() {
         getValue={(value) => setCommentValue(value)}
         justifyContent='center'
         alignItems='center'
-        validLable={!commentValue || !subject ? '    fill in subject and description' : ''}
+        validLable={!commentValue || !subject ? ' fill in subject and description' : ''}
       />
     </View>
     <View style={{flexDirection:'row'}}>
@@ -104,14 +106,14 @@ export default function Forum() {
           //if user is doctor or patient
           if (userDetails.id % 2 == 0) {
             setComment({
-              date_time: moment(new Date().toString()).format('MM-DD-YYYY').toString(),
+              date_time: moment(new Date().toString()).format("DD/MM/YYYY"),
               subject: subject,
               value: commentValue,
               Doctor_id: userDetails.id,
             });
           } else {
             setComment({
-              date_time: moment(new Date().toString()).format('MM-DD-YYYY').toString(),
+              date_time: moment(new Date().toString()).format("DD/MM/YYYY"),
               subject: subject,
               value: commentValue,
               Patients_id: userDetails.id,
@@ -142,7 +144,13 @@ export default function Forum() {
           }
         })
         .catch((error) => {
-          alert(error);
+          setAlert(
+            <Alert text="sorry somting is got worng try agine later"
+            type='worng'
+            time={2000}
+            bottom={110}
+            />)
+          console.log(error);
         });
     }
   }, [comment]);
@@ -174,7 +182,12 @@ export default function Forum() {
         }
       },
         (error) => {
-          // #todo alert with error
+          setAlert(
+            <Alert text="sorry somting is got worng try agine later"
+            type='worng'
+            time={2000}
+            bottom={110}
+            />)
           console.log("error", error);
 
         }
@@ -258,7 +271,7 @@ export default function Forum() {
         setLoading(false);
       }
     } catch (error) {
-      console.log(error)
+      // console.log(error)
       setLoading(false);
     }
 
@@ -283,6 +296,12 @@ export default function Forum() {
       buildForum(resulte)
     },
       (error) => {
+        setAlert(
+          <Alert text="sorry somting is got worng try agine later"
+          type='worng'
+          time={2000}
+          bottom={110}
+          />)
         console.log("error", error)
         setLoading(false);
       })
@@ -312,7 +331,14 @@ export default function Forum() {
       <SectionList
         sections={data}
         keyExtractor={(item, index) => item + index}
-        renderItem={({ item, index }) => <MainComment getAllComments={get_all_comments} userDetails={userDetails} item={item} index={index} data={data} />}
+        renderItem={({ item, index }) => <MainComment 
+                                        getAllComments={get_all_comments} 
+                                        userDetails={userDetails} 
+                                        item={item} 
+                                        index={index} 
+                                        data={data} 
+                                        setAlert={(value)=>{ setAlert(value)}}
+                                        />}
         renderSectionHeader={({ section: { subject } }) => (
           <Text style={styles.header}>{subject}</Text>
         )}
@@ -337,7 +363,7 @@ export default function Forum() {
           button_justifyContent='flex-start'
         />}
     </View>
-  </>
+    {alert&&alert}</>
   );
 }
 
