@@ -307,24 +307,33 @@ source={require('../images/prescriptions.png')}
           button_justifyContent='flex-start'
         />}
 
-{showDetails && prescriptions && //userDetails.id%2!=0 &&
+{showDetails && prescriptions && userDetails.id%2!=0 &&
       <PopUp
       height={45}
       width={90}
       setShow={setShowDetails}
       backgroundColor='#d6f2fc'
       element={popupElement}
-/>
+     
+/>}
 
-/* {showDetails && prescriptions && userDetails.id%2==0 &&
+{showDetails && prescriptions && userDetails.id%2==0 &&
  <PopUp
       height={45}
       width={90}
       setShow={setShowDetails}
       backgroundColor='#d6f2fc'
-      element={popupElement}
+      element={ 
+         <>
+         {popupElement}
+         <View style={{alignItems:'flex-end',justifyContent:'flex-end',flexDirection:'row'}}>
+         <Button text='Reject'/>
+         <Button text='Accept'/>
+         <Button text='Cancle'/>
+         </View>
+       </> }
       isButton={false}
-/>} */}
+/>}
 
 { loading &&<Loading/>}
 </View>
