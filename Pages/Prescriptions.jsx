@@ -7,7 +7,7 @@ import PopUp from '../CTools/PopUp';
 import Input from '../CTools/Input';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { UserContext } from '../CTools/UserDetailsHook';
-import apiUrl from '../Routes/Url';
+import upiUrl from '../Routes/Url';
 import Moment from 'moment';
 import Loading from '../CTools/Loading';
 import * as Progress from 'react-native-progress';
@@ -30,9 +30,13 @@ const [reqValue, setReqValue] = useState(false);
 const [request, setRequest] = useState({});
 const [allSubjects, setAllSubjects] = useState();
 
+// waiting , rejected , accepted
+
+
 //let url=upiUrl + `User/Prescription/${userDetails.id}`;
 //let isDoctor=false;
 console.log('userDe=>',userDetails);
+console.log('prescriptions=> ',prescriptions);
 
 useFocusEffect(
   React.useCallback(() => {
@@ -41,12 +45,12 @@ useFocusEffect(
     //setLoading(false)
    // console.log('1');
   }
-else{setPrescriptions([])}
+else if(userDetails.id%2==0&&!userDetails.patientID){setPrescriptions([])}
 }, [userDetails])
 );
 
 const getPrescriptions = () => {
- // console.log('2');
+ //console.log('2');
     setLoading(true)
     let isDoctor=userDetails.id%2==0;
     let url;
@@ -56,7 +60,7 @@ const getPrescriptions = () => {
 // else if(isDoctor){
 //   setPrescriptions([])
 //    return;}
-else{
+else if(userDetails.id%2!=0){
   url=upiUrl + `User/Prescription/${userDetails.id}`;
 }
   console.log('url=> ',url);
@@ -90,7 +94,7 @@ else{
 
 useEffect(() => {
   //get all user prescriptionn
-  if (!prescriptions&&userDetails.id%2!=0) {
+  if (userDetails.id%2!=0) {
     getPrescriptions()
   console.log("pres=>",prescriptions);
   }
@@ -100,7 +104,7 @@ useEffect(() => {
   if (!show && request&&reqValue) {
     console.log('5');
     const configurationObject = {
-      url:apiUrl+'User/Prescription/addRequest',
+      url:upiUrl+'User/Prescription/addRequest',
       method: "POST",
       data: request
     };
@@ -208,7 +212,8 @@ const element = <View>
           subject: subject,
           value: reqValue,
           Patients_id: userDetails.id,
-          Doctor_id : 2        //todo change doctor id to real id
+          Doctor_id : 2 ,       //todo change doctor id to real id
+          status: 'waiting'
         });
       setShow(false);
     }
@@ -218,7 +223,7 @@ const element = <View>
 </View>
 </View>
 
-let icon=<MaterialCommunityIcons name="pill" size={24} color="black"/>;
+//let icon=<MaterialCommunityIcons name="pill" size={24} color="black"/>;
 const btnPrescDetails=(id)=>{
 // id-=1;
 setShowDetails(true);
@@ -229,6 +234,7 @@ setPopupElement(
 <Text style={{textAlign:'center',marginBottom:'5%'}}> Request details: </Text>
 <Text style={{textAlign:'center',fontSize:20}}>{onePrescription.value} </Text>
 <Text style={{textAlign:'center',marginTop:'10%'}}>request from : {Moment(onePrescription.date_time).format('DD/MM/YYYY H:mm')} </Text>
+<Text style={{textAlign:'center',marginTop:'10%'}}>Status : {onePrescription.status}</Text>
 </>
 )
 
@@ -236,21 +242,35 @@ setPopupElement(
 
   return (
     <View style={styles.container}>
-    <Header
+
+    {userDetails.id%2==0?<Header
+        title='Prescriptions'
+        logo_image='perscriptions'
+        flex={0.6}
+        image_margin={{ Bottom: -4}}
+        marginLeft={7}
+        // justifyContent='flex-start' 
+        />:
+        <Header
         title='Prescriptions'
         logo_image='perscriptions'
         flex={1}
         image_margin={{ Bottom: -4}}
         marginLeft={7}
         // justifyContent='flex-start' 
-        />
+        />}
         <Text style={styles.title}>Your last request:</Text>
 <ScrollView style={styles.list}> 
 <View >
 {prescriptions&&prescriptions.map((item)=>(
 <View key={item.id} style={styles.oneItem}>
   <TouchableOpacity onPress={()=>{btnPrescDetails(item.id)}}>
-<Text style={{fontWeight:'bold',fontSize:20,textAlign:'center'}}>{icon} - Request from {Moment(item.date_time).format('DD/MM/YYYY')}</Text>
+ {item.status=='accepted'? 
+  <Text style={styles.status}>{<MaterialCommunityIcons name="pill" size={24} color="green"/>} - Request from {Moment(item.date_time).format('DD/MM/YYYY')}</Text>:
+  item.status=='rejected'?
+  <Text style={styles.status}>{<MaterialCommunityIcons name="pill" size={24} color="red"/>} - Request from {Moment(item.date_time).format('DD/MM/YYYY')}</Text>:
+  <Text style={styles.status}>{<MaterialCommunityIcons name="pill" size={24} color="yellow"/>} - Request from {Moment(item.date_time).format('DD/MM/YYYY')}</Text>
+  }
 </TouchableOpacity>
 </View>
 ))
@@ -258,19 +278,8 @@ setPopupElement(
 }
 </View>
 </ScrollView>
-{ loading && <View style={styles.progress}>
-            <Progress.Bar
-              width={255}
-              height={15}
-              borderRadius={5}
-              borderColor={"#bbe4f2"}
-              color='#FFCF84' //-orange
-              useNativeDriver={true}
-              borderWidth={2}
-              indeterminate={true}
-              animationConfig={{ bounciness: 20 }}
-            />
-          </View>}
+
+<Text style={styles.info}><MaterialCommunityIcons name="pill" size={24} color="green"/> Accepted  <MaterialCommunityIcons name="pill" size={24} color="yellow"/> Waiting  <MaterialCommunityIcons name="pill" size={24} color="red"/> Rejected </Text>
 
 {userDetails.id%2!=0&&<Button 
 text='New prescription request'
@@ -281,6 +290,7 @@ justifyContent='flex-end'
 onPress={() => setShow(true)}
 />
 }
+
 <Image
 style={styles.Image}
 source={require('../images/prescriptions.png')}
@@ -304,28 +314,19 @@ source={require('../images/prescriptions.png')}
       setShow={setShowDetails}
       backgroundColor='#d6f2fc'
       element={popupElement}
-/>}
+/>
 
-
+/* {showDetails && prescriptions && userDetails.id%2==0 &&
+ <PopUp
+      height={45}
+      width={90}
+      setShow={setShowDetails}
+      backgroundColor='#d6f2fc'
+      element={popupElement}
+      isButton={false}
+/>} */}
 
 { loading &&<Loading/>}
-
-{/* <View style={styles.progress}>
-            <Progress.Bar
-              width={255}
-              height={15}
-              borderRadius={5}
-              borderColor={"#bbe4f2"}
-              color='#69BEDC' //#FFCF84-orange
-              useNativeDriver={true}
-              borderWidth={2}
-              indeterminate={true}
-              animationConfig={{ bounciness: 20 }}
-            />
-          </View> */}
-          
-
-
 </View>
   )
 }
@@ -354,8 +355,7 @@ paddingBottom:'15%',
 flex:0.5,
  
   },
-  oneItem:{
-
+oneItem:{
 marginBottom:'5%',
 justifyContent:'flex-start'
   },
@@ -391,6 +391,20 @@ justifyContent:'flex-start'
     justifyContent: 'flex-start',
     alignItems: 'center',
     
+  },
+  status :{
+      fontWeight:'bold',
+      fontSize:20,
+      textAlign:'center',
+      color:'black'
+    
+  },
+  info:{
+    textAlign:'center',
+    fontSize:20,
+    position:'relative',
+    top:'4%'
+    // paddingTop:'10%'
   }
 
   

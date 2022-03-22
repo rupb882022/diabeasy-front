@@ -61,6 +61,10 @@ export default function Drawer(props) {
         })}>
 
             {/* list of items in the drawer */}
+            <Drawernav.Screen name='DoctorHome' component={DoctorHome} options={{
+                ...options,
+                drawerIcon: () => (<Ionicons name="ios-home-outline" size={24} color={color} />)
+            }} /> 
             <Drawernav.Screen name='Forum' component={Forum} options={{
                 ...options,
                 drawerIcon: () => (<Ionicons name="chatbubbles-outline" size={24} color={color} />)
@@ -73,11 +77,6 @@ export default function Drawer(props) {
                 ...options,
                 drawerIcon: () => (<Ionicons name="settings-outline" size={24} color={color} />)
             }} /> */}
-        
-           <Drawernav.Screen name='DoctorHome' component={DoctorHome} options={{
-                ...options,
-                drawerIcon: () => (<Ionicons name="ios-home-outline" size={24} color={color} />)
-            }} /> 
         <Drawernav.Screen name='Log Out' component={LogOut} options={{
                 ...options,
                 drawerIcon: () => (<AntDesign name="logout" size={24} color={color} />)
