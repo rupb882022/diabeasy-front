@@ -13,10 +13,10 @@ import Loading from '../CTools/Loading';
 import * as Progress from 'react-native-progress';
 import axios from "axios";
 import { useFocusEffect } from '@react-navigation/native';
-
+import Alert from '../CTools/Alert';
 
 export default function Prescriptions(props) {
-const {navigation} =props
+const {navigation,setAlert} =props
 
 const [show, setShow] = useState(false);
 const [showDetails, setShowDetails] = useState(false);
@@ -29,21 +29,21 @@ const [subject, setSubject] = useState(false);
 const [reqValue, setReqValue] = useState(false);
 const [request, setRequest] = useState({});
 const [allSubjects, setAllSubjects] = useState();
+const [idForPrescription, setIdForPrescription] = useState();
 
-// waiting , rejected , accepted
 
 
-//let url=upiUrl + `User/Prescription/${userDetails.id}`;
-//let isDoctor=false;
-console.log('userDe=>',userDetails);
-console.log('prescriptions=> ',prescriptions);
+
+//console.log('userDe=>',userDetails);
+//console.log('prescriptions=> ',prescriptions);
 
 useFocusEffect(
   React.useCallback(() => {
      if (userDetails.id%2==0&&userDetails.patientID) {
+
     getPrescriptions();
-    //setLoading(false)
-   // console.log('1');
+    //loading&&setLoading(false)
+    console.log('1');
   }
 else if(userDetails.id%2==0&&!userDetails.patientID){setPrescriptions([])}
 }, [userDetails])
@@ -51,19 +51,15 @@ else if(userDetails.id%2==0&&!userDetails.patientID){setPrescriptions([])}
 
 const getPrescriptions = () => {
  //console.log('2');
-    setLoading(true)
-    let isDoctor=userDetails.id%2==0;
+// setLoading(true)
     let url;
-  if (userDetails.patientID) {
+  if (userDetails.patientID) {        // if its doctor with selected patient
     url=upiUrl + `User/Prescription/${userDetails.patientID}`;
   } 
-// else if(isDoctor){
-//   setPrescriptions([])
-//    return;}
-else if(userDetails.id%2!=0){
+else if(userDetails.id%2!=0){            // if its patient (=> not a doctor without selected patient)
   url=upiUrl + `User/Prescription/${userDetails.id}`;
-}
-  console.log('url=> ',url);
+}  
+  //console.log('url=> ',url);
       fetch(url, {
           method: 'GET',
           headers: new Headers({
@@ -76,30 +72,31 @@ else if(userDetails.id%2!=0){
               return res.json();
           } else {
               console.log("status code:", res.status)
-              setLoading(false)
+         //     setLoading(false)
               return;
           }
       }).then((result) => {
-        console.log('result=>', result);
+      //  setLoading(false)
+        //console.log('result=>', result);
         setPrescriptions(result)
         GetAllsubjects(result)
-      //  console.log('3');
-        setLoading(false)
+        console.log('3');
       },
           (error) => {
               console.log("error", error)
-              setLoading(false)
+          //   setLoading(false)
           }) 
 }
 
 useEffect(() => {
-  //get all user prescriptionn
+  //get all PATIENT prescription in the first time
   if (userDetails.id%2!=0) {
     getPrescriptions()
   console.log("pres=>",prescriptions);
   }
 }, []);
 
+// POST - new prescription request
 useEffect(() => {
   if (!show && request&&reqValue) {
     console.log('5');
@@ -123,7 +120,7 @@ useEffect(() => {
   }
 }, [request]);
 
-
+// get all subjects distinct
 const GetAllsubjects=(res)=>{
 let arr=[];
 res.map((x)=>{
@@ -133,7 +130,7 @@ let allSub=distinct.map((x,i)=>({ itemKey: i, label: x, value: x}))
 setAllSubjects(allSub);
 }
 
-
+// element popup for new prescription request
 const element = <View>
 <Text style={{
   fontSize: 30, textAlign: 'center', color: 'white', fontWeight: 'bold', marginBottom: '3%', textShadowColor: '#187FA5',
@@ -226,10 +223,11 @@ const element = <View>
 //let icon=<MaterialCommunityIcons name="pill" size={24} color="black"/>;
 const btnPrescDetails=(id)=>{
 // id-=1;
+setIdForPrescription(id)
 setShowDetails(true);
-const onePrescription=prescriptions.find(x=>x.id ===id)
+const onePrescription=prescriptions.find(x=>x.id === id)
 setPopupElement( 
-<>
+<> 
 <Text style={{textAlign:'center',fontWeight:'bold',fontSize:30,marginBottom:'10%'}}> {onePrescription.subject} </Text>
 <Text style={{textAlign:'center',marginBottom:'5%'}}> Request details: </Text>
 <Text style={{textAlign:'center',fontSize:20}}>{onePrescription.value} </Text>
@@ -237,8 +235,47 @@ setPopupElement(
 <Text style={{textAlign:'center',marginTop:'10%'}}>Status : {onePrescription.status}</Text>
 </>
 )
-
 }
+// PUT - put method for doctor to change status. status can be - waiting / rejected  / accepted
+
+const handleRequest=(status)=>{
+  let editStatus;
+  status=='reject'?
+  editStatus={status:'rejected'}:
+  editStatus={status:'accepted'}
+
+const configurationObject = {
+  url: `${upiUrl}User/Prescription/${idForPrescription}`,
+  method: "PUT",
+  data:editStatus
+};
+//console.log('urlPrescription=',configurationObject.url);
+axios(configurationObject)
+.then((response) => {
+  console.log('response=',response.status);
+  if (response.status === 200) {
+    getPrescriptions();
+    showDetails&&setShowDetails(false);
+  } else {
+    showDetails&&setShowDetails(false);
+    
+    throw new Error("An error has occurred");
+  }
+})
+.catch((error) => {
+  setAlert(
+    <Alert text="sorry somting is got wrong try agine later"
+    type='worng'
+    time={2000}
+    bottom={110}
+    />)
+  console.log('err=>',error);
+  showDetails&&setShowDetails(false);
+});
+}
+
+
+
 
   return (
     <View style={styles.container}>
@@ -259,7 +296,9 @@ setPopupElement(
         marginLeft={7}
         // justifyContent='flex-start' 
         />}
-        <Text style={styles.title}>Your last request:</Text>
+        {userDetails.id%2==0?
+        <Text style={styles.title}>{userDetails.patientNAME?userDetails.patientNAME:'No One'}'s requests:</Text>:
+        <Text style={styles.title}>Your last requests:</Text>}
 <ScrollView style={styles.list}> 
 <View >
 {prescriptions&&prescriptions.map((item)=>(
@@ -321,14 +360,13 @@ source={require('../images/prescriptions.png')}
  <PopUp
       height={45}
       width={90}
-      setShow={setShowDetails}
       backgroundColor='#d6f2fc'
       element={ 
          <>
          {popupElement}
          <View style={{alignItems:'flex-end',justifyContent:'flex-end',flexDirection:'row',paddingTop:'20%'}}>
-         <Button text='Reject'/>
-         <Button text='Accept'/>
+         <Button text='Reject' onPress={()=>{handleRequest('reject')}}/>
+         <Button text='Accept' onPress={()=>{handleRequest('accept')}}/>
          <Button text='Cancle' onPress={()=> setShowDetails(false)}/>
          </View>
        </> }

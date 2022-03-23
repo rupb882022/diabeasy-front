@@ -93,7 +93,7 @@ setElement(element)}
 ,[patients])
 
 
-const whileClick=(id)=>{
+const whileClick=(id,name)=>{
 let select=false;
 //select is present the x.select- it will handel with  patientID(true/false)
 let arr= patients.map(x=> {
@@ -105,7 +105,7 @@ x.select=!x.select; select=x.select }
 return x}) 
 //console.log('arr',arr);
 setPatients(arr)
-let temp=select?Object.assign({},userDetails,{patientID:id}):Object.assign({},userDetails,{patientID:null})// patient id already added to userdetails by press on patient circle
+let temp=select?Object.assign({},userDetails,{patientID:id,patientNAME:name}):Object.assign({},userDetails,{patientID:null,patientNAME:null})// patient id already added to userdetails by press on patient circle
 setUserDetails(temp);
 }
 

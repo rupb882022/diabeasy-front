@@ -15,7 +15,7 @@ const {p,whileClick} = props
 
 
 return(
-<TouchableOpacity onPress={()=>whileClick(p.id)}>
+<TouchableOpacity onPress={()=>whileClick(p.id,p.firstname)}>
 {p&&p.profileimage!='' ? <Image source={{uri:ImageUri+p.profileimage}} style={p.select?styles.imageWhite('#FFCF84',5):styles.imageWhite('white',2)}/> :
 <Image source={require('../../images/profile_pictur.jpeg')} style={p.select?styles.imageWhite('#FFCF84',5):styles.imageWhite('white',2)} />}
 <Text style={{paddingLeft:10,paddingBottom:15}}>{p.firstname+' '+p.lastname }</Text>
