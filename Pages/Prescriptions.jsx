@@ -43,7 +43,7 @@ useFocusEffect(
 
     getPrescriptions();
     //loading&&setLoading(false)
-    console.log('1');
+   // console.log('1');
   }
 else if(userDetails.id%2==0&&!userDetails.patientID){setPrescriptions([])}
 }, [userDetails])
@@ -69,8 +69,9 @@ else if(userDetails.id%2!=0){            // if its patient (=> not a doctor with
       }).then(res => {
         console.log("res88=> ",res.status);
           if (res && res.status == 200) {
-              return res.json();
-          } else {
+              return res.json();} 
+
+          else {
               console.log("status code:", res.status)
          //     setLoading(false)
               return;
@@ -80,7 +81,7 @@ else if(userDetails.id%2!=0){            // if its patient (=> not a doctor with
         //console.log('result=>', result);
         setPrescriptions(result)
         GetAllsubjects(result)
-        console.log('3');
+       // console.log('3');
       },
           (error) => {
               console.log("error", error)
@@ -99,7 +100,7 @@ useEffect(() => {
 // POST - new prescription request
 useEffect(() => {
   if (!show && request&&reqValue) {
-    console.log('5');
+   // console.log('5');
     const configurationObject = {
       url:upiUrl+'User/Prescription/addRequest',
       method: "POST",
@@ -107,15 +108,34 @@ useEffect(() => {
     };
     console.log('DATA=>', request);
     axios(configurationObject)
-      .then((response) => {
+      .then(response => {
+        console.log("response v",response.status);
         if (response.status === 200 || response.status === 201) {
           getPrescriptions();
-        } else {
+        }  
+        else if(response.status == 403){
+          alert('Only 3 requests per day, please try again tomorrow') 
+          // setAlert(
+          //   <Alert text="Only 3 requests per day, please try again tomorrow"
+          //   type='worng'
+          //   time={2000}
+          //   bottom={110}
+          //   />)
+            return;
+          } 
+          else {
           throw new Error("An error has occurred");
         }
       })
       .catch((error) => {
-        alert(error);
+       console.log('error =>', error);
+       alert("Only 3 requests per day, please try again tomorrow");
+      //  setAlert(
+      //   <Alert text="Only 3 requests per day, please try again tomorrow"
+      //   type='worng'
+      //   time={2000}
+      //   bottom={110}
+      //   />)
       });
   }
 }, [request]);
@@ -222,7 +242,6 @@ const element = <View>
 
 //let icon=<MaterialCommunityIcons name="pill" size={24} color="black"/>;
 const btnPrescDetails=(id)=>{
-// id-=1;
 setIdForPrescription(id)
 setShowDetails(true);
 const onePrescription=prescriptions.find(x=>x.id === id)
