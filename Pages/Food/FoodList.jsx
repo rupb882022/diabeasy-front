@@ -1,13 +1,13 @@
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import React, { useState } from 'react';
-import Ingredient from './Ingredient';
+import Food from './Food';
 
-export default function IngredientsList(props) {
+export default function FoodList(props) {
     const { foodList,addToMyListFood } = props
 
 
     const list = foodList ? foodList.map((x, i) =>
-        <Ingredient
+        <Food
             key={i}
             id={x.id}
             name={x.name}

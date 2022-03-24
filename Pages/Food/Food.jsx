@@ -1,17 +1,16 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import React, { useState, useEffect } from 'react';
-import FlipCard from 'react-native-flip-card'
 import Input from '../../CTools/Input';
 import { Ionicons } from '@expo/vector-icons';
-import CheckBox from '../../CTools/CheckBox';
 import Button from '../../CTools/Button';
 
 
-export default function ingredient(props) {
+export default function Food(props) {
   const { name, image, id, UnitOfMeasure,addToMyListFood } = props
 
   const selectUnit = [];
 
+//todo hendel with empty image url
 
   //every render of ingredient
   useEffect(() => {

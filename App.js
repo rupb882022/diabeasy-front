@@ -1,15 +1,7 @@
 import { StyleSheet, View, ImageBackground } from 'react-native';
-import Drawer from './Routes/Drawer';
-import Login from './Pages/Login'
-import PersonalInfo1 from './Pages/PersonalInfo1'
-import SignUp from './Pages/SignUp';
-import GalleryPick from './Pages/ImagePicker/GalleryPick'
-import Maps from './Pages/Maps';
-import TabNav from './Routes/TabNav';
 import {ImageUri} from './Routes/Url'
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
-import Navigtor from './Routes/Navigtor';
-import Global from './CTools/Global';
+import DiabesyApp from './DiabesyApp';
 
 export default function App() {
     //style of the drawer
@@ -20,13 +12,12 @@ export default function App() {
           primary: '#ff650d',
       },
   };
-console.log()
-  return (
 
+  return (
     <View style={styles.container}>
       <ImageBackground source={{uri:ImageUri+'backimg.png'}} resizeMode='cover' style={styles.image}>
       <NavigationContainer theme={Theme}>
-        <Global />
+        <DiabesyApp />
         </NavigationContainer>
       </ImageBackground>
     </View>

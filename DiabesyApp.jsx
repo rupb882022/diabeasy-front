@@ -1,11 +1,11 @@
 import React from 'react'
-import Navigtor from '../Routes/Navigtor';
-import {loginHook,UserContext} from './UserDetailsHook'
+import Navigtor from './Routes/Navigtor';
+import {loginHook,UserContext} from './CTools/UserDetailsHook'
 
 
 
 
-export default function Global() {
+export default function DiabesyApp() {
   const {userDetails, setUserDetails} = loginHook();
   
 
