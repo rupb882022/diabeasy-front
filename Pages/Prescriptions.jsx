@@ -113,25 +113,16 @@ useEffect(() => {
         if (response.status === 200 || response.status === 201) {
           getPrescriptions();
         }  
-        else if(response.status == 403){ //      TO DO -> check why can not fet status code 400/403
-          alert('Only 3 requests per day, please try again tomorrow') 
-          // setAlert(
-          //   <Alert text="Only 3 requests per day, please try again tomorrow"
-          //   type='worng'
-          //   time={2000}
-          //   bottom={110}
-          //   />)
-            return;
-          } 
           else {
           throw new Error("An error has occurred");
         }
       })
       .catch((error) => {
-       console.log('error =>', error);
-       alert("Only 3 requests per day, please try again tomorrow");
+        error.response.status==403?
+     alert(error.response.data.Message):
+     alert(error)
       //  setAlert(
-      //   <Alert text="Only 3 requests per day, please try again tomorrow"
+      //   <Alert text={error.response.data.Message}
       //   type='worng'
       //   time={2000}
       //   bottom={110}
