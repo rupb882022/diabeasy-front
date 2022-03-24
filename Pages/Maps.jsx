@@ -136,7 +136,7 @@ export default function Maps(props) {
             placeholder={'How many KM?'}
             placeholderTextColor='black'
             keyboardType='numeric'
-            getValue={(value) => value ? setDistance(value * 1000 / 2) : setDistance(0)}  //TO DO - handle radius exeption in input like 1.2.4  
+            getValue={(value) => value ? setDistance(parseFloat( value )* 1000 / 2) : setDistance(0)}   
           />
         </View>
         <Marker
