@@ -113,7 +113,7 @@ useEffect(() => {
         if (response.status === 200 || response.status === 201) {
           getPrescriptions();
         }  
-        else if(response.status == 403){
+        else if(response.status == 403){ //      TO DO -> check why can not fet status code 400/403
           alert('Only 3 requests per day, please try again tomorrow') 
           // setAlert(
           //   <Alert text="Only 3 requests per day, please try again tomorrow"
