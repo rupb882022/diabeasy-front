@@ -128,9 +128,18 @@ export default function FoodLibrary({ navigation }) {
 
     //render the ingredient by category
     useEffect(() => {
-        if (ingredient) {
+        if (ingredient&&!isRecipes) {
             //fillter by category
             let List = ingredient.filter(x =>
+                x.category.length < 1 ?
+                    x.category[0].id == category :
+                    x.category.find(z => z.id == category)
+            );
+            setFoodList(List);
+        }
+        if(recipes&&isRecipes){
+              //fillter by category
+              let List = recipes.filter(x =>
                 x.category.length < 1 ?
                     x.category[0].id == category :
                     x.category.find(z => z.id == category)
