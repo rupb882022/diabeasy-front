@@ -17,7 +17,6 @@ export default function FoodList(props) {
 
             cookingMethod={x.cookingMethod&&x.cookingMethod}
             Ingrediants={x.Ingrediants&&x.Ingrediants}
-            amount={x.amount&&x.amount}
         />
     ) : <></>
 
