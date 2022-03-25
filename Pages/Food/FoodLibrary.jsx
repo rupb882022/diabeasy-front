@@ -34,6 +34,7 @@ export default function FoodLibrary({ navigation }) {
     //get all Ingredients 
     useFocusEffect(
         React.useCallback(() => {
+            setFoodList([]);
             if (isRecipes) {
                 console.log(apiUrl + `Food/getRecipes/all/${userDetails ? userDetails.id : 0}`);
                 setLoading(true)

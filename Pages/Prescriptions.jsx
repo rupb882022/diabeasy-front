@@ -127,8 +127,9 @@ useEffect(() => {
           throw new Error("An error has occurred");
         }
       })
-      .catch((error) => {
+      .catch((reject,error) => {
        console.log('error =>', error);
+      
        alert("Only 3 requests per day, please try again tomorrow");
       //  setAlert(
       //   <Alert text="Only 3 requests per day, please try again tomorrow"
