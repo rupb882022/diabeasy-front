@@ -10,6 +10,7 @@ import { UserContext } from '../../CTools/UserDetailsHook'
 import { useFocusEffect } from '@react-navigation/native';
 import PopUp from '../../CTools/PopUp';
 import Alert from '../../CTools/Alert';
+import SelectedList from './SelectedList';
 
 
 export default function FoodLibrary({ navigation }) {
@@ -117,7 +118,7 @@ export default function FoodLibrary({ navigation }) {
                     throw new error(res.body)
                 }
             }).then((resulte) => {
-                let temp = resulte.map(x => ({ itemKey: x.id, label: x.name, value: x.id }))
+                let temp = resulte.map(x => ({ itemKey: x.id, label: x.name.replace(/(\r\n|\n|\r)/gm, ""), value: x.id }))
                 setList(temp);
             },
                 (error) => {
@@ -128,7 +129,7 @@ export default function FoodLibrary({ navigation }) {
 
     //render the ingredient by category
     useEffect(() => {
-        if (ingredient&&!isRecipes) {
+        if (ingredient && !isRecipes) {
             //fillter by category
             let List = ingredient.filter(x =>
                 x.category.length < 1 ?
@@ -137,9 +138,9 @@ export default function FoodLibrary({ navigation }) {
             );
             setFoodList(List);
         }
-        if(recipes&&isRecipes){
-              //fillter by category
-              let List = recipes.filter(x =>
+        if (recipes && isRecipes) {
+            //fillter by category
+            let List = recipes.filter(x =>
                 x.category.length < 1 ?
                     x.category[0].id == category :
                     x.category.find(z => z.id == category)
@@ -237,20 +238,6 @@ export default function FoodLibrary({ navigation }) {
         setMyFoodList(temp);
         calc_myFoodDtails(temp);
     }
-    //pop up with list of food element
-    const ListElement = myFoodList.length > 0 ? <>{myFoodList.map((x, i) => <View key={i} style={{ alignSelf: 'flex-start' }}>
-        <View style={styles.listRow}>
-            <TouchableOpacity onPress={() => { addToMyListFood({ id: x.id, name: x.name, carbs: x.carbs, suger: x.suger, add: false }) }}
-            ><Text style={styles.exit}> X</Text></TouchableOpacity>
-            <Text style={styles.mylistvar}>{x.name}</Text>
-            <Text style={styles.mylist}> Carbohydrates:</Text><Text style={styles.mylistvar}>{x.carbs}</Text>
-            <Text style={styles.mylist}> Suger:</Text><Text style={styles.mylistvar}>{x.suger}</Text>
-        </View>
-    </View>)}
-        <View style={{ flex: 1, justifyContent: 'flex-end' }}>
-            <Text>Total Carbohydrates: {myFoodDtails.carbs} Suger: {myFoodDtails.suger}</Text>
-        </View></>
-        : <View style={{ flex: 1 }}><Text>list is empty</Text></View>;
 
     return (<>
         {loading && <Loading opacity={'#d6f2fc'} />}
@@ -308,7 +295,7 @@ export default function FoodLibrary({ navigation }) {
                             radius={5}
                             text='Add new'
                             alignItems='flex-start'
-                            onPress={() => navigation.navigate('AddNewFood', { categoryList: list, isRecipes: isRecipes, userId: userDetails.id })}
+                            onPress={() => navigation.navigate('AddNewFood', { categoryList: list, isRecipes: isRecipes, userId: userDetails.id, foodList: ingredient })}
                         />
 
                     </View>
@@ -324,14 +311,14 @@ export default function FoodLibrary({ navigation }) {
                     />
                 }
             </View>
-            <PopUp
+            {/* <PopUp
                 show={show}
                 setShow={setShow}
                 backgroundColor='#d6f2fc'
                 width={95}
                 height={60}
                 element={ListElement}
-            />
+            /> */}
             <View style={styles.showlist}>
                 <Button
                     text='my food list'
@@ -342,6 +329,13 @@ export default function FoodLibrary({ navigation }) {
                 />
             </View>
         </View>
+        {show && <SelectedList
+            setShow={setShow}
+            show={show}
+            myFoodList={myFoodList}
+            myFoodDtails={myFoodDtails}
+            addToMyListFood={addToMyListFood}
+        />}
         {alert && alert}
     </>);
 }
@@ -380,27 +374,4 @@ const styles = StyleSheet.create({
         flex: 0.3,
         alignItems: 'center'
     },
-    mylist: {
-        paddingLeft: '2%',
-        fontSize: 15
-    },
-    mylistvar: {
-        fontWeight: 'bold',
-        fontSize: 15
-    },
-    exit: {
-        textAlign: 'right',
-        paddingRight: '2%',
-        color: 'red',
-        fontWeight: 'bold',
-        fontSize: 16,
-    }, listRow: {
-        flexDirection: 'row',
-        paddingTop: '5%',
-        paddingBottom: '2%',
-        width: 300,
-        borderBottomWidth: 1,
-        borderRadius: 10,
-        flexWrap: 'wrap'
-    }
 })

@@ -6,7 +6,7 @@ import Button from '../../CTools/Button';
 import { ImageUri } from '../../Routes/Url';
 import PopUp from '../../CTools/PopUp';
 export default function Food(props) {
-  const { name, image, id, UnitOfMeasure, addToMyListFood,Ingrediants,cookingMethod } = props
+  const { name, image, id, UnitOfMeasure, addToMyListFood,Ingrediants,cookingMethod,forRecipe } = props
 
   const selectUnit = [];
 let isRecipe=id % 2 == 0;
@@ -68,7 +68,8 @@ const element=isRecipe?<View style={styles.popUpcontainer}>
         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
           <Text style={styles.frontTitle}>{name}
           </Text>
-          {favorite ?
+          {forRecipe?<></>:
+          favorite ?
             <TouchableOpacity onPress={() => setFavorite(false)}><Ionicons style={styles.icon} name="heart-sharp" size={24} color="#FF3C3C" /></TouchableOpacity> :
             <TouchableOpacity onPress={() => setFavorite(true)}><Ionicons style={styles.icon} name="heart-outline" size={24} color="black" /></TouchableOpacity>
           }

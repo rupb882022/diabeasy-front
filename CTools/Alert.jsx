@@ -8,7 +8,6 @@ export default function Alert(props) {
   const opacity = useRef(new Animated.Value(0)).current;
   var backgroundColor = 'white';
   useEffect(() => {
-    console.log("*");
     if (text) {
       Animated.sequence([
         Animated.timing(opacity, {

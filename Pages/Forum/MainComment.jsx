@@ -121,7 +121,7 @@ let editComment={ subject: subject, value: editText }
       </View>
       <View style={styles.row}>
         <MaterialCommunityIcons style={styles.Icon} name="calendar-clock" size={20} />
-        <Text style={styles.date}> {date&&moment(date.toString()).format("DD/MM/YYYY")}</Text>
+        <Text style={styles.date}> {date&&moment(new Date(date.toString())).format("DD/MM/YYYY")}</Text>
         <AddComment
           comment_id={comment_id}
           subject={subject}
@@ -260,7 +260,7 @@ const styles = StyleSheet.create({
     bottom: '25%'
   },
   cancel:{
-    backgroundColor:'#F76729',
+    backgroundColor:'#F9AC27',
     width:'130%',
     flex: 1,
     justifyContent:'center',

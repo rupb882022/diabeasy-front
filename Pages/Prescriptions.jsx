@@ -10,7 +10,6 @@ import { UserContext } from '../CTools/UserDetailsHook';
 import upiUrl from '../Routes/Url';
 import Moment from 'moment';
 import Loading from '../CTools/Loading';
-import * as Progress from 'react-native-progress';
 import axios from "axios";
 import { useFocusEffect } from '@react-navigation/native';
 import Alert from '../CTools/Alert';
@@ -32,7 +31,7 @@ const [allSubjects, setAllSubjects] = useState();
 const [idForPrescription, setIdForPrescription] = useState();
 
 
-
+//TODo bug in reject user id 1
 
 //console.log('userDe=>',userDetails);
 //console.log('prescriptions=> ',prescriptions);
@@ -251,7 +250,7 @@ setPopupElement(
 <Text style={{textAlign:'center',fontWeight:'bold',fontSize:30,marginBottom:'10%'}}> {onePrescription.subject} </Text>
 <Text style={{textAlign:'center',marginBottom:'5%'}}> Request details: </Text>
 <Text style={{textAlign:'center',fontSize:20}}>{onePrescription.value} </Text>
-<Text style={{textAlign:'center',marginTop:'10%'}}>request from : {Moment(onePrescription.date_time).format('DD/MM/YYYY H:mm')} </Text>
+<Text style={{textAlign:'center',marginTop:'10%'}}>request from : {Moment(new Date(onePrescription.date_time.toString())).format('DD/MM/YYYY H:mm')} </Text>
 <Text style={{textAlign:'center',marginTop:'10%'}}>Status : {onePrescription.status}</Text>
 </>
 )
@@ -299,23 +298,15 @@ axios(configurationObject)
 
   return (
     <View style={styles.container}>
-
-    {userDetails.id%2==0?<Header
+    <Header
         title='Prescriptions'
         logo_image='perscriptions'
-        flex={0.6}
+        flex={userDetails.id%2==0?0.6:1}
+        possiton={60}
         image_margin={{ Bottom: -4}}
         marginLeft={7}
         // justifyContent='flex-start' 
-        />:
-        <Header
-        title='Prescriptions'
-        logo_image='perscriptions'
-        flex={1}
-        image_margin={{ Bottom: -4}}
-        marginLeft={7}
-        // justifyContent='flex-start' 
-        />}
+        />
         {userDetails.id%2==0?
         <Text style={styles.title}>{userDetails.patientNAME?userDetails.patientNAME:'No One'}'s requests:</Text>:
         <Text style={styles.title}>Your last requests:</Text>}
@@ -324,12 +315,7 @@ axios(configurationObject)
 {prescriptions&&prescriptions.map((item)=>(
 <View key={item.id} style={styles.oneItem}>
   <TouchableOpacity onPress={()=>{btnPrescDetails(item.id)}}>
- {item.status=='accepted'? 
-  <Text style={styles.status}>{<MaterialCommunityIcons name="pill" size={24} color="green"/>} - Request from {Moment(item.date_time).format('DD/MM/YYYY')}</Text>:
-  item.status=='rejected'?
-  <Text style={styles.status}>{<MaterialCommunityIcons name="pill" size={24} color="red"/>} - Request from {Moment(item.date_time).format('DD/MM/YYYY')}</Text>:
-  <Text style={styles.status}>{<MaterialCommunityIcons name="pill" size={24} color="yellow"/>} - Request from {Moment(item.date_time).format('DD/MM/YYYY')}</Text>
-  }
+  <Text style={styles.status}>{<MaterialCommunityIcons name="pill" size={24} color={item.status=='accepted'?"#1EAC14" : item.status=='rejected'?"#EF5C5C":"#F7FD52"}/>} - Request from {Moment(new Date(item.date_time).toString()).format('DD/MM/YYYY')}</Text>
 </TouchableOpacity>
 </View>
 ))
@@ -338,7 +324,7 @@ axios(configurationObject)
 </View>
 </ScrollView>
 
-<Text style={styles.info}><MaterialCommunityIcons name="pill" size={24} color="green"/> Accepted  <MaterialCommunityIcons name="pill" size={24} color="yellow"/> Waiting  <MaterialCommunityIcons name="pill" size={24} color="red"/> Rejected </Text>
+<Text style={styles.info}><MaterialCommunityIcons name="pill" size={24} color="#1EAC14"/> Accepted  <MaterialCommunityIcons name="pill" size={24} color="#F7FD52"/> Waiting  <MaterialCommunityIcons name="pill" size={24} color="#EF5C5C"/> Rejected </Text>
 
 {userDetails.id%2!=0&&<Button 
 text='New prescription request'

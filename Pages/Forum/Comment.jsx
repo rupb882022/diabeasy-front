@@ -64,7 +64,7 @@ export default function Comment(props) {
       </View>
       <View style={styles.row}>
         <MaterialCommunityIcons style={styles.Icon} name="calendar-clock" size={20} />
-        <Text style={styles.date}>{moment(comment.date.toString()).format("DD/MM/YYYY")}</Text>
+        <Text style={styles.date}>{moment(new Date(comment.date.toString())).format("DD/MM/YYYY")}</Text>
       </View>
 
     </View>
@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
     bottom: '25%'
   },
   cancel: {
-    backgroundColor: '#F76729',
+    backgroundColor: '#F9AC27',
     width: '130%',
     flex: 1,
     justifyContent: 'center',

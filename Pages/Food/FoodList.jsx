@@ -1,9 +1,9 @@
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
-import React, { useState } from 'react';
+import React from 'react';
 import Food from './Food';
 
 export default function FoodList(props) {
-    const { foodList,addToMyListFood} = props
+    const { foodList,addToMyListFood,forRecipe=false} = props
 
 
     const list = foodList ? foodList.map((x, i) =>
@@ -14,7 +14,7 @@ export default function FoodList(props) {
             image={x.image}
             UnitOfMeasure={x.UnitOfMeasure}
             addToMyListFood={(value)=>{addToMyListFood(value)}}
-
+            forRecipe={forRecipe}
             cookingMethod={x.cookingMethod&&x.cookingMethod}
             Ingrediants={x.Ingrediants&&x.Ingrediants}
         />
