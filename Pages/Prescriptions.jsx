@@ -13,6 +13,7 @@ import Loading from '../CTools/Loading';
 import axios from "axios";
 import { useFocusEffect } from '@react-navigation/native';
 import Alert from '../CTools/Alert';
+import * as Progress from 'react-native-progress';
 
 export default function Prescriptions(props) {
 const {navigation,setAlert} =props
@@ -47,7 +48,7 @@ else if(userDetails.id%2==0&&!userDetails.patientID){setPrescriptions([])}
 
 const getPrescriptions = () => {
  //console.log('2');
-// setLoading(true)
+ setLoading(true)
     let url;
   if (userDetails.patientID) {        // if its doctor with selected patient
     url=upiUrl + `User/Prescription/${userDetails.patientID}`;
@@ -69,11 +70,11 @@ else if(userDetails.id%2!=0){            // if its patient (=> not a doctor with
 
           else {
               console.log("status code:", res.status)
-         //     setLoading(false)
+              setLoading(false)
               return;
           }
       }).then((result) => {
-      //  setLoading(false)
+        setLoading(false)
         //console.log('result=>', result);
         setPrescriptions(result)
         GetAllsubjects(result)
@@ -81,7 +82,7 @@ else if(userDetails.id%2!=0){            // if its patient (=> not a doctor with
       },
           (error) => {
               console.log("error", error)
-          //   setLoading(false)
+             setLoading(false)
           }) 
 }
 
@@ -314,6 +315,21 @@ axios(configurationObject)
 </View>
 </ScrollView>
 
+{ loading && <View style={styles.progress}>
+            <Progress.Bar
+              width={255}
+              height={15}
+              borderRadius={5}
+              borderColor={'#69BEDC'}// "#bbe4f2"
+              color= '#FFCF84' //-orange //'#69BEDC' = >blue
+              useNativeDriver={true}
+              borderWidth={2}
+              indeterminate={true}
+              animationConfig={{ bounciness: 20 }}
+            />
+          </View>
+}
+
 <Text style={styles.info}><MaterialCommunityIcons name="pill" size={24} color="#1EAC14"/> Accepted  <MaterialCommunityIcons name="pill" size={24} color="#F7FD52"/> Waiting  <MaterialCommunityIcons name="pill" size={24} color="#EF5C5C"/> Rejected </Text>
 
 {userDetails.id%2!=0&&<Button 
@@ -369,7 +385,9 @@ source={require('../images/prescriptions.png')}
       isButton={false}
 />}
 
-{ loading &&<Loading/>}
+
+
+
 </View>
   )
 }
