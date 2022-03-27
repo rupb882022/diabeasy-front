@@ -8,7 +8,7 @@ import Input from '../CTools/Input';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { UserContext } from '../CTools/UserDetailsHook';
 import upiUrl from '../Routes/Url';
-import Moment from 'moment';
+import moment from 'moment';
 import Loading from '../CTools/Loading';
 import axios from "axios";
 import { useFocusEffect } from '@react-navigation/native';
@@ -29,9 +29,6 @@ const [reqValue, setReqValue] = useState(false);
 const [request, setRequest] = useState({});
 const [allSubjects, setAllSubjects] = useState();
 const [idForPrescription, setIdForPrescription] = useState();
-
-
-//TODo bug in reject user id 1
 
 //console.log('userDe=>',userDetails);
 //console.log('prescriptions=> ',prescriptions);
@@ -112,26 +109,18 @@ useEffect(() => {
         if (response.status === 200 || response.status === 201) {
           getPrescriptions();
         }  
-        else if(response.status == 403){ //      TO DO -> check why can not fet status code 400/403
-          alert('Only 3 requests per day, please try again tomorrow') 
-          // setAlert(
-          //   <Alert text="Only 3 requests per day, please try again tomorrow"
-          //   type='worng'
-          //   time={2000}
-          //   bottom={110}
-          //   />)
-            return;
-          } 
           else {
           throw new Error("An error has occurred");
         }
       })
       .catch((error) => {
-       console.log('error =>', error);
+       error.response.status==403?
+       alert(error.response.data.Message):
+       alert(error)
       
-       alert("Only 3 requests per day, please try again tomorrow");
+     //  alert("Only 3 requests per day, please try again tomorrow");
       //  setAlert(
-      //   <Alert text="Only 3 requests per day, please try again tomorrow"
+      //   <Alert text={error.response.data.Message}
       //   type='worng'
       //   time={2000}
       //   bottom={110}
@@ -225,7 +214,7 @@ const element = <View>
    onPress={() => {
     if (reqValue && subject && userDetails) {
         setRequest({
-          date_time: Moment(new Date().toString()).format('MM-DD-YYYY H:mm').toString(),
+          date_time: moment(new Date().toString()).format('MM-DD-YYYY H:mm').toString(),
           subject: subject,
           value: reqValue,
           Patients_id: userDetails.id,
@@ -250,7 +239,7 @@ setPopupElement(
 <Text style={{textAlign:'center',fontWeight:'bold',fontSize:30,marginBottom:'10%'}}> {onePrescription.subject} </Text>
 <Text style={{textAlign:'center',marginBottom:'5%'}}> Request details: </Text>
 <Text style={{textAlign:'center',fontSize:20}}>{onePrescription.value} </Text>
-<Text style={{textAlign:'center',marginTop:'10%'}}>request from : {Moment(new Date(onePrescription.date_time.toString())).format('DD/MM/YYYY H:mm')} </Text>
+<Text style={{textAlign:'center',marginTop:'10%'}}>request from : {moment(new Date(onePrescription.date_time.toString())).format('DD/MM/YYYY H:mm')} </Text>
 <Text style={{textAlign:'center',marginTop:'10%'}}>Status : {onePrescription.status}</Text>
 </>
 )
@@ -282,12 +271,13 @@ axios(configurationObject)
   }
 })
 .catch((error) => {
-  setAlert(
-    <Alert text="sorry somting is got wrong try agine later"
-    type='worng'
-    time={2000}
-    bottom={110}
-    />)
+  // setAlert(
+  //   <Alert text="sorry somting is got wrong try agine later"
+  //   type='worng'
+  //   time={2000}
+  //   bottom={110}
+  //   />)
+  alert(error.response.data.Message)
   console.log('err=>',error);
   showDetails&&setShowDetails(false);
 });
@@ -315,7 +305,7 @@ axios(configurationObject)
 {prescriptions&&prescriptions.map((item)=>(
 <View key={item.id} style={styles.oneItem}>
   <TouchableOpacity onPress={()=>{btnPrescDetails(item.id)}}>
-  <Text style={styles.status}>{<MaterialCommunityIcons name="pill" size={24} color={item.status=='accepted'?"#1EAC14" : item.status=='rejected'?"#EF5C5C":"#F7FD52"}/>} - Request from {Moment(new Date(item.date_time).toString()).format('DD/MM/YYYY')}</Text>
+  <Text style={styles.status}>{<MaterialCommunityIcons name="pill" size={24} color={item.status=='accepted'?"#1EAC14" : item.status=='rejected'?"#EF5C5C":"#F7FD52"}/>} - Request from {moment(new Date(item.date_time).toString()).format('DD/MM/YYYY')}</Text>
 </TouchableOpacity>
 </View>
 ))
