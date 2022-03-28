@@ -30,7 +30,7 @@ export default function FoodLibrary({ navigation }) {
     const [ingredient, setIngredient] = useState();//all ingredient from DB
     const [recipes, setRecipes] = useState();//all recipes from DB
     const [myFoodList, setMyFoodList] = useState([]);//the chosen food list
-    const [myFoodDtails, setmyFoodDtails] = useState({ carbs: 0.0, suger: 0.0, food: [] });//the details on chosen food list
+    const [myFoodDtails, setmyFoodDtails] = useState({ carbs: 0.0, suger: 0.0 });//the details on chosen food list
 
     //get all Ingredients 
     useFocusEffect(

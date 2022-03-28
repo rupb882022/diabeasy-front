@@ -27,12 +27,14 @@ export default function AddNewFood(props) {
   const [suger, setSuger] = useState();
   const [weightInGrams, setWeightInGrams] = useState();
   const [unitList, setUnitList] = useState();
+  const [cookingMethod, setCookingMethod] = useState();
   const [alert, setAlert] = useState()
   const [serchName, setSerchName] = useState();
   const [serchCategory, setSerchCategory] = useState();
   const [myFoodList, setMyFoodList] = useState([]);//the chosen food list
-  const [myFoodDtails, setmyFoodDtails] = useState({ carbs: 0.0, suger: 0.0, food: [] });//the details on chosen food list
+  const [myFoodDtails, setmyFoodDtails] = useState({ carbs: 0.0, suger: 0.0,grmas:0 });//the details on chosen food list
 
+  //get all unit of measure
   useEffect(() => {
     if (!unitList) {
       fetch(apiUrl + `Food/getUnitOfMeasure`, {
@@ -62,7 +64,64 @@ export default function AddNewFood(props) {
   }, []);
 
   const saveFood = () => {
-    if (isRecipe) { } else {
+    if (isRecipe) {   
+if(name && category && unit&&weightInGrams&&myFoodDtails&&myFoodDtails.Ingridents.length>0){
+
+  let ratio=parseFloat(myFoodDtails.grams/weightInGrams)
+
+  let food = {
+    userId: userId,
+    name: name,
+    category: category,
+    cookingMethod:cookingMethod,
+    TotalCarbs:myFoodDtails.carbs,
+    TotalSuger:myFoodDtails.suger,
+    TotalGrams:myFoodDtails.grams,
+    unit: unit,
+    carbs:parseFloat(myFoodDtails.carbs*ratio),
+    suger:parseFloat(myFoodDtails.suger*ratio),
+    weightInGrams:weightInGrams,
+    Ingridents:myFoodDtails.Ingridents
+  }
+  console.log(food);
+
+  const configurationObject = {
+    url: `${apiUrl}Food/AddRecipe`,
+    method: "POST",
+    data: food
+  };
+
+  axios(configurationObject)
+  .then((response) => {
+    if (response) {
+      console.log("response", response.status);
+
+      navigation.goBack()
+    } else {
+      throw new Error(response.status);
+    }
+  })
+  .catch((error) => {
+    setAlert(
+      <Alert text="sorry somting is got worng try agine later"
+        type='worng'
+        time={2000}
+        bottom={80}
+      />)
+    console.log(error);
+  })
+
+}else{
+  setAlert(
+    <Alert text="please fill in all details"
+      type='alert'
+      time={2500}
+      bottom={80}
+    />)
+
+}
+
+    } else {
       if (name && category && unit && crabs && suger && weightInGrams) {
         let food = {
           userId: userId,
@@ -73,8 +132,6 @@ export default function AddNewFood(props) {
           suger: suger,
           weightInGrams: weightInGrams
         }
-        console.log("food", food);
-
 
         const configurationObject = {
           url: `${apiUrl}Food/AddIngredient`,
@@ -82,7 +139,7 @@ export default function AddNewFood(props) {
           data: food
         };
 
-
+console.log(food);
         axios(configurationObject)
           .then((response) => {
             if (response) {
@@ -114,18 +171,22 @@ export default function AddNewFood(props) {
   }
   //calc Dtails for food list
   const calc_myFoodDtails = (list) => {
-
+    let Ingridents=[]
     let carbs = 0
     let suger = 0
+    let grams=0
     if (list.length > 0)
       list.map(x => {
         carbs += parseFloat(x.carbs)
         suger += parseFloat(x.suger)
+        grams+=parseInt( x.grams)
+        Ingridents.push({id:x.id,amount:x.amount,unit:x.unit})
       })
     carbs = carbs.toFixed(1)
     suger = suger.toFixed(1)
-    setmyFoodDtails({ carbs: carbs, suger: suger })
+    setmyFoodDtails({ carbs: carbs, suger: suger ,grams:grams,Ingridents:Ingridents})
   }
+
 
   //insert food to my list
   const addToMyListFood = (food) => {
@@ -183,29 +244,37 @@ export default function AddNewFood(props) {
           label='Name'
           getValue={(value) => setName(value)}
         />
-        {/* <Input
-          label='category'
-          editable={false}
-          getValue={(value) => setCategory(value)}
-          type='selectBox'
-          SelectBox_placeholder='Select category'
-          selectBox_items={categoryList}
-        /> */}
-
-        <Input
-          label='unit'
-          editable={false}
-          getValue={(value) => setUnit(value)}
-          type='selectBox'
-          SelectBox_placeholder='Select unit of measure'
-          selectBox_items={unitList ? unitList : []}
-        />
-        <Input
-          label='weightInGrams'
-          validtion='number'
-          keyboardType='numbers-and-punctuation'
-          getValue={(value) => setWeightInGrams(value)}
-        />
+        <View style={{flexDirection:'row',flex:1,marginLeft:'6%'}}>
+          <Input
+            label='unit'
+            alignItems='center'
+            editable={false}
+            width={70}
+            height={45}
+            getValue={(value) => setUnit(value)}
+            type='selectBox'
+            SelectBox_placeholder='Select unit of measure'
+            selectBox_items={unitList ? unitList : []}
+          />
+          <Input
+            label='weight in grams'
+            validtion='number'
+            width={72}
+            height={45}
+            alignItems='flex-start'
+            keyboardType='numbers-and-punctuation'
+            getValue={(value) => setWeightInGrams(value)}
+          />
+        </View>
+       {isRecipe&& <Input
+            placeholder='cooking method'
+            multiline={true}
+            numberOfLines={4}
+            width={72}
+            height={90}
+            keyboardType='numbers-and-punctuation'
+            getValue={(value) => setCookingMethod(value)}
+          />}
         {!isRecipe && <Input
           label='suger'
           // validtion='number'
