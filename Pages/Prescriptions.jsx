@@ -16,7 +16,7 @@ import Alert from '../CTools/Alert';
 import * as Progress from 'react-native-progress';
 
 export default function Prescriptions(props) {
-const {navigation,setAlert} =props
+const {navigation} =props
 
 const [show, setShow] = useState(false);
 const [showDetails, setShowDetails] = useState(false);
@@ -30,6 +30,7 @@ const [reqValue, setReqValue] = useState(false);
 const [request, setRequest] = useState({});
 const [allSubjects, setAllSubjects] = useState();
 const [idForPrescription, setIdForPrescription] = useState();
+const [alert, setAlert] = useState()
 
 //console.log('userDe=>',userDetails);
 //console.log('prescriptions=> ',prescriptions);
@@ -82,6 +83,12 @@ else if(userDetails.id%2!=0){            // if its patient (=> not a doctor with
       },
           (error) => {
               console.log("error", error)
+              setAlert(
+                <Alert text="sorry, somthing went wrong, please try again later"
+                type='worng'
+                time={2000}
+                bottom={110}
+                />);
              setLoading(false)
           }) 
 }
@@ -115,17 +122,22 @@ useEffect(() => {
         }
       })
       .catch((error) => {
-       error.response.status==403?
-       alert(error.response.data.Message):
-       alert(error)
-      
-     //  alert("Only 3 requests per day, please try again tomorrow");
-      //  setAlert(
-      //   <Alert text={error.response.data.Message}
-      //   type='worng'
-      //   time={2000}
-      //   bottom={110}
-      //   />)
+      //  error.response.status==403?
+      //  alert(error.response.data.Message):
+      //  alert(error)
+      error.response.status==403?
+       setAlert(
+        <Alert text={error.response.data.Message}
+        type='worng'
+        time={2000}
+        bottom={110}
+        />):
+        setAlert(
+          <Alert text={error}
+          type='worng'
+          time={2000}
+          bottom={110}
+          />)
       });
   }
 }, [request]);
@@ -272,16 +284,47 @@ axios(configurationObject)
   }
 })
 .catch((error) => {
-  // setAlert(
-  //   <Alert text="sorry somting is got wrong try agine later"
-  //   type='worng'
-  //   time={2000}
-  //   bottom={110}
-  //   />)
-  alert(error.response.data.Message)
+  setAlert(
+    <Alert text="sorry, somthing went wrong, please try again later"
+    type='worng'
+    time={2000}
+    bottom={110}
+    />)
+  //alert(error.response.data.Message)
   console.log('err=>',error);
   showDetails&&setShowDetails(false);
 });
+}
+
+const deletePrescription = () => {
+  console.log("id", upiUrl +`User/Prescription/Delete/${idForPrescription}`);
+  fetch(upiUrl + `User/Prescription/Delete/${idForPrescription}`, {
+    method: 'DELETE',
+    headers: new Headers({
+      'Content-Type': 'appliction/json; charset=UTF-8',
+      'Accept': 'appliction/json; charset=UTF-8'
+    })
+  }).then(res => {
+    if (res && res.status == 200) {
+      return res.json();
+    } else {
+      console.log("status code:", res.status)
+    }
+  }).then((resulte) => {
+    console.log('deleteRes=>',resulte);
+    showDetails&&setShowDetails(false);
+    getPrescriptions();
+  },
+    (error) => {
+      console.log("error", error)
+      showDetails&&setShowDetails(false);
+      setAlert(
+        <Alert text="sorry, somthing went wrong, please try again later"
+        type='worng'
+        time={2000}
+        bottom={110}
+        />);
+    })
 }
 
 
@@ -362,10 +405,18 @@ source={require('../images/prescriptions.png')}
       <PopUp
       height={45}
       width={90}
-      setShow={setShowDetails}
+   //   setShow={setShowDetails}
       backgroundColor='#d6f2fc'
-      element={popupElement}
-     
+      element={
+        <>
+        {popupElement}
+        <View style={{flexDirection:'row',paddingTop:'20%',paddingLeft:'10%'}}>
+         <Button text='Delete' onPress={deletePrescription}/>
+         <Button text='Cancle' onPress={()=> setShowDetails(false)}/>
+         </View>
+       </>
+      }
+      isButton={false}
 />}
 
 {showDetails && prescriptions && userDetails.id%2==0 &&
@@ -387,7 +438,7 @@ source={require('../images/prescriptions.png')}
 
 
 
-
+{alert&&alert}
 </View>
   )
 }
