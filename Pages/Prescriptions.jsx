@@ -14,6 +14,7 @@ import axios from "axios";
 import { useFocusEffect } from '@react-navigation/native';
 import Alert from '../CTools/Alert';
 import * as Progress from 'react-native-progress';
+import DeleteAlert from '../CTools/DeleteAlert';
 
 export default function Prescriptions(props) {
 const {navigation} =props
@@ -31,6 +32,7 @@ const [request, setRequest] = useState({});
 const [allSubjects, setAllSubjects] = useState();
 const [idForPrescription, setIdForPrescription] = useState();
 const [alert, setAlert] = useState()
+const [delAlert, setDelAlert] = useState(false)
 
 //console.log('userDe=>',userDetails);
 //console.log('prescriptions=> ',prescriptions);
@@ -296,7 +298,12 @@ axios(configurationObject)
 });
 }
 
+// const deleteAlert = () =>{
+// setDelAlert(true)
+// }
+
 const deletePrescription = () => {
+ delAlert&&setDelAlert(false)
   console.log("id", upiUrl +`User/Prescription/Delete/${idForPrescription}`);
   fetch(upiUrl + `User/Prescription/Delete/${idForPrescription}`, {
     method: 'DELETE',
@@ -329,7 +336,7 @@ const deletePrescription = () => {
 
 
 
-
+//<DeleteAlert answer={(answer)=>console.log('ans2=',answer)}/>
   return (
     <View style={styles.container}>
     <Header
@@ -411,7 +418,7 @@ source={require('../images/prescriptions.png')}
         <>
         {popupElement}
         <View style={{flexDirection:'row',paddingTop:'20%',paddingLeft:'10%'}}>
-         <Button text='Delete' onPress={deletePrescription}/>
+         <Button text='Delete' onPress={()=>setDelAlert(true)}/>
          <Button text='Cancle' onPress={()=> setShowDetails(false)}/>
          </View>
        </>
@@ -439,6 +446,7 @@ source={require('../images/prescriptions.png')}
 
 
 {alert&&alert}
+{delAlert&&<DeleteAlert answer={(answer)=>{console.log('Delete?=>',answer);answer?deletePrescription():setDelAlert(false)}}/>}
 </View>
   )
 }
