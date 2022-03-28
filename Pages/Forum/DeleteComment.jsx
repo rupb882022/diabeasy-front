@@ -10,7 +10,6 @@ export default function DeleteComment(props) {
 
   const deleteComment = () => {
     setShowEdit();
-    console.log("id", apiUrl + `forum/Delete/${id}`);
     fetch(apiUrl + `forum/Delete/${id}`, {
       method: 'DELETE',
       headers: new Headers({
@@ -24,7 +23,6 @@ export default function DeleteComment(props) {
         console.log("status code:", res.status)
       }
     }).then((resulte) => {
-      console.log(resulte);
       getallcomment();
     },
       (error) => {

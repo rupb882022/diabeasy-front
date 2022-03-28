@@ -215,7 +215,7 @@ const element = <View>
    onPress={() => {
     if (reqValue && subject && userDetails) {
         setRequest({
-          date_time: moment(new Date().toString()).format('MM-DD-YYYY H:mm').toString(),
+          date_time: moment(new Date()).format('MM-DD-YYYY H:mm').toString(),
           subject: subject,
           value: reqValue,
           Patients_id: userDetails.id,
@@ -240,7 +240,7 @@ setPopupElement(
 <Text style={{textAlign:'center',fontWeight:'bold',fontSize:30,marginBottom:'10%'}}> {onePrescription.subject} </Text>
 <Text style={{textAlign:'center',marginBottom:'5%'}}> Request details: </Text>
 <Text style={{textAlign:'center',fontSize:20}}>{onePrescription.value} </Text>
-<Text style={{textAlign:'center',marginTop:'10%'}}>request from : {moment(new Date(onePrescription.date_time.toString())).format('DD/MM/YYYY H:mm')} </Text>
+<Text style={{textAlign:'center',marginTop:'10%'}}>request from : {moment(new Date(onePrescription.date_time)).format('DD/MM/YYYY H:mm')} </Text>
 <Text style={{textAlign:'center',marginTop:'10%'}}>Status : {onePrescription.status}</Text>
 </>
 )
@@ -306,7 +306,7 @@ axios(configurationObject)
 {prescriptions&&prescriptions.map((item)=>(
 <View key={item.id} style={styles.oneItem}>
   <TouchableOpacity onPress={()=>{btnPrescDetails(item.id)}}>
-  <Text style={styles.status}>{<MaterialCommunityIcons name="pill" size={24} color={item.status=='accepted'?"#1EAC14" : item.status=='rejected'?"#EF5C5C":"#F7FD52"}/>} - Request from {moment(new Date(item.date_time).toString()).format('DD/MM/YYYY')}</Text>
+  <Text style={styles.status}>{<MaterialCommunityIcons name="pill" size={24} color={item.status=='accepted'?"#1EAC14" : item.status=='rejected'?"#EF5C5C":"#F7FD52"}/>} - Request from {moment(new Date(item.date_time)).format('DD/MM/YYYY')}</Text>
 </TouchableOpacity>
 </View>
 ))
