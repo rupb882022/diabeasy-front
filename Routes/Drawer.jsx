@@ -61,7 +61,7 @@ export default function Drawer(props) {
         })}>
 
             {/* list of items in the drawer */}
-            <Drawernav.Screen name='DoctorHome' component={DoctorHome} options={{
+            <Drawernav.Screen name='Home' component={DoctorHome} options={{
                 ...options,
                 drawerIcon: () => (<Ionicons name="ios-home-outline" size={24} color={color} />)
             }} /> 

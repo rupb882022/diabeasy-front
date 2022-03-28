@@ -77,23 +77,22 @@ let editComment={ subject: subject, value: editText }
         <Alert text="sorry somting is got worng try agine later"
         type='worng'
         time={2000}
-        bottom={110}
+        bottom={40}
         />)
       console.log(error);
     });
   }
-
 
   return (<>
     <View style={styles.container} id={writer_id}>
       <View style={styles.row}>
         {image}
         <Text style={styles.name}>{name}</Text>
-        { userDetails&&userDetails.id == writer_id &&
+        { userDetails&&userDetails.id == writer_id ?
           <TouchableOpacity style={styles.edit} onPress={() => setShowEdit(true)}>
             <Entypo name="dots-three-vertical" size={20} style={styles.Icon} />
           </TouchableOpacity>
-        }
+        :<></>}
       </View>
       <View style={styles.row}>
         {changeComment == 'update' && comments.length == 0 ?
@@ -126,6 +125,7 @@ let editComment={ subject: subject, value: editText }
           comment_id={comment_id}
           subject={subject}
           name={name}
+          setAlert={setAlert}
           userDetails={userDetails}
           getAllComments={getAllComments}
         />
@@ -256,8 +256,10 @@ const styles = StyleSheet.create({
   },
   edit: {
     flexDirection: 'row',
-    left: '57%',
-    bottom: '25%'
+    position:'absolute',
+    left: '95%',
+    bottom: '25%',
+    
   },
   cancel:{
     backgroundColor:'#F9AC27',

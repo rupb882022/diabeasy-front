@@ -9,6 +9,7 @@ import apiUrl from '../../Routes/Url';
 import axios from "axios";
 import Alert from '../../CTools/Alert';
 
+//todofix alert and date
 export default function AddComment(props) {
   
   const { comment_id, subject, name,getAllComments,userDetails } = props
@@ -21,16 +22,16 @@ export default function AddComment(props) {
 
   const add_comment = () => {
     if (comment_value&& userDetails) {
-      let doctor_id = '';
-      let patient_id = '';
+      let doctor_id;
+      let patient_id;
       //set the right user id
       userDetails.id % 2 == 0 ? doctor_id = userDetails.id : patient_id = userDetails.id;
-
       setComment({
-        date_time: moment(new Date()).format('MM-DD-YYYY').toString(),
+        date_time: new Date(),
         subject: subject,
         value: comment_value,
-        Patients_id: userDetails.id,
+        Patients_id: patient_id,
+        Doctor_id:doctor_id,
         Id_Continue_comment: comment_id,
       })
       setShow(false);
@@ -39,6 +40,7 @@ export default function AddComment(props) {
 
   useEffect(() => {
     if (!show && comment && comment_value) {
+      console.log("comment",comment)
       const configurationObject = {
         url: `${apiUrl}forum/addComment`,
         method: "POST",
@@ -106,7 +108,7 @@ export default function AddComment(props) {
             </View>
           </View>}
       />}
- {alert&&alert}</>
+</>
 
   )
 }

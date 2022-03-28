@@ -27,6 +27,33 @@ export default function Forum() {
 
   const {userDetails} = useContext(UserContext);
 
+  const addCommnet=()=>{
+    {
+      //if the new comment have subject and value
+      if (commentValue && subject&&userDetails) {
+        //if user is doctor or patient
+        let today=new Date();
+        if (userDetails.id % 2 == 0) {
+      
+          setComment({
+            date_time: today,
+            subject: subject,
+            value: commentValue,
+            Doctor_id: userDetails.id,
+          });
+        } else {
+          setComment({
+            date_time:today,
+            subject: subject,
+            value: commentValue,
+            Patients_id: userDetails.id,
+          });
+        }
+        setShow(false);
+      }
+    }
+  }
+
 
   //pop up element add new subject
   const element = <View>
@@ -100,32 +127,11 @@ export default function Forum() {
       alignItems='center'
       width={20}
       height={3}
-      onPress={() => {
-        //if the new comment have subject and value
-        if (commentValue && subject&&userDetails) {
-          //if user is doctor or patient
-          if (userDetails.id % 2 == 0) {
-            setComment({
-              date_time: moment(new Date().toString()).format("DD/MM/YYYY"),
-              subject: subject,
-              value: commentValue,
-              Doctor_id: userDetails.id,
-            });
-          } else {
-            setComment({
-              date_time: moment(new Date().toString()).format("DD/MM/YYYY"),
-              subject: subject,
-              value: commentValue,
-              Patients_id: userDetails.id,
-            });
-          }
-          setShow(false);
-        }
-      }}
+      onPress={()=>{addCommnet()}}
     >
     </Button>
     </View>
-  </View>;
+  </View>;  
 
 
   useEffect(() => {
@@ -135,6 +141,7 @@ export default function Forum() {
         method: "POST",
         data: comment
       };
+      console.log(comment);
       axios(configurationObject)
         .then((response) => {
           if (response.status === 200 || response.status === 201) {
@@ -175,7 +182,6 @@ export default function Forum() {
           console.log("status code:", res.status)
         }
       }).then((resulte) => {
-        console.log("res", resulte)
         if (resulte.length > 0) {
           let tempList = resulte.map((x, i) => ({ itemKey: i, label: x, value: x }))
           setSubjectList(tempList);

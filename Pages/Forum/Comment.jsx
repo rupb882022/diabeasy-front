@@ -154,8 +154,9 @@ const styles = StyleSheet.create({
   },
   edit: {
     flexDirection: 'row',
-    left: '62%',
-    bottom: '25%'
+    position:'absolute',
+    left: '93%',
+    top: '15%',
   },
   cancel: {
     backgroundColor: '#F9AC27',
