@@ -9,7 +9,6 @@ import apiUrl from '../../Routes/Url'
 import Loading from '../../CTools/Loading'
 import { useFocusEffect } from '@react-navigation/native';
 import axios from "axios";
-import moment from 'moment';
 import {UserContext} from '../../CTools/UserDetailsHook'
 import Alert from '../../CTools/Alert';
 
@@ -141,7 +140,7 @@ export default function Forum() {
         method: "POST",
         data: comment
       };
-      console.log(comment);
+  
       axios(configurationObject)
         .then((response) => {
           if (response.status === 200 || response.status === 201) {
