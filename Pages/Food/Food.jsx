@@ -125,7 +125,7 @@ const element=isRecipe?<View style={styles.popUpcontainer}>
               radius={5}
               text='add'
               textSize={12}
-              onPress={() => { addToMyListFood({ id: id, name: name, carbs: carbs, suger: suger, grams:weightInGrams,amount:amount, add: true }) }}
+              onPress={() => { addToMyListFood({ id: id, name: name, carbs: carbs, suger: suger, grams:weightInGrams,amount:amount,unit:unit, add: true }) }}
             />
           </View>
         </View>
