@@ -342,7 +342,7 @@ const deletePrescription = () => {
     <Header
         title='Prescriptions'
         logo_image='perscriptions'
-        flex={userDetails.id%2==0?0.6:1}
+        flex={userDetails.id%2==0?0.4:0.8}
         possiton={60}
         image_margin={{ Bottom: -4}}
         marginLeft={7}
@@ -470,9 +470,10 @@ const styles = StyleSheet.create({
   },
   list:{
 //flexWrap: 'wrap',
-paddingTop:'15%',
+paddingTop:'5%',
 paddingBottom:'15%',
 flex:0.5,
+marginTop:'2%'
  
   },
 oneItem:{

@@ -83,9 +83,9 @@ export default function Drawer(props) {
             }} />
 
         </Drawernav.Navigator>
-        <Footer
+        {/* <Footer
             navigation={navigation}
-        />
+        /> */}
     </>
     );
 }else{
