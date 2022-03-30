@@ -51,7 +51,7 @@ export default function FoodLibrary({ navigation }) {
                     } else {
 
                         console.log("status code:", res.status)
-                        throw new error(res.body)
+                        throw new error(res.status)
                     }
                 }).then((resulte) => {
                     setRecipes(resulte)

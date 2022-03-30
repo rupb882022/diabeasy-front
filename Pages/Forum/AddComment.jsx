@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react'
 import { FontAwesome5 } from '@expo/vector-icons';
 import PopUp from '../../CTools/PopUp';
 import Input from '../../CTools/Input';
-import moment from 'moment';
 import Button from '../../CTools/Button';
 import apiUrl from '../../Routes/Url';
 import axios from "axios";
@@ -12,11 +11,11 @@ import Alert from '../../CTools/Alert';
 //todofix alert and date
 export default function AddComment(props) {
   
-  const { comment_id, subject, name,getAllComments,userDetails } = props
+  const { comment_id, subject, name,getAllComments,userDetails,setAlert } = props
   const [show, setShow] = useState(false);//pop up state
   const [comment_value, setComment_value] = useState();//comment text
   const [comment, setComment] = useState({});
-  const [alert, setAlert] = useState()
+
 
 
 
@@ -24,7 +23,7 @@ export default function AddComment(props) {
     if (comment_value&& userDetails) {
       let doctor_id;
       let patient_id;
-      //set the right user id
+
       userDetails.id % 2 == 0 ? doctor_id = userDetails.id : patient_id = userDetails.id;
       setComment({
         date_time: new Date(),

@@ -67,16 +67,16 @@ export default function AddNewFood(props) {
     if (isRecipe) {   
 if(name && category && unit&&weightInGrams&&myFoodDtails&&myFoodDtails.Ingridents.length>0){
 
-  let ratio=parseFloat(myFoodDtails.grams/weightInGrams)
-
+  let ratio=parseFloat(weightInGrams/myFoodDtails.grams)
+  console.log("ratio",ratio);
   let food = {
     userId: userId,
     name: name,
     category: category,
     cookingMethod:cookingMethod,
-    TotalCarbs:myFoodDtails.carbs,
-    TotalSuger:myFoodDtails.suger,
-    TotalGrams:myFoodDtails.grams,
+    TotalCarbs:myFoodDtails&&myFoodDtails.carbs,
+    TotalSuger:myFoodDtails&&myFoodDtails.suger,
+    TotalGrams:myFoodDtails&&myFoodDtails.grams,
     unit: unit,
     carbs:parseFloat(myFoodDtails.carbs*ratio),
     suger:parseFloat(myFoodDtails.suger*ratio),
@@ -341,7 +341,7 @@ console.log(food);
           width={15}
           height={5}
           alignItems='center'
-          onPress={() => { navigation.navigate('CameraUse', { imageName: isRecipe ? 'Recipe' : 'Ingredient' }) }}
+          onPress={() => { navigation.navigate('CameraUse', { imageName: isRecipe ? 'recipe' : 'Ingredient' }) }}
         />
         {isRecipe &&
           <Button
