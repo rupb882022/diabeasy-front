@@ -194,11 +194,10 @@ export default function Forum() {
             bottom={110}
             />)
           console.log("error", error);
-
         }
       )
     }
-  // }
+
 
   const buildForum = (resulte) => {
     try {
