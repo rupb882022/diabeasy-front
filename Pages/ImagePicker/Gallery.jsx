@@ -76,10 +76,11 @@ const ImgUpload = (imgUri, picName) => {
     body: dataI,
 
     }
+    console.log("DATA-I",dataI);
      setLoading(true)
     fetch(upiUrl+"uploadpicture", config)
     .then((res) => {
-    if (res.status == 201) {console.log('resStatus=>',res.status);return res.json(); }
+    if (res.status == 200) {console.log('resStatus=>',res.status);return res.json(); }
     else {console.log(res.status);return res.err;}
     })
     .then((responseData) => {

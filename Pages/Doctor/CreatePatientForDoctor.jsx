@@ -11,7 +11,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 export default function CreatePatientForDoctor(props) {
 let color='';
 const {p,whileClick} = props
-//console.log("p",p);
+console.log("p",p);
 
 
 return(

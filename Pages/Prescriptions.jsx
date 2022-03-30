@@ -39,13 +39,20 @@ const [delAlert, setDelAlert] = useState(false)
 
 useFocusEffect(
   React.useCallback(() => {
+    console.log(userDetails);
      if (userDetails.id%2==0&&userDetails.patientID) {
 
     getPrescriptions();
     //loading&&setLoading(false)
    // console.log('1');
   }
-else if(userDetails.id%2==0&&!userDetails.patientID){setPrescriptions([])}
+else if(userDetails.id%2==0&&!userDetails.patientID){setPrescriptions([]);
+  setAlert(
+  <Alert text="Need to choose patient to watch his prescriptions"
+  type='worng'
+  time={5000}
+  bottom={400}
+  />)}
 }, [userDetails])
 );
 
@@ -59,7 +66,7 @@ const getPrescriptions = () => {
 else if(userDetails.id%2!=0){            // if its patient (=> not a doctor without selected patient)
   url=upiUrl + `User/Prescription/${userDetails.id}`;
 }  
-  //console.log('url=> ',url);
+  console.log('url=> ',url);
       fetch(url, {
           method: 'GET',
           headers: new Headers({
@@ -78,7 +85,8 @@ else if(userDetails.id%2!=0){            // if its patient (=> not a doctor with
           }
       }).then((result) => {
         setLoading(false)
-        //console.log('result=>', result);
+        console.log('result1=>', result);
+        
         setPrescriptions(result)
         GetAllsubjects(result)
        // console.log('3');

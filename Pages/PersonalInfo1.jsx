@@ -33,7 +33,7 @@ export default function PersonalInfo1(props) {
     const passwordValid = (value) => {
         //wiil render the page at the end of function
         flushSync(() => {
-            password == value ? setValidtion('') : setValidtion(' not the same password')
+            password == value&&password&&password.length>=8 ? setValidtion('') : setValidtion(' not the same password')
         })
     }
     const checkValid = () => {
