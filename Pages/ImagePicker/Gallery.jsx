@@ -72,9 +72,6 @@ const ImgUpload = (imgUri, picName) => {
     body: dataI,
 
     }
-    
-
-
      setLoading(true)
     fetch(upiUrl+"uploadpicture", config)
     .then((res) => {
