@@ -89,7 +89,7 @@ const ImgUpload = (imgUri, picName) => {
    setDonePicture(true)
    setShow(false)
    console.log('DONE!');
-   if(picName.startsWith("profileDoctor")||picName.startsWith("profilePatient")){
+   if(userDetails&&(picName.startsWith("profileDoctor")||picName.startsWith("profilePatient"))){
     setUserDetails({
       id:userDetails.id,
       name:userDetails.name,

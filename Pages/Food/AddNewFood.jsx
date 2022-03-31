@@ -319,7 +319,6 @@ console.log(food);
             </>}
             {foodList&&foodList.length>0 && <FoodList
               foodList={foodList}
-              setAlert={(value)=>{ setAlert(value)}}
               forRecipe={true}
               addToMyListFood={(value) => { addToMyListFood(value) }}/>}
         {/* <Button

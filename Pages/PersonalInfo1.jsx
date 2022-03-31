@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Header from '../CTools/Header';
 import Input from '../CTools/Input';
 import Button from '../CTools/Button';
-//import PickerMenu from './ImagePicker/PickerMenu';
+import moment from 'moment';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Loading from '../CTools/Loading';
 import { flushSync } from 'react-dom'
@@ -88,7 +88,7 @@ export default function PersonalInfo1(props) {
         }
     }
 
-
+    
     const RegisterUser = () => {
         if (checkValid()) {
             let userDetilas = {
@@ -143,8 +143,12 @@ export default function PersonalInfo1(props) {
         }
     }
 
+    const setDate=(value)=>{
+        let date=value.split("/");
+         date=`${date[2]}-${date[1]}-${date[0]}` 
+         setBirthDate(date)
+    }
 
-    //Todo fix validtion label in last and first name
     return (<>
         <View style={styles.container}>
             {loading && <Loading opacity={'#d6f2fc'} />}
@@ -223,7 +227,7 @@ export default function PersonalInfo1(props) {
                 date_format_hour={false}
                 required={true}
                 setValue={birthDate}
-                getValue={(value) => setBirthDate(value)}
+                getValue={(value) => {setDate(value)}}
             />
 
 
