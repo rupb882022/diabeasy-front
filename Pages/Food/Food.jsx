@@ -1,23 +1,27 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useContext } from 'react';
 import Input from '../../CTools/Input';
 import { Ionicons } from '@expo/vector-icons';
 import Button from '../../CTools/Button';
 import { ImageUri } from '../../Routes/Url';
 import PopUp from '../../CTools/PopUp';
+import axios from "axios";
+import {UserContext} from '../../CTools/UserDetailsHook';
+import apiUrl from '../../Routes/Url'
+
 export default function Food(props) {
-  const { name, image, id, UnitOfMeasure, addToMyListFood,Ingrediants,cookingMethod,forRecipe } = props
+  const { name, image, id, UnitOfMeasure, addToMyListFood, Ingrediants, cookingMethod, forRecipe,isFavorit } = props
 
   const selectUnit = [];
-let isRecipe=id % 2 == 0;
-const element=isRecipe?<View style={styles.popUpcontainer}>
-  <Text style={styles.popUpTitle}>Ingrediants of recipe:</Text>
-{Ingrediants&&Ingrediants.map(x=><Text style={styles.popUpText} key={x.id}>{x.amount} {x.unitName}: {x.name}</Text>)}
-<Text style={styles.popUpTitle}>Cooking method:</Text>
-<Text style={styles.popUpText}>{cookingMethod}</Text>
+  let isRecipe = id % 2 == 0;
+  const element = isRecipe ? <View style={styles.popUpcontainer}>
+    <Text style={styles.popUpTitle}>Ingrediants of recipe:</Text>
+    {Ingrediants && Ingrediants.map(x => <Text style={styles.popUpText} key={x.id}>{x.amount} {x.unitName}: {x.name}</Text>)}
+    <Text style={styles.popUpTitle}>Cooking method:</Text>
+    <Text style={styles.popUpText}>{cookingMethod}</Text>
 
-</View>
-:<></>;
+  </View>
+    : <></>;
   //every render of food
   useEffect(() => {
     UnitOfMeasure.map(x => selectUnit.push(
@@ -28,14 +32,42 @@ const element=isRecipe?<View style={styles.popUpcontainer}>
       }))
   });
 
+  const {userDetails} = useContext(UserContext);
   const [unit, setUnit] = useState();
-  const [favorite, setFavorite] = useState(false);
+  const [favorite, setFavorite] = useState(isFavorit);
   const [carbs, setCrabs] = useState();
   const [suger, setSuger] = useState();
   const [amount, setAmount] = useState();
   const [weightInGrams, setWeightInGrams] = useState();
   const [showCooking, setShowCooking] = useState(false);
 
+
+const setFavoritDB=(method)=>{
+
+let favorit={
+  user_id:userDetails.id,
+  Rcipe_id:isRecipe?id:null,
+  Ingredient_id:isRecipe?null:id
+}
+
+const configurationObject = {
+  url: apiUrl + `Food/${method=='POST'?'addFavorites':'deleteFavorites'}`,
+  method: method,
+  data: favorit
+};
+
+axios(configurationObject)
+  .then((response) => {
+      if (response.status === 200||response.status === 201) {
+         console.log("secuss");
+      } else {
+          throw new Error("An error has occurred");
+      }
+  })
+  .catch((error) => {
+      console.log("error=>>",error);
+  });
+}
 
   useEffect(() => {
     if (amount && unit) {
@@ -68,10 +100,10 @@ const element=isRecipe?<View style={styles.popUpcontainer}>
         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
           <Text style={styles.frontTitle}>{name}
           </Text>
-          {forRecipe?<></>:
-          favorite ?
-            <TouchableOpacity onPress={() => setFavorite(false)}><Ionicons style={styles.icon} name="heart-sharp" size={24} color="#FF3C3C" /></TouchableOpacity> :
-            <TouchableOpacity onPress={() => setFavorite(true)}><Ionicons style={styles.icon} name="heart-outline" size={24} color="black" /></TouchableOpacity>
+          {forRecipe ? <></> :
+            favorite?
+              <TouchableOpacity onPress={() =>{setFavoritDB("DELETE"); setFavorite(false)}}><Ionicons style={styles.icon} name="heart-sharp" size={24} color="#FF3C3C" /></TouchableOpacity> :
+              <TouchableOpacity onPress={() => {setFavoritDB("POST"); setFavorite(true)}}><Ionicons style={styles.icon} name="heart-outline" size={24} color="black" /></TouchableOpacity>
           }
         </View>
 
@@ -87,7 +119,7 @@ const element=isRecipe?<View style={styles.popUpcontainer}>
           <Input
             placeholder={UnitOfMeasure[0].name}
             height={50}
-            width={isRecipe?90:100}
+            width={isRecipe ? 90 : 100}
             textAlign='center'
             flex={0.4}
             editable={false}
@@ -105,19 +137,19 @@ const element=isRecipe?<View style={styles.popUpcontainer}>
             width={100}
             getValue={(value) => setAmount(value)}
           />
-           {isRecipe &&
-          <View style={styles.cookingMethod}>
-            <Button
-              width={2}
-              height={2}
-              radius={5}
-              alignItems='center'
-              justifyContent='center'
-              text='cooking method'
-              textSize={12} 
-              onPress={()=>{setShowCooking(true)}}
+          {isRecipe &&
+            <View style={styles.cookingMethod}>
+              <Button
+                width={2}
+                height={2}
+                radius={5}
+                alignItems='center'
+                justifyContent='center'
+                text='cooking method'
+                textSize={12}
+                onPress={() => { setShowCooking(true) }}
               />
-          </View>}
+            </View>}
           <View style={styles.add}>
             <Button
               width={25}
@@ -125,18 +157,18 @@ const element=isRecipe?<View style={styles.popUpcontainer}>
               radius={5}
               text='add'
               textSize={12}
-              onPress={() => { addToMyListFood({ id: id, name: name, carbs: carbs, suger: suger, grams:weightInGrams,amount:amount,unit:unit, add: true }) }}
+              onPress={() => { addToMyListFood({ id: id, name: name, carbs: carbs, suger: suger, grams: weightInGrams, amount: amount, unit: unit, add: true }) }}
             />
           </View>
         </View>
       </View>
       <PopUp
-         show={showCooking}
-         setShow={(val) => setShowCooking(val)}
-         backgroundColor='#d6f2fc'
-         width={95}
-         height={60}
-         element={element}
+        show={showCooking}
+        setShow={(val) => setShowCooking(val)}
+        backgroundColor='#d6f2fc'
+        width={95}
+        height={60}
+        element={element}
       />
     </View>
 
@@ -214,17 +246,17 @@ const styles = StyleSheet.create({
 
     // marginLeft:'35%'
   },
-  popUpcontainer:{
-    flex:1
+  popUpcontainer: {
+    flex: 1
   },
-  popUpTitle:{
-    textAlign:'center',
-    fontSize:20,
-    fontWeight:'700',
-    margin:'2%'
+  popUpTitle: {
+    textAlign: 'center',
+    fontSize: 20,
+    fontWeight: '700',
+    margin: '2%'
   },
-  popUpText:{
-    padding:'2%',
-    fontSize:16
+  popUpText: {
+    padding: '2%',
+    fontSize: 16
   }
 })

@@ -24,6 +24,7 @@ const changePic=()=>{
 }}
 
     
+console.log("userDetails",userDetails);
   
 
     return (

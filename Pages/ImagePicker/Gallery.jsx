@@ -33,7 +33,6 @@ export default function Gallery(props) {
   }, [])
 
 
-
     
     
   //choose *only* picture
@@ -61,9 +60,6 @@ ImgUpload(`${image}`
 }
 
 
-
-
-//#Nir check (!Request.Content.IsMimeMultipartContent()) in C#
 const ImgUpload = (imgUri, picName) => {
   let dataI = new FormData();
   dataI.append('picture', {
@@ -76,11 +72,13 @@ const ImgUpload = (imgUri, picName) => {
     body: dataI,
 
     }
-    console.log("DATA-I",dataI);
+    
+
+
      setLoading(true)
     fetch(upiUrl+"uploadpicture", config)
     .then((res) => {
-    if (res.status == 200) {console.log('resStatus=>',res.status);return res.json(); }
+    if (res.status == 201) {console.log('resStatus=>',res.status);return res.json(); }
     else {console.log(res.status);return res.err;}
     })
     .then((responseData) => {
@@ -88,16 +86,19 @@ const ImgUpload = (imgUri, picName) => {
     if (responseData != "err") {
       
       console.log("LOGpicName1=> ",picName)
-    let picNameWOExt = picName.substring(0, picName.indexOf("."));
-    let imageNameWithGUID = responseData.substring(responseData.indexOf(picNameWOExt),
-    responseData.indexOf(".jpg") + 4);
-    console.log('new pic name=> ',imageNameWithGUID);
+
     console.log("img uploaded successfully!");   
     setLoading(false)
    setDonePicture(true)
    setShow(false)
    console.log('DONE!');
-   
+   if(picName.startsWith("profileDoctor")||picName.startsWith("profilePatient")){
+    setUserDetails({
+      id:userDetails.id,
+      name:userDetails.name,
+      image:picName
+    })
+   }
     }
     else {alert('error uploding ...');
     setLoading(false)
