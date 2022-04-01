@@ -15,6 +15,7 @@ import Prescriptions from '../Pages/Prescriptions';
 import DoctorHome from '../Pages/Doctor/DoctorHome';
 import LogOut from '../Pages/LogOut';
 import { UserContext } from '../CTools/UserDetailsHook'
+import PatientData from '../Pages/PatientData';
 
 const Drawernav = createDrawerNavigator();
 
@@ -138,6 +139,11 @@ export default function Drawer(props) {
                 ...options,
                 drawerIcon: () => (<AntDesign name="medicinebox" size={24} color={color} />)
             }} />
+            <Drawernav.Screen name='Patient Data' component={PatientData} options={{
+                ...options,
+                drawerIcon: () => (<AntDesign name="linechart" size={24} color="black" />)
+            }} />
+
             <Drawernav.Screen name='Emergency Call' component={PanicButton} options={{
                 ...options,
                 drawerIcon: () => (<AntDesign name="exclamationcircleo" size={24} color={color} />)
