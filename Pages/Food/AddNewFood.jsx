@@ -17,7 +17,7 @@ export default function AddNewFood(props) {
   let categoryList = route.params.categoryList;//list of category
   let isRecipe = route.params.isRecipes;
   let userId = route.params.userId;
-  let foodList = route.params.foodList//Ingredients List
+  let food_List = route.params.foodList//Ingredients List
   const [show, setShow] = useState(false);
 
   const [category, setCategory] = useState();//array of the categories of the food that will added
@@ -29,10 +29,11 @@ export default function AddNewFood(props) {
   const [unitList, setUnitList] = useState();
   const [cookingMethod, setCookingMethod] = useState();
   const [alert, setAlert] = useState()
-  const [serchName, setSerchName] = useState();
+  const [serchName, setSerchName] = useState('');
   const [serchCategory, setSerchCategory] = useState();
   const [myFoodList, setMyFoodList] = useState([]);//the chosen food list
   const [myFoodDtails, setmyFoodDtails] = useState({ carbs: 0.0, suger: 0.0,grmas:0 });//the details on chosen food list
+  const [foodList,setFoodList]=useState(food_List);
 
   //get all unit of measure
   useEffect(() => {
@@ -63,9 +64,70 @@ export default function AddNewFood(props) {
     }
   }, []);
 
+ 
+    
+ 
+ 
+  const Serch_food_by_name = () => {
+    if (serchName) {
+      console.log(apiUrl + `Food/'getIngredients/${serchName}/${userId ? userId : 0}`);
+        fetch(apiUrl + `Food/getIngredients/${serchName}/${userId ? userId: 0}`, {
+            method: 'GET',
+            headers: new Headers({
+                'Content-Type': 'appliction/json; charset=UTF-8',
+                'Accept': 'appliction/json; charset=UTF-8'
+            })
+        }).then(res => {
+            if (res && res.status == 200) {
+                return res.json();
+            }
+        }).then((resulte) => {
+            if (!resulte || resulte.length < 0 || resulte[0].id == 0) {
+                setAlert(<Alert text="no resulte"
+                    type='worng'
+                    time={3500}
+                    bottom={250}
+                />)
+            }
+            setFoodList(resulte)
+
+        },
+            (error) => {
+                setAlert(
+                    <Alert text='sorry somting is not working try agine later'
+                        type='worng'
+                        bottom={250}
+                    />)
+                console.log("error", error)
+
+            })
+    } else {
+        setAlert(
+            <Alert text='cannot serch with empty value'
+                type='alert'
+                bottom={250}
+            />)
+    }
+}
+  useEffect(() => {
+    let List;
+if(serchCategory){
+    //fillter by category
+     List = food_List.filter(x =>
+      x.category.length < 1 ?
+          x.category[0].id == serchCategory :
+          x.category.find(z => z.id == serchCategory)
+  );
+    }else{
+      List=food_List;
+    }
+  setFoodList(List);
+
+}, [serchCategory]);
+
   const saveFood = () => {
     if (isRecipe) {   
-if(name && category && unit&&weightInGrams&&myFoodDtails&&myFoodDtails.Ingridents.length>0){
+if(name && category && unit&&weightInGrams&&myFoodDtails&&myFoodDtails.Ingridents.length>0&&category.length>0){
 
   let ratio=parseFloat(weightInGrams/myFoodDtails.grams)
   console.log("ratio",ratio);
@@ -108,7 +170,7 @@ if(name && category && unit&&weightInGrams&&myFoodDtails&&myFoodDtails.Ingrident
         time={2000}
         bottom={80}
       />)
-    console.log(error);
+      console.log(error.response.data);
   })
 
 }else{
@@ -157,7 +219,7 @@ console.log(food);
                 time={2000}
                 bottom={80}
               />)
-            console.log(error);
+              console.log(error.response.data);
           })
       } else {
         setAlert(
@@ -277,13 +339,13 @@ console.log(food);
           />}
         {!isRecipe && <Input
           label='suger'
-          // validtion='number'
+          validtion='float'
           keyboardType='numbers-and-punctuation'
           getValue={(value) => setSuger(value)}
         />}
         {!isRecipe ? <Input
           label='carbohydrates'
-          // validtion='number'
+          validtion='float'
           keyboardType='numbers-and-punctuation'
           getValue={(value) => setCrabs(value)}
         />
@@ -301,7 +363,7 @@ console.log(food);
               />
               <Input
                 height={50}
-                label='food name'
+                placeholder='ingredient name'
                 width={110}
                 alignItems='flex-start'
                 getValue={(value) => setSerchName(value)}
@@ -309,15 +371,16 @@ console.log(food);
               <Button
                 alignItems='center'
                 justifyContent='center'
-                text='Serch'
+                text='Search'
                 height={4}
                 radius={5}
                 textSize={14}
+                onPress={()=>{Serch_food_by_name();}}
               />
             </View>
       
             </>}
-            {foodList&&foodList.length>0 && <FoodList
+            {isRecipe&&foodList&&foodList.length>0 && <FoodList
               foodList={foodList}
               forRecipe={true}
               addToMyListFood={(value) => { addToMyListFood(value) }}/>}
@@ -404,6 +467,7 @@ const styles = StyleSheet.create({
     marginLeft: '7%'
   },
   selectIngrident: {
+    marginTop:'3%',
     fontWeight: 'bold',
     color: 'white',
     textShadowColor: '#1EA6D6',

@@ -139,7 +139,7 @@ export default function FoodLibrary({ navigation }) {
 
     //render the ingredient by category
     const category_filter = () => {
-        console.log(category);
+
         if (ingredient && !isRecipes) {
             //fillter by category
             let List = ingredient.filter(x =>
@@ -167,6 +167,8 @@ export default function FoodLibrary({ navigation }) {
             category_filter();
         }
     }, [category]);
+
+    //render favorits after get all food from db
     useEffect(() => {
         if (category == favoritId) {
             category_filter();
@@ -176,7 +178,7 @@ export default function FoodLibrary({ navigation }) {
     const Serch_food_by_name = () => {
         if (serchByName) {
             setLoading(true)
-            fetch(apiUrl + `Food/getIngredients/${serchByName}/${userDetails ? userDetails.id : 0}`, {
+            fetch(apiUrl + `Food/${isRecipes?'getRecipes':'getIngredients'}/${serchByName}/${userDetails ? userDetails.id : 0}`, {
                 method: 'GET',
                 headers: new Headers({
                     'Content-Type': 'appliction/json; charset=UTF-8',

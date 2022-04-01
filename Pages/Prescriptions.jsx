@@ -17,7 +17,6 @@ import * as Progress from 'react-native-progress';
 import DeleteAlert from '../CTools/DeleteAlert';
 
 export default function Prescriptions(props) {
-const {navigation} =props
 
 const [show, setShow] = useState(false);
 const [showDetails, setShowDetails] = useState(false);
@@ -301,7 +300,7 @@ axios(configurationObject)
     bottom={110}
     />)
   //alert(error.response.data.Message)
-  console.log('err=>',error);
+  console.log(error.response.data);
   showDetails&&setShowDetails(false);
 });
 }

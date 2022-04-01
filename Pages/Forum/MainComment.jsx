@@ -79,7 +79,7 @@ let editComment={ subject: subject, value: editText }
         time={2000}
         bottom={40}
         />)
-      console.log(error);
+        console.log(error.response.data);
     });
   }
 

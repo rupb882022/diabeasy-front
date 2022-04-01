@@ -65,7 +65,7 @@ export default function InsertData({ navigation }) {
                         <Alert text="sorry somting is got wotng try agine later"
                         type='worng'
                         />)
-                    console.log(error);
+                        console.log(error.response.data);
                     setLoading(false)
                 });
 

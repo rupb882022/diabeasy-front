@@ -104,7 +104,7 @@ export default function PersonalInfo1(props) {
                 method: "POST",
                 data: userDetilas
             };
-            console.log("userDetilas", userDetilas);
+       
             axios(configurationObject)
                 .then((response) => {
                     console.log("status=", response.status)
@@ -137,16 +137,18 @@ export default function PersonalInfo1(props) {
                             time={2000}
                             bottom={80}
                             />)
-                        console.log(error);
+                            console.log(error.response.data);
                     }
                 })
         }
     }
 
     const setDate=(value)=>{
+        if(value){
         let date=value.split("/");
          date=`${date[2]}-${date[1]}-${date[0]}` 
          setBirthDate(date)
+        }
     }
 
     return (<>

@@ -65,7 +65,7 @@ axios(configurationObject)
       }
   })
   .catch((error) => {
-      console.log("error=>>",error);
+    console.log(error.response.data);
   });
 }
 
@@ -110,8 +110,8 @@ axios(configurationObject)
         <View style={styles.row}>
           <Image style={styles.image} source={{ uri: image ? image : ImageUri + 'emptyFoodPhoto.JPG' }} />
           <View style={styles.details}>
-            <Text style={styles.textFront}>{suger ? suger : UnitOfMeasure[0].suger} suger </Text>
-            <Text style={styles.textFront} >{carbs ? carbs : UnitOfMeasure[0].carbs} Carbohydrates  </Text>
+            <Text style={styles.textFront}>{suger ? suger : UnitOfMeasure[0].suger.toFixed(1)} suger </Text>
+            <Text style={styles.textFront} >{carbs ? carbs : UnitOfMeasure[0].carbs.toFixed(1)} Carbohydrates  </Text>
             <Text style={styles.textFront}>{weightInGrams ? weightInGrams : UnitOfMeasure[0].weightInGrams} g </Text>
           </View>
         </View>

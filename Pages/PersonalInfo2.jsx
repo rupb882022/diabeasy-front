@@ -31,7 +31,15 @@ export default function PersonalInfo2(props) {
     const checkRegister = () => {
         //if only insulinTypeShort it is means that user use Pump
         if (insulinTypeShort && height && weight) {
-           
+           if(height<10 && weight<10){
+            setAlert(
+                <Alert text="weight and height need to be up to 10"
+                type='alert'
+                time={3000}
+                bottom={110}
+                />)
+                return;
+           }
             let moreInfo = {
                 weight: weight,
                 height: height,
@@ -72,12 +80,12 @@ export default function PersonalInfo2(props) {
             })
             .catch((error) => {
                 setAlert(
-                    <Alert text="sorry somting is got wotng try agine later"
+                    <Alert text="sorry somting is got worng try agine later"
                     type='worng'
                     time={2000}
                     bottom={110}
                     />)
-                console.log(error);
+                console.log(error.response.body);
                 setLoading(false);
             });
     }

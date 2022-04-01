@@ -156,7 +156,7 @@ export default function Forum() {
             time={2000}
             bottom={110}
             />)
-          console.log(error);
+            console.log(error.response.data);
         });
     }
   }, [comment]);
