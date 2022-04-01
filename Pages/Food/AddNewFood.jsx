@@ -315,11 +315,12 @@ console.log(food);
                 textSize={14}
               />
             </View>
-            <FoodList
+      
+            </>}
+            {foodList&&foodList.length>0 && <FoodList
               foodList={foodList}
               forRecipe={true}
-              addToMyListFood={(value) => { addToMyListFood(value) }}
-            /></>}
+              addToMyListFood={(value) => { addToMyListFood(value) }}/>}
         {/* <Button
         text='Add exstra unit of measure'
         justifyContent='center'

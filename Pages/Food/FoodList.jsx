@@ -2,15 +2,16 @@ import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import React from 'react';
 import Food from './Food';
 
+
 export default function FoodList(props) {
     const { foodList,addToMyListFood,forRecipe=false} = props
 
-
     const list = foodList ? foodList.map((x, i) =>
-        <Food
+        x.id!=0&&<Food
             key={i}
             id={x.id}
             name={x.name}
+            isFavorit={x.favorit}
             image={x.image}
             UnitOfMeasure={x.UnitOfMeasure}
             addToMyListFood={(value)=>{addToMyListFood(value)}}

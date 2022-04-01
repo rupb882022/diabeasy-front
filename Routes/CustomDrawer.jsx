@@ -9,7 +9,7 @@ import {UserContext} from '../CTools/UserDetailsHook'
 export default function CustomDrawer(props) {
 
     const { navigation} = props
-    const {userDetails} = useContext(UserContext);
+    const {userDetails,setUserDetails} = useContext(UserContext);
 
     
      const image = userDetails&&userDetails.image ? <Image source={{uri:ImageUri+userDetails.image}} style={styles.image} /> :
@@ -21,9 +21,11 @@ const changePic=()=>{
         navigation.navigate('CameraUse',{imageName:`profileDoctor${userDetails.id}`})
     }
     else{navigation.navigate('CameraUse',{imageName:`profilePatient${userDetails.id}`})
+    setUserDetails(userDetails)
 }}
 
     
+
   
 
     return (

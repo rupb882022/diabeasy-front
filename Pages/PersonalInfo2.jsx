@@ -31,7 +31,7 @@ export default function PersonalInfo2(props) {
     const checkRegister = () => {
         //if only insulinTypeShort it is means that user use Pump
         if (insulinTypeShort && height && weight) {
-            setLoading(true);
+           
             let moreInfo = {
                 weight: weight,
                 height: height,
@@ -52,14 +52,17 @@ export default function PersonalInfo2(props) {
         }
     }
     const RegisterUser = (userDetilas) => {
+        setLoading(true);
         console.log("apiUrl",`${apiUrl}User/RegisterUser`);
         const configurationObject = {
             url: `${apiUrl}User/RegisterUser`,
             method: "POST",
             data: userDetilas
         };
+        console.log("userDetilas", userDetilas);
         axios(configurationObject)
             .then((response) => {
+                setLoading(false);
                 console.log("status=", response.status)
                 if (response.status === 200 || response.status === 201) {
                     navigation.navigate('Login') //Todo approve the register
@@ -75,6 +78,7 @@ export default function PersonalInfo2(props) {
                     bottom={110}
                     />)
                 console.log(error);
+                setLoading(false);
             });
     }
 
