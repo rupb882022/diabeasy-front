@@ -4,13 +4,15 @@ import Food from './Food';
 
 
 export default function FoodList(props) {
-    const { foodList,addToMyListFood,forRecipe=false} = props
+    const { foodList,addToMyListFood,forRecipe=false,setAlert,get_all_food} = props
 
     const list = foodList ? foodList.map((x, i) =>
         x.id!=0&&<Food
             key={i}
             id={x.id}
+            addByUserId={x.addByUserId}
             name={x.name}
+            setAlert={(value)=>{setAlert(value)}}
             isFavorit={x.favorit}
             image={x.image}
             UnitOfMeasure={x.UnitOfMeasure}
@@ -18,6 +20,7 @@ export default function FoodList(props) {
             forRecipe={forRecipe}
             cookingMethod={x.cookingMethod&&x.cookingMethod}
             Ingrediants={x.Ingrediants&&x.Ingrediants}
+            get_all_food={get_all_food}
         />
     ) : <></>
 

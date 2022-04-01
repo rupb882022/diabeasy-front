@@ -21,7 +21,6 @@ const changePic=()=>{
         navigation.navigate('CameraUse',{imageName:`profileDoctor${userDetails.id}`})
     }
     else{navigation.navigate('CameraUse',{imageName:`profilePatient${userDetails.id}`})
-    setUserDetails(userDetails)
 }}
 
     

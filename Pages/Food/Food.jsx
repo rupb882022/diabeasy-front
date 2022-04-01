@@ -1,16 +1,17 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import React, { useState, useEffect,useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Input from '../../CTools/Input';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, Entypo } from '@expo/vector-icons';
 import Button from '../../CTools/Button';
 import { ImageUri } from '../../Routes/Url';
 import PopUp from '../../CTools/PopUp';
 import axios from "axios";
-import {UserContext} from '../../CTools/UserDetailsHook';
+import { UserContext } from '../../CTools/UserDetailsHook';
 import apiUrl from '../../Routes/Url'
+import Alert from '../../CTools/Alert';
 
 export default function Food(props) {
-  const { name, image, id, UnitOfMeasure, addToMyListFood, Ingrediants, cookingMethod, forRecipe,isFavorit } = props
+  const { name, image, id, UnitOfMeasure, addToMyListFood, Ingrediants, cookingMethod, addByUserId, forRecipe, isFavorit, setAlert,get_all_food } = props
 
   const selectUnit = [];
   let isRecipe = id % 2 == 0;
@@ -22,6 +23,13 @@ export default function Food(props) {
 
   </View>
     : <></>;
+
+  const editElement = <View style={styles.popUpcontainer}>
+    <TouchableOpacity style={{ marginTop: '2%' }}><Text style={styles.editText('#FFCF84')}>add unit</Text></TouchableOpacity>
+    <TouchableOpacity style={{ marginTop: '2%' }}><Text style={styles.editText('#FFC052')}>{image ? 'change' : 'add'} image</Text></TouchableOpacity>
+    <TouchableOpacity style={{ marginTop: '2%' }} onPress={() => { delete_food() }}><Text style={styles.editText('#F9AC27')}>delete {isRecipe ? 'recipe' : 'ingredient'}</Text></TouchableOpacity>
+    <TouchableOpacity style={{ marginTop: '2%' }} onPress={() => { setShowEdit(false) }}><Text style={styles.editText('#F79719')}>cancel</Text></TouchableOpacity>
+  </View>
   //every render of food
   useEffect(() => {
     UnitOfMeasure.map(x => selectUnit.push(
@@ -32,7 +40,8 @@ export default function Food(props) {
       }))
   });
 
-  const {userDetails} = useContext(UserContext);
+  const { userDetails } = useContext(UserContext);
+
   const [unit, setUnit] = useState();
   const [favorite, setFavorite] = useState(isFavorit);
   const [carbs, setCrabs] = useState();
@@ -40,34 +49,69 @@ export default function Food(props) {
   const [amount, setAmount] = useState();
   const [weightInGrams, setWeightInGrams] = useState();
   const [showCooking, setShowCooking] = useState(false);
+  const [showEdit, setShowEdit] = useState(false);
 
 
-const setFavoritDB=(method)=>{
-
-let favorit={
-  user_id:userDetails.id,
-  Rcipe_id:isRecipe?id:null,
-  Ingredient_id:isRecipe?null:id
-}
-
-const configurationObject = {
-  url: apiUrl + `Food/${method=='POST'?'addFavorites':'deleteFavorites'}`,
-  method: method,
-  data: favorit
-};
-
-axios(configurationObject)
-  .then((response) => {
-      if (response.status === 200||response.status === 201) {
-         console.log("secuss");
+  const delete_food = () => {
+    console.log(apiUrl + `Food/${isRecipe ? 'deleteRecipe' : 'deleteIngredient'}/${id}`);
+    fetch(apiUrl + `Food/${isRecipe ? 'deleteRecipe' : 'deleteIngredient'}/${id}`, {
+      method: 'DELETE',
+      headers: new Headers({
+        'Content-Type': 'appliction/json; charset=UTF-8',
+        'Accept': 'appliction/json; charset=UTF-8'
+      })
+    }).then(res => {
+      if (res && res.status == 200) {
+        get_all_food();
+        return res.json();
+        
       } else {
-          throw new Error("An error has occurred");
+        console.log("status code:", res.status)
+        throw new error()
       }
-  })
-  .catch((error) => {
-    console.log(error.response.data);
-  });
-}
+    }).then((resulte) => {
+      console.log('deleteRes=>', resulte);
+      setShowEdit(false);
+    },
+      (error) => {
+        console.log("error", error)
+        setShowEdit(false);
+        setAlert(
+          <Alert text="sorry,somthing went wrong, please try again later"
+            type='worng'
+            time={2000}
+            bottom={100}
+          />);
+      })
+  }
+
+
+  const setFavoritDB = (method) => {
+
+    let favorit = {
+      user_id: userDetails.id,
+      Rcipe_id: isRecipe ? id : null,
+      Ingredient_id: isRecipe ? null : id
+    }
+
+    const configurationObject = {
+      url: apiUrl + `Food/${method == 'POST' ? 'addFavorites' : 'deleteFavorites'}`,
+      method: method,
+      data: favorit
+    };
+
+    axios(configurationObject)
+      .then((response) => {
+        if (response.status === 200 || response.status === 201) {
+          console.log("secuss");
+        } else {
+          throw new Error("An error has occurred");
+        }
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
+  }
 
   useEffect(() => {
     if (amount && unit) {
@@ -97,13 +141,16 @@ axios(configurationObject)
   return (
     <View style={styles.container} id={id}>
       <View style={styles.face}>
+        {userDetails && addByUserId == userDetails.id && <TouchableOpacity style={styles.edit} onPress={() => setShowEdit(true)}>
+          <Entypo name="dots-three-vertical" size={20} style={styles.Icon} />
+        </TouchableOpacity>}
         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
           <Text style={styles.frontTitle}>{name}
           </Text>
           {forRecipe ? <></> :
-            favorite?
-              <TouchableOpacity onPress={() =>{setFavoritDB("DELETE"); setFavorite(false)}}><Ionicons style={styles.icon} name="heart-sharp" size={24} color="#FF3C3C" /></TouchableOpacity> :
-              <TouchableOpacity onPress={() => {setFavoritDB("POST"); setFavorite(true)}}><Ionicons style={styles.icon} name="heart-outline" size={24} color="black" /></TouchableOpacity>
+            favorite ?
+              <TouchableOpacity onPress={() => { setFavoritDB("DELETE"); setFavorite(false) }}><Ionicons style={styles.icon} name="heart-sharp" size={24} color="#FF3C3C" /></TouchableOpacity> :
+              <TouchableOpacity onPress={() => { setFavoritDB("POST"); setFavorite(true) }}><Ionicons style={styles.icon} name="heart-outline" size={24} color="black" /></TouchableOpacity>
           }
         </View>
 
@@ -169,6 +216,16 @@ axios(configurationObject)
         width={95}
         height={60}
         element={element}
+      />
+      <PopUp
+        show={showEdit}
+        setShow={(val) => setShowEdit(val)}
+        animationType='fade'
+        backgroundColor='#FCEBD6'
+        isButton={false}
+        height={23}
+        width={44}
+        element={editElement}
       />
     </View>
 
@@ -243,8 +300,6 @@ const styles = StyleSheet.create({
   cookingMethod: {
     flex: 0.4,
     alignSelf: 'center',
-
-    // marginLeft:'35%'
   },
   popUpcontainer: {
     flex: 1
@@ -258,5 +313,23 @@ const styles = StyleSheet.create({
   popUpText: {
     padding: '2%',
     fontSize: 16
+  },
+  Icon: {
+    color: '#666666'
+  },
+  edit: {
+    position: 'absolute',
+    marginTop: '2%',
+    zIndex: 100
+  },
+  editText: (color) => {
+    return {
+      textAlign: 'center',
+      paddingTop: '8%',
+      paddingBottom: '7%',
+      fontSize: 14,
+      backgroundColor: color,
+      padding: '5%'
+    }
   }
 })

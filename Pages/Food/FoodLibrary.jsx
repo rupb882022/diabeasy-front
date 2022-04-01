@@ -36,6 +36,7 @@ export default function FoodLibrary({ navigation }) {
     //get all Food 
     useFocusEffect(
         React.useCallback(() => {
+            console.log("*");
             get_all_food();
         }, [isRecipes])
     );
@@ -76,6 +77,7 @@ export default function FoodLibrary({ navigation }) {
         }
         else {//Ingredient
             setLoading(true)
+            console.log(apiUrl + `Food/getIngredients/all/${userDetails ? userDetails.id : 0}`)
             fetch(apiUrl + `Food/getIngredients/all/${userDetails ? userDetails.id : 0}`, {
                 method: 'GET',
                 headers: new Headers({
@@ -342,7 +344,9 @@ export default function FoodLibrary({ navigation }) {
             <View style={styles.cards}>
                 {foodList && foodList.length > 0 &&
                     <FoodList
+                        get_all_food={()=>{get_all_food()}}
                         foodList={foodList}
+                        setAlert={(value)=>{setAlert(value)}}
                         addToMyListFood={(value) => { addToMyListFood(value) }}
                     />
                 }

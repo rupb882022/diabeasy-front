@@ -12,7 +12,6 @@ export default function Routes(props) {
 
   const storeData = async () => {
     try {
-      console.log("here");
       await AsyncStorage.clear();
       navigation.navigate('Login');
     } catch (e) {

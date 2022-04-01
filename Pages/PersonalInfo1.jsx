@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import Header from '../CTools/Header';
 import Input from '../CTools/Input';
 import Button from '../CTools/Button';
-import moment from 'moment';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Loading from '../CTools/Loading';
 import { flushSync } from 'react-dom'
