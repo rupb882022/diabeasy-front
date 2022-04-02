@@ -36,7 +36,7 @@ export default function Input(props) {
                 }
                 break;
                 case 'float':
-                    if(!text.includes(".")){
+                    if(text&&!text.includes(".")){
                     regex = /^[0-9\b]+$/;
                     regex.test(text) ? "" : setValid_lable("digits only!");
                     //if props max

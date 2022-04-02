@@ -18,16 +18,15 @@ export default function FoodLibrary({ navigation }) {
 
     const { userDetails } = useContext(UserContext);
     //todo clean input of serch after click or serch by category and food name
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [show, setShow] = useState(false);
     const [alert, setAlert] = useState();
-
     const [isRecipes, setIsisRecipes] = useState(false);
     const [favoritId, setFavoritId] = useState();
     const [serchByName, setSerchByName] = useState();//the chosen name of food for serch
     const [category, setCategory] = useState('');//the chosen category
     const [list, setList] = useState();//category list
-    const [foodList, setFoodList] = useState();//food cards list
+    const [foodList, setFoodList] = useState([]);//food cards list
     const [ingredient, setIngredient] = useState();//all ingredient from DB
     const [recipes, setRecipes] = useState();//all recipes from DB
     const [myFoodList, setMyFoodList] = useState([]);//the chosen food list
@@ -35,17 +34,17 @@ export default function FoodLibrary({ navigation }) {
 
     //get all Food 
     useFocusEffect(
-        React.useCallback(() => {
-            console.log("*");
-            get_all_food();
+        React.useCallback(() => { 
+             get_all_food()
         }, [isRecipes])
     );
 
     const get_all_food = () => {
         setFoodList([]);
+        
         //Recipes
         if (isRecipes) {
-            setLoading(true)
+            
             fetch(apiUrl + `Food/getRecipes/all/${userDetails ? userDetails.id : 0}`, {
                 method: 'GET',
                 headers: new Headers({
@@ -61,9 +60,9 @@ export default function FoodLibrary({ navigation }) {
                     throw new error(res.status)
                 }
             }).then((resulte) => {
+                // setLoading(false)
                 setRecipes(resulte)
                 setFoodList(resulte)
-                setLoading(false)
             },
                 (error) => {
                     setAlert(
@@ -72,11 +71,11 @@ export default function FoodLibrary({ navigation }) {
                             bottom={50}
                         />)
                     console.log("error", error)
-                    setLoading(false)
+                    // setLoading(false)
                 })
         }
         else {//Ingredient
-            setLoading(true)
+            //  setLoading(true)
             console.log(apiUrl + `Food/getIngredients/all/${userDetails ? userDetails.id : 0}`)
             fetch(apiUrl + `Food/getIngredients/all/${userDetails ? userDetails.id : 0}`, {
                 method: 'GET',
@@ -86,16 +85,17 @@ export default function FoodLibrary({ navigation }) {
                 })
             }).then(res => {
                 if (res && res.status == 200) {
+                    console.log("*");
                     return res.json();
                 } else {
-
                     console.log("status code:", res.status)
                     throw new error(res.body)
                 }
             }).then((resulte) => {
+                // setLoading(false)
                 setIngredient(resulte)
                 setFoodList(resulte)
-                setLoading(false)
+                
             },
                 (error) => {
                     setAlert(
@@ -104,7 +104,7 @@ export default function FoodLibrary({ navigation }) {
                             bottom={50}
                         />)
                     console.log("error", error)
-                    setLoading(false)
+                    // setLoading(false)
                 })
         }
     }
@@ -163,7 +163,7 @@ export default function FoodLibrary({ navigation }) {
     }
 
     useEffect(() => {
-        if (category == favoritId || !category) {//if category set to favorit or null
+        if (foodList&&foodList.length>0&&(category == favoritId || !category)) {//if category set to favorit or null
             get_all_food()
         } else {
             category_filter();
@@ -179,7 +179,7 @@ export default function FoodLibrary({ navigation }) {
 
     const Serch_food_by_name = () => {
         if (serchByName) {
-            setLoading(true)
+            //  setLoading(true)
             fetch(apiUrl + `Food/${isRecipes?'getRecipes':'getIngredients'}/${serchByName}/${userDetails ? userDetails.id : 0}`, {
                 method: 'GET',
                 headers: new Headers({
@@ -199,7 +199,7 @@ export default function FoodLibrary({ navigation }) {
                     />)
                 }
                 setFoodList(resulte)
-                setLoading(false)
+                // setLoading(false)
             },
                 (error) => {
                     setAlert(
@@ -208,7 +208,7 @@ export default function FoodLibrary({ navigation }) {
                             bottom={50}
                         />)
                     console.log("error", error)
-                    setLoading(false)
+                    // setLoading(false)
                 })
         } else {
             setAlert(
@@ -271,7 +271,13 @@ export default function FoodLibrary({ navigation }) {
         setMyFoodList(temp);
         calc_myFoodDtails(temp);
     }
-
+    const update_image=(id)=>{
+        navigation.navigate('CameraUse', { imageName: id%2==0 ? `recipe${id}` : `Ingredient${id}` })
+      }
+    const add_unit=(id)=>{
+      navigation.navigate('AddUnit', { foodId:id})
+    }
+    
     return (<>
         {loading && <Loading opacity={'#d6f2fc'} />}
 
@@ -323,7 +329,7 @@ export default function FoodLibrary({ navigation }) {
                             textSize={14}
                             element={<AntDesign name="search1" size={16} color="white" />}
                             alignItems='flex-start'
-                            onPress={Serch_food_by_name}
+                            onPress={()=>{Serch_food_by_name()}}
                         />
                     </View>
                     <Button
@@ -348,6 +354,8 @@ export default function FoodLibrary({ navigation }) {
                         foodList={foodList}
                         setAlert={(value)=>{setAlert(value)}}
                         addToMyListFood={(value) => { addToMyListFood(value) }}
+                        add_unit={(value)=>{add_unit(value)}}
+                        update_image={(value)=>{update_image(value)}}
                     />
                 }
             </View>

@@ -12,7 +12,7 @@ import * as Progress from 'react-native-progress';
 
 
 export default function Gallery(props) {
-  const {description=true, picUri,show ,setShow,navigation,imageName,page,donePicture,setDonePicture}=props
+  const {description=true, picUri ,setShow,imageName,setDonePicture}=props
 
 
   const {userDetails, setUserDetails} = useContext(UserContext);
@@ -115,7 +115,7 @@ width={100}
 height={100}
 element={ 
   <>    
-    <Text style={styles.title()}> {'Profile picture'}</Text>
+    <Text style={styles.title()}> {imageName.includes("Ingredient")?'Ingredient':imageName.includes("Ingredient")?'Recipe':'Profile'} picture</Text>
 <TouchableOpacity style={styles.pic} onPress={PickImage}>
         {image==null ?
          <Image style={styles.img} source={require('../../images/blankProfilePicture.png')}/>: 
@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
   title: (paddingRight =0, title_size = 30) => {
     return {
     fontSize: title_size,
-      width: '70%',
+      width: '100%',
       height: '100%',
       textAlign: 'center',
       paddingRight: paddingRight + '%',

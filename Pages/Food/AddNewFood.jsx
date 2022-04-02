@@ -70,7 +70,6 @@ export default function AddNewFood(props) {
  
   const Serch_food_by_name = () => {
     if (serchName) {
-      console.log(apiUrl + `Food/'getIngredients/${serchName}/${userId ? userId : 0}`);
         fetch(apiUrl + `Food/getIngredients/${serchName}/${userId ? userId: 0}`, {
             method: 'GET',
             headers: new Headers({

@@ -4,7 +4,7 @@ import Food from './Food';
 
 
 export default function FoodList(props) {
-    const { foodList,addToMyListFood,forRecipe=false,setAlert,get_all_food} = props
+    const { foodList,addToMyListFood,forRecipe=false,setAlert,get_all_food,add_unit,update_image} = props
 
     const list = foodList ? foodList.map((x, i) =>
         x.id!=0&&<Food
@@ -21,6 +21,8 @@ export default function FoodList(props) {
             cookingMethod={x.cookingMethod&&x.cookingMethod}
             Ingrediants={x.Ingrediants&&x.Ingrediants}
             get_all_food={get_all_food}
+            add_unit={(value)=>{add_unit(value)}}
+            update_image={(value)=>{update_image(value)}}
         />
     ) : <></>
 

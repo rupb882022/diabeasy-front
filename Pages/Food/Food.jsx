@@ -11,7 +11,8 @@ import apiUrl from '../../Routes/Url'
 import Alert from '../../CTools/Alert';
 
 export default function Food(props) {
-  const { name, image, id, UnitOfMeasure, addToMyListFood, Ingrediants, cookingMethod, addByUserId, forRecipe, isFavorit, setAlert,get_all_food } = props
+  const { name, image, id, UnitOfMeasure, addToMyListFood, Ingrediants, cookingMethod, addByUserId, forRecipe, isFavorit, setAlert,get_all_food
+  ,update_image ,add_unit} = props
 
   const selectUnit = [];
   let isRecipe = id % 2 == 0;
@@ -25,20 +26,11 @@ export default function Food(props) {
     : <></>;
 
   const editElement = <View style={styles.popUpcontainer}>
-    <TouchableOpacity style={{ marginTop: '2%' }}><Text style={styles.editText('#FFCF84')}>add unit</Text></TouchableOpacity>
-    <TouchableOpacity style={{ marginTop: '2%' }}><Text style={styles.editText('#FFC052')}>{image ? 'change' : 'add'} image</Text></TouchableOpacity>
-    <TouchableOpacity style={{ marginTop: '2%' }} onPress={() => { delete_food() }}><Text style={styles.editText('#F9AC27')}>delete {isRecipe ? 'recipe' : 'ingredient'}</Text></TouchableOpacity>
+    <TouchableOpacity style={{ marginTop: '2%' }} onPress={()=>{setShowEdit(false); add_unit(id);}}><Text style={styles.editText('#FFCF84')}>add unit</Text></TouchableOpacity>
+    <TouchableOpacity style={{ marginTop: '2%' }} on onPress={()=>{setShowEdit(false); update_image(id);}}><Text style={styles.editText('#FFC052')}>{image ? 'change' : 'add'} image</Text></TouchableOpacity>
+    <TouchableOpacity style={{ marginTop: '2%' }} onPress={() => { delete_food(); }}><Text style={styles.editText('#F9AC27')}>delete {isRecipe ? 'recipe' : 'ingredient'}</Text></TouchableOpacity>
     <TouchableOpacity style={{ marginTop: '2%' }} onPress={() => { setShowEdit(false) }}><Text style={styles.editText('#F79719')}>cancel</Text></TouchableOpacity>
   </View>
-  //every render of food
-  useEffect(() => {
-    UnitOfMeasure.map(x => selectUnit.push(
-      {
-        itemKey: x.id,
-        label: x.name,
-        value: x.name
-      }))
-  });
 
   const { userDetails } = useContext(UserContext);
 
@@ -51,6 +43,15 @@ export default function Food(props) {
   const [showCooking, setShowCooking] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
 
+    //every render of food
+    useEffect(() => {
+      UnitOfMeasure.map(x => selectUnit.push(
+        {
+          itemKey: x.id,
+          label: x.name,
+          value: x.name
+        }))
+    });
 
   const delete_food = () => {
     console.log(apiUrl + `Food/${isRecipe ? 'deleteRecipe' : 'deleteIngredient'}/${id}`);
@@ -84,6 +85,7 @@ export default function Food(props) {
           />);
       })
   }
+
 
 
   const setFavoritDB = (method) => {
@@ -124,6 +126,7 @@ export default function Food(props) {
   }, [unit, amount]);
 
 
+
   const calcDetails = (amount, unit) => {
 
     //clac carbs when user select Unit Of Measure
@@ -141,7 +144,7 @@ export default function Food(props) {
   return (
     <View style={styles.container} id={id}>
       <View style={styles.face}>
-        {userDetails && addByUserId == userDetails.id && <TouchableOpacity style={styles.edit} onPress={() => setShowEdit(true)}>
+        {!forRecipe&&userDetails && addByUserId == userDetails.id && <TouchableOpacity style={styles.edit} onPress={() => setShowEdit(true)}>
           <Entypo name="dots-three-vertical" size={20} style={styles.Icon} />
         </TouchableOpacity>}
         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -155,7 +158,7 @@ export default function Food(props) {
         </View>
 
         <View style={styles.row}>
-          <Image style={styles.image} source={{ uri: image ? image : ImageUri + 'emptyFoodPhoto.JPG' }} />
+          <Image style={styles.image} source={{ uri: image ? image.includes("http")?image:ImageUri +image : ImageUri + 'emptyFoodPhoto.JPG' }} />
           <View style={styles.details}>
             <Text style={styles.textFront}>{suger ? suger : UnitOfMeasure[0].suger.toFixed(1)} suger </Text>
             <Text style={styles.textFront} >{carbs ? carbs : UnitOfMeasure[0].carbs.toFixed(1)} Carbohydrates  </Text>
