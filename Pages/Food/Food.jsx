@@ -54,7 +54,6 @@ export default function Food(props) {
     });
 
   const delete_food = () => {
-    console.log(apiUrl + `Food/${isRecipe ? 'deleteRecipe' : 'deleteIngredient'}/${id}`);
     fetch(apiUrl + `Food/${isRecipe ? 'deleteRecipe' : 'deleteIngredient'}/${id}`, {
       method: 'DELETE',
       headers: new Headers({

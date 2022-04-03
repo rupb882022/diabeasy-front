@@ -37,7 +37,6 @@ export default function AddUnit(props) {
           console.log("status code:", res.status)
         }
       }).then((resulte) => {
-        //todo alert
         if (resulte) {
           let temp = resulte.map(x => ({ itemKey: x.id, label: x.name, value: x.id }))
           resulte && setUnitList(temp)

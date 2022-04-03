@@ -44,7 +44,6 @@ export default function FoodLibrary({ navigation }) {
         
         //Recipes
         if (isRecipes) {
-            
             fetch(apiUrl + `Food/getRecipes/all/${userDetails ? userDetails.id : 0}`, {
                 method: 'GET',
                 headers: new Headers({
