@@ -10,7 +10,7 @@ import Loading from '../CTools/Loading';
 import apiUrl from '../Routes/Url'
 import Alert from '../CTools/Alert';
 
-export default function InsertData({ navigation }) {
+export default function InsertData({ navigation }) {             //TO DO - Go back Icon
 
     //for date time placeholder
     const today = new Date();

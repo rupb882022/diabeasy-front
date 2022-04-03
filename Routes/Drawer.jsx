@@ -4,7 +4,7 @@ import InsertData from '../Pages/InsertData'
 import Home from '../Pages/Home'
 import FoodLibrary from '../Pages/Food/FoodLibrary'
 import CustomDrawer from './CustomDrawer'
-import { Ionicons, Entypo, AntDesign, Fontisto } from '@expo/vector-icons';
+import { Ionicons, Entypo, AntDesign, Fontisto,MaterialCommunityIcons } from '@expo/vector-icons';
 import PanicButton from '../Pages/PanicButton';
 import Forum from '../Pages/Forum/Forum';
 import Maps from '../Pages/Maps';
@@ -16,7 +16,7 @@ import DoctorHome from '../Pages/Doctor/DoctorHome';
 import LogOut from '../Pages/LogOut';
 import { UserContext } from '../CTools/UserDetailsHook'
 import PatientData from '../Pages/PatientData';
-
+import PatientDataTable from '../Pages/PatientDataTable';
 const Drawernav = createDrawerNavigator();
 
 
@@ -74,6 +74,15 @@ export default function Drawer(props) {
                 ...options,
                 drawerIcon: () => (<AntDesign name="medicinebox" size={24} color={color} />)
             }} />
+            <Drawernav.Screen name='Repotrs - Graphs' component={PatientData} options={{
+                ...options,
+                drawerIcon: () => (<AntDesign name="linechart" size={24} color="black" />)
+            }} />
+             <Drawernav.Screen name='Repotrs - Table' component={PatientDataTable} options={{
+                ...options,
+                drawerIcon: () => (<MaterialCommunityIcons name="table-plus" size={24} color="black" />)
+            }} />
+
             {/* <Drawernav.Screen name='Setting' component={Setting} options={{
                 ...options,
                 drawerIcon: () => (<Ionicons name="settings-outline" size={24} color={color} />)
@@ -139,9 +148,13 @@ export default function Drawer(props) {
                 ...options,
                 drawerIcon: () => (<AntDesign name="medicinebox" size={24} color={color} />)
             }} />
-            <Drawernav.Screen name='Patient Data' component={PatientData} options={{
+            <Drawernav.Screen name='Repotrs - Graphs' component={PatientData} options={{
                 ...options,
                 drawerIcon: () => (<AntDesign name="linechart" size={24} color="black" />)
+            }} />
+             <Drawernav.Screen name='Repotrs - Table' component={PatientDataTable} options={{
+                ...options,
+                drawerIcon: () => (<MaterialCommunityIcons name="table-plus" size={24} color="black" />)
             }} />
 
             <Drawernav.Screen name='Emergency Call' component={PanicButton} options={{
