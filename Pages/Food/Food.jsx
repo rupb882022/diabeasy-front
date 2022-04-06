@@ -62,7 +62,7 @@ export default function Food(props) {
       })
     }).then(res => {
       if (res && res.status == 200) {
-        get_all_food();
+     
         return res.json();
         
       } else {
@@ -72,6 +72,7 @@ export default function Food(props) {
     }).then((resulte) => {
       console.log('deleteRes=>', resulte);
       setShowEdit(false);
+      get_all_food();
     },
       (error) => {
         console.log("error", error)

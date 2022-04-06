@@ -1,4 +1,4 @@
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text,TouchableOpacity } from 'react-native';
 import React, { useState, useContext } from 'react';
 import Header from '../CTools/Header';
 import Input from '../CTools/Input';
@@ -9,19 +9,21 @@ import axios from "axios";
 import Loading from '../CTools/Loading';
 import apiUrl from '../Routes/Url'
 import Alert from '../CTools/Alert';
+import { Ionicons } from '@expo/vector-icons';
 
-export default function InsertData({ navigation }) {             //TO DO - Go back Icon
+export default function InsertData({ navigation,route }) {             //TO DO - Go back Icon
 
     //for date time placeholder
     const today = new Date();
-
+    let carbsByFoodLibary=route.params&&route.params.carbs?route.params.carbs:0;
+ 
     const { userDetails } = useContext(UserContext);
     const [loading, setLoading] = useState(false);
     const [alert, setAlert] = useState()
     const [dateTime, setDateTime] = useState(today);
     const [sugarLevel, setsugarLevel] = useState();
     const [spot, setSpot] = useState();
-    const [carbs, setCarbs] = useState();
+    const [carbs, setCarbs] = useState(carbsByFoodLibary);
     const [injectionValue, setinjectionValue] = useState();
 
     const save_details = () => {
@@ -108,7 +110,7 @@ export default function InsertData({ navigation }) {             //TO DO - Go ba
                 required={true}
                 getValue={(value) => setsugarLevel(value)}
             />
-            <View style={{ flex: 1, flexDirection: 'row', width: '88%', alignSelf: 'center' }}>
+            {/* <View style={{ flex: 1, flexDirection: 'row', width: '88%', alignSelf: 'center' }}> */}
                 <Input
                     label='spot of injection'
                     editable={false}
@@ -124,27 +126,34 @@ export default function InsertData({ navigation }) {             //TO DO - Go ba
                 <Input
                     label='injection value'
                     validtion='number'
-                    keyboardType='decimal-pad'
-                    max={600}
+                    // keyboardType='decimal-pad'
+                    
                     getValue={(value) => setinjectionValue(value)}
                 />
-            </View>
+            {/* </View> */}
             <Text style={styles.eatText}>Are you going to eat?</Text>
+            <View style={{flex:1,flexDirection: 'row'}}>
             <Input
                 label='grams of carbohydrates'
                 validtion='number'
-                keyboardType='decimal-pad'
+                width={100}
+                // keyboardType='decimal-pad'
+                setValue={carbsByFoodLibary!=0?carbsByFoodLibary:''}
                 getValue={(value) => setCarbs(value)}
             />
             <View style={{ flex: 1, marginRight: '10%' }}>
+           
                 <Button
-                    text="food library"
+                    // text="food library"
                     width={5}
                     onPress={() => navigation.navigate('Food')}
-                    height={2}
+                    height={4}
+                    radius={5}
+                    element={<Ionicons name="fast-food-outline" size={24} color='white' />}
                     alignItems='flex-end'
-                    justifyContent='flex-start'
+                    justifyContent='center'
                 />
+            </View>
             </View>
             <Button
                 text="save"
@@ -166,6 +175,8 @@ const styles = StyleSheet.create({
     eatText: {
         textAlign: 'center',
         fontSize: 20,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        marginBottom:'2%'
+        
     }
 });

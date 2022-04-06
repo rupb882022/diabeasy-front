@@ -8,7 +8,7 @@ import { Ionicons, Entypo, AntDesign, Fontisto,MaterialCommunityIcons } from '@e
 import PanicButton from '../Pages/PanicButton';
 import Forum from '../Pages/Forum/Forum';
 import Maps from '../Pages/Maps';
-import Setting from '../Pages/Setting'
+import { useFocusEffect } from '@react-navigation/native';
 import React,{useContext} from 'react';
 import Footer from './Footer';
 import Prescriptions from '../Pages/Prescriptions';
@@ -22,10 +22,14 @@ const Drawernav = createDrawerNavigator();
 
 export default function Drawer(props) {
 
-    const { navigation } = props
+    const { navigation} = props
+    
     const {userDetails} = useContext(UserContext);
 
     let usertype=userDetails&&userDetails.id%2==0?'doctor':'Patients';
+
+
+
 
     //color of icons
     let color = "black"
@@ -100,7 +104,7 @@ export default function Drawer(props) {
     );
 }else{
     return (<>
-        <Drawernav.Navigator drawerContent={props => <CustomDrawer {...props} />} screenOptions={({ navigation }) => ({
+        <Drawernav.Navigator   drawerContent={props => <CustomDrawer {...props} />} screenOptions={({ navigation }) => ({
             headerLeft: () => {
                 return (
                     <TouchableOpacity
@@ -120,7 +124,7 @@ export default function Drawer(props) {
         })}>
 
             {/* list of items in the drawer */}
-             <Drawernav.Screen name='Home' component={Home} options={{
+             <Drawernav.Screen name='Home'    component={Home} options={{
                 ...options,
                 drawerIcon: () => (<Ionicons name="ios-home-outline" size={24} color={color} />)
             }} /> 
@@ -136,14 +140,12 @@ export default function Drawer(props) {
                 ...options,
                 drawerIcon: () => (<Ionicons name="football-outline" size={24} color={color} />)
             }} />
-            {/* <Drawernav.Screen name='Recipes' component={FoodLibrary} options={{
-                ...options,
-                drawerIcon: () => (<Fontisto name="prescription" size={24} color={color} />)
-            }} /> */}
             <Drawernav.Screen name='Food' component={FoodLibrary} options={{
                 ...options,
                 drawerIcon: () => (<Ionicons name="fast-food-outline" size={24} color={color} /> )
-            }} />
+            }}
+          
+            />
                    <Drawernav.Screen name='Prescriptions' component={Prescriptions} options={{
                 ...options,
                 drawerIcon: () => (<AntDesign name="medicinebox" size={24} color={color} />)

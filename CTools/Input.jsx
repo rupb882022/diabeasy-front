@@ -22,7 +22,6 @@ export default function Input(props) {
 
 
 
-
     //if props validtion
     const checkTextInput = () => {
         let regex = '';

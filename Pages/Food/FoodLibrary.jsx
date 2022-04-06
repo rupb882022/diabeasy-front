@@ -14,7 +14,7 @@ import SelectedList from './SelectedList';
 import { AntDesign } from '@expo/vector-icons';
 
 
-export default function FoodLibrary({ navigation }) {
+export default function FoodLibrary({ navigation,route }) {
 
     const { userDetails } = useContext(UserContext);
     //todo clean input of serch after click or serch by category and food name
@@ -22,7 +22,7 @@ export default function FoodLibrary({ navigation }) {
     const [show, setShow] = useState(false);
     const [alert, setAlert] = useState();
     const [isRecipes, setIsisRecipes] = useState(false);
-    const [favoritId, setFavoritId] = useState();
+    const [favoritId, setFavoritId] = useState(4);
     const [serchByName, setSerchByName] = useState();//the chosen name of food for serch
     const [category, setCategory] = useState(0);//the chosen category
     const [list, setList] = useState();//category list
@@ -34,17 +34,17 @@ export default function FoodLibrary({ navigation }) {
 
     //get all Food 
     useFocusEffect(
-        React.useCallback(() => { 
+        React.useCallback(() => {
              get_all_food()
-             console.log("2");
-        }, [isRecipes])
-    );
+        }, [isRecipes]));
 
     const get_all_food = () => {
-        setFoodList([]);
+
+        foodList&&setFoodList([]);
       
         //Recipes
         if (isRecipes) {
+            // setLoading(true)
             fetch(apiUrl + `Food/getRecipes/all/${userDetails ? userDetails.id : 0}`, {
                 method: 'GET',
                 headers: new Headers({
@@ -92,7 +92,7 @@ export default function FoodLibrary({ navigation }) {
                     throw new error(res.body)
                 }
             }).then((resulte) => {
-                // setLoading(false)
+                //  setLoading(false)
                 setIngredient(resulte)
                 setFoodList(resulte)
                 
@@ -163,10 +163,10 @@ export default function FoodLibrary({ navigation }) {
     }
 
     useEffect(() => {
-       console.log(category)
-        if (category == favoritId||!category===null) {//if category set to favorit or null
+   
+        if (category == favoritId) {//if category set to favorit
             get_all_food()
-            console.log("1");
+         
         }
        if(!category&&(ingredient.length>0&&!isRecipes)||(recipes&&isRecipes)){// defualt show all food
         isRecipes? setFoodList(recipes):setFoodList(ingredient)
@@ -193,11 +193,12 @@ export default function FoodLibrary({ navigation }) {
                     'Accept': 'appliction/json; charset=UTF-8'
                 })
             }).then(res => {
+                console.log(res.status);
                 if (res && res.status == 200) {
                     return res.json();
                 }
             }).then((resulte) => {
-                console.log(resulte);
+                console.log("resulte",resulte);
                 if (!resulte || resulte.length < 0 || resulte[0].id == 0) {
                     setAlert(<Alert text="no resulte"
                         type='worng'
@@ -288,15 +289,15 @@ export default function FoodLibrary({ navigation }) {
     
     return (<>
         {loading && <Loading opacity={'#d6f2fc'} />}
-
-        <View style={styles.continer}>
-            <Header
+        <Header
                 title={isRecipes ? 'Recipe' : 'Ingredient'}
-                flex={0.4}
-                marginLeft={isRecipes ? 0 : 7}
+                flex={2.6}
+                marginLeft={isRecipes ? -1 : 5}
                 paddingRight={5}
-                possiton={45}
+                possiton={60}
             />
+        <View style={styles.continer}>
+
             <View style={styles.input_category}>
                 <Input
                     placeholder='Category'
@@ -373,8 +374,19 @@ export default function FoodLibrary({ navigation }) {
                     height={2}
                     width={8}
                     justifyContent='center'
+                    alignItems='flex-end'
                     onPress={() => setShow(true)}
                 />
+              <View style={{flex:1,paddingRight:'5%',}}>
+                 <Button
+                      text='save'
+                      height={2}
+                      width={22}
+                      alignItems='center'
+                      justifyContent='flex-end'
+                      onPress={()=>{navigation.navigate('Insert Data',{carbs:myFoodDtails&&myFoodDtails.carbs?myFoodDtails.carbs:''})}}
+                      />
+                          </View>
             </View>
         </View>
         {show && <SelectedList
@@ -389,14 +401,15 @@ export default function FoodLibrary({ navigation }) {
 }
 const styles = StyleSheet.create({
     continer: {
-        flex: 10,
+        flex: 12,
+        bottom:'2%'
     },
     input_category: {
         paddingLeft: '5%',
         flex: 0.2,
         flexDirection: 'row',
         alignItems: 'flex-start',
-        bottom: '6%'
+        bottom: '8%'
     },
     input_freeText: {
         paddingLeft: '5%',
@@ -417,9 +430,13 @@ const styles = StyleSheet.create({
     },
     cards: {
         flex: 2,
+        
     },
     showlist: {
-        flex: 0.3,
-        alignItems: 'center'
+       flex: 0.2,
+        alignItems: 'flex-end',
+        flexDirection: 'row',
+        justifyContent:'space-around'
+       
     },
 })
