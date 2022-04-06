@@ -133,21 +133,24 @@ export default function InsertData({ navigation,route }) {             //TO DO -
             {/* </View> */}
             <Text style={styles.eatText}>Are you going to eat?</Text>
             <View style={{flex:1,flexDirection: 'row'}}>
+            <View style={{flex:4,paddingLeft:'13%'}}>
             <Input
-                label='grams of carbohydrates'
+                placeholder='grams of carbohydrates'
                 validtion='number'
                 width={100}
+                justifyContent='flex-start'
                 // keyboardType='decimal-pad'
                 setValue={carbsByFoodLibary!=0?carbsByFoodLibary:''}
                 getValue={(value) => setCarbs(value)}
             />
-            <View style={{ flex: 1, marginRight: '10%' }}>
+            </View>
+            <View style={{ flex: 1, paddingRight: '12%',paddingBottom:'5%' }}>
            
                 <Button
                     // text="food library"
-                    width={5}
+                    width={15}
                     onPress={() => navigation.navigate('Food')}
-                    height={4}
+                    height={6}
                     radius={5}
                     element={<Ionicons name="fast-food-outline" size={24} color='white' />}
                     alignItems='flex-end'

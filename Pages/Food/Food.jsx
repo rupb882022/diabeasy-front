@@ -284,7 +284,9 @@ const styles = StyleSheet.create({
     textAlign: 'left',
   },
   frontTitle: {
-    fontSize: 22,
+    fontSize: 20,
+    flexWrap: 'wrap',
+    flexShrink: 1,
     top: '1%',
     fontWeight: 'bold',
     paddingLeft: '35%'

@@ -25,7 +25,7 @@ export default function PatientData() {
 
 
   //todo if there is not enough data of patient
-  const ParsetoMonthName = (monthNumber) => {
+  const ParsetoMonthName = (monthNumber,format) => {
     const date = new Date();
     if(monthNumber==30){
       return "last 30 days"
@@ -33,7 +33,7 @@ export default function PatientData() {
     date.setMonth(monthNumber - 1);
 
     return date.toLocaleString('en-US', {
-      month: 'long',
+      month:format,
     });
   }
 
@@ -64,7 +64,7 @@ export default function PatientData() {
         return;
       }
     }).then((result) => {
-      setLoading(false)
+
       let List = [];
       let data = [];
       let labels = [];
@@ -73,10 +73,10 @@ export default function PatientData() {
         //array for graph
         if (x.month != 30) {
           data.push(x.averge);
-          labels.push(ParsetoMonthName(x.month));
+          labels.push(ParsetoMonthName(x.month,'short'));
         }
         //list for select box
-        List.push({ itemKey: x.month, label: ParsetoMonthName(x.month), value: x.month });
+        List.push({ itemKey: x.month, label: ParsetoMonthName(x.month,'long'), value: x.month });
         
         //array for pie
         dataPie.push({
@@ -84,42 +84,41 @@ export default function PatientData() {
           values: [{
             name: "[>240]",
             amount: Number(x.upTo240),
-            color: "#EBCD86",
+            color: "#0838BC",
             legendFontColor: "#7F7F7F",
             legendFontSize: 15
           },
           {
             name: "[180-240]",
             amount: Number(x.upTo180),
-            color: "#FFB300",
+            color: "#087AD1",
             legendFontColor: "#7F7F7F",
             legendFontSize: 15
           },
           {
             name: "[75-180]",
             amount: Number(x.upTo75),
-            color: "#010117",
+            color: "#02C491",
             legendFontColor: "#7F7F7F",
             legendFontSize: 15
           },
           {
             name: "[60-74]",
             amount: Number(x.upTo60),
-            color: "#0009FF",
+            color: "#FFB300",
             legendFontColor: "#7F7F7F",
             legendFontSize: 15
           },
           {
             name: "[<60]",
             amount: Number(x.upTo0),
-            color: "#55ACF7",
+            color: "#FF3730",
             legendFontColor: "#7F7F7F",
             legendFontSize: 15
           }]
         }
         )
       }
-
       )
       setMonthList(List)
       setPieInfo(dataPie)
@@ -128,6 +127,7 @@ export default function PatientData() {
         labels: labels,
         datasets: [{ data: data }]
       })
+      setLoading(false)
     },
       (error) => {
         console.log("error", error)
@@ -146,9 +146,9 @@ export default function PatientData() {
     backgroundColor: "#e26a00",
     backgroundGradientFrom: "#fb8c00",
     backgroundGradientTo: "#ffa726",
-    decimalPlaces: 2, // optional, defaults to 2dp
-    color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-    labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+    decimalPlaces: 1, // optional, defaults to 2dp
+    color: (opacity = 0) => `rgba(255, 255, 255, ${opacity})`,
+    labelColor: (opacity = 0) => `rgba(255, 255, 255, ${opacity})`,
     style: {
       borderRadius: 16
     },
@@ -176,6 +176,7 @@ if(pieInfo){
 
   return (
     <>
+       {loading && <Loading opacity={'#d6f2fc'} />}
         <Header
           title='Graphs'
           flex={0.4}
@@ -218,7 +219,7 @@ if(pieInfo){
 
         </View>
         <View style={{ paddingBottom: '2%' }}>
-          <Text style={{ alignSelf: 'center', fontSize: 20 }}>Avarage in past 6 months</Text>
+          <Text style={styles.secoundTitle}>Avarage in past 6 months</Text>
           {grapData && <LineChart
             data={grapData}
             width={Dimensions.get("window").width} // from react-native
@@ -228,10 +229,10 @@ if(pieInfo){
             yAxisInterval={1} // optional, defaults to 1
             chartConfig={chartConfig}
             // bezier
-            style={{ marginVertical: 8, borderRadius: 16 }}
+            style={{ marginVertical: 8, borderRadius: 10,margin:5 }}
           />}
         </View>
-      {loading && loading}
+      {alert && alert}
       </ScrollView>
     </SafeAreaView >
     </>
@@ -245,4 +246,13 @@ containerView: {
 container: {
 bottom:'1%'
 },
+secoundTitle:{
+  textShadowColor: 'gray',
+ 
+  textShadowOffset: { width: -1, height: 1 },
+  textShadowRadius: 1,
+  alignSelf: 'center', 
+  fontSize: 22,
+  paddingBottom:'3%' 
+}
 })
