@@ -24,11 +24,11 @@ export default function FoodLibrary({ navigation }) {
     const [isRecipes, setIsisRecipes] = useState(false);
     const [favoritId, setFavoritId] = useState();
     const [serchByName, setSerchByName] = useState();//the chosen name of food for serch
-    const [category, setCategory] = useState('');//the chosen category
+    const [category, setCategory] = useState(0);//the chosen category
     const [list, setList] = useState();//category list
     const [foodList, setFoodList] = useState([]);//food cards list
-    const [ingredient, setIngredient] = useState();//all ingredient from DB
-    const [recipes, setRecipes] = useState();//all recipes from DB
+    const [ingredient, setIngredient] = useState([]);//all ingredient from DB
+    const [recipes, setRecipes] = useState([]);//all recipes from DB
     const [myFoodList, setMyFoodList] = useState([]);//the chosen food list
     const [myFoodDtails, setmyFoodDtails] = useState({ carbs: 0.0, suger: 0.0 });//the details on chosen food list
 
@@ -36,12 +36,13 @@ export default function FoodLibrary({ navigation }) {
     useFocusEffect(
         React.useCallback(() => { 
              get_all_food()
+             console.log("2");
         }, [isRecipes])
     );
 
     const get_all_food = () => {
         setFoodList([]);
-        
+      
         //Recipes
         if (isRecipes) {
             fetch(apiUrl + `Food/getRecipes/all/${userDetails ? userDetails.id : 0}`, {
@@ -162,9 +163,15 @@ export default function FoodLibrary({ navigation }) {
     }
 
     useEffect(() => {
-        if (foodList&&foodList.length>0&&(category == favoritId || !category)) {//if category set to favorit or null
+       console.log(category)
+        if (category == favoritId||!category===null) {//if category set to favorit or null
             get_all_food()
-        } else {
+            console.log("1");
+        }
+       if(!category&&(ingredient.length>0&&!isRecipes)||(recipes&&isRecipes)){// defualt show all food
+        isRecipes? setFoodList(recipes):setFoodList(ingredient)
+        } 
+        else {
             category_filter();
         }
     }, [category]);
@@ -178,7 +185,7 @@ export default function FoodLibrary({ navigation }) {
 
     const Serch_food_by_name = () => {
         if (serchByName) {
-            //  setLoading(true)
+              setLoading(true)
             fetch(apiUrl + `Food/${isRecipes?'getRecipes':'getIngredients'}/${serchByName}/${userDetails ? userDetails.id : 0}`, {
                 method: 'GET',
                 headers: new Headers({
@@ -190,15 +197,17 @@ export default function FoodLibrary({ navigation }) {
                     return res.json();
                 }
             }).then((resulte) => {
+                console.log(resulte);
                 if (!resulte || resulte.length < 0 || resulte[0].id == 0) {
                     setAlert(<Alert text="no resulte"
                         type='worng'
                         time={3500}
                         bottom={350}
                     />)
-                }
+                }else{
                 setFoodList(resulte)
-                // setLoading(false)
+            }
+                setLoading(false)
             },
                 (error) => {
                     setAlert(
@@ -207,7 +216,7 @@ export default function FoodLibrary({ navigation }) {
                             bottom={50}
                         />)
                     console.log("error", error)
-                    // setLoading(false)
+                     setLoading(false)
                 })
         } else {
             setAlert(
@@ -349,7 +358,7 @@ export default function FoodLibrary({ navigation }) {
             <View style={styles.cards}>
                 {foodList && foodList.length > 0 &&
                     <FoodList
-                        get_all_food={()=>{get_all_food()}}
+                        get_all_food={()=>{   console.log("3"); get_all_food()}}
                         foodList={foodList}
                         setAlert={(value)=>{setAlert(value)}}
                         addToMyListFood={(value) => { addToMyListFood(value) }}
