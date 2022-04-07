@@ -402,7 +402,7 @@ export default function FoodLibrary({ navigation,route }) {
 const styles = StyleSheet.create({
     continer: {
         flex: 12,
-        bottom:'2%'
+        bottom:'1%'
     },
     input_category: {
         paddingLeft: '5%',
@@ -430,7 +430,7 @@ const styles = StyleSheet.create({
     },
     cards: {
         flex: 2,
-        
+       bottom:'2%'
     },
     showlist: {
        flex: 0.2,

@@ -31,10 +31,11 @@ const styles = StyleSheet.create({
             justifyContent: justifyContent,
             alignItems: alignItems,
             shadowOffset: {
-                width: 1,
+                width: -1,
                 height: 1
               },
-              shadowColor:'#D1D1D1',
+            //   shadowColor:'#D1D1D1',
+              shadowColor:'#575454',
               shadowOpacity:10,
         }
     },

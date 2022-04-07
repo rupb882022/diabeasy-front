@@ -15,7 +15,7 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <ImageBackground source={{uri:ImageUri+'backimg.png'}} resizeMode='cover' style={styles.image}>
+      <ImageBackground source={{uri:ImageUri+'backimg2.png'}} resizeMode='cover' style={styles.image}>
       <NavigationContainer theme={Theme}>
         <DiabesyApp />
         </NavigationContainer>
@@ -35,5 +35,7 @@ const styles = StyleSheet.create({
     flex: 1,
     resizeMode: 'stretch',
     width: '100%',
+    // backgroundColor:'#d6f2fc',
+    
   }
 });

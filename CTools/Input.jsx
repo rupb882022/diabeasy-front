@@ -88,6 +88,7 @@ export default function Input(props) {
     }, []);
     return (
         <View style={styles.possition(justifyContent, alignItems, flex)}>
+            
             <Text style={styles.label(width)}>{label}</Text>
             <TextInput
                 style={styles.input(width, fontSize, height)}
@@ -108,8 +109,6 @@ export default function Input(props) {
                 // maxLength={10}  max lengh of the text, char=1
                 // placeholderTextColor='red'
                 spellCheck={spellCheck}         //If false, disables spell-check style (i.e. red underlines). The default value is inherited from autoCorrect
-            // inlineImageLeft='search_icon'
-            // inlineImagePadding={icon_padding}
             />
 
             {/* validtion label */}
@@ -156,6 +155,7 @@ const styles = StyleSheet.create({
             flex: flex,
             justifyContent: justifyContent,
             alignItems: alignItems,
+         
         }
     },
     input: (width = 75, fontSize, height = 40) => {
@@ -167,6 +167,12 @@ const styles = StyleSheet.create({
             borderRadius: 5,
             fontSize: fontSize,
             padding: '2%',
+            shadowOffset: {
+                width: -1,
+                height: 1
+              },
+              shadowColor:'#727272',
+              shadowOpacity:1,
         }
     },
     label: (width = 75) => {

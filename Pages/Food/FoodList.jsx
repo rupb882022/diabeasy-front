@@ -39,6 +39,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
         paddingLeft: 15,
         paddingRight: 15,
+        paddingTop:'1%'
     },
     viewContainer: {
         flexDirection: 'row',

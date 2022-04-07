@@ -241,7 +241,7 @@ if(pieInfo){
 
 const styles = StyleSheet.create({
 containerView: {
-  flex: 2
+  flex: 2,
 },
 container: {
 bottom:'1%'
