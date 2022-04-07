@@ -165,10 +165,7 @@ export default function Drawer(props) {
                     ...options,
                     drawerIcon: () => (<AntDesign name="exclamationcircleo" size={24} color={color} />)
                 }} />
-                       <Drawernav.Screen name='Loading' component={Loading} options={{
-                    ...options,
-                    drawerIcon: () => (<AntDesign name="exclamationcircleo" size={24} color={color} />)
-                }} />
+  
 
                 {/* <Drawernav.Screen name='Setting' component={Setting} options={{
                 ...options,
