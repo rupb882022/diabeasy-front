@@ -62,9 +62,7 @@ export default function Food(props) {
       })
     }).then(res => {
       if (res && res.status == 200) {
-     
         return res.json();
-        
       } else {
         console.log("status code:", res.status)
         throw new error()

@@ -172,7 +172,7 @@ paddingRight={5}/>
 
 
 const styles = StyleSheet.create({
-  container: { flex: 1},
+  container: { flex: 10},
   head: { height: 40, backgroundColor:'orange' },//'#rgba(32,189,215,1)'}, =>blue color like in figma  
   wrapper: { flexDirection: 'row' },
   title: { flex: 1, backgroundColor: 'lightblue' },

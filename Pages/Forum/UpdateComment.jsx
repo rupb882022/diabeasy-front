@@ -3,7 +3,6 @@ import React from 'react'
 import { Feather } from '@expo/vector-icons';
 
 
-//TODO change alert
 export default function UpdateComment(props) {
   const {setShowEdit}=props
 

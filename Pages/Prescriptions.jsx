@@ -240,7 +240,7 @@ const element = <View>
           subject: subject,
           value: reqValue,
           Patients_id: userDetails.id,
-          Doctor_id : 2 ,       //todo change doctor id to real id
+          Doctor_id : 2,       //todo change doctor id to real id
           status: 'waiting'
         });
       setShow(false);

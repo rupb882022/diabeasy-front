@@ -46,14 +46,14 @@ export default function Maps(props) {
       setLoading(false)
       setLocation(location)
       setRegion({
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
+        latitude: Number(location.coords.latitude),
+        longitude: Number(location.coords.longitude),
         latitudeDelta: 0.0125,
         longitudeDelta: 0.0121,
       });
       setPin({
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude
+        latitude: location&&Number(location.coords.latitude),
+        longitude: location&&Number(location.coords.longitude)
       })
     })
       ();
@@ -61,7 +61,7 @@ export default function Maps(props) {
   console.log("*****", location);
   return (
     <>
-      {loading && <Loading opacity={'#d6f2fc'} />}
+      {loading && <Loading opacity={'#d6f2fc'} text='Lorem Ipsum' />}
       <Header
         title='Sports locations'
         logo_image='graph'
@@ -97,7 +97,7 @@ export default function Maps(props) {
           components: "country:il",
           //	types:"establishment",
           radius: 10000,
-          location: `${region.latitude}, ${region.longitude}`
+          location: `${Number(region.latitude)}, ${Number(region.longitude)}`
         }}
         styles={{ container: { flex: 0, position: 'absolute', top: '9%', width: '100%', zIndex: 1 } }}
        // currentLocation={true} // Will add a 'Current location' button at the top of the predefined places list
@@ -109,8 +109,8 @@ export default function Maps(props) {
         loadingEnabled={true}
         style={{ flex: 0.9, marginBottom: '5%' }}
         initialRegion={{
-          latitude: location.coords.latitude,//32.166313,
-          longitude: location.coords.longitude,//34.843311,
+          latitude: Number(location.coords.latitude),//32.166313,
+          longitude: Number(location.coords.longitude),//34.843311,
           latitudeDelta: 0.0125,
           longitudeDelta: 0.0121,
         }}
@@ -146,11 +146,11 @@ export default function Maps(props) {
           coordinate={pin}
           pinColor='blue'
           draggable={true}
-          onDragStart={(e) => { console.log("Drag start:", e.nativeEvent.coordinate); }}
+          onDragStart={(e) => { console.log("Drag start:", Number(e.nativeEvent.coordinate)); }}
           onDragEnd={(e) => {
             setPin({
-              latitude: e.nativeEvent.coordinate.latitude,
-              longitude: e.nativeEvent.coordinate.longitude
+              latitude: Number(e.nativeEvent.coordinate.latitude),
+              longitude: Number(e.nativeEvent.coordinate.longitude)
             })
           }}>
 
