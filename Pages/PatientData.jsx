@@ -22,6 +22,7 @@ export default function PatientData() {
   const [alert, setAlert] = useState();
   const [loading, setLoading] = useState(false);
   const [grapData, setGrapData] = useState();
+  const [a1c,setA1c]=useState(7.3)
 
 
   //todo if there is not enough data of patient
@@ -179,11 +180,11 @@ if(pieInfo){
        {loading && <Loading opacity={'#d6f2fc'} />}
         <Header
           title='Graphs'
-          flex={0.4}
+          flex={0.35}
           possiton={62}
           paddingRight={5}
         />
-        <View style={{flex:0.08,position:'relative',bottom:'5%',right:'28%'}}>
+        <View style={{flex:0.08,flexDirection:'column',position:'relative',bottom:'5%',right:'28%'}}>
          <Input
           label='Month'
           placeholder='last 30 days'
@@ -195,13 +196,17 @@ if(pieInfo){
           type='selectBox'
           SelectBox_placeholder='Select month'
           selectBox_items={monthList?monthList:[]}
-        />
+        />    
         </View>
+                                     {/* TO DO -function from serverside for set A1C parameter  */}
+        <Text style={{alignSelf:'flex-end',paddingBottom:'4%',fontSize:20,fontWeight:'bold',position:'absolute',top:'10%'}}>Estimated A1C : {a1c}% </Text> 
+
+
      <SafeAreaView style={styles.containerView}>
       <ScrollView style={styles.container}>
 
 
-        {/* <Text>Estimated A1C Value : 7.3% </Text> */}
+        <Text style={styles.secoundTitle}> Sugar value segmentation </Text>
 
 
         <View>

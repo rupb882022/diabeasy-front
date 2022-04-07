@@ -1,7 +1,6 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, ScrollView } from 'react-native'
 import React, { useEffect, useState,useContext } from 'react'
 import { Table, TableWrapper, Row, Rows, Col } from 'react-native-table-component';
-import { ScrollView } from 'react-native-web';
 import Header from '../CTools/Header';
 import Button from '../CTools/Button';
 import Loading from '../CTools/Loading';
@@ -10,7 +9,8 @@ import { UserContext } from '../CTools/UserDetailsHook';
 import upiUrl from '../Routes/Url';
 import moment from 'moment';
 import { useFocusEffect } from '@react-navigation/native';
-
+import Input from '../CTools/Input';
+import { AntDesign } from '@expo/vector-icons';
 
 export default function PatientDataTable({navigation}) {
 const {userDetails} = useContext(UserContext);
@@ -22,7 +22,7 @@ const [content,setContent]=useState()
 
 useFocusEffect(
   React.useCallback(() => {
-  //  console.log(userDetails);
+  //  console.log(userDetails); 
      if (userDetails.id%2==0&&userDetails.patientID||userDetails.id%2!=0&&!userDetails.patientID) {
 
     getData();
@@ -61,7 +61,7 @@ console.log('url=> ',url);
             'Accept': 'appliction/json; charset=UTF-8'
         })
     }).then(res => {
-      console.log("res=> ",res.status);
+      console.log("resTable=> ",res.status);
         if (res && res.status == 200) {
             return res.json();} 
 
@@ -127,8 +127,56 @@ title='Repotrs'
 flex={userDetails.id%2==0?0.5:0.8}
 possiton={62}
 paddingRight={5}/>
-                                     {/* TO DO -function from serverside for set A1C parameter  */}
-<Text style={{alignSelf:'center',paddingBottom:'4%',fontSize:20,fontWeight:'bold'}}>Estimated A1C Value : {a1c}% </Text> 
+
+<View style={{flex:0.1,position:'relative',bottom:'5%',
+    justifyContent:'space-around',
+    flexDirection: 'row',
+   }}>
+<Input
+                popup_title='Your Birth Date'
+                label='From:'
+                type='date'
+                mode='date'
+                min={new Date(1920, 1, 1)}
+                editable={false}
+                display='spinner'
+                date_format_hour={false}
+                width={100}
+                height={150}
+                flex={0.4}
+              //  required={true}
+              //  setValue={birthDate}
+              //  getValue={(value) => {setDate(value)}}
+            />
+            <Input
+                popup_title='Your Birth Date'
+                label='To:'
+                type='date'
+                mode='date'
+                min={new Date(1920, 1, 1)}
+                editable={false}
+                display='spinner'
+                date_format_hour={false}
+                width={100}
+                height={150}
+                flex={0.4}
+
+              //  required={true}
+              //  setValue={birthDate}
+              //  getValue={(value) => {setDate(value)}}
+            />
+<View >
+<Button
+width={6}
+height={6}
+radius={5}
+textSize={14}
+element={<AntDesign name="search1" size={14} color="white" />}
+alignItems='flex-end'
+//  onPress={()=>{Serch_food_by_name()}}
+/>
+</View>
+            </View>
    <View style={{flex:3}}>
        <Table  borderStyle={{ borderWidth: 1 }} >
          <Row
@@ -136,7 +184,10 @@ paddingRight={5}/>
            flexArr={[1.8, 1, 1, 1,1]}
            style={styles.head}
            textStyle={styles.text}
-         />
+         />  
+         </Table> 
+         <ScrollView style={styles.dataWrapper}>
+         <Table  borderStyle={{ borderWidth: 1 }} >
          <TableWrapper style={styles.wrapper}>
           {/* <Col
           data={CONTENT.tableData[0]}
@@ -152,6 +203,7 @@ paddingRight={5}/>
            />
          </TableWrapper>
        </Table> 
+       </ScrollView>
        </View>
 {userDetails.id%2==0?<></>:
        <Button
@@ -178,4 +230,6 @@ const styles = StyleSheet.create({
   title: { flex: 1, backgroundColor: 'lightblue' },
   row: { height: 28 },
   text: { textAlign: 'center' },
+  dataWrapper: { marginTop: -1 },
+
 });
