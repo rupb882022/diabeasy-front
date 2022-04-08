@@ -11,6 +11,7 @@ import Alert from '../CTools/Alert';
 import Loading from '../CTools/Loading';
 import { UserContext } from '../CTools/UserDetailsHook'
 import Input from '../CTools/Input'
+import { useFocusEffect } from '@react-navigation/native';
 
 
 export default function PatientData() {
@@ -22,6 +23,7 @@ export default function PatientData() {
   const [alert, setAlert] = useState();
   const [loading, setLoading] = useState(false);
   const [grapData, setGrapData] = useState();
+  const [a1c,setA1c]=useState(7.3)
 
 
   //todo if there is not enough data of patient
@@ -37,14 +39,23 @@ export default function PatientData() {
     });
   }
 
-  useEffect(() => {
-
+ // useEffect(() => {
+  useFocusEffect(
+    React.useCallback(() => {
+    
     let url;
-    if (userDetails.patientID) {        // if its doctor with selected patient
+     if (userDetails.patientID) {        // if its doctor with selected patient
       url = upiUrl + `User/GetdataForGraphs/${userDetails.patientID}`;
     }
     else if (userDetails.id % 2 != 0) {            // if its patient (=> not a doctor without selected patient)
       url = upiUrl + `User/GetdataForGraphs/${userDetails.id}`;
+    }
+    else if (!userDetails.patientID&&userDetails.id % 2 == 0) {
+      setPieInfo()
+      // TO DO - set pie chart to null -----------------------------------------------------------------------------
+      setGrapData();
+setPieInfoMonth()
+      return;
     }
     setLoading(true)
     fetch(url, {
@@ -139,7 +150,7 @@ export default function PatientData() {
           />);
         setLoading(false)
       })
-  }, [])
+  }, [userDetails]))
 
 
   let chartConfig = {
@@ -179,11 +190,11 @@ if(pieInfo){
        {loading && <Loading opacity={'#d6f2fc'} />}
         <Header
           title='Graphs'
-          flex={0.4}
+          flex={0.35}
           possiton={62}
           paddingRight={5}
         />
-        <View style={{flex:0.08,position:'relative',bottom:'5%',right:'28%'}}>
+        <View style={{flex:0.08,flexDirection:'column',position:'relative',bottom:'5%',right:'28%'}}>
          <Input
           label='Month'
           placeholder='last 30 days'
@@ -195,13 +206,17 @@ if(pieInfo){
           type='selectBox'
           SelectBox_placeholder='Select month'
           selectBox_items={monthList?monthList:[]}
-        />
+        />    
         </View>
+                                     {/* TO DO -function from serverside for set A1C parameter  */}
+        <Text style={{alignSelf:'flex-end',paddingBottom:'4%',fontSize:20,fontWeight:'bold',position:'absolute',top:'10%'}}>Estimated A1C : {a1c}% </Text> 
+
+
      <SafeAreaView style={styles.containerView}>
       <ScrollView style={styles.container}>
 
 
-        {/* <Text>Estimated A1C Value : 7.3% </Text> */}
+        <Text style={styles.secoundTitle}> Sugar value segmentation </Text>
 
 
         <View>
