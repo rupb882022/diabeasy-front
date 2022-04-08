@@ -1,17 +1,17 @@
 import { View, StyleSheet, Image, Text } from 'react-native';
-import React, { useState, useEffect,useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Header from '../CTools/Header';
 import Input from '../CTools/Input';
 import Button from '../CTools/Button';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import ForgotPasswordPopUp from './ForgotPasswordPopUp';
-import apiUrl from '../Routes/Url'
+import { Get_userDetails } from '../ServerApi/Function'
 import Loading from '../CTools/Loading';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Fontisto } from '@expo/vector-icons';
-import {UserContext} from '../CTools/UserDetailsHook'
+import { UserContext } from '../CTools/UserDetailsHook'
 
-//TODO change remmeber me to checkbox
+
 export default function Login({ navigation }) {
     const [show, setShow] = useState(false);
     const [email, setEmail] = useState('');
@@ -20,49 +20,38 @@ export default function Login({ navigation }) {
     const [loading, setLoading] = useState(false);
     const [saveUserDetails, setSaveUserDetails] = useState(false);
 
-   const {userDetails,setUserDetails} = useContext(UserContext);
-    
-     //get user details from storge
-  const getData = async () => {
-    try {
-      const jsonValue = await AsyncStorage.getItem('userDetails');
-       setUserDetails(JSON.parse(jsonValue));
-    }
-    catch (e) {
-      console.log("E=>",e)
-    }
-  }
+    const { userDetails, setUserDetails } = useContext(UserContext);
 
-  //for case the app save user details on first sign in or when user log Out
-  useEffect(() => {
-  if (!userDetails) {
-    getData();
-  } }, []);
-
-  useEffect(() => {
-    if (userDetails) {
-        setLoading(true)
-    navigation.navigate('Drawer');
-    setInterval(() => setLoading(false), 2000);
+    //get user details from storge
+    const getData = async () => {
+        try {
+            const jsonValue = await AsyncStorage.getItem('userDetails');
+            setUserDetails(JSON.parse(jsonValue));
+        }
+        catch (e) {
+            console.log("E=>", e)
+        }
     }
-  }, [userDetails]);
+
+    //for case the app save user details on first sign in or when user log Out
+    useEffect(() => {
+        if (!userDetails) {
+            getData();
+        }
+    }, []);
+
+    useEffect(() => {
+        if (userDetails) {
+            setLoading(true)
+            navigation.navigate('Drawer');
+            setInterval(() => setLoading(false), 2000);
+        }
+    }, [userDetails]);
 
     const checkUser = () => {
         setLoading(true);
         //get user details (id,image,full name)
-        fetch(apiUrl + `User/userDetails/${email}/${password}`, {
-            method: 'GET',
-            headers: new Headers({
-                'Content-Type': 'appliction/json; charset=UTF-8',
-                'Accept': 'appliction/json; charset=UTF-8'
-            })
-        }).then(res => {
-            if (res && res.status == 200) {
-                return res.json();
-            } else {
-                console.log("status code:", res.status)
-            }
-        }).then((resulte) => {
+        Get_userDetails(email, password).then((resulte) => {
             if (resulte) {
                 set_User_Details(resulte);
                 setValidtionUser("")
@@ -73,24 +62,24 @@ export default function Login({ navigation }) {
             }
         },
             (error) => {
-                console.log("error", error)
+                console.log("error in function Get_userDetails", error)
             })
     }
 
-   const set_User_Details = async (resulte) => {
+    const set_User_Details = async (resulte) => {
 
-    //globle save user detail 
-    saveUserDetails && await storeData({ id: resulte.id, image: resulte.profileimage, name: resulte.name})
-    await setUserDetails({ id: resulte.id, image: resulte.profileimage, name: resulte.name })
-    setInterval(() => setLoading(false), 1000);
-    navigation.navigate('Drawer');
-  }
+        //globle save user detail 
+        saveUserDetails && await storeData({ id: resulte.id, image: resulte.profileimage, name: resulte.name })
+        await setUserDetails({ id: resulte.id, image: resulte.profileimage, name: resulte.name })
+        setInterval(() => setLoading(false), 1000);
+        navigation.navigate('Drawer');
+    }
 
     const storeData = async (value) => {
         try {
             const jsonValue = JSON.stringify(value)
             await AsyncStorage.setItem('userDetails', jsonValue)
-            console.log("userDetails",jsonValue)
+            console.log("userDetails", jsonValue)
         } catch (e) {
             await AsyncStorage.setItem('eror', e)
             setValidtionUser("sorry, app lost connection, please try to sign in agine");
@@ -158,7 +147,7 @@ export default function Login({ navigation }) {
                     height={4}
                     alignItems='center'
                     justifyContent='flex-end'
-                    onPress={()=>{checkUser()}}
+                    onPress={() => { checkUser() }}
                 />
                 <Button
                     text="Sign Up"

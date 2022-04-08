@@ -7,8 +7,9 @@ import { ImageUri } from '../../Routes/Url';
 import PopUp from '../../CTools/PopUp';
 import axios from "axios";
 import { UserContext } from '../../CTools/UserDetailsHook';
-import apiUrl from '../../Routes/Url'
+import {Delete_food} from '../../ServerApi/Function'
 import Alert from '../../CTools/Alert';
+
 
 export default function Food(props) {
   const { name, image, id, UnitOfMeasure, addToMyListFood, Ingrediants, cookingMethod, addByUserId, forRecipe, isFavorit, setAlert,get_all_food
@@ -54,26 +55,14 @@ export default function Food(props) {
     });
 
   const delete_food = () => {
-    fetch(apiUrl + `Food/${isRecipe ? 'deleteRecipe' : 'deleteIngredient'}/${id}`, {
-      method: 'DELETE',
-      headers: new Headers({
-        'Content-Type': 'appliction/json; charset=UTF-8',
-        'Accept': 'appliction/json; charset=UTF-8'
-      })
-    }).then(res => {
-      if (res && res.status == 200) {
-        return res.json();
-      } else {
-        console.log("status code:", res.status)
-        throw new error()
-      }
-    }).then((resulte) => {
+
+    Delete_food(isRecipe ? 'deleteRecipe' : 'deleteIngredient',id).then((resulte) => {
       console.log('deleteRes=>', resulte);
       setShowEdit(false);
       get_all_food();
     },
       (error) => {
-        console.log("error", error)
+        console.log("error in function Delete_food", error)
         setShowEdit(false);
         setAlert(
           <Alert text="sorry,somthing went wrong, please try again later"

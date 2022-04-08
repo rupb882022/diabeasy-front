@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 import React from 'react'
-import apiUrl from '../../Routes/Url';
+import {Delete_Comment} from '../../ServerApi/Function'
 import { AntDesign } from '@expo/vector-icons';
 
 
@@ -10,25 +10,12 @@ export default function DeleteComment(props) {
 
   const deleteComment = () => {
     setShowEdit();
-    fetch(apiUrl + `forum/Delete/${id}`, {
-      method: 'DELETE',
-      headers: new Headers({
-        'Content-Type': 'appliction/json; charset=UTF-8',
-        'Accept': 'appliction/json; charset=UTF-8'
-      })
-    }).then(res => {
-      if (res && res.status == 200) {
-        return res.json();
-      } else {
-        console.log("status code:", res.status)
-      }
-    }).then((resulte) => {
+    Delete_Comment(id).then((resulte) => {
       getallcomment();
     },
       (error) => {
-        console.log("error", error)
+        console.log("error in function Delete_Comment", error)
       })
-
   }
 
   return (<>

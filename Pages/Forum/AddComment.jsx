@@ -8,7 +8,7 @@ import apiUrl from '../../Routes/Url';
 import axios from "axios";
 import Alert from '../../CTools/Alert';
 
-//todofix alert and date
+//todo fix alert and date
 export default function AddComment(props) {
   
   const { comment_id, subject, name,getAllComments,userDetails,setAlert } = props

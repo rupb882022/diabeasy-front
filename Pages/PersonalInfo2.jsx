@@ -5,7 +5,7 @@ import Input from '../CTools/Input';
 import Button from '../CTools/Button';
 import Loading from '../CTools/Loading';
 import axios from "axios";
-import apiUrl from '../Routes/Url'
+import {Get_all_InsulinType} from '../ServerApi/Function'
 import Alert from '../CTools/Alert';
 
 export default function PersonalInfo2(props) {
@@ -91,20 +91,7 @@ export default function PersonalInfo2(props) {
     }
 
     const getInsulinType = () => {
-        fetch(apiUrl + `User/getInsulinType`, {
-            method: 'GET',
-            headers: new Headers({
-                'Content-Type': 'appliction/json; charset=UTF-8',
-                'Accept': 'appliction/json; charset=UTF-8'
-            })
-        }).then(res => {
-            console.log("res", res.status)
-            if (res && res.status == 200) {
-                return res.json();
-            } else {
-                console.log("status code:", res.status)
-            }
-        }).then((resulte) => {
+        Get_all_InsulinType().then((resulte) => {
             let longType = [];
             let shortType = [];
             resulte.map((x, i) => {
@@ -115,7 +102,7 @@ export default function PersonalInfo2(props) {
             setSelectInsulinShort(shortType);
         },
             (error) => {
-                console.log("error", error)
+                console.log("error in function Get_all_InsulinType ", error)
             })
     }
 
