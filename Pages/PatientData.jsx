@@ -42,116 +42,117 @@ export default function PatientData() {
  // useEffect(() => {
   useFocusEffect(
     React.useCallback(() => {
-    
-    let url;
      if (userDetails.patientID) {        // if its doctor with selected patient
-      url = upiUrl + `User/GetdataForGraphs/${userDetails.patientID}`;
+      get_graphs_details(upiUrl + `User/GetdataForGraphs/${userDetails.patientID}`)
     }
     else if (userDetails.id % 2 != 0) {            // if its patient (=> not a doctor without selected patient)
-      url = upiUrl + `User/GetdataForGraphs/${userDetails.id}`;
+      get_graphs_details(upiUrl + `User/GetdataForGraphs/${userDetails.id}`)
     }
     else if (!userDetails.patientID&&userDetails.id % 2 == 0) {
       setPieInfo()
       // TO DO - set pie chart to null -----------------------------------------------------------------------------
       setGrapData();
-setPieInfoMonth()
+    setPieInfoMonth()
       return;
     }
-    setLoading(true)
-    fetch(url, {
-      method: 'GET',
-      headers: new Headers({
-        'Content-Type': 'appliction/json; charset=UTF-8',
-        'Accept': 'appliction/json; charset=UTF-8'
-      })
-    }).then(res => {
-      console.log("resData=> ", res.status);
-      if (res && res.status == 200) {
-        return res.json();
-      }
-      else {
-        console.log("status code:", res.status)
-        setLoading(false)
-        return;
-      }
-    }).then((result) => {
-
-      let List = [];
-      let data = [];
-      let labels = [];
-      let dataPie = [];
-      result.map(x => {
-        //array for graph
-        if (x.month != 30) {
-          data.push(x.averge);
-          labels.push(ParsetoMonthName(x.month,'short'));
-        }
-        //list for select box
-        List.push({ itemKey: x.month, label: ParsetoMonthName(x.month,'long'), value: x.month });
-        
-        //array for pie
-        dataPie.push({
-          'month': x.month,
-          values: [{
-            name: "[>240]",
-            amount: Number(x.upTo240),
-            color: "#0838BC",
-            legendFontColor: "#7F7F7F",
-            legendFontSize: 15
-          },
-          {
-            name: "[180-240]",
-            amount: Number(x.upTo180),
-            color: "#087AD1",
-            legendFontColor: "#7F7F7F",
-            legendFontSize: 15
-          },
-          {
-            name: "[75-180]",
-            amount: Number(x.upTo75),
-            color: "#02C491",
-            legendFontColor: "#7F7F7F",
-            legendFontSize: 15
-          },
-          {
-            name: "[60-74]",
-            amount: Number(x.upTo60),
-            color: "#FFB300",
-            legendFontColor: "#7F7F7F",
-            legendFontSize: 15
-          },
-          {
-            name: "[<60]",
-            amount: Number(x.upTo0),
-            color: "#FF3730",
-            legendFontColor: "#7F7F7F",
-            legendFontSize: 15
-          }]
-        }
-        )
-      }
-      )
-      setMonthList(List)
-      setPieInfo(dataPie)
-      setMonth(30)
-      setGrapData({
-        labels: labels,
-        datasets: [{ data: data }]
-      })
-      setLoading(false)
-    },
-      (error) => {
-        console.log("error", error)
-        setAlert(
-          <Alert text="sorry, somthing went wrong, please try again later"
-            type='worng'
-            time={2000}
-            bottom={110}
-          />);
-        setLoading(false)
-      })
   }, [userDetails]))
 
+const get_graphs_details=(url)=>{
+  setLoading(true)
+  fetch(url, {
+    method: 'GET',
+    headers: new Headers({
+      'Content-Type': 'appliction/json; charset=UTF-8',
+      'Accept': 'appliction/json; charset=UTF-8'
+    })
+  }).then(res => {
+    console.log("resData=> ", res.status);
+    if (res && res.status == 200) {
+      return res.json();
+    }
+    else {
+      console.log("status code:", res.status)
+      setLoading(false)
+      return;
+    }
+  }).then((result) => {
+console.log("result",result);
+    let List = [];
+    let data = [];
+    let labels = [];
+    let dataPie = [];
+    result.map(x => {
+      //array for graph
+      if (x.month != 30) {
+        data.push(x.averge);
+        labels.push(ParsetoMonthName(x.month,'short'));
+      }
+      //list for select box
+      List.push({ itemKey: x.month, label: ParsetoMonthName(x.month,'long'), value: x.month });
+      
+      //array for pie
+      dataPie.push({
+        'month': x.month,
+        values: [{
+          name: "[>240]",
+          amount: Number(x.upTo240),
+          color: "#0838BC",
+          legendFontColor: "#7F7F7F",
+          legendFontSize: 15
+        },
+        {
+          name: "[180-240]",
+          amount: Number(x.upTo180),
+          color: "#087AD1",
+          legendFontColor: "#7F7F7F",
+          legendFontSize: 15
+        },
+        {
+          name: "[75-180]",
+          amount: Number(x.upTo75),
+          color: "#02C491",
+          legendFontColor: "#7F7F7F",
+          legendFontSize: 15
+        },
+        {
+          name: "[60-74]",
+          amount: Number(x.upTo60),
+          color: "#FFB300",
+          legendFontColor: "#7F7F7F",
+          legendFontSize: 15
+        },
+        {
+          name: "[<60]",
+          amount: Number(x.upTo0),
+          color: "#FF3730",
+          legendFontColor: "#7F7F7F",
+          legendFontSize: 15
+        }]
+      }
+      )
+    }
+    )
+    console.log("grap")
+    setMonthList(List)
+    setPieInfo(dataPie)
+    setMonth(30)
+    setGrapData({
+      labels: labels,
+      datasets: [{ data: data }]
+    })
+    setLoading(false)
+  },
+    (error) => {
+      console.log("error", error)
+      setAlert(
+        <Alert text="sorry, somthing went wrong, please try again later"
+          type='worng'
+          time={2000}
+          bottom={110}
+        />);
+      setLoading(false)
+    })
+}
 
   let chartConfig = {
     backgroundColor: "#e26a00",
@@ -182,9 +183,11 @@ if(pieInfo){
   console.log("temp",temp);
     setPieInfoMonth(temp.values)
 }
-  },[month])
+  },[month,pieInfo])
 
 
+
+  
   return (
     <>
        {loading && <Loading opacity={'#d6f2fc'} />}
@@ -228,8 +231,6 @@ if(pieInfo){
             accessor={"amount"}
             backgroundColor={"transparent"}
             paddingLeft={"15"}
-          // center={[10, 50]}
-          //absolute
           />}
 
         </View>

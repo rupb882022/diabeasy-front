@@ -16,7 +16,7 @@ export default function Loading(props) {
       {text && <Text style={{ position: 'relative', top: '95%', flexWrap: 'wrap', fontSize: 18, textAlign: 'center' }}>{text}</Text>}
     </ImageBackground>
   </View>;
-console.log(text);
+
 
   return (<PopUp
     width={100}
