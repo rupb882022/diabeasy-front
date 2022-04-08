@@ -12,6 +12,7 @@ import CustomDrawer from './CustomDrawer';
 import AddNewFood from '../Pages/Food/AddNewFood';
 import AddUnit from '../Pages/Food/AddUnit';
 import DoctorHome from '../Pages/Doctor/DoctorHome';
+
 const Stack = createStackNavigator();
 
 export default function Navigtor() {
