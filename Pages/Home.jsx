@@ -43,8 +43,10 @@ export default function Home(props) {
                     // text='Insert Data'
                     justifyContent='flex-end'
                     radius={1000}
-                    element={<Octicons name="plus" size={90} color="white" />}
-                    width={20}
+                    element={<><Octicons style={{paddingLeft:'10%'}} name="plus" size={80} color="white" />
+                    <Text style={{color:'white',fontSize:22,fontWeight:'700',right:'2%'}}>Insert data</Text>
+                    </>}
+                    width={17}
                     height={17}
                     textSize={30}
                     alignItems='center'

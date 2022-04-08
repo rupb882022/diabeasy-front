@@ -8,13 +8,12 @@ import Loading from '../../CTools/Loading'
 import Button from '../../CTools/Button';
 import { UserContext } from '../../CTools/UserDetailsHook'
 import { useFocusEffect } from '@react-navigation/native';
-import PopUp from '../../CTools/PopUp';
 import Alert from '../../CTools/Alert';
 import SelectedList from './SelectedList';
 import { AntDesign } from '@expo/vector-icons';
 
 
-export default function FoodLibrary({ navigation,route }) {
+export default function FoodLibrary({ navigation }) {
 
     const { userDetails } = useContext(UserContext);
     //todo clean input of serch after click or serch by category and food name
@@ -40,7 +39,7 @@ export default function FoodLibrary({ navigation,route }) {
 
     const get_all_food = () => {
 
-        foodList&&setFoodList([]);
+        foodList&&setFoodList([]);  
       
         //Recipes
         if (isRecipes) {
@@ -107,6 +106,7 @@ export default function FoodLibrary({ navigation,route }) {
                     // setLoading(false)
                 })
         }
+        setLoading(false)
     }
 
     //get all Categories 
@@ -309,7 +309,6 @@ export default function FoodLibrary({ navigation,route }) {
                     alignItems='flex-start'
                     SelectBox_placeholder='Select category'
                     selectBox_items={list} />
-                {/* <Text style={styles.text}>ingredients</Text> */}
                 <Switch
                     style={styles.switch}
                     trackColor={{ false: "#FFFFFF", true: "#FFFFFF" }}
@@ -347,19 +346,15 @@ export default function FoodLibrary({ navigation,route }) {
                         height={4}
                         radius={50}
                         element={<Text style={{ color: 'white' }}>Add new</Text>}
-                        alignItems='flex-end'
+                        alignItems='flex-start'
                         onPress={() => navigation.navigate('AddNewFood', { categoryList: list, isRecipes: isRecipes, userId: userDetails.id, foodList: ingredient })}
                     />
-
-                    {/* </View> */}
-                    {/* <Text style={{alignSelf:'center',left:'20%',textAlign:'right'}}>
-                        {isRecipes?'recipe':'ingredient'}</Text> */}
                 </View>
             </View>
             <View style={styles.cards}>
                 {foodList && foodList.length > 0 &&
                     <FoodList
-                        get_all_food={()=>{   console.log("3"); get_all_food()}}
+                        get_all_food={()=>{get_all_food()}}
                         foodList={foodList}
                         setAlert={(value)=>{setAlert(value)}}
                         addToMyListFood={(value) => { addToMyListFood(value) }}
@@ -384,7 +379,7 @@ export default function FoodLibrary({ navigation,route }) {
                       width={22}
                       alignItems='center'
                       justifyContent='flex-end'
-                      onPress={()=>{navigation.navigate('Insert Data',{carbs:myFoodDtails&&myFoodDtails.carbs?myFoodDtails.carbs:''})}}
+                      onPress={()=>{navigation.navigate('Insert Data',{myFoodDtails:myFoodList?myFoodList:''})}}
                       />
                           </View>
             </View>
