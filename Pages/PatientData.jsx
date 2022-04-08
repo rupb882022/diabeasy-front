@@ -11,6 +11,7 @@ import Alert from '../CTools/Alert';
 import Loading from '../CTools/Loading';
 import { UserContext } from '../CTools/UserDetailsHook'
 import Input from '../CTools/Input'
+import { useFocusEffect } from '@react-navigation/native';
 
 
 export default function PatientData() {
@@ -38,14 +39,23 @@ export default function PatientData() {
     });
   }
 
-  useEffect(() => {
-
+ // useEffect(() => {
+  useFocusEffect(
+    React.useCallback(() => {
+    
     let url;
-    if (userDetails.patientID) {        // if its doctor with selected patient
+     if (userDetails.patientID) {        // if its doctor with selected patient
       url = upiUrl + `User/GetdataForGraphs/${userDetails.patientID}`;
     }
     else if (userDetails.id % 2 != 0) {            // if its patient (=> not a doctor without selected patient)
       url = upiUrl + `User/GetdataForGraphs/${userDetails.id}`;
+    }
+    else if (!userDetails.patientID&&userDetails.id % 2 == 0) {
+      setPieInfo()
+      // TO DO - set pie chart to null -----------------------------------------------------------------------------
+      setGrapData();
+setPieInfoMonth()
+      return;
     }
     setLoading(true)
     fetch(url, {
@@ -140,7 +150,7 @@ export default function PatientData() {
           />);
         setLoading(false)
       })
-  }, [])
+  }, [userDetails]))
 
 
   let chartConfig = {
