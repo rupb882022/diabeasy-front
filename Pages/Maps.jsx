@@ -58,7 +58,7 @@ export default function Maps(props) {
     })
       ();
   }, []);
-
+  console.log("*****", location);
   return (
     <>
       {loading && <Loading opacity={'#d6f2fc'} text='Lorem Ipsum' />}

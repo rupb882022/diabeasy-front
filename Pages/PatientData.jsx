@@ -206,8 +206,8 @@ export default function PatientData() {
 
           </View>
           <View style={{ paddingBottom: '2%' }}>
-            <Text style={styles.secoundTitle}>Avarage in past 6 months</Text>
-            {grapData && <LineChart
+          {grapData &&grapData.labels.length>5&&<><Text style={styles.secoundTitle}>Avarage in past 6 months</Text>
+             <LineChart
               data={grapData}
               width={Dimensions.get("window").width} // from react-native
               height={250}
@@ -217,7 +217,7 @@ export default function PatientData() {
               chartConfig={chartConfig}
               // bezier
               style={{ marginVertical: 8, borderRadius: 10, margin: 5 }}
-            />}
+            /></> }
           </View>
           {alert && alert}
         </ScrollView>

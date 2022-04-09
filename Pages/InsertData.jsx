@@ -40,7 +40,7 @@ export default function InsertData({ navigation, route }) {
                 date_time: date,
                 blood_sugar_level: sugarLevel,
                 injection_site: spot,
-                totalCarbs: carbs,
+                totalCarbs: carbs?carbs:0,
                 injectionType: injectionType,
                 value_of_ingection: injectionValue,
                 Patients_id: userDetails.id,
@@ -50,11 +50,13 @@ console.log("detials",detials);
             Post_user_data(detials).then((response) => {
                 setLoading(false)
                 if (response) {
-                    setAlert(
-                        <Alert
-                            text="details Save!"
-                            type='success'
-                        />)
+                    // setAlert(
+                    //     <Alert
+                    //         text="details Save!"
+                    //         type='success'
+                    //         time={3000}
+                    //     />)
+                         navigation.navigate('Home');
                 }
             })
                 .catch((error) => {
@@ -140,16 +142,15 @@ const calc_carbs=()=>{
             <Input
                 label='Blood sugar level'
                 validtion='number'
-                keyboardType='numeric'
+                keyboardType='number-pad'
                 max={600}
                 required={true}
                 getValue={(value) => setsugarLevel(value)}
             />
             <Input
-                label='Injection value'
-                validtion='number'
+                label='injection value'
+                validtion='float'
                 // keyboardType='decimal-pad'
-
                 getValue={(value) => setinjectionValue(value)}
             />
             <Input
