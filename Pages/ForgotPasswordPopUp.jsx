@@ -19,7 +19,7 @@ export default function ForgotPasswordPopUp(props) {
   const passwordValid = (value) => {
     //wiil render the page at the end of function
     flushSync(() => {
-      password == value ? setValidtion('') : setValidtion('not the same password')
+      password == value ? setValidtion('') : setValidtion('    not the same password')
     })
   }
 

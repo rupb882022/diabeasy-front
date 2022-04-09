@@ -97,8 +97,16 @@ export default function AddNewFood(props) {
   }, [serchCategory]);
 
   const saveFood = () => {
+    if(category.length > 0){
+      setAlert(<Alert text="select category please"
+      type='alert'
+        time={2000}
+        bottom={80}
+      />);
+      return;
+    }
     if (isRecipe) {
-      if (name && category && unit && weightInGrams && myFoodDtails && myFoodDtails.Ingridents.length > 0 && category.length > 0) {
+      if (name && category && unit && weightInGrams && myFoodDtails.Ingridents && myFoodDtails.Ingridents.length > 0  ) {
 
         let ratio = parseFloat(weightInGrams / myFoodDtails.grams)
 
@@ -122,8 +130,8 @@ export default function AddNewFood(props) {
           })
           .catch((error) => {
             setAlert(
-              <Alert text="sorry somting is got worng try agine later"
-                type='worng'
+              <Alert text="sorry somthing went worng try agine later"
+              type='worng'
                 time={2000}
                 bottom={80}
               />)
@@ -156,8 +164,8 @@ export default function AddNewFood(props) {
           })
           .catch((error) => {
             setAlert(
-              <Alert text="sorry somting is got worng try agine later"
-                type='worng'
+              <Alert text="sorry somthing went worng try agine later"
+              type='worng'
                 time={2000}
                 bottom={80}
               />)
@@ -210,7 +218,7 @@ export default function AddNewFood(props) {
           temp = myFoodList;
           temp.push(food);
           setAlert(
-            <Alert text='Ingredient add to list'
+            <Alert text='Ingredient added to list'
               type='success'
               bottom={80}
             />)

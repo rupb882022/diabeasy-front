@@ -4,7 +4,7 @@ import React from 'react';
 
 
 export default function Header(props) {
-  const { logo_image, possiton = 75, title, flex, paddingRight, marginLeft, flexDirection, line = true, image_heigt, image_width, alignItems, justifyContent, image_margin } = props
+  const { logo_image, possiton = 75, title, flex, paddingRight, marginLeft, flexDirection, line = true, image_heigt, image_width, alignItems, justifyContent, image_margin,fontSize } = props
   var icon = '';
 
   //for icon image margin 
@@ -49,7 +49,7 @@ export default function Header(props) {
   return (
     <>
       <View style={styles.container(flex, flexDirection, alignItems, justifyContent, possiton)}>
-        <Text style={styles.title(paddingRight, marginLeft)}>{title}</Text>
+        <Text style={styles.title(paddingRight, marginLeft,fontSize)}>{title}</Text>
         {logo_image&&<Image
           style={styles.Image(image_heigt, image_width, image_marginTop, image_marginBottom)}
           source={icon}
@@ -79,9 +79,9 @@ const styles = StyleSheet.create({
       marginBottom: image_marginBottom + '%',
     }
   },
-  title: (paddingRight = 0, marginLeft = 0) => {
+  title: (paddingRight = 0, marginLeft = 0,fontSize=30) => {
     return {
-      fontSize: 30,
+      fontSize: fontSize,
       width: '70%',
       height: '55%',
       textAlign: 'right',

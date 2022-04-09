@@ -28,7 +28,7 @@ export default function Input(props) {
         switch (validtion) {
             case 'number':
                 regex = /^[0-9\b]+$/;
-                regex.test(text) ? "" : setValid_lable("digits only!");
+                regex.test(text) ? "" : setValid_lable("   digits only!");
                 //if props max
                 if (max) {
                     text >= min && text <= max ? "" : setValid_lable(`digits only! need to be bettwen ${min} to ${max}`);
@@ -36,7 +36,7 @@ export default function Input(props) {
                 break;
                 case 'float':
                     regex = /^[+-]?\d+(\.\d+)?$/;
-                    regex.test(text) ? "" : setValid_lable("digits only!");
+                    regex.test(text) ? "" : setValid_lable("  digits only!");
                     //if props max
                     if (max) {
                         text >= min && text <= max ? "" : setValid_lable(`digits only! need to be bettwen ${min} to ${max}`);
@@ -48,7 +48,7 @@ export default function Input(props) {
                 break;
             case 'Password':
                 if (text&&text.length < 8) {
-                    setValid_lable("   minimum 8 digit and letters")
+                    setValid_lable("   minimum 8 digits and letters")
                 } else {
                     setValid_lable("")
                 }
@@ -56,7 +56,7 @@ export default function Input(props) {
             default:
                 break;
         }
-        text == '' && required ? setValid_lable("      please fill in some value") : '';
+        text == '' && required ? setValid_lable("   please fill in some value") : '';
     }
 
     //if date picker 
@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
     valid_lable: {
         width: '80%',
         paddingTop: '1%',
-        fontSize: 16,
+        fontSize: 14,
         color: '#ff9000',
         // fontWeight: 'bold',
     }

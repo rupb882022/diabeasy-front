@@ -19,8 +19,10 @@ export default function SignUp({ navigation }) {
       <Header 
         title='Create your account'
         logo_image='diabeasy'
+        fontSize={27}
         image_width={200}
         image_heigt={200}
+       
         justifyContent='flex-end'
         flexDirection="column-reverse"
         alignItems='center'

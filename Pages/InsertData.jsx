@@ -46,7 +46,7 @@ export default function InsertData({ navigation, route }) {
                 Patients_id: userDetails.id,
                 foodLibary: foodLibary
             }
-
+console.log("detials",detials);
             Post_user_data(detials).then((response) => {
                 setLoading(false)
                 if (response) {
@@ -77,7 +77,6 @@ export default function InsertData({ navigation, route }) {
 
     useFocusEffect(
         React.useCallback(() => {
-            console.log("FoodDetails",FoodDetails);
             setFoodLibary(FoodDetails);
             calc_carbs();
         }))
@@ -86,7 +85,7 @@ const calc_carbs=()=>{
         if (foodLibary) {
             let tempCarbs = 0;
             foodLibary.map(x => { tempCarbs += Number(x.carbs) })
-            setCarbs(tempCarbs)
+            setCarbs(tempCarbs.toFixed(1))
         }
     }
 
@@ -109,14 +108,14 @@ const calc_carbs=()=>{
                 marginLeft={2}
                 image_margin={{ Bottom: -5 }}
             />
-            <Text style={styles.eatText}>Are you going to eat?</Text>
+            <Text style={styles.eatText}>What are you going to eat?</Text>
             <View style={{ flex: 1, flexDirection: 'row', }}>
                 <View style={{ flex: 4, paddingLeft: '13%' }}>
                     <View style={styles.CarbsinputContiner}>
                         <Text style={styles.label}>Carbs</Text>
                         <TextInput
                             style={styles.Carbsinput}
-                            value={carbs.toString()}
+                            value={carbs?carbs.toString():''}
                             onChangeText={value => { setCarbs(value); }}
                             clearButtonMode='while-editing'
                             onBlur={checkCarbs}
@@ -147,14 +146,14 @@ const calc_carbs=()=>{
                 getValue={(value) => setsugarLevel(value)}
             />
             <Input
-                label='injection value'
+                label='Injection value'
                 validtion='number'
                 // keyboardType='decimal-pad'
 
                 getValue={(value) => setinjectionValue(value)}
             />
             <Input
-                label='spot of injection'
+                label='Spot of injection'
                 editable={false}
                 type='selectBox'
                 getValue={(value) => setSpot(value)}
@@ -166,7 +165,7 @@ const calc_carbs=()=>{
                     { itemKey: 3, label: 'Buttock', value: 'Buttock' },
                 ]} />
             <Input
-                popup_title='choose date and time'
+                popup_title='Choose date and time'
                 label='Date time'
                 type='date'
                 editable={false}
@@ -219,9 +218,9 @@ const styles = StyleSheet.create({
         width:'75%',
         paddingBottom: '1%',
     },valid_lable:{
-        width: '80%',
+        width: '75%',
         bottom:'15%',
-        fontSize: 16,
+        fontSize: 14,
         color: '#ff9000',
     }
 });

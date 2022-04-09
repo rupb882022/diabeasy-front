@@ -52,16 +52,16 @@ export default function Login({ navigation }) {
         setLoading(true);
         //get user details (id,image,full name)
         Get_userDetails(email, password).then((resulte) => {
+            console.log(resulte);
             if (resulte) {
                 set_User_Details(resulte);
-                setValidtionUser("")
-            } else {
-                setValidtionUser("Opps.. worng password or Email");
+                setValidtionUser("");
                 setLoading(false);
-                return;
             }
         },
             (error) => {
+                setLoading(false);
+                setValidtionUser("Opps.. worng password or Email");
                 console.log("error in function Get_userDetails", error)
             })
     }

@@ -149,12 +149,6 @@ return (
       <ScrollView style={styles.dataWrapper}>
         <Table borderStyle={{ borderWidth: 1 }} >
           <TableWrapper style={styles.wrapper}>
-            {/* <Col
-          data={CONTENT.tableData[0]}
-          style={styles.title}
-          heightArr={[20, 20]}
-          textStyle={styles.text}
-           /> */}
             <Rows
               data={CONTENT.tableData}
               flexArr={[1.8, 1, 1, 1]}

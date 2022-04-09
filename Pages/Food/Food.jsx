@@ -8,7 +8,7 @@ import PopUp from '../../CTools/PopUp';
 import { UserContext } from '../../CTools/UserDetailsHook';
 import {Delete_food,Post_Favorites} from '../../Functions/Function'
 import Alert from '../../CTools/Alert';
-
+import DeleteAlert from '../../CTools/DeleteAlert'
 
 export default function Food(props) {
   const { name, image, id, UnitOfMeasure, addToMyListFood, Ingrediants, cookingMethod, addByUserId, forRecipe, isFavorit, setAlert,get_all_food
@@ -28,7 +28,7 @@ export default function Food(props) {
   const editElement = <View style={styles.popUpcontainer}>
     <TouchableOpacity style={{ marginTop: '2%' }} onPress={()=>{setShowEdit(false); add_unit(id);}}><Text style={styles.editText('#FFCF84')}>add unit</Text></TouchableOpacity>
     <TouchableOpacity style={{ marginTop: '2%' }} on onPress={()=>{setShowEdit(false); update_image(id);}}><Text style={styles.editText('#FFC052')}>{image ? 'change' : 'add'} image</Text></TouchableOpacity>
-    <TouchableOpacity style={{ marginTop: '2%' }} onPress={() => { delete_food(); }}><Text style={styles.editText('#F9AC27')}>delete {isRecipe ? 'recipe' : 'ingredient'}</Text></TouchableOpacity>
+    <TouchableOpacity style={{ marginTop: '2%' }} onPress={() => {setDelAlert(true) }}><Text style={styles.editText('#F9AC27')}>delete {isRecipe ? 'recipe' : 'ingredient'}</Text></TouchableOpacity>
     <TouchableOpacity style={{ marginTop: '2%' }} onPress={() => { setShowEdit(false) }}><Text style={styles.editText('#F79719')}>cancel</Text></TouchableOpacity>
   </View>
 
@@ -42,7 +42,7 @@ export default function Food(props) {
   const [weightInGrams, setWeightInGrams] = useState();
   const [showCooking, setShowCooking] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
-
+const [delAlert,setDelAlert]=useState(false)
     //every render of food
     useEffect(() => {
       UnitOfMeasure.map(x => selectUnit.push(
@@ -54,7 +54,7 @@ export default function Food(props) {
     });
 
   const delete_food = () => {
-
+    setDelAlert(false)
     Delete_food(isRecipe ? 'deleteRecipe' : 'deleteIngredient',id).then((resulte) => {
       console.log('deleteRes=>', resulte);
       setShowEdit(false);
@@ -115,7 +115,7 @@ export default function Food(props) {
     temp && setWeightInGrams(weightInGrams)
   }
 
-  return (
+  return (<> 
     <View style={styles.container} id={id}>
       <View style={styles.face}>
         {!forRecipe&&userDetails && addByUserId == userDetails.id && <TouchableOpacity style={styles.edit} onPress={() => setShowEdit(true)}>
@@ -148,6 +148,7 @@ export default function Food(props) {
             flex={0.4}
             editable={false}
             type='selectBox'
+            // setValue={selectUnit&&selectUnit.length==1?selectUnit[0].name:''}
             getValue={(value) => setUnit(value)}
             SelectBox_placeholder='Select Unit of measure'
             selectBox_items={selectUnit} />
@@ -205,7 +206,8 @@ export default function Food(props) {
         element={editElement}
       />
     </View>
-
+   {delAlert && <DeleteAlert answer={(answer) => { answer ? delete_food() : setDelAlert(false) }} />}
+</>
   );
 }
 

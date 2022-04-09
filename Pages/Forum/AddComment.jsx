@@ -1,6 +1,6 @@
 import { Text, StyleSheet, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { FontAwesome5 } from '@expo/vector-icons';
+import { FontAwesome5 ,MaterialCommunityIcons } from '@expo/vector-icons';
 import PopUp from '../../CTools/PopUp';
 import Input from '../../CTools/Input';
 import Button from '../../CTools/Button';
@@ -44,7 +44,7 @@ export default function AddComment(props) {
       })
       .catch((error) => {
         setAlert(
-          <Alert text="sorry somting is got worng try agine later"
+          <Alert text="sorry somthing went worng try agine later"
           type='worng'
           time={2000}
           bottom={110}
@@ -57,7 +57,7 @@ export default function AddComment(props) {
 
   return (<>
     <TouchableOpacity style={styles.addComment} onPress={() => { setShow(true); }}>
-      <FontAwesome5 style={styles.Icon} name="comment-dots" size={20} />
+      <MaterialCommunityIcons  style={styles.Icon} name="comment-plus-outline" size={20} />
       <Text style={styles.addCommentText}>add comment</Text>
     </TouchableOpacity>
     {show &&
@@ -72,6 +72,8 @@ export default function AddComment(props) {
               getValue={(value) => setComment_value(value)}
               required={true}
               placeholder='content..'
+              multiline={true}
+              numberOfLines={6}
               height={110}
               justifyContent='flex-strat'
               spellCheck={true}
@@ -119,7 +121,7 @@ const styles = StyleSheet.create({
   Icon: {
     color: '#666666',
     textAlign: 'left',
-    paddingTop: '2%',
+    paddingTop: '2.5%',
   },
 
 })
