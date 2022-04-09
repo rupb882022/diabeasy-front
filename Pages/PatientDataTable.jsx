@@ -19,6 +19,8 @@ const [a1c,setA1c]=useState(7.3)
 const [loading, setLoading] = useState(false);
 const [alert, setAlert] = useState()
 const [content,setContent]=useState()
+const [fromDate,setFromDate]=useState(moment(new Date(new Date().setDate(new Date().getDate()-7))).format('YYYY-MM-DD'))
+const [toDate,setToDate]=useState(moment(new Date()).format('YYYY-MM-DD'))
 
 useFocusEffect(
   React.useCallback(() => {
@@ -47,11 +49,13 @@ else if(userDetails.id%2==0&&!userDetails.patientID){setContent([]);
   const getData=()=>{
   setLoading(true)
   let url;
-if (userDetails.patientID) {        // if its doctor with selected patient
-  url=upiUrl + `User/GetdataForTable/${userDetails.patientID}`;
+if (userDetails.patientID&&fromDate&&toDate) {        // if its doctor with selected patient
+  url=upiUrl + `User/GetdataForTable/${userDetails.patientID}/${fromDate}/${toDate}`;
 } 
-else if(userDetails.id%2!=0){            // if its patient (=> not a doctor without selected patient)
-url=upiUrl + `User/GetdataForTable/${userDetails.id}`;
+else if(userDetails.id%2!=0 &&fromDate&&toDate){            // if its patient (=> not a doctor without selected patient)
+url=upiUrl + `User/GetdataForTable/${userDetails.id}/${fromDate}/${toDate}`;
+console.log('from',fromDate);
+console.log('TO',toDate);
 }  
 console.log('url=> ',url);
     fetch(url, {
@@ -102,23 +106,22 @@ setContent(arr)
     tableHead: ['Date and time', 'Blood sugar level', 'Injection value', 'Carbs value','Injection spot'],
     tableData: content,
   };
-      // ['01/01/20','1', '2', '3','belly'],
-      // ['02/01/20','a', 'b', 'c','arm'],
-      // ['03/01/20','1', '2', '3','belly'],
-      // ['04/01/20','a', 'b', 'c','arm'],
-      // ['05/01/20','1', '2', '3','belly'],
-      // ['07/01/20','a', 'b', 'c','arm'],
-      // ['85/01/20','1', '2', '3','belly'],
-      // ['10/01/20','a', 'b', 'c','arm'],
-      // ['01/01/20','1', '2', '3','belly'],
-      // ['16/01/20','a', 'b', 'c','arm'],
-      // ['71/01/20','1', '2', '3','belly'],
-      // ['41/01/20','a', 'b', 'c','arm'],
-      // ['16/01/20','a', 'b', 'c','arm'],
-      // ['71/01/20','1', '2', '3','belly'],
-      // ['41/01/20','a', 'b', 'c','arm'],
-   
 
+
+  const setDates=(value,i)=>{
+    if(value){
+      let date;
+      if (value.includes("/")) {
+        date=value.split("/");
+        date=`${date[2]}-${date[1]}-${date[0]}` 
+      }
+      else { 
+        date = value;
+      }
+     i==1?
+     setFromDate(date):setToDate(date)
+    }
+}
 
     return (
       <View style={styles.container}> 
@@ -133,8 +136,9 @@ paddingRight={5}/>
     flexDirection: 'row',
    }}>
 <Input
-                popup_title='Your Birth Date'
-                label='From:'
+                popup_title='From Date'
+                label='From date:'
+                placeholder={moment(fromDate).format('DD/MM/YYYY')}
                 type='date'
                 mode='date'
                 min={new Date(1920, 1, 1)}
@@ -144,13 +148,13 @@ paddingRight={5}/>
                 width={100}
                 height={150}
                 flex={0.4}
-              //  required={true}
-              //  setValue={birthDate}
-              //  getValue={(value) => {setDate(value)}}
+                required={true}
+                //setValue={fromDate}
+                getValue={(value) => {setDates(value,1)}}
             />
             <Input
-                popup_title='Your Birth Date'
-                label='To:'
+                popup_title='To Date'
+                label='To date:'
                 type='date'
                 mode='date'
                 min={new Date(1920, 1, 1)}
@@ -160,10 +164,10 @@ paddingRight={5}/>
                 width={100}
                 height={150}
                 flex={0.4}
-
-              //  required={true}
-              //  setValue={birthDate}
-              //  getValue={(value) => {setDate(value)}}
+                placeholder={moment(toDate).format('DD/MM/YYYY')}
+                required={true}
+              // setValue={toDate}
+               getValue={(value) => {setDates(value,0)}}
             />
 <View >
 <Button
@@ -173,7 +177,7 @@ radius={5}
 textSize={14}
 element={<AntDesign name="search1" size={14} color="white" />}
 alignItems='flex-end'
-//  onPress={()=>{Serch_food_by_name()}}
+onPress={()=>getData()}
 />
 </View>
             </View>
