@@ -103,10 +103,7 @@ flex={userDetails.id%2==0?0.5:0.8}
 possiton={62}
 paddingRight={5}/>
 
-<View style={{flex:0.1,position:'relative',bottom:'5%',
-    justifyContent:'space-around',
-    flexDirection: 'row',
-   }}>
+<View style={{flex:0.2,position:'relative',bottom:'5%',justifyContent:'space-around',flexDirection: 'row',}}>
 <Input
                 popup_title='From Date'
                 label='From date:'
@@ -118,7 +115,7 @@ paddingRight={5}/>
                 display='spinner'
                 date_format_hour={false}
                 width={100}
-                height={150}
+                height={100}
                 flex={0.4}
                 required={true}
                 //setValue={fromDate}
@@ -134,19 +131,19 @@ paddingRight={5}/>
                 display='spinner'
                 date_format_hour={false}
                 width={100}
-                height={150}
+                height={100}
                 flex={0.4}
                 placeholder={moment(toDate).format('DD/MM/YYYY')}
                 required={true}
               // setValue={toDate}
                getValue={(value) => {setDates(value,0)}}
             />
-<View >
+<View style={{flex:0.15,paddingRight:'2%'}} >
 <Button
-width={6}
-height={6}
+width={15}
+height={10}
 radius={5}
-textSize={14}
+//textSize={14}
 element={<AntDesign name="search1" size={14} color="white" />}
 alignItems='flex-end'
 onPress={()=>getData()}
