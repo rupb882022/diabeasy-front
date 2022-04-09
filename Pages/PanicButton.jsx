@@ -6,7 +6,7 @@ import Communications from "react-native-communications";
 import { Feather } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import {UserContext} from '../CTools/UserDetailsHook'
-import {GET_assistant_phone} from '../ServerApi/Function'
+import {GET_assistant_phone} from '../Functions/Function'
 
 export default function PanicButton() {
     const [phone, setPhone] = useState();

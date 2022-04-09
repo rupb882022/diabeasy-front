@@ -6,7 +6,7 @@ import Button from '../CTools/Button';
 import Loading from '../CTools/Loading';
 import Alert from '../CTools/Alert';
 import { UserContext } from '../CTools/UserDetailsHook';
-import {Get_Table_Data} from '../ServerApi/Function'
+import {Get_Table_Data} from '../Functions/Function'
 import moment from 'moment';
 import { useFocusEffect } from '@react-navigation/native';
 import Input from '../CTools/Input';

@@ -6,8 +6,7 @@ import Button from '../CTools/Button';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Loading from '../CTools/Loading';
 import { flushSync } from 'react-dom'
-import apiUrl from '../Routes/Url'
-import axios from "axios";
+import{Post_user_details} from '../Functions/Function'
 import Alert from '../CTools/Alert';
 
 
@@ -98,31 +97,13 @@ export default function PersonalInfo1(props) {
                 gender: gender,
                 BirthDate: birthDate
             }
-            const configurationObject = {
-                url: `${apiUrl}User/RegisterUser`,
-                method: "POST",
-                data: userDetilas
-            };
-       
-            axios(configurationObject)
+            Post_user_details(userDetilas)
                 .then((response) => {
-                    console.log("status=", response.status)
-                    console.log("status=", response)
-                    if (response.status === 200 || response.status === 201) {
-                        navigation.navigate('Login') //Todo approve the register
-                    } else if (response.status === 409) {
-                        setAlert(
-                            <Alert text="email is allready exist"
-                            type='alert'
-                            time={2000}
-                            bottom={80}
-                            />)
-                    } else {
-                        throw new Error("An error has occurred");
-                    }
+                    response&& navigation.navigate('Login') //Todo approve the register
                 })
                 .catch((error) => {
-                    if (error.status === 409) {
+                    console.log("error in function Post_user_details "+error);
+                    if (error === 409) {
                         setAlert(
                             <Alert text="email is allready exist"
                             type='alert'
@@ -136,7 +117,6 @@ export default function PersonalInfo1(props) {
                             time={2000}
                             bottom={80}
                             />)
-                            console.log(error.response.data);
                     }
                 })
         }

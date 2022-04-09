@@ -4,8 +4,7 @@ import Button from '../../CTools/Button'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Input from '../../CTools/Input';
 import Header from '../../CTools/Header';
-import { Get_all_unit, Serch_food } from '../../ServerApi/Function'
-import axios from "axios";
+import { Get_all_unit, Serch_food,Post_Food } from '../../Functions/Function'
 import Alert from '../../CTools/Alert';
 import MultiSelectInput from '../../CTools/MultiSelectInput';
 import FoodList from './FoodList';
@@ -102,7 +101,7 @@ export default function AddNewFood(props) {
       if (name && category && unit && weightInGrams && myFoodDtails && myFoodDtails.Ingridents.length > 0 && category.length > 0) {
 
         let ratio = parseFloat(weightInGrams / myFoodDtails.grams)
-        console.log("ratio", ratio);
+
         let food = {
           userId: userId,
           name: name,
@@ -117,23 +116,9 @@ export default function AddNewFood(props) {
           weightInGrams: weightInGrams,
           Ingridents: myFoodDtails.Ingridents
         }
-        console.log(food);
-
-        const configurationObject = {
-          url: `${apiUrl}Food/AddRecipe`,
-          method: "POST",
-          data: food
-        };
-
-        axios(configurationObject)
-          .then((response) => {
-            if (response) {
-              console.log("response", response.status);
-
-              navigation.goBack()
-            } else {
-              throw new Error(response.status);
-            }
+        
+        Post_Food('AddRecipe',food).then((response) => {
+              response&&navigation.goBack()
           })
           .catch((error) => {
             setAlert(
@@ -142,7 +127,7 @@ export default function AddNewFood(props) {
                 time={2000}
                 bottom={80}
               />)
-            console.log(error.response.data);
+            console.log("error in function Post_Food "+error);
           })
 
       } else {
@@ -166,23 +151,8 @@ export default function AddNewFood(props) {
           suger: suger,
           weightInGrams: weightInGrams
         }
-
-        const configurationObject = {
-          url: `${apiUrl}Food/AddIngredient`,
-          method: "POST",
-          data: food
-        };
-
-        console.log(food);
-        axios(configurationObject)
-          .then((response) => {
-            if (response) {
-              console.log("response", response.status);
-
-              navigation.goBack()
-            } else {
-              throw new Error(response.status);
-            }
+        Post_Food('AddIngredient',food).then((response) => {
+              response&&navigation.goBack()
           })
           .catch((error) => {
             setAlert(
@@ -191,7 +161,7 @@ export default function AddNewFood(props) {
                 time={2000}
                 bottom={80}
               />)
-            console.log(error.response.data);
+              console.log("error in function Post_Food "+error);
           })
       } else {
         setAlert(

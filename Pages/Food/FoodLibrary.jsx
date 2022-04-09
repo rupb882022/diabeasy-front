@@ -11,7 +11,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import Alert from '../../CTools/Alert';
 import SelectedList from './SelectedList';
 import { AntDesign } from '@expo/vector-icons';
-import { Get_all_food, Get_all_categories, Serch_food } from '../../ServerApi/Function'
+import { Get_all_food, Get_all_categories, Serch_food } from '../../Functions/Function'
 
 export default function FoodLibrary({ navigation }) {
 

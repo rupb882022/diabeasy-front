@@ -1,6 +1,6 @@
 import { View, StyleSheet, ScrollView } from 'react-native';
 import React, { useEffect, useState, useContext } from 'react';
-import { Get_doctor_patients } from '../../ServerApi/Function'
+import { Get_doctor_patients } from '../../Functions/Function'
 import Header from '../../CTools/Header';
 import Loading from '../../CTools/Loading';
 import { UserContext } from '../../CTools/UserDetailsHook'

@@ -5,7 +5,7 @@ import Input from '../CTools/Input';
 import Button from '../CTools/Button';
 import { flushSync } from 'react-dom'
 import * as Progress from 'react-native-progress'
-import { Rest_password } from '../ServerApi/Function'
+import { Rest_password } from '../Functions/Function'
 
 export default function ForgotPasswordPopUp(props) {
   const { show, setShow } = props

@@ -5,7 +5,7 @@ import Input from '../CTools/Input';
 import Button from '../CTools/Button';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import ForgotPasswordPopUp from './ForgotPasswordPopUp';
-import { Get_userDetails } from '../ServerApi/Function'
+import { Get_userDetails } from '../Functions/Function'
 import Loading from '../CTools/Loading';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Fontisto } from '@expo/vector-icons';

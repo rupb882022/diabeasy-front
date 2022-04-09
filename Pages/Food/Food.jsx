@@ -5,9 +5,8 @@ import { Ionicons, Entypo } from '@expo/vector-icons';
 import Button from '../../CTools/Button';
 import { ImageUri } from '../../Routes/Url';
 import PopUp from '../../CTools/PopUp';
-import axios from "axios";
 import { UserContext } from '../../CTools/UserDetailsHook';
-import {Delete_food} from '../../ServerApi/Function'
+import {Delete_food,Post_Favorites} from '../../Functions/Function'
 import Alert from '../../CTools/Alert';
 
 
@@ -82,23 +81,11 @@ export default function Food(props) {
       Rcipe_id: isRecipe ? id : null,
       Ingredient_id: isRecipe ? null : id
     }
-
-    const configurationObject = {
-      url: apiUrl + `Food/${method == 'POST' ? 'addFavorites' : 'deleteFavorites'}`,
-      method: method,
-      data: favorit
-    };
-
-    axios(configurationObject)
-      .then((response) => {
-        if (response.status === 200 || response.status === 201) {
-          console.log("secuss");
-        } else {
-          throw new Error("An error has occurred");
-        }
+    Post_Favorites(method,favorit).then((response) => {
+          response&&console.log("secuss");
       })
       .catch((error) => {
-        console.log(error.response.data);
+        console.log("error in function Post_Favorites"+error);
       });
   }
 

@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 import React from 'react'
-import {Delete_Comment} from '../../ServerApi/Function'
+import {Delete_Comment} from '../../Functions/Function'
 import { AntDesign } from '@expo/vector-icons';
 
 

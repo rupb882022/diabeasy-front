@@ -9,9 +9,8 @@ import UpdateComment from './UpdateComment';
 import DeleteComment from './DeleteComment';
 import Input from '../../CTools/Input';
 import Button from '../../CTools/Button';
-import apiUrl from '../../Routes/Url';
+import {Put_Comment} from '../../Functions/Function'
 import {ImageUri} from '../../Routes/Url';
-import axios from "axios";
 import Alert from '../../CTools/Alert';
 
 export default function MainComment(props) {
@@ -58,19 +57,8 @@ export default function MainComment(props) {
     }
 let editComment={ subject: subject, value: editText }
 
-    const configurationObject = {
-      url: `${apiUrl}Forum/${comment_id}`,
-      method: "PUT",
-      data:editComment
-    };
-    axios(configurationObject)
-    .then((response) => {
-      console.log(response.status);
-      if (response.status === 200||response.status===201) {
-        getAllComments()
-      } else {
-        throw new Error("An error has occurred");
-      }
+    Put_Comment(comment_id,editComment).then((response) => {
+      response&& getAllComments()
     })
     .catch((error) => {
       setAlert(
@@ -79,7 +67,7 @@ let editComment={ subject: subject, value: editText }
         time={2000}
         bottom={40}
         />)
-        console.log(error.response.data);
+        console.log("error in function Put_Comment "+error);
     });
   }
 

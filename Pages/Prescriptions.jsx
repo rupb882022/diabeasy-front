@@ -7,9 +7,8 @@ import PopUp from '../CTools/PopUp';
 import Input from '../CTools/Input';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { UserContext } from '../CTools/UserDetailsHook';
-import { Get_Prescriptions, Delete_Prescriptions } from '../ServerApi/Function'
+import { Get_Prescriptions, Delete_Prescriptions, Post_new_Prescription, Put_Prescription } from '../Functions/Function'
 import moment from 'moment';
-import axios from "axios";
 import { useFocusEffect } from '@react-navigation/native';
 import Alert from '../CTools/Alert';
 import * as Progress from 'react-native-progress';
@@ -89,28 +88,12 @@ export default function Prescriptions(props) {
   // POST - new prescription request
   useEffect(() => {
     if (!show && request && reqValue) {
-      // console.log('5');
-      const configurationObject = {
-        url: upiUrl + 'User/Prescription/addRequest',
-        method: "POST",
-        data: request
-      };
-      console.log('DATA=>', request);
-      axios(configurationObject)
-        .then(response => {
-          console.log("response v", response.status);
-          if (response.status === 200 || response.status === 201) {
-            getPrescriptions();
-          }
-          else {
-            throw new Error("An error has occurred");
-          }
-        })
+
+      Post_new_Prescription(request).then(response => {
+        response && getPrescriptions();
+      })
         .catch((error) => {
-          //  error.response.status==403?
-          //  alert(error.response.data.Message):
-          //  alert(error)
-          error.response.status == 403 ?
+          error == 403 ?
             setAlert(
               <Alert text={error.response.data.Message}
                 type='worng'
@@ -123,6 +106,7 @@ export default function Prescriptions(props) {
                 time={2000}
                 bottom={110}
               />)
+              console.log("error in function Post_new_Prescription "+error);
         });
     }
   }, [request]);
@@ -250,25 +234,10 @@ export default function Prescriptions(props) {
     status == 'reject' ?
       editStatus = { status: 'rejected' } :
       editStatus = { status: 'accepted' }
-
-    const configurationObject = {
-      url: `${upiUrl}User/Prescription/${idForPrescription}`,
-      method: "PUT",
-      data: editStatus
-    };
-    //console.log('urlPrescription=',configurationObject.url);
-    axios(configurationObject)
-      .then((response) => {
-        console.log('response=', response.status);
-        if (response.status === 200) {
-          getPrescriptions();
-          showDetails && setShowDetails(false);
-        } else {
-          showDetails && setShowDetails(false);
-
-          throw new Error("An error has occurred");
-        }
-      })
+    Put_Prescription(idForPrescription, editStatus).then((response) => {
+      response && getPrescriptions();
+      showDetails && setShowDetails(false);
+    })
       .catch((error) => {
         setAlert(
           <Alert text="sorry, somthing went wrong, please try again later"
@@ -277,7 +246,7 @@ export default function Prescriptions(props) {
             bottom={110}
           />)
         //alert(error.response.data.Message)
-        console.log(error.response.data);
+        console.log("error in function Put_Prescription "+error);
         showDetails && setShowDetails(false);
       });
   }

@@ -1,4 +1,4 @@
-import {Fetch} from "./Fetch";
+import {Fetch,Axios} from "./Fetch";
 
 
 //-------------------------------------user------------------------------------
@@ -10,6 +10,12 @@ export const  Get_all_InsulinType=()=>{
 }
 export const  Rest_password=(email)=>{
   return Fetch( `User/getPassword/${email}`,'Get');
+}
+export const  Post_user_data=(body)=>{
+  return Axios( `User/InsertData`,'POST',body);
+}
+export const  Post_user_details=(body)=>{
+  return Axios( `User/RegisterUser`,'POST',body);
 }
 //----------------------------------Home doctor--------------------------------
 
@@ -29,6 +35,12 @@ export const  Get_all_comments=()=>{
 export const  Get_all_subjects=()=>{
   return Fetch(`forum/GetAllsubjects`,'Get');
 }
+export const  Post_Comment=(body)=>{
+  return Axios( `forum/addComment`,'POST',body);
+}
+export const  Put_Comment=(id,body)=>{
+  return Axios( `Forum/${id}`,'PUT',body);
+}
 //-------------------------------------Food------------------------------------
 
 export const  Get_all_food=(id,name)=>{
@@ -46,8 +58,15 @@ export const  Serch_food=(serchName,id,name)=>{
 export const  Delete_food=(name,id)=>{
   return Fetch(`Food/${name}/${id}`,'Delete');
 }
-
-
+export const  Post_Food=(name,body)=>{
+  return Axios( `Food/${name}`,'POST',body);
+}
+export const  Post_Favorites=(method,body)=>{
+  return Axios( `Food/${method == 'POST' ? 'addFavorites' : 'deleteFavorites'}`,method,body);
+}
+export const  Post_unit=(id,body)=>{
+  return Axios( `food/addunit/${id}`,'POST',body);
+}
 
 //---------------------------------patient Data table---------------------------
 export const  Get_Table_Data=(userDetails_id)=>{
@@ -63,6 +82,12 @@ export const  Get_Prescriptions=(userDetails_id)=>{
 }
 export const  Delete_Prescriptions=(userDetails_id)=>{
   return Fetch(`User/Prescription/Delete/${userDetails_id}`,'Delete');
+}
+export const  Post_new_Prescription=(body)=>{
+  return Axios(`User/Prescription/addRequest`,'POST',body);
+}
+export const  Put_Prescription=(id,body)=>{
+  return Axios(`User/Prescription/${id}`,'PUT',body);
 }
 //----------------------------------panic Button------------------------------------
 export const  GET_assistant_phone=(userDetails_id)=>{

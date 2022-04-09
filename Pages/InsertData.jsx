@@ -5,9 +5,8 @@ import Input from '../CTools/Input';
 import Button from '../CTools/Button';
 import Moment from 'moment';
 import { UserContext } from '../CTools/UserDetailsHook'
-import axios from "axios";
 import Loading from '../CTools/Loading';
-import apiUrl from '../Routes/Url'
+import {Post_user_data} from '../Functions/Function'
 import Alert from '../CTools/Alert';
 import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
@@ -47,31 +46,22 @@ export default function InsertData({ navigation, route }) {
                 foodLibary:foodLibary
             }
 
-
-            const configurationObject = {
-                url: apiUrl + 'User/InsertData',
-                method: "POST",
-                data: detials
-            };
-            axios(configurationObject)
-                .then((response) => {
+            Post_user_data(detials).then((response) => {
                     setLoading(false)
-                    if (response.status === 201) {
+                    if (response) {
                         setAlert(
                             <Alert
                                 text="details Save!"
                                 type='success'
                             />)
-                    } else {
-                        throw new Error("An error has occurred");
-                    }
+                    } 
                 })
                 .catch((error) => {
                     setAlert(
                         <Alert text="sorry somting is got wotng try agine later"
                             type='worng'
                         />)
-                    console.log(error.response.data);
+                        console.log("error in function Post_user_details "+error);
                     setLoading(false)
                 });
 

@@ -2,7 +2,7 @@ import { StyleSheet, SafeAreaView, Text, Dimensions, View, ScrollView } from 're
 import React, { useEffect, useState, useContext } from 'react'
 import { LineChart, BarChart, PieChart } from 'react-native-chart-kit'
 import Header from '../CTools/Header'
-import { Get_graphs_details } from '../ServerApi/Function'
+import { Get_graphs_details } from '../Functions/Function'
 import Alert from '../CTools/Alert';
 import Loading from '../CTools/Loading';
 import { UserContext } from '../CTools/UserDetailsHook'
