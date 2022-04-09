@@ -1,7 +1,6 @@
-import { View, Text, StyleSheet } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import React, { useState, useEffect } from 'react'
-import axios from "axios";
-import apiUrl from '../../Routes/Url'
+import {Get_all_unit,Post_unit} from '../../Functions/Function'
 import Alert from '../../CTools/Alert';
 import Button from '../../CTools/Button';
 import Input from '../../CTools/Input';
@@ -23,20 +22,7 @@ export default function AddUnit(props) {
   //get all unit of measure
   useEffect(() => {
     if (!unitList) {
-      fetch(apiUrl + `Food/getUnitOfMeasure`, {
-        method: 'GET',
-        headers: new Headers({
-          'Content-Type': 'appliction/json; charset=UTF-8',
-          'Accept': 'appliction/json; charset=UTF-8'
-        })
-      }).then(res => {
-        console.log("res", res.status);
-        if (res && res.status == 200) {
-          return res.json();
-        } else {
-          console.log("status code:", res.status)
-        }
-      }).then((resulte) => {
+      Get_all_unit().then((resulte) => {
         if (resulte) {
           let temp = resulte.map(x => ({ itemKey: x.id, label: x.name, value: x.id }))
           resulte && setUnitList(temp)
@@ -56,21 +42,8 @@ export default function AddUnit(props) {
       sugars: suger,
       weightInGrams: weightInGrams,
     }
-    const configurationObject = {
-      url: `${apiUrl}food/addunit/${foodId}`,
-      method: "POST",
-      data: unitDetails
-    };
-console.log(unitDetails);
-console.log(`${apiUrl}food/addunit/${foodId}`);
-    axios(configurationObject)
-      .then((response) => {
-        console.log("status=", response.status)
-        if (response.status === 201) {
-          navigation.goBack();
-        } else {
-          throw new Error("An error has occurred");
-        }
+    Post_unit(foodId,unitDetails).then((response) => {
+        response&&navigation.goBack();
       })
       .catch((error) => {
         setAlert(
@@ -79,7 +52,7 @@ console.log(`${apiUrl}food/addunit/${foodId}`);
             time={2000}
             bottom={80}
           />)
-        console.log(error.response.data);
+        console.log("error in function Post_unit"+error);
       }
       )
   }

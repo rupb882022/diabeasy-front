@@ -4,8 +4,7 @@ import Header from '../CTools/Header';
 import Input from '../CTools/Input';
 import Button from '../CTools/Button';
 import Loading from '../CTools/Loading';
-import axios from "axios";
-import apiUrl from '../Routes/Url'
+import {Get_all_InsulinType,Post_user_details} from '../Functions/Function'
 import Alert from '../CTools/Alert';
 
 export default function PersonalInfo2(props) {
@@ -61,22 +60,10 @@ export default function PersonalInfo2(props) {
     }
     const RegisterUser = (userDetilas) => {
         setLoading(true);
-        console.log("apiUrl",`${apiUrl}User/RegisterUser`);
-        const configurationObject = {
-            url: `${apiUrl}User/RegisterUser`,
-            method: "POST",
-            data: userDetilas
-        };
-        console.log("userDetilas", userDetilas);
-        axios(configurationObject)
+        Post_user_details(userDetilas)
             .then((response) => {
                 setLoading(false);
-                console.log("status=", response.status)
-                if (response.status === 200 || response.status === 201) {
-                    navigation.navigate('Login') //Todo approve the register
-                } else {
-                    throw new Error("An error has occurred");
-                }
+                response&& navigation.navigate('Login') //Todo approve the register
             })
             .catch((error) => {
                 setAlert(
@@ -85,26 +72,13 @@ export default function PersonalInfo2(props) {
                     time={2000}
                     bottom={110}
                     />)
-                console.log(error.response.body);
+                    console.log("error in function Post_user_details"+error)
                 setLoading(false);
             });
     }
 
     const getInsulinType = () => {
-        fetch(apiUrl + `User/getInsulinType`, {
-            method: 'GET',
-            headers: new Headers({
-                'Content-Type': 'appliction/json; charset=UTF-8',
-                'Accept': 'appliction/json; charset=UTF-8'
-            })
-        }).then(res => {
-            console.log("res", res.status)
-            if (res && res.status == 200) {
-                return res.json();
-            } else {
-                console.log("status code:", res.status)
-            }
-        }).then((resulte) => {
+        Get_all_InsulinType().then((resulte) => {
             let longType = [];
             let shortType = [];
             resulte.map((x, i) => {
@@ -115,7 +89,7 @@ export default function PersonalInfo2(props) {
             setSelectInsulinShort(shortType);
         },
             (error) => {
-                console.log("error", error)
+                console.log("error in function Get_all_InsulinType ", error)
             })
     }
 

@@ -4,11 +4,10 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import PopUp from '../../CTools/PopUp';
 import Input from '../../CTools/Input';
 import Button from '../../CTools/Button';
-import apiUrl from '../../Routes/Url';
-import axios from "axios";
+import {Post_Comment} from '../../Functions/Function'
 import Alert from '../../CTools/Alert';
 
-//todofix alert and date
+//todo fix alert and date
 export default function AddComment(props) {
   
   const { comment_id, subject, name,getAllComments,userDetails,setAlert } = props
@@ -39,19 +38,9 @@ export default function AddComment(props) {
 
   useEffect(() => {
     if (!show && comment && comment_value) {
-      console.log("comment",comment)
-      const configurationObject = {
-        url: `${apiUrl}forum/addComment`,
-        method: "POST",
-        data:comment
-      };
-      axios(configurationObject)
-      .then((response) => {
-        if (response.status === 200||response.status===201) {
-          getAllComments()
-        } else {
-          throw new Error("An error has occurred");
-        }
+
+      Post_Comment(comment).then((response) => {
+        response&& getAllComments();
       })
       .catch((error) => {
         setAlert(
@@ -60,7 +49,7 @@ export default function AddComment(props) {
           time={2000}
           bottom={110}
           />)
-          console.log(error.response.data);
+          console.log("error in function Post_Comment"+error);
       });
     }
   }, [comment]);

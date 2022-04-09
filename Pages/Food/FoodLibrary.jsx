@@ -11,7 +11,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import Alert from '../../CTools/Alert';
 import SelectedList from './SelectedList';
 import { AntDesign } from '@expo/vector-icons';
-
+import { Get_all_food, Get_all_categories, Serch_food } from '../../Functions/Function'
 
 export default function FoodLibrary({ navigation }) {
 
@@ -34,105 +34,38 @@ export default function FoodLibrary({ navigation }) {
     //get all Food 
     useFocusEffect(
         React.useCallback(() => {
-             get_all_food()
+            get_all_food()
         }, [isRecipes]));
 
     const get_all_food = () => {
-
-        foodList&&setFoodList([]);  
-      
-        //Recipes
-        if (isRecipes) {
-            // setLoading(true)
-            fetch(apiUrl + `Food/getRecipes/all/${userDetails ? userDetails.id : 0}`, {
-                method: 'GET',
-                headers: new Headers({
-                    'Content-Type': 'appliction/json; charset=UTF-8',
-                    'Accept': 'appliction/json; charset=UTF-8'
-                })
-            }).then(res => {
-                if (res && res.status == 200) {
-                    return res.json();
-                } else {
-
-                    console.log("status code:", res.status)
-                    throw new error(res.status)
-                }
-            }).then((resulte) => {
-                // setLoading(false)
-                setRecipes(resulte)
-                setFoodList(resulte)
-            },
-                (error) => {
-                    setAlert(
-                        <Alert text='sorry somting is not working try agine later'
-                            type='worng'
-                            bottom={50}
-                        />)
-                    console.log("error", error)
-                    // setLoading(false)
-                })
-        }
-        else {//Ingredient
-            //  setLoading(true)
-            console.log(apiUrl + `Food/getIngredients/all/${userDetails ? userDetails.id : 0}`)
-            fetch(apiUrl + `Food/getIngredients/all/${userDetails ? userDetails.id : 0}`, {
-                method: 'GET',
-                headers: new Headers({
-                    'Content-Type': 'appliction/json; charset=UTF-8',
-                    'Accept': 'appliction/json; charset=UTF-8'
-                })
-            }).then(res => {
-                if (res && res.status == 200) {
-                    console.log("*");
-                    return res.json();
-                } else {
-                    console.log("status code:", res.status)
-                    throw new error(res.body)
-                }
-            }).then((resulte) => {
-                //  setLoading(false)
-                setIngredient(resulte)
-                setFoodList(resulte)
-                
-            },
-                (error) => {
-                    setAlert(
-                        <Alert text='sorry somting is not working try agine later'
-                            type='worng'
-                            bottom={50}
-                        />)
-                    console.log("error", error)
-                    // setLoading(false)
-                })
-        }
-        setLoading(false)
+        foodList && setFoodList([]);
+        Get_all_food(userDetails ? userDetails.id : 0, isRecipes ? 'getRecipes' : 'getIngredients').then((resulte) => {
+            isRecipes ? setRecipes(resulte) : setIngredient(resulte);
+            setFoodList(resulte);
+        },
+            (error) => {
+                setAlert(
+                    <Alert text='sorry somting is not working try agine later'
+                        type='worng'
+                        bottom={50}
+                    />)
+                console.log("error in function Get_all_food", error)
+                setLoading(false)
+            })
     }
 
     //get all Categories 
     useEffect(() => {
         if (!list) {
-            fetch(apiUrl + "Food/Category", {
-                method: 'GET',
-                headers: new Headers({
-                    'Content-Type': 'appliction/json; charset=UTF-8',
-                    'Accept': 'appliction/json; charset=UTF-8'
-                })
-            }).then(res => {
-                if (res && res.status == 200) {
-                    return res.json();
-                } else {
-                    console.log("status code:", res.status)
-                    throw new error(res.body)
-                }
-            }).then((resulte) => {
-                let temp = resulte.map(x => { x.name=="Favorites"&&setFavoritId(x.id);
-                     return({ itemKey: x.id, label: x.name.replace(/(\r\n|\n|\r)/gm, ""), value: x.id })}
-                     )
+            Get_all_categories().then((resulte) => {
+                let temp = resulte.map(x => {
+                    x.name == "Favorites" && setFavoritId(x.id);
+                    return ({ itemKey: x.id, label: x.name.replace(/(\r\n|\n|\r)/gm, ""), value: x.id })
+                });
                 setList(temp);
             },
                 (error) => {
-                    console.log("error", error)
+                    console.log("error in function Get_all_categories ", error)
                 })
         }
     }, []);
@@ -163,14 +96,14 @@ export default function FoodLibrary({ navigation }) {
     }
 
     useEffect(() => {
-   
+
         if (category == favoritId) {//if category set to favorit
             get_all_food()
-         
+
         }
-       if(!category&&(ingredient.length>0&&!isRecipes)||(recipes&&isRecipes)){// defualt show all food
-        isRecipes? setFoodList(recipes):setFoodList(ingredient)
-        } 
+        if (!category && (ingredient.length > 0 && !isRecipes) || (recipes && isRecipes)) {// defualt show all food
+            isRecipes ? setFoodList(recipes) : setFoodList(ingredient)
+        }
         else {
             category_filter();
         }
@@ -181,33 +114,21 @@ export default function FoodLibrary({ navigation }) {
         if (category == favoritId) {
             category_filter();
         }
-    }, [recipes,ingredient]);
+    }, [recipes, ingredient]);
 
     const Serch_food_by_name = () => {
         if (serchByName) {
-              setLoading(true)
-            fetch(apiUrl + `Food/${isRecipes?'getRecipes':'getIngredients'}/${serchByName}/${userDetails ? userDetails.id : 0}`, {
-                method: 'GET',
-                headers: new Headers({
-                    'Content-Type': 'appliction/json; charset=UTF-8',
-                    'Accept': 'appliction/json; charset=UTF-8'
-                })
-            }).then(res => {
-                console.log(res.status);
-                if (res && res.status == 200) {
-                    return res.json();
-                }
-            }).then((resulte) => {
-                console.log("resulte",resulte);
+            setLoading(true)
+            Serch_food(serchByName, userId ? userId : 0, isRecipes ? 'getRecipes' : 'getIngredients').then((resulte) => {
                 if (!resulte || resulte.length < 0 || resulte[0].id == 0) {
                     setAlert(<Alert text="no resulte"
                         type='worng'
                         time={3500}
                         bottom={350}
                     />)
-                }else{
-                setFoodList(resulte)
-            }
+                } else {
+                    setFoodList(resulte)
+                }
                 setLoading(false)
             },
                 (error) => {
@@ -216,8 +137,8 @@ export default function FoodLibrary({ navigation }) {
                             type='worng'
                             bottom={50}
                         />)
-                    console.log("error", error)
-                     setLoading(false)
+                    console.log("error in function Serch_food", error)
+                    setLoading(false)
                 })
         } else {
             setAlert(
@@ -230,7 +151,6 @@ export default function FoodLibrary({ navigation }) {
 
     //calc Dtails for food list
     const calc_myFoodDtails = (list) => {
-        console.log("list", list);
         let carbs = 0
         let suger = 0
         if (list.length > 0)
@@ -280,22 +200,22 @@ export default function FoodLibrary({ navigation }) {
         setMyFoodList(temp);
         calc_myFoodDtails(temp);
     }
-    const update_image=(id)=>{
-        navigation.navigate('CameraUse', { imageName: id%2==0 ? `recipe${id}` : `Ingredient${id}` })
-      }
-    const add_unit=(id)=>{
-      navigation.navigate('AddUnit', { foodId:id})
+    const update_image = (id) => {
+        navigation.navigate('CameraUse', { imageName: id % 2 == 0 ? `recipe${id}` : `Ingredient${id}` })
     }
-    
+    const add_unit = (id) => {
+        navigation.navigate('AddUnit', { foodId: id })
+    }
+
     return (<>
         {loading && <Loading opacity={'#d6f2fc'} />}
         <Header
-                title={isRecipes ? 'Recipe' : 'Ingredient'}
-                flex={2.6}
-                marginLeft={isRecipes ? -1 : 5}
-                paddingRight={5}
-                possiton={60}
-            />
+            title={isRecipes ? 'Recipe' : 'Ingredient'}
+            flex={2.6}
+            marginLeft={isRecipes ? -1 : 5}
+            paddingRight={5}
+            possiton={60}
+        />
         <View style={styles.continer}>
 
             <View style={styles.input_category}>
@@ -337,7 +257,7 @@ export default function FoodLibrary({ navigation }) {
                             textSize={14}
                             element={<AntDesign name="search1" size={16} color="white" />}
                             alignItems='flex-start'
-                            onPress={()=>{Serch_food_by_name()}}
+                            onPress={() => { Serch_food_by_name() }}
                         />
                     </View>
                     <Button
@@ -354,12 +274,12 @@ export default function FoodLibrary({ navigation }) {
             <View style={styles.cards}>
                 {foodList && foodList.length > 0 &&
                     <FoodList
-                        get_all_food={()=>{get_all_food()}}
+                        get_all_food={() => { get_all_food() }}
                         foodList={foodList}
-                        setAlert={(value)=>{setAlert(value)}}
+                        setAlert={(value) => { setAlert(value) }}
                         addToMyListFood={(value) => { addToMyListFood(value) }}
-                        add_unit={(value)=>{add_unit(value)}}
-                        update_image={(value)=>{update_image(value)}}
+                        add_unit={(value) => { add_unit(value) }}
+                        update_image={(value) => { update_image(value) }}
                     />
                 }
             </View>
@@ -372,16 +292,16 @@ export default function FoodLibrary({ navigation }) {
                     alignItems='flex-end'
                     onPress={() => setShow(true)}
                 />
-              <View style={{flex:1,paddingRight:'5%',}}>
-                 <Button
-                      text='save'
-                      height={2}
-                      width={22}
-                      alignItems='center'
-                      justifyContent='flex-end'
-                      onPress={()=>{navigation.navigate('Insert Data',{myFoodDtails:myFoodList?myFoodList:''})}}
-                      />
-                          </View>
+                <View style={{ flex: 1, paddingRight: '5%', }}>
+                    <Button
+                        text='save'
+                        height={2}
+                        width={22}
+                        alignItems='center'
+                        justifyContent='flex-end'
+                        onPress={() => { navigation.navigate('Insert Data', { myFoodDtails: myFoodList ? myFoodList : '' }); }}//to delete values on save=> setmyFoodDtails([]);setMyFoodList([])
+                    />
+                </View>
             </View>
         </View>
         {show && <SelectedList
@@ -397,7 +317,7 @@ export default function FoodLibrary({ navigation }) {
 const styles = StyleSheet.create({
     continer: {
         flex: 12,
-        bottom:'1%'
+        bottom: '1%'
     },
     input_category: {
         paddingLeft: '5%',
@@ -425,13 +345,13 @@ const styles = StyleSheet.create({
     },
     cards: {
         flex: 2,
-       bottom:'2%'
+        bottom: '2%'
     },
     showlist: {
-       flex: 0.2,
+        flex: 0.2,
         alignItems: 'flex-end',
         flexDirection: 'row',
-        justifyContent:'space-around'
-       
+        justifyContent: 'space-around'
+
     },
 })

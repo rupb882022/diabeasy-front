@@ -3,9 +3,9 @@ import React, { useState } from 'react';
 import PopUp from '../CTools/PopUp';
 import Input from '../CTools/Input';
 import Button from '../CTools/Button';
-import apiUrl from '../Routes/Url';
 import { flushSync } from 'react-dom'
 import * as Progress from 'react-native-progress'
+import { Rest_password } from '../Functions/Function'
 
 export default function ForgotPasswordPopUp(props) {
   const { show, setShow } = props
@@ -35,34 +35,19 @@ if(password==code){
   }
 
   const getPassword = () => {
-    console.log("1");
     if (mail) {
       setLoading(true)
       let tempMail=mail.replace(".","=");
-      console.log(`${apiUrl}User/getPassword/${tempMail}`);
-      fetch(apiUrl + `User/getPassword/${tempMail}`,{
-        method: 'GET',
-        headers: new Headers({
-          'Content-Type': 'appliction/json; charset=UTF-8',
-          'Accept': 'appliction/json; charset=UTF-8'
-        })
-      }).then(res => {
-        if (res && res.status == 200) {
-          return res.json();
-        } else {
-          console.log("status code:", res.status)
-        }
-      }).then((resulte) => {
+        Rest_password(tempMail).then((resulte) => {
         console.log("resulte", resulte);
         if (resulte) {
           setCode(resulte);
           setPassword('');
         }
         setLoading(false)
-
       },
         (error) => {
-          console.log("error", error)
+          console.log("error in function Rest_password", error)
           setLoading(false)
         })
     }

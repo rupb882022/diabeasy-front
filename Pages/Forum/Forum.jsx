@@ -5,10 +5,9 @@ import Button from '../../CTools/Button';
 import PopUp from '../../CTools/PopUp';
 import Input from '../../CTools/Input';
 import MainComment from './MainComment';
-import apiUrl from '../../Routes/Url'
+import {Get_all_comments,Get_all_subjects,Post_Comment} from '../../Functions/Function'
 import Loading from '../../CTools/Loading'
 import { useFocusEffect } from '@react-navigation/native';
-import axios from "axios";
 import {UserContext} from '../../CTools/UserDetailsHook'
 import Alert from '../../CTools/Alert';
 
@@ -135,19 +134,8 @@ export default function Forum() {
 
   useEffect(() => {
     if (!show && comment && commentValue) {
-      const configurationObject = {
-        url: `${apiUrl}forum/addComment`,
-        method: "POST",
-        data: comment
-      };
-  
-      axios(configurationObject)
-        .then((response) => {
-          if (response.status === 200 || response.status === 201) {
-            get_all_comments()
-          } else {
-            throw new Error("An error has occurred");
-          }
+      Post_Comment(comment).then((response) => {
+        response&&get_all_comments()
         })
         .catch((error) => {
           setAlert(
@@ -156,7 +144,7 @@ export default function Forum() {
             time={2000}
             bottom={110}
             />)
-            console.log(error.response.data);
+            console.log("error in function Post_Comment"+error);
         });
     }
   }, [comment]);
@@ -167,20 +155,7 @@ export default function Forum() {
   const get_subject_list = () => {
 
     // if (!subjectList) {
-      fetch(apiUrl + `Forum/GetAllsubjects`, {
-        method: 'GET',
-        headers: new Headers({
-          'Content-Type': 'appliction/json; charset=UTF-8',
-          'Accept': 'appliction/json; charset=UTF-8'
-        })
-      }).then(res => {
-        if (res && res.status == 200) {
-          return res.json();
-        } else {
-          // #todo path to error page
-          console.log("status code:", res.status)
-        }
-      }).then((resulte) => {
+      Get_all_subjects().then((resulte) => {
         if (resulte.length > 0) {
           let tempList = resulte.map((x, i) => ({ itemKey: i, label: x, value: x }))
           setSubjectList(tempList);
@@ -193,7 +168,7 @@ export default function Forum() {
             time={2000}
             bottom={110}
             />)
-          console.log("error", error);
+          console.log("error in function Get_all_subjects", error);
         }
       )
     }
@@ -282,21 +257,8 @@ export default function Forum() {
   }
 
   const get_all_comments = () => {
-    // if (!data) {
     setLoading(true);
-    fetch(apiUrl + `Forum`, {
-      method: 'GET',
-      headers: new Headers({
-        'Content-Type': 'appliction/json; charset=UTF-8',
-        'Accept': 'appliction/json; charset=UTF-8'
-      })
-    }).then(res => {
-      if (res && res.status == 200) {
-        return res.json();
-      } else {
-        console.log("status code:", res.status)
-      }
-    }).then((resulte) => {
+    Get_all_comments().then((resulte) => {
       buildForum(resulte)
     },
       (error) => {
@@ -306,10 +268,9 @@ export default function Forum() {
           time={2000}
           bottom={110}
           />)
-        console.log("error", error)
+        console.log("error in function Get_all_comments", error)
         setLoading(false);
       })
-
   }
 
   // get all comment every time when user go into the forum

@@ -4,8 +4,7 @@ import Button from '../../CTools/Button'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Input from '../../CTools/Input';
 import Header from '../../CTools/Header';
-import apiUrl from '../../Routes/Url'
-import axios from "axios";
+import { Get_all_unit, Serch_food,Post_Food } from '../../Functions/Function'
 import Alert from '../../CTools/Alert';
 import MultiSelectInput from '../../CTools/MultiSelectInput';
 import FoodList from './FoodList';
@@ -32,154 +31,114 @@ export default function AddNewFood(props) {
   const [serchName, setSerchName] = useState('');
   const [serchCategory, setSerchCategory] = useState();
   const [myFoodList, setMyFoodList] = useState([]);//the chosen food list
-  const [myFoodDtails, setmyFoodDtails] = useState({ carbs: 0.0, suger: 0.0,grmas:0 });//the details on chosen food list
-  const [foodList,setFoodList]=useState(food_List);
+  const [myFoodDtails, setmyFoodDtails] = useState({ carbs: 0.0, suger: 0.0, grmas: 0 });//the details on chosen food list
+  const [foodList, setFoodList] = useState(food_List);
 
   //get all unit of measure
   useEffect(() => {
     if (!unitList) {
-      fetch(apiUrl + `Food/getUnitOfMeasure`, {
-        method: 'GET',
-        headers: new Headers({
-          'Content-Type': 'appliction/json; charset=UTF-8',
-          'Accept': 'appliction/json; charset=UTF-8'
-        })
-      }).then(res => {
-        console.log("res", res.status);
-        if (res && res.status == 200) {
-          return res.json();
-        } else {
-          console.log("status code:", res.status)
-        }
-      }).then((resulte) => {
+      Get_all_unit().then((resulte) => {
         if (resulte) {
           let temp = resulte.map(x => ({ itemKey: x.id, label: x.name, value: x.id }))
           resulte && setUnitList(temp)
         }
       },
         (error) => {
-          console.log("error", error)
+          console.log("error in function Get_all_unit, page:add new food", error)
         })
     }
   }, []);
 
- 
-    
- 
- 
+
   const Serch_food_by_name = () => {
     if (serchName) {
-        fetch(apiUrl + `Food/getIngredients/${serchName}/${userId ? userId: 0}`, {
-            method: 'GET',
-            headers: new Headers({
-                'Content-Type': 'appliction/json; charset=UTF-8',
-                'Accept': 'appliction/json; charset=UTF-8'
-            })
-        }).then(res => {
-            if (res && res.status == 200) {
-                return res.json();
-            }
-        }).then((resulte) => {
-            if (!resulte || resulte.length < 0 || resulte[0].id == 0) {
-                setAlert(<Alert text="no resulte"
-                    type='worng'
-                    time={3500}
-                    bottom={250}
-                />)
-            }
-            setFoodList(resulte)
+      Serch_food(serchName, userId ? userId : 0,'getIngredients').then((resulte) => {
+        if (!resulte || resulte.length < 0 || resulte[0].id == 0) {
+          setAlert(<Alert text="no resulte"
+            type='worng'
+            time={3500}
+            bottom={250}
+          />)
+        }
+        setFoodList(resulte)
 
-        },
-            (error) => {
-                setAlert(
-                    <Alert text='sorry somting is not working try agine later'
-                        type='worng'
-                        bottom={250}
-                    />)
-                console.log("error", error)
-
-            })
-    } else {
-        setAlert(
-            <Alert text='cannot serch with empty value'
-                type='alert'
-                bottom={250}
+      },
+        (error) => {
+          setAlert(
+            <Alert text='sorry somting is not working try agine later'
+              type='worng'
+              bottom={250}
             />)
+          console.log("error in function Serch_food_by_name page: add new food ", error)
+
+        })
+    } else {
+      setAlert(
+        <Alert text='cannot serch with empty value'
+          type='alert'
+          bottom={250}
+        />)
     }
-}
+  }
   useEffect(() => {
     let List;
-if(serchCategory){
-    //fillter by category
-     List = food_List.filter(x =>
-      x.category.length < 1 ?
+    if (serchCategory) {
+      //fillter by category
+      List = food_List.filter(x =>
+        x.category.length < 1 ?
           x.category[0].id == serchCategory :
           x.category.find(z => z.id == serchCategory)
-  );
-    }else{
-      List=food_List;
+      );
+    } else {
+      List = food_List;
     }
-  setFoodList(List);
+    setFoodList(List);
 
-}, [serchCategory]);
+  }, [serchCategory]);
 
   const saveFood = () => {
-    if (isRecipe) {   
-if(name && category && unit&&weightInGrams&&myFoodDtails&&myFoodDtails.Ingridents.length>0&&category.length>0){
+    if (isRecipe) {
+      if (name && category && unit && weightInGrams && myFoodDtails && myFoodDtails.Ingridents.length > 0 && category.length > 0) {
 
-  let ratio=parseFloat(weightInGrams/myFoodDtails.grams)
-  console.log("ratio",ratio);
-  let food = {
-    userId: userId,
-    name: name,
-    category: category,
-    cookingMethod:cookingMethod,
-    TotalCarbs:myFoodDtails&&myFoodDtails.carbs,
-    TotalSuger:myFoodDtails&&myFoodDtails.suger,
-    TotalGrams:myFoodDtails&&myFoodDtails.grams,
-    unit: unit,
-    carbs:parseFloat(myFoodDtails.carbs*ratio),
-    suger:parseFloat(myFoodDtails.suger*ratio),
-    weightInGrams:weightInGrams,
-    Ingridents:myFoodDtails.Ingridents
-  }
-  console.log(food);
+        let ratio = parseFloat(weightInGrams / myFoodDtails.grams)
 
-  const configurationObject = {
-    url: `${apiUrl}Food/AddRecipe`,
-    method: "POST",
-    data: food
-  };
+        let food = {
+          userId: userId,
+          name: name,
+          category: category,
+          cookingMethod: cookingMethod,
+          TotalCarbs: myFoodDtails && myFoodDtails.carbs,
+          TotalSuger: myFoodDtails && myFoodDtails.suger,
+          TotalGrams: myFoodDtails && myFoodDtails.grams,
+          unit: unit,
+          carbs: parseFloat(myFoodDtails.carbs * ratio),
+          suger: parseFloat(myFoodDtails.suger * ratio),
+          weightInGrams: weightInGrams,
+          Ingridents: myFoodDtails.Ingridents
+        }
+        
+        Post_Food('AddRecipe',food).then((response) => {
+              response&&navigation.goBack()
+          })
+          .catch((error) => {
+            setAlert(
+              <Alert text="sorry somting is got worng try agine later"
+                type='worng'
+                time={2000}
+                bottom={80}
+              />)
+            console.log("error in function Post_Food "+error);
+          })
 
-  axios(configurationObject)
-  .then((response) => {
-    if (response) {
-      console.log("response", response.status);
+      } else {
+        setAlert(
+          <Alert text="please fill in all details"
+            type='alert'
+            time={2500}
+            bottom={80}
+          />)
 
-      navigation.goBack()
-    } else {
-      throw new Error(response.status);
-    }
-  })
-  .catch((error) => {
-    setAlert(
-      <Alert text="sorry somting is got worng try agine later"
-        type='worng'
-        time={2000}
-        bottom={80}
-      />)
-      console.log(error.response.data);
-  })
-
-}else{
-  setAlert(
-    <Alert text="please fill in all details"
-      type='alert'
-      time={2500}
-      bottom={80}
-    />)
-
-}
+      }
 
     } else {
       if (name && category && unit && crabs && suger && weightInGrams) {
@@ -192,23 +151,8 @@ if(name && category && unit&&weightInGrams&&myFoodDtails&&myFoodDtails.Ingrident
           suger: suger,
           weightInGrams: weightInGrams
         }
-
-        const configurationObject = {
-          url: `${apiUrl}Food/AddIngredient`,
-          method: "POST",
-          data: food
-        };
-
-console.log(food);
-        axios(configurationObject)
-          .then((response) => {
-            if (response) {
-              console.log("response", response.status);
-
-              navigation.goBack()
-            } else {
-              throw new Error(response.status);
-            }
+        Post_Food('AddIngredient',food).then((response) => {
+              response&&navigation.goBack()
           })
           .catch((error) => {
             setAlert(
@@ -217,7 +161,7 @@ console.log(food);
                 time={2000}
                 bottom={80}
               />)
-              console.log(error.response.data);
+              console.log("error in function Post_Food "+error);
           })
       } else {
         setAlert(
@@ -231,20 +175,20 @@ console.log(food);
   }
   //calc Dtails for food list
   const calc_myFoodDtails = (list) => {
-    let Ingridents=[]
+    let Ingridents = []
     let carbs = 0
     let suger = 0
-    let grams=0
+    let grams = 0
     if (list.length > 0)
       list.map(x => {
         carbs += parseFloat(x.carbs)
         suger += parseFloat(x.suger)
-        grams+=parseInt( x.grams)
-        Ingridents.push({id:x.id,amount:x.amount,unit:x.unit})
+        grams += parseInt(x.grams)
+        Ingridents.push({ id: x.id, amount: x.amount, unit: x.unit })
       })
     carbs = carbs.toFixed(1)
     suger = suger.toFixed(1)
-    setmyFoodDtails({ carbs: carbs, suger: suger ,grams:grams,Ingridents:Ingridents})
+    setmyFoodDtails({ carbs: carbs, suger: suger, grams: grams, Ingridents: Ingridents })
   }
 
 
@@ -304,7 +248,7 @@ console.log(food);
           label='Name'
           getValue={(value) => setName(value)}
         />
-        <View style={{flexDirection:'row',flex:1,marginLeft:'6%'}}>
+        <View style={{ flexDirection: 'row', flex: 1, marginLeft: '6%' }}>
           <Input
             label='unit'
             alignItems='center'
@@ -326,15 +270,15 @@ console.log(food);
             getValue={(value) => setWeightInGrams(value)}
           />
         </View>
-       {isRecipe&& <Input
-            placeholder='cooking method'
-            multiline={true}
-            numberOfLines={4}
-            width={72}
-            height={90}
-            keyboardType='numbers-and-punctuation'
-            getValue={(value) => setCookingMethod(value)}
-          />}
+        {isRecipe && <Input
+          placeholder='cooking method'
+          multiline={true}
+          numberOfLines={4}
+          width={72}
+          height={90}
+          keyboardType='numbers-and-punctuation'
+          getValue={(value) => setCookingMethod(value)}
+        />}
         {!isRecipe && <Input
           label='suger'
           validtion='float'
@@ -373,15 +317,15 @@ console.log(food);
                 height={4}
                 radius={5}
                 textSize={14}
-                onPress={()=>{Serch_food_by_name();}}
+                onPress={() => { Serch_food_by_name(); }}
               />
             </View>
-      
-            </>}
-            {isRecipe&&foodList&&foodList.length>0 && <FoodList
-              foodList={foodList}
-              forRecipe={true}
-              addToMyListFood={(value) => { addToMyListFood(value) }}/>}
+
+          </>}
+        {isRecipe && foodList && foodList.length > 0 && <FoodList
+          foodList={foodList}
+          forRecipe={true}
+          addToMyListFood={(value) => { addToMyListFood(value) }} />}
         {/* <Button
         text='Add exstra unit of measure'
         justifyContent='center'
@@ -465,7 +409,7 @@ const styles = StyleSheet.create({
     marginLeft: '7%'
   },
   selectIngrident: {
-    marginTop:'3%',
+    marginTop: '3%',
     fontWeight: 'bold',
     color: 'white',
     textShadowColor: '#1EA6D6',

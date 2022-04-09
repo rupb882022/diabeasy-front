@@ -1,106 +1,72 @@
 import { StyleSheet, Text, View, ScrollView } from 'react-native'
-import React, { useEffect, useState,useContext } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { Table, TableWrapper, Row, Rows, Col } from 'react-native-table-component';
 import Header from '../CTools/Header';
 import Button from '../CTools/Button';
 import Loading from '../CTools/Loading';
 import Alert from '../CTools/Alert';
 import { UserContext } from '../CTools/UserDetailsHook';
-import upiUrl from '../Routes/Url';
+import {Get_Table_Data} from '../Functions/Function'
 import moment from 'moment';
 import { useFocusEffect } from '@react-navigation/native';
 import Input from '../CTools/Input';
 import { AntDesign } from '@expo/vector-icons';
 
-export default function PatientDataTable({navigation}) {
-const {userDetails} = useContext(UserContext);
+export default function PatientDataTable({ navigation }) {
+  const { userDetails } = useContext(UserContext);
 
-const [a1c,setA1c]=useState(7.3)
-const [loading, setLoading] = useState(false);
-const [alert, setAlert] = useState()
-const [content,setContent]=useState()
-const [fromDate,setFromDate]=useState(moment(new Date(new Date().setDate(new Date().getDate()-7))).format('YYYY-MM-DD'))
-const [toDate,setToDate]=useState(moment(new Date()).format('YYYY-MM-DD'))
-
-useFocusEffect(
-  React.useCallback(() => {
-  //  console.log(userDetails); 
-     if (userDetails.id%2==0&&userDetails.patientID||userDetails.id%2!=0&&!userDetails.patientID) {
-
-    getData();
-    //loading&&setLoading(false)
-   // console.log('1');
-  }
-else if(userDetails.id%2==0&&!userDetails.patientID){setContent([]);
-  setAlert(
-  <Alert text="Need to choose patient to watch his data"
-  type='worng'
-  time={5000}
-  bottom={400}
-  />)}
-}, [userDetails])
-);
-
-// useEffect(()=>{
-// getData();
-// },[])
-
-
-  const getData=()=>{
-  setLoading(true)
-  let url;
-if (userDetails.patientID&&fromDate&&toDate) {        // if its doctor with selected patient
-  url=upiUrl + `User/GetdataForTable/${userDetails.patientID}/${fromDate}/${toDate}`;
-} 
-else if(userDetails.id%2!=0 &&fromDate&&toDate){            // if its patient (=> not a doctor without selected patient)
-url=upiUrl + `User/GetdataForTable/${userDetails.id}/${fromDate}/${toDate}`;
-console.log('from',fromDate);
-console.log('TO',toDate);
-}  
-console.log('url=> ',url);
-    fetch(url, {
-        method: 'GET',
-        headers: new Headers({
-            'Content-Type': 'appliction/json; charset=UTF-8',
-            'Accept': 'appliction/json; charset=UTF-8'
-        })
-    }).then(res => {
-      console.log("resTable=> ",res.status);
-        if (res && res.status == 200) {
-            return res.json();} 
-
-        else {
-            console.log("status code:", res.status)
-            setLoading(false)
-            return;
-        }
-    }).then((result) => {
-      setLoading(false)
-      //console.log('results=>', result);
-      handleResult(result)
+  const [a1c,setA1c]=useState(7.3)
+  const [loading, setLoading] = useState(false);
+  const [alert, setAlert] = useState()
+  const [content,setContent]=useState()
+  const [fromDate,setFromDate]=useState(moment(new Date(new Date().setDate(new Date().getDate()-7))).format('YYYY-MM-DD'))
+  const [toDate,setToDate]=useState(moment(new Date()).format('YYYY-MM-DD'))
   
-     // console.log('3');
-    },
-        (error) => {
-            console.log("error", error)
-            setAlert(
-              <Alert text="sorry, somthing went wrong, please try again later"
-              type='worng'
-              time={2000}
-              bottom={110}
-              />);
-           setLoading(false)
-        }) 
+  useFocusEffect(
+    React.useCallback(() => {
+    //  console.log(userDetails); 
+       if (userDetails.id%2==0&&userDetails.patientID||userDetails.id%2!=0&&!userDetails.patientID) {
+  
+      getData();
+      //loading&&setLoading(false)
+     // console.log('1');
+    }
+  else if(userDetails.id%2==0&&!userDetails.patientID){setContent([]);
+    setAlert(
+    <Alert text="Need to choose patient to watch his data"
+    type='worng'
+    time={5000}
+    bottom={400}
+    />)}
+  }, [userDetails])
+  );
 
-      }
+  const getData = () => {
+    setLoading(true)
+    let id;
+    if (userDetails.patientID) {// if its doctor with selected patient
+      id = userDetails.patientID;
+    }
+    else if (userDetails.id % 2 != 0) {  // if its patient (=> not a doctor without selected patient)
+      id = userDetails.id
+    }
 
-const handleResult=(result)=>{
-let arr= [];
-result.map((x,i)=>{
-arr.push([moment(x.date_time).format('DD/MM/YY - H:mm'),x.blood_sugar_level,x.value_of_ingection,x.totalCarbs,x.injection_site])
-})
-setContent(arr)
+  Get_Table_Data(id,fromDate,toDate).then((result) => {
+    setLoading(false)
+    handleResult(result)
+  },
+    (error) => {
+      console.log(error+" in function Get_Table_Data")
+      setAlert(
+        <Alert text="sorry, somthing went wrong, please try again later"
+          type='worng'
+          time={2000}
+          bottom={110}
+        />);
+      setLoading(false)
+    })
 }
+
 
   const CONTENT = {
     tableHead: ['Date and time', 'Blood sugar level', 'Injection value', 'Carbs value','Injection spot'],
@@ -122,7 +88,13 @@ setContent(arr)
      setFromDate(date):setToDate(date)
     }
 }
-
+const handleResult = (result) => {
+  let arr = [];
+  result.map((x, i) => {
+    arr.push([moment(x.date_time).format('DD/MM/YY - H:mm'), x.blood_sugar_level, x.value_of_ingection, x.totalCarbs, x.injection_site])
+  })
+  setContent(arr)
+}
     return (
       <View style={styles.container}> 
 <Header
@@ -193,43 +165,37 @@ onPress={()=>getData()}
          <ScrollView style={styles.dataWrapper}>
          <Table  borderStyle={{ borderWidth: 1 }} >
          <TableWrapper style={styles.wrapper}>
-          {/* <Col
-          data={CONTENT.tableData[0]}
-          style={styles.title}
-          heightArr={[20, 20]}
-          textStyle={styles.text}
-           /> */}
-           <Rows
-             data={CONTENT.tableData}
-           flexArr={[1.8,1, 1, 1]}
-             style={styles.row}
-             textStyle={styles.text}
-           />
-         </TableWrapper>
-       </Table> 
-       </ScrollView>
-       </View>
-{userDetails.id%2==0?<></>:
-       <Button
-       text='Add'
-       justifyContent='center'
-       alignItems='center'
-       width={10}
-       height={3}
-       onPress={()=>navigation.navigate('Insert Data')}
+            <Rows
+              data={CONTENT.tableData}
+              flexArr={[1.8, 1, 1, 1]}
+              style={styles.row}
+              textStyle={styles.text}
+            />
+          </TableWrapper>
+        </Table>
+      </ScrollView>
+    </View>
+    {userDetails.id % 2 == 0 ? <></> :
+      <Button
+        text='Add'
+        justifyContent='center'
+        alignItems='center'
+        width={10}
+        height={3}
+        onPress={() => navigation.navigate('Insert Data')}
       />
-}
-      {loading && <Loading />}
-   {alert&&alert}    
-</View>
-   );
+    }
+    {loading && <Loading />}
+    {alert && alert}
+  </View>
+);
   
 }
 
 
 const styles = StyleSheet.create({
-  container: { flex: 1},
-  head: { height: 40, backgroundColor:'orange' },//'#rgba(32,189,215,1)'}, =>blue color like in figma  
+  container: { flex: 1 },
+  head: { height: 40, backgroundColor: 'orange' },//'#rgba(32,189,215,1)'}, =>blue color like in figma  
   wrapper: { flexDirection: 'row' },
   title: { flex: 1, backgroundColor: 'lightblue' },
   row: { height: 28 },

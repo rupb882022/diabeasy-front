@@ -3,20 +3,17 @@ import React, { useState, useEffect,useContext } from 'react';
 import Header from '../CTools/Header';
 import Button from '../CTools/Button'
 import Communications from "react-native-communications";
-import apiUrl from '../Routes/Url'
 import { Feather } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import {UserContext} from '../CTools/UserDetailsHook'
-
+import {GET_assistant_phone} from '../Functions/Function'
 
 export default function PanicButton() {
     const [phone, setPhone] = useState();
     const [alert, setAlert] = useState();
     const {userDetails} = useContext(UserContext);
 
-
     const EmergancyCall = () => {
-        console.log(phone)
         getPhone();
         let Sphone = phone && phone.toString();
         if (Sphone) {
@@ -26,27 +23,16 @@ export default function PanicButton() {
 
     const getPhone = () => {
         if (!phone && userDetails) {
-            fetch(apiUrl + `User/assistant_phone/${userDetails.id}`, {
-                method: 'GET',
-                headers: new Headers({
-                    'Content-Type': 'appliction/json; charset=UTF-8',
-                    'Accept': 'appliction/json; charset=UTF-8'
-                })
-            }).then(res => {
-                if (res && res.status == 200) {
-                    return res.json();
-                } else {
-                    console.log("status code:", res.status)
-                }
-            }).then((resulte) => {
-                resulte ? setPhone(resulte) : setAlert("sorry.. we did not found your energency person, you can go to setting page to add one")
-
-            },
-                (error) => {
-                    console.log("error", error)
-                })
+            GET_assistant_phone(userDetails.id).then((resulte) => {
+               setPhone(resulte) ;
+            },(error)=>{
+                console.log(error+" GET_assistant_phone")
+                setAlert("sorry.. we did not found your energency person, you can go to setting page to add one")
+            });
         }
     }
+    
+
     useEffect(() => {
         //get phone number
         getPhone();
