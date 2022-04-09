@@ -35,14 +35,12 @@ export default function Input(props) {
                 }
                 break;
                 case 'float':
-                    if(text&&!text.includes(".")){
-                    regex = /^[0-9\b]+$/;
+                    regex = /^[+-]?\d+(\.\d+)?$/;
                     regex.test(text) ? "" : setValid_lable("digits only!");
                     //if props max
                     if (max) {
                         text >= min && text <= max ? "" : setValid_lable(`digits only! need to be bettwen ${min} to ${max}`);
                     }
-                }
                     break;
             case 'letters':
                 regex = /^[a-zA-z]+$/;

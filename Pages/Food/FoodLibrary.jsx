@@ -151,7 +151,6 @@ export default function FoodLibrary({ navigation }) {
 
     //calc Dtails for food list
     const calc_myFoodDtails = (list) => {
-        console.log("list", list);
         let carbs = 0
         let suger = 0
         if (list.length > 0)
@@ -300,7 +299,7 @@ export default function FoodLibrary({ navigation }) {
                         width={22}
                         alignItems='center'
                         justifyContent='flex-end'
-                        onPress={() => { navigation.navigate('Insert Data', { myFoodDtails: myFoodList ? myFoodList : '' }) }}
+                        onPress={() => { navigation.navigate('Insert Data', { myFoodDtails: myFoodList ? myFoodList : '' }); }}//to delete values on save=> setmyFoodDtails([]);setMyFoodList([])
                     />
                 </View>
             </View>
