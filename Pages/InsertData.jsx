@@ -54,7 +54,9 @@ export default function InsertData({ navigation, route }) {
                         <Alert
                             text="details Save!"
                             type='success'
+                            time={3000}
                         />)
+                      //  navigation.goBack();
                 }
             })
                 .catch((error) => {
@@ -141,16 +143,15 @@ const calc_carbs=()=>{
             <Input
                 label='Blood sugar level'
                 validtion='number'
-                keyboardType='numeric'
+                keyboardType='number-pad'
                 max={600}
                 required={true}
                 getValue={(value) => setsugarLevel(value)}
             />
             <Input
                 label='injection value'
-                validtion='number'
+                validtion='float'
                 // keyboardType='decimal-pad'
-
                 getValue={(value) => setinjectionValue(value)}
             />
             <Input
