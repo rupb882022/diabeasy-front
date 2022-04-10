@@ -148,7 +148,6 @@ const [delAlert,setDelAlert]=useState(false)
             flex={0.4}
             editable={false}
             type='selectBox'
-            // setValue={selectUnit&&selectUnit.length==1?selectUnit[0].name:''}
             getValue={(value) => setUnit(value)}
             SelectBox_placeholder='Select Unit of measure'
             selectBox_items={selectUnit} />
