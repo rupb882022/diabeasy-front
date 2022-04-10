@@ -61,7 +61,7 @@ export default function Maps(props) {
   console.log("*****", location);
   return (
     <>
-      {loading && <Loading opacity={'#d6f2fc'} text='Lorem Ipsum' />}
+      {loading && <Loading opacity={'#d6f2fc'} text='Choose location and start exercise' />}
       <Header
         title='Sports locations'
         logo_image='graph'
