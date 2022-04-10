@@ -24,7 +24,12 @@ export default function PanicButton() {
     const getPhone = () => {
         if (!phone && userDetails) {
             GET_assistant_phone(userDetails.id).then((resulte) => {
-               setPhone(resulte) ;
+                if (resulte) {
+                   setPhone(resulte) ;
+               console.log("phone=>", resulte); 
+                }
+                else   {
+                    setAlert("sorry.. we did not found your energency person, you can go to setting page to add one")}          
             },(error)=>{
                 console.log(error+" GET_assistant_phone")
                 setAlert("sorry.. we did not found your energency person, you can go to setting page to add one")
