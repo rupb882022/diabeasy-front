@@ -87,7 +87,7 @@ export default function Login({ navigation }) {
     }
     return (
         <View style={styles.container}>
-            {loading && <Loading opacity={'#d6f2fc'} text='Logging you in !'/>}
+            {loading && <Loading opacity={'#d6f2fc'} />}
             <Header
                 title='Login'
                 logo_image='diabeasy'
