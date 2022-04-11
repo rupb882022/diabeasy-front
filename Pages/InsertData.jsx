@@ -1,4 +1,4 @@
-import { View, StyleSheet, Text, TextInput } from 'react-native';
+import { View, StyleSheet, Text, TextInput,KeyboardAvoidingView,Platform,TouchableWithoutFeedback,Keyboard} from 'react-native';
 import React, { useState, useContext, useEffect } from 'react';
 import Header from '../CTools/Header';
 import Input from '../CTools/Input';
@@ -98,6 +98,11 @@ const calc_carbs=()=>{
     }
 
     return (
+        <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={{flex:1}}
+      >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.container}>
             {loading && <Loading />}
             {alert && alert}
@@ -106,7 +111,8 @@ const calc_carbs=()=>{
                 logo_image='infusion'
                 image_width={30}
                 image_heigt={125}
-                possiton={48}
+                possiton={68}
+                flex={1.5}
                 marginLeft={2}
                 image_margin={{ Bottom: -5 }}
             />
@@ -182,6 +188,8 @@ const calc_carbs=()=>{
                 onPress={() => save_details()}
             />
         </View>
+        </TouchableWithoutFeedback>
+     </KeyboardAvoidingView>
     );
 }
 

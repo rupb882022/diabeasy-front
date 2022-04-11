@@ -97,7 +97,7 @@ export default function AddNewFood(props) {
   }, [serchCategory]);
 
   const saveFood = () => {
-    if(category.length > 0){
+    if(category.length <= 0){
       setAlert(<Alert text="select category please"
       type='alert'
         time={2000}

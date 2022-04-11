@@ -1,17 +1,17 @@
 import { View, Text, StyleSheet } from 'react-native';
-import React, { useState, useEffect,useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Header from '../CTools/Header';
 import Button from '../CTools/Button'
 import Communications from "react-native-communications";
 import { Feather } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
-import {UserContext} from '../CTools/UserDetailsHook'
-import {GET_assistant_phone} from '../Functions/Function'
+import { UserContext } from '../CTools/UserDetailsHook'
+import { GET_assistant_phone } from '../Functions/Function'
 
 export default function PanicButton() {
     const [phone, setPhone] = useState();
     const [alert, setAlert] = useState();
-    const {userDetails} = useContext(UserContext);
+    const { userDetails } = useContext(UserContext);
 
     const EmergancyCall = () => {
         getPhone();
@@ -24,19 +24,20 @@ export default function PanicButton() {
     const getPhone = () => {
         if (!phone && userDetails) {
             GET_assistant_phone(userDetails.id).then((resulte) => {
+                console.log("resulte", resulte);
                 if (resulte) {
-                   setPhone(resulte) ;
-               console.log("phone=>", resulte); 
+                    setPhone(resulte);
                 }
-                else   {
-                    setAlert("sorry.. we did not found your energency person, you can go to setting page to add one")}          
-            },(error)=>{
-                console.log(error+" GET_assistant_phone")
+                else {
+                    throw new Error();
+                }
+            }, (error) => {
+                console.log(error + " GET_assistant_phone")
                 setAlert("sorry.. we did not found your energency person, you can go to setting page to add one")
             });
         }
     }
-    
+
 
     useEffect(() => {
         //get phone number
@@ -99,7 +100,7 @@ const styles = StyleSheet.create({
         padding: '2%'
     },
     alert_Container: {
-        bottom: '35%',
+        bottom: '30%',
         paddingLeft: '5%',
         paddingRight: '5%',
     }

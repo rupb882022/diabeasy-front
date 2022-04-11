@@ -8,7 +8,6 @@ import {loginHook,UserContext} from './CTools/UserDetailsHook'
 export default function DiabesyApp() {
   const {userDetails, setUserDetails} = loginHook();
   
-
   return (
     <UserContext.Provider value={{userDetails,setUserDetails}}>
       <Navigtor/>

@@ -11,7 +11,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import PopUp from '../CTools/PopUp';
 import Loading from '../CTools/Loading';
 
-export default function Maps(props) {
+export default function Maps() {
   const [location, setLocation] = useState();
   const [distance, setDistance] = useState(0)
   const [loading, setLoading] = useState(true);

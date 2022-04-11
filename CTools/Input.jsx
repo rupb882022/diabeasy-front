@@ -85,6 +85,7 @@ export default function Input(props) {
         setValue && setText(setValue)
     }, []);
     return (
+
         <View style={styles.possition(justifyContent, alignItems, flex)}>
             
             <Text style={styles.label(width)}>{label}</Text>

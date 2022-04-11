@@ -11,8 +11,8 @@ import { useFocusEffect } from '@react-navigation/native';
 import {UserContext} from '../../CTools/UserDetailsHook'
 import Alert from '../../CTools/Alert';
 
-export default function Forum() {
 
+export default function Forum() {
   const [data, setData] = useState();
   const [show, setShow] = useState(false);
   const [subject, setSubject] = useState(false);

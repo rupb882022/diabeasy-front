@@ -102,12 +102,12 @@ const [delAlert,setDelAlert]=useState(false)
 
 
   const calcDetails = (amount, unit) => {
-
+console.log("unit",unit)
     //clac carbs when user select Unit Of Measure
     let temp = UnitOfMeasure.find(x => x.name == unit)
-    let carbs = unit == "grams" ? temp.carbs * parseFloat(amount / 100) : temp.carbs * amount
-    let suger = unit == "grams" ? temp.suger * parseFloat(amount / 100) : temp.suger * amount
-    let weightInGrams = unit == "grams" ? amount : temp.weightInGrams * amount
+    let carbs = unit == "Grams" ? temp.carbs * parseFloat(amount / 100) : temp.carbs * amount
+    let suger = unit == "Grams" ? temp.suger * parseFloat(amount / 100) : temp.suger * amount
+    let weightInGrams = unit == "Grams" ? amount : temp.weightInGrams * amount
 
     //if there is a unit for food
     carbs && setCrabs(carbs.toFixed(1))
