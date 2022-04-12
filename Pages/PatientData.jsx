@@ -189,7 +189,8 @@ export default function PatientData() {
           selectBox_items={monthList ? monthList : []}
         />
       </View>
-      {/* TO DO -function from serverside for set A1C parameter  */}
+      {/* TO DO -function from serverside for set A1C parameter   */} 
+      {/* (46.7 + your glucose) / 28.7 = your A1C */}
       <Text style={{ alignSelf: 'flex-end', paddingBottom: '4%', fontSize: 20, fontWeight: 'bold', position: 'absolute', top: '10%' }}>Estimated A1C : {a1c}% </Text>
 
 
