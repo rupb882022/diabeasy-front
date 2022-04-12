@@ -1,4 +1,4 @@
-import { View, StyleSheet, Image, Text } from 'react-native';
+import { View, StyleSheet, Image, Text ,TouchableWithoutFeedback,Keyboard} from 'react-native';
 import React, { useState, useEffect, useContext } from 'react';
 import Header from '../CTools/Header';
 import Input from '../CTools/Input';
@@ -86,6 +86,8 @@ export default function Login({ navigation }) {
         }
     }
     return (
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+
         <View style={styles.container}>
             {loading && <Loading opacity={'#d6f2fc'} />}
             <Header
@@ -163,6 +165,7 @@ export default function Login({ navigation }) {
                 source={require('../images/login.JPG.png')}
             />
         </View>
+        </TouchableWithoutFeedback>
     );
 }
 const styles = StyleSheet.create({

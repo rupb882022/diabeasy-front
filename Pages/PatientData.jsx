@@ -44,9 +44,16 @@ export default function PatientData() {
         get_graphs_details(userDetails.id)
       }
       else if (!userDetails.patientID && userDetails.id % 2 == 0) {
+        console.log("8");
         setPieInfo();
         setGrapData();
         setPieInfoMonth();
+        setAlert(
+          <Alert text="Need to choose patient to watch his Graphs"
+            type='worng'
+            time={5000}
+            bottom={400}
+          />)
       }
     }, [userDetails]))
 
@@ -219,9 +226,9 @@ export default function PatientData() {
               style={{ marginVertical: 8, borderRadius: 10, margin: 5 }}
             /></> }
           </View>
-          {alert && alert}
         </ScrollView>
       </SafeAreaView >
+{alert && alert}
     </>
   )
 }
