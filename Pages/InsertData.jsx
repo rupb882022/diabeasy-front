@@ -3,7 +3,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import Header from '../CTools/Header';
 import Input from '../CTools/Input';
 import Button from '../CTools/Button';
-import Moment from 'moment';
+import moment from 'moment';
 import { UserContext } from '../CTools/UserDetailsHook'
 import Loading from '../CTools/Loading';
 import { Post_user_data } from '../Functions/Function'
@@ -29,12 +29,13 @@ export default function InsertData({ navigation, route }) {
     const [injectionValue, setinjectionValue] = useState();
     const [foodLibary, setFoodLibary] = useState(FoodDetails);
 
+   
     const save_details = () => {
         if (sugarLevel) {
             setLoading(true)
-            let injectionType = carbs ? 'food' : injectionValue ? 'fix' : 'no-injection'
+            let injectionType = carbs ? 'food' : injectionValue ? 'fix' : 'no-injection'         
 
-            let date = Moment(dateTime).format("MM/DD/YYYY H:mm");
+            let date = moment(dateTime,'DD/MM/YYYY H:mm').format('YYYY-MM-DD[T]HH:mm:ss');
 
             let detials = {
                 date_time: date,
@@ -176,7 +177,7 @@ const calc_carbs=()=>{
                 label='Date time'
                 type='date'
                 editable={false}
-                placeholder={"  " + Moment(today).format("DD/MM/YYYY H:mm")}
+                placeholder={"  " + moment(today).format("DD-MM-YYYY H:mm")}
                 getValue={(value) => setDateTime(value)}
             />
             <Button
