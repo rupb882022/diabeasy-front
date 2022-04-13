@@ -21,7 +21,7 @@ export default function InsertData({ navigation, route }) {
     const { userDetails } = useContext(UserContext);
     const [loading, setLoading] = useState(false);
     const [alert, setAlert] = useState()
-    const [dateTime, setDateTime] = useState(today);
+    const [dateTime, setDateTime] = useState();
     const [sugarLevel, setsugarLevel] = useState();
     const [spot, setSpot] = useState();
     const [carbs, setCarbs] = useState('');
@@ -35,7 +35,7 @@ export default function InsertData({ navigation, route }) {
             setLoading(true)
             let injectionType = carbs ? 'food' : injectionValue ? 'fix' : 'no-injection'         
 
-            let date = moment(dateTime,'DD/MM/YYYY H:mm').format('YYYY-MM-DD[T]HH:mm:ss');
+            let date =dateTime? moment(dateTime,'DD/MM/YYYY H:mm').format('YYYY-MM-DD[T]HH:mm:ss'):moment(today).format('YYYY-MM-DD[T]HH:mm:ss');
 
             let detials = {
                 date_time: date,
@@ -177,7 +177,7 @@ const calc_carbs=()=>{
                 label='Date time'
                 type='date'
                 editable={false}
-                placeholder={"  " + moment(today).format("DD-MM-YYYY H:mm")}
+                placeholder={"  " + moment(today).format("DD/MM/YYYY H:mm")}
                 getValue={(value) => setDateTime(value)}
             />
             <Button
