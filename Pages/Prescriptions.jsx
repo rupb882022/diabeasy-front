@@ -106,7 +106,7 @@ export default function Prescriptions(props) {
                 time={2000}
                 bottom={110}
               />)
-              console.log("error in function Post_new_Prescription "+error);
+          console.log("error in function Post_new_Prescription " + error);
         });
     }
   }, [request]);
@@ -246,7 +246,7 @@ export default function Prescriptions(props) {
             bottom={110}
           />)
         //alert(error.response.data.Message)
-        console.log("error in function Put_Prescription "+error);
+        console.log("error in function Put_Prescription " + error);
         showDetails && setShowDetails(false);
       });
   }
@@ -294,7 +294,8 @@ export default function Prescriptions(props) {
           {prescriptions && prescriptions.map((item) => (
             <View key={item.id} style={styles.oneItem}>
               <TouchableOpacity onPress={() => { btnPrescDetails(item.id) }}>
-                <Text style={styles.status}>{<MaterialCommunityIcons name="pill" size={24} color={item.status == 'accepted' ? "#1EAC14" : item.status == 'rejected' ? "#EF5C5C" : "#F7FD52"} />} - Request from {moment(new Date(item.date_time)).format('DD/MM/YYYY')}</Text>
+                <Text style={styles.status}>{<MaterialCommunityIcons name="pill" size={24} color={item.status == 'accepted' ? "#1EAC14" : item.status == 'rejected' ? "#EF5C5C" : "#282f28cf"} />} - Request from {moment(new Date(item.date_time)).format('DD/MM/YYYY')}</Text>
+
               </TouchableOpacity>
             </View>
           ))
@@ -317,23 +318,29 @@ export default function Prescriptions(props) {
         />
       </View>
       }
-
-      <Text style={styles.info}><MaterialCommunityIcons name="pill" size={24} color="#1EAC14" /> Accepted  <MaterialCommunityIcons name="pill" size={24} color="#F7FD52" /> Waiting  <MaterialCommunityIcons name="pill" size={24} color="#EF5C5C" /> Rejected </Text>
-
       {userDetails.id % 2 != 0 && <Button
-        text='New prescription request'
+        text='New request'
         width={12}
         height={4}
         alignItems='center'
-        justifyContent='flex-end'
+        justifyContent='center'
         onPress={() => setShow(true)}
       />
       }
+      <View style={{ flexDirection: 'row' }}>
+      <View  style={{justifyContent:'center',alignItems:'center',direction:'ltr'}}>
+        <Text>
+          <MaterialCommunityIcons name="pill" size={24} color="#1EAC14" />Accepted</Text>
+        <Text>  <MaterialCommunityIcons name="pill" size={24} color="#282f28cf" /> Waiting    </Text>
+        <Text>   <MaterialCommunityIcons name="pill" size={24} color="#EF5C5C" /> Rejected   </Text>
+        </View>
 
-      <Image
-        style={styles.Image}
-        source={require('../images/prescriptions.png')}
-      />
+
+        <Image
+          style={styles.Image}
+          source={require('../images/prescriptions.png')}
+        />
+      </View>
       {show &&
         <PopUp
           height={45}
@@ -346,6 +353,7 @@ export default function Prescriptions(props) {
           button_justifyContent='flex-start'
         />}
 
+{/* Todo change PopupElement from state to const and add the buttons Delete and cancle to PopupElement */}
       {showDetails && prescriptions && userDetails.id % 2 != 0 &&
         <PopUp
           height={45}
@@ -355,7 +363,7 @@ export default function Prescriptions(props) {
           element={
             <>
               {popupElement}
-              <View style={{ flexDirection: 'row', paddingTop: '20%', paddingLeft: '10%' }}>
+              <View style={{ flexDirection: 'row-reverse', paddingTop: '20%', paddingRight: '10%' }}>
                 <Button text='Delete' onPress={() => setDelAlert(true)} />
                 <Button text='Cancle' onPress={() => setShowDetails(false)} />
               </View>
@@ -396,34 +404,44 @@ const styles = StyleSheet.create({
 
   Image: {
     resizeMode: 'cover',
-    alignSelf: 'center',
+    alignSelf: 'flex-end',
     opacity: 0.95,
-    paddingTop: '30%',
-    width: '50%',
+    paddingTop: '34%',
+    width: '68%',
     height: '100%',
     // justifyContent: 'flex-start',
     // alignItems: 'flex-start',
-    flex: 0.5,
-    marginTop: '5%'
+    flex: 1,
+    marginLeft:'35%',
+    
+    // marginTop: '5%'
   },
   list: {
     //flexWrap: 'wrap',
     paddingTop: '5%',
     paddingBottom: '15%',
     flex: 0.5,
-    marginTop: '2%'
+    marginTop: '2%',
+    backgroundColor: '#ffffffa8',
+    marginHorizontal: '2.5%'
 
   },
   oneItem: {
     marginBottom: '5%',
-    justifyContent: 'flex-start'
+    justifyContent: 'flex-start',
+    borderBottomWidth: 1,
+    borderBottomColor: '#4d4d4d',
+
   },
   title: {
     alignSelf: 'center',
     position: 'absolute',
-    top: '10%',
-    fontSize: 30,
+    top: '16.2%',
+    fontSize: 25,
     fontWeight: 'bold',
+    backgroundColor: '#ffffffa8',
+    width: '95%',
+    textAlign: 'center'
   },
   popuptitle: {
     fontSize: 30,
@@ -452,18 +470,16 @@ const styles = StyleSheet.create({
 
   },
   status: {
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
     fontSize: 20,
     textAlign: 'center',
-    color: 'black'
+    color: 'black',
+
+
 
   },
   info: {
     textAlign: 'center',
-    fontSize: 20,
-    position: 'relative',
-    top: '4%'
-    // paddingTop:'10%'
   }
 
 

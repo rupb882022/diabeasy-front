@@ -93,7 +93,7 @@ export default function PatientDataTable({ navigation }) {
   const handleResult = (result) => {
     let arr = [];
     result.map((x, i) => {
-      arr.push([moment(x.date_time).format('DD/MM/YY - H:mm'), x.blood_sugar_level, x.value_of_ingection, x.totalCarbs?x.totalCarbs:0, x.injection_site])
+      arr.push([moment(x.date_time).format('DD/MM/YY - H:mm'), x.blood_sugar_level, x.value_of_ingection?x.value_of_ingection:0, x.totalCarbs?x.totalCarbs:0, x.injection_site])
     })
     setContent(arr)
   }
@@ -152,7 +152,7 @@ export default function PatientDataTable({ navigation }) {
           />
         </View>
       </View>
-      <View style={{ flex: 3 }}>
+      <View style={{ flex: 3,backgroundColor: '#ffffffa8', }}>
         <Table borderStyle={{ borderWidth: 1 }} >
           <Row
             data={CONTENT.tableHead}

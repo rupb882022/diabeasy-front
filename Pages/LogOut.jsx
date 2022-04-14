@@ -28,7 +28,7 @@ export default function Routes(props) {
     <View>
       <Loading
      opacity={'#d6f2fc'}
-     text={'Logging you out !\n Hope to see you soon! '}
+     text={'Logging you out! Hope to see you soon!'}
       />
     </View>
   )

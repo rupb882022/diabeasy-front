@@ -25,7 +25,7 @@ export default function PatientData() {
   //todo if there is not enough data of patient
   const ParsetoMonthName = (monthNumber, format) => {
     const date = new Date();
-    if (monthNumber == 30) {
+    if (monthNumber == 30||monthNumber == 0) {
       return "last 30 days"
     }
     date.setMonth(monthNumber - 1);
@@ -61,7 +61,7 @@ export default function PatientData() {
     setLoading(true)
     Get_graphs_details(id).then((result) => {
       let List = []; let data = []; let labels = []; let dataPie = [];
-  
+
       result.data.map(x => {
         //array for graph
         if (x.month != 30) {
@@ -120,7 +120,7 @@ export default function PatientData() {
         labels: labels,
         datasets: [{ data: data }]
       })
-      result.a1c&&setA1c(result.a1c);
+      result.a1c && setA1c(result.a1c);
       setLoading(false)
     },
       (error) => {
@@ -137,18 +137,18 @@ export default function PatientData() {
 
   let chartConfig = {
     backgroundColor: "#e26a00",
-    backgroundGradientFrom: "#fb8c00",
+    backgroundGradientFrom: "#ffffffa8",
     backgroundGradientTo: "#ffa726",
     decimalPlaces: 1, // optional, defaults to 2dp
-    color: (opacity = 0) => `rgba(255, 255, 255, ${opacity})`,
-    labelColor: (opacity = 0) => `rgba(255, 255, 255, ${opacity})`,
+    color: (opacity = 0) => `rgba(0, 0, 0, ${opacity})`,
+    labelColor: (opacity = 0) => `rgba(0, 0, 0, ${opacity})`,
     style: {
       borderRadius: 16
     },
     propsForDots: {
-      r: "6",
+      r: "3",
       strokeWidth: "2",
-      stroke: "#ffa726"
+      // stroke: "#ffa726"
     }
   }
 
@@ -179,8 +179,8 @@ export default function PatientData() {
       />
       <View style={{ flex: 0.08, flexDirection: 'column', position: 'relative', bottom: '5%', right: '28%' }}>
         <Input
-          label='Month'
-          placeholder='last 30 days'
+          placeholder='Month'
+          // placeholder='last 30 days'
           alignItems='center'
           editable={false}
           width={35}
@@ -191,19 +191,19 @@ export default function PatientData() {
           selectBox_items={monthList ? monthList : []}
         />
       </View>
-      {/* TO DO -function from serverside for set A1C parameter   */} 
+      {/* TO DO -function from serverside for set A1C parameter   */}
       {/* (46.7 + your glucose) / 28.7 = your A1C */}
-      <Text style={{ alignSelf: 'flex-end', paddingBottom: '4%', fontSize: 20, fontWeight: 'bold', position: 'absolute', top: '10%' }}>Estimated A1C : {a1c&&a1c.toFixed(1)}% </Text>
+      <Text style={{ alignSelf: 'flex-end', paddingBottom: '4%', fontSize: 18, position: 'absolute', top: '10%',right:'5%' }}>Estimated A1C : {a1c && a1c.toFixed(1)}% </Text>
 
 
       <SafeAreaView style={styles.containerView}>
         <ScrollView style={styles.container}>
 
 
-          <Text style={styles.secoundTitle}> Sugar value segmentation </Text>
+        {pieInfoMonth &&    <Text style={styles.secoundTitle}>{month?ParsetoMonthName(month,'short'):'last 30 days'} values segmentation </Text>}
 
 
-          <View>
+          <View style={{ backgroundColor: '#ffffffa8' ,marginHorizontal:'2%', borderRadius: 16}}>
             {pieInfoMonth && <PieChart
               data={pieInfoMonth}
               width={Dimensions.get("window").width}
@@ -211,27 +211,27 @@ export default function PatientData() {
               chartConfig={chartConfig}
               accessor={"amount"}
               backgroundColor={"transparent"}
-              paddingLeft={"15"}
+              paddingLeft={"7"}
             />}
 
           </View>
-          <View style={{ paddingBottom: '2%' }}>
-          {grapData &&grapData.labels.length>5&&<><Text style={styles.secoundTitle}>Avarage in past 6 months</Text>
-             <LineChart
-              data={grapData}
-              width={Dimensions.get("window").width} // from react-native
-              height={250}
-              //yAxisLabel="$"
-              //yAxisSuffix="k"
-              yAxisInterval={1} // optional, defaults to 1
-              chartConfig={chartConfig}
-              // bezier
-              style={{ marginVertical: 8, borderRadius: 10, margin: 5 }}
-            /></> }
+          <View style={{ paddingTop: '4%' }}>
+            {grapData && grapData.labels.length > 5 && <><Text style={styles.secoundTitle}>Average in the last 6 months</Text>
+              <LineChart
+                data={grapData}
+                width={Dimensions.get("window").width} // from react-native
+                height={250}
+                //yAxisLabel="$"
+                //yAxisSuffix="k"
+                yAxisInterval={1} // optional, defaults to 1
+                chartConfig={chartConfig}
+                // bezier
+                style={{ marginVertical: 8, borderRadius: 10, margin: 5 }}
+              /></>}
           </View>
         </ScrollView>
       </SafeAreaView >
-{alert && alert}
+      {alert && alert}
     </>
   )
 }
