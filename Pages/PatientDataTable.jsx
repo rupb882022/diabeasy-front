@@ -15,7 +15,6 @@ import { AntDesign } from '@expo/vector-icons';
 export default function PatientDataTable({ navigation }) {
   const { userDetails } = useContext(UserContext);
 
-  const [a1c, setA1c] = useState(7.3)
   const [loading, setLoading] = useState(false);
   const [alert, setAlert] = useState()
   const [content, setContent] = useState()
@@ -56,6 +55,7 @@ export default function PatientDataTable({ navigation }) {
     Get_Table_Data(id, fromDate, toDate).then((result) => {
       setLoading(false)
       handleResult(result)
+
     },
       (error) => {
         console.log(error + " in function Get_Table_Data")

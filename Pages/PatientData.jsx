@@ -19,7 +19,7 @@ export default function PatientData() {
   const [alert, setAlert] = useState();
   const [loading, setLoading] = useState(false);
   const [grapData, setGrapData] = useState();
-  const [a1c, setA1c] = useState(7.3)
+  const [a1c, setA1c] = useState()
 
 
   //todo if there is not enough data of patient
@@ -61,7 +61,8 @@ export default function PatientData() {
     setLoading(true)
     Get_graphs_details(id).then((result) => {
       let List = []; let data = []; let labels = []; let dataPie = [];
-      result.map(x => {
+  
+      result.data.map(x => {
         //array for graph
         if (x.month != 30) {
           data.push(x.averge);
@@ -119,6 +120,7 @@ export default function PatientData() {
         labels: labels,
         datasets: [{ data: data }]
       })
+      result.a1c&&setA1c(result.a1c);
       setLoading(false)
     },
       (error) => {
@@ -191,7 +193,7 @@ export default function PatientData() {
       </View>
       {/* TO DO -function from serverside for set A1C parameter   */} 
       {/* (46.7 + your glucose) / 28.7 = your A1C */}
-      <Text style={{ alignSelf: 'flex-end', paddingBottom: '4%', fontSize: 20, fontWeight: 'bold', position: 'absolute', top: '10%' }}>Estimated A1C : {a1c}% </Text>
+      <Text style={{ alignSelf: 'flex-end', paddingBottom: '4%', fontSize: 20, fontWeight: 'bold', position: 'absolute', top: '10%' }}>Estimated A1C : {a1c&&a1c.toFixed(1)}% </Text>
 
 
       <SafeAreaView style={styles.containerView}>
