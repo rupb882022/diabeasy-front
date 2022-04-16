@@ -187,8 +187,7 @@ const styles = StyleSheet.create({
         // position: 'relative',
         top: '5%',
         alignContent: 'stretch',
-        paddingTop: '15%'
-
+        paddingTop: '15%',
     },
     forgotPassword: {
         alignItems: 'flex-end',

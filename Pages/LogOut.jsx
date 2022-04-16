@@ -12,7 +12,10 @@ export default function Routes(props) {
 
   const storeData = async () => {
     try {
-      await AsyncStorage.clear();
+      const jsonValue = await AsyncStorage.getItem('userDetails');
+      console.log("jsonValue",jsonValue);
+    
+      jsonValue&&await AsyncStorage.clear();
       navigation.navigate('Login');
     } catch (e) {
       await AsyncStorage.setItem('eror', e)

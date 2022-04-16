@@ -57,7 +57,7 @@ console.log("detials",detials);
                     //         type='success'
                     //         time={3000}
                     //     />)
-                         navigation.navigate('Home');
+                         navigation.navigate('Repotrs - Table');
                 }
             })
                 .catch((error) => {
@@ -117,8 +117,9 @@ const calc_carbs=()=>{
                 marginLeft={2}
                 image_margin={{ Bottom: -5 }}
             />
+            <View style={styles.containerBody}>
             <Text style={styles.eatText}>What are you going to eat?</Text>
-            <View style={{ flex: 1, flexDirection: 'row', }}>
+            <View style={{ flex: 1, flexDirection: 'row' }}>
                 <View style={{ flex: 4, paddingLeft: '13%' }}>
                     <View style={styles.CarbsinputContiner}>
                         <Text style={styles.label}>Carbs</Text>
@@ -180,6 +181,7 @@ const calc_carbs=()=>{
                 placeholder={"  " + moment(today).format("DD/MM/YYYY H:mm")}
                 getValue={(value) => setDateTime(value)}
             />
+            </View>
             <Button
                 text="save"
                 width={10}
@@ -198,6 +200,9 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'flex-start',
+    },
+    containerBody:{flex:6.5,
+        bottom:'4%',
     },
     eatText: {
         textAlign: 'center',

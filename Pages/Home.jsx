@@ -90,9 +90,9 @@ const styles = StyleSheet.create({
         textShadowRadius: 3,
     },
     Image: {
-        flex: 0.8,
+        flex: 0.85,
         // position:'absolute',
-        resizeMode: 'center',
+        resizeMode: 'cover',
         width: '40%',
         top: '1%',
         alignSelf: 'flex-end',
