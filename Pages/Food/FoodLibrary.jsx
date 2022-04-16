@@ -121,7 +121,7 @@ export default function FoodLibrary({ navigation }) {
             setLoading(true)
             Serch_food(serchByName, userDetails&&userDetails.id ? userDetails.id : 0, isRecipes ? 'getRecipes' : 'getIngredients').then((resulte) => {
                 if (!resulte || resulte.length < 0 || resulte[0].id == 0) {
-                    setAlert(<Alert text="no resulte"
+                    setAlert(<Alert text='sorry we cannot find your food search'
                         type='worng'
                         time={3500}
                         bottom={350}

@@ -53,7 +53,7 @@ export default function PatientDataTable({ navigation }) {
     }
 
     Get_Table_Data(id, fromDate, toDate).then((result) => {
-      setLoading(false)
+    
       handleResult(result)
 
     },
@@ -96,6 +96,7 @@ export default function PatientDataTable({ navigation }) {
       arr.push([moment(x.date_time).format('DD/MM/YY - H:mm'), x.blood_sugar_level, x.value_of_ingection?x.value_of_ingection:0, x.totalCarbs?x.totalCarbs:0, x.injection_site])
     })
     setContent(arr)
+    setLoading(false)
   }
   return (
     <View style={styles.container}>
@@ -148,7 +149,7 @@ export default function PatientDataTable({ navigation }) {
             //textSize={14}
             element={<AntDesign name="search1" size={14} color="white" />}
             alignItems='flex-end'
-            onPress={() => getData()}
+            onPress={() => {getData();}}
           />
         </View>
       </View>

@@ -52,6 +52,20 @@ if(password==code){
         })
     }
   }
+  // const sendEmail = async() => {
+  //   let params={
+  //        subject: "subject1",
+  //        body:"body1",
+  //        to:"tal_farkash@walla.com",
+  //   }
+    
+  //   console.log("params",params);
+  //     emailjs.send('service_1hsmgrq', 'template_lulvgxf',params, 'AGouvb_bFo7_5FLGk')    .then((result) => {
+  //     console.log("res=>",result.text);
+  // }, (error) => {
+  //     console.log("err=>",error.text);
+  // });   
+  //    };
   return (
     <PopUp
       style={styles.container}

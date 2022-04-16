@@ -19,7 +19,6 @@ export default function InsertData({ navigation, route }) {
     let FoodDetails = route.params && route.params.myFoodDtails ? route.params.myFoodDtails : '';
 
     const { userDetails } = useContext(UserContext);
-    const [loading, setLoading] = useState(false);
     const [alert, setAlert] = useState()
     const [dateTime, setDateTime] = useState();
     const [sugarLevel, setsugarLevel] = useState();
@@ -32,7 +31,6 @@ export default function InsertData({ navigation, route }) {
    
     const save_details = () => {
         if (sugarLevel) {
-            setLoading(true)
             let injectionType = carbs ? 'food' : injectionValue ? 'fix' : 'no-injection'         
 
             let date =dateTime? moment(dateTime,'DD/MM/YYYY H:mm').format('YYYY-MM-DD[T]HH:mm:ss'):moment(today).format('YYYY-MM-DD[T]HH:mm:ss');
@@ -49,7 +47,6 @@ export default function InsertData({ navigation, route }) {
             }
 console.log("detials",detials);
             Post_user_data(detials).then((response) => {
-                setLoading(false)
                 if (response) {
                     // setAlert(
                     //     <Alert
@@ -66,7 +63,6 @@ console.log("detials",detials);
                             type='worng'
                         />)
                     console.log("error in function Post_user_details " + error);
-                    setLoading(false)
                 });
 
         } else {
@@ -105,7 +101,6 @@ const calc_carbs=()=>{
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.container}>
-            {loading && <Loading />}
             {alert && alert}
             <Header
                 title='Insert Data'
@@ -203,6 +198,7 @@ const styles = StyleSheet.create({
     },
     containerBody:{flex:6.5,
         bottom:'4%',
+    
     },
     eatText: {
         textAlign: 'center',
