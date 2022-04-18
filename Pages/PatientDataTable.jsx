@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, ScrollView } from 'react-native'
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState, useContext } from 'react'
 import { Table, TableWrapper, Row, Rows, Col } from 'react-native-table-component';
 import Header from '../CTools/Header';
@@ -10,7 +10,10 @@ import { Get_Table_Data } from '../Functions/Function'
 import moment from 'moment';
 import { useFocusEffect } from '@react-navigation/native';
 import Input from '../CTools/Input';
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign,Entypo } from '@expo/vector-icons';
+import PopUp from '../CTools/PopUp';
+import DeleteDataReportTable from './DeleteDataReportTable';
+import UpdateDateReportTable from './UpdateDateReportTable';
 
 export default function PatientDataTable({ navigation }) {
   const { userDetails } = useContext(UserContext);
@@ -20,6 +23,8 @@ export default function PatientDataTable({ navigation }) {
   const [content, setContent] = useState()
   const [fromDate, setFromDate] = useState(moment(new Date(new Date().setDate(new Date().getDate() - 7))).format('YYYY-MM-DD'))
   const [toDate, setToDate] = useState(moment(new Date()).format('YYYY-MM-DD'))
+  const [showEdit, setShowEdit] = useState(false)
+  const [time, setTime] = useState()
 
   useFocusEffect(
     React.useCallback(() => {
@@ -71,7 +76,7 @@ export default function PatientDataTable({ navigation }) {
 
 
   const CONTENT = {
-    tableHead: ['Date and time', 'Blood sugar', 'Injection value', 'Carbs value', 'Injection spot'],
+    tableHead: ['Date and time', 'Blood sugar', 'Injection value', 'Carbs value', 'Edit'],
     tableData: content,
   };
 
@@ -90,14 +95,19 @@ export default function PatientDataTable({ navigation }) {
         setFromDate(date) : setToDate(date)
     }
   }
+  //const btn = <Button alignItems='center' width={2} height={1} element={<Entypo name="dots-three-horizontal" size={24} color="black" />}/> 
   const handleResult = (result) => {
     let arr = [];
     result.map((x, i) => {
-      arr.push([moment(x.date_time).format('DD/MM/YY - H:mm'), x.blood_sugar_level, x.value_of_ingection?x.value_of_ingection:0, x.totalCarbs?x.totalCarbs:0, x.injection_site])
+      arr.push([moment(x.date_time).format('DD/MM/YY - H:mm'), x.blood_sugar_level, x.value_of_ingection?x.value_of_ingection:0, x.totalCarbs?x.totalCarbs:0,
+      <Button onPress={()=>{setShowEdit(true);setTime(x.date_time);}} alignItems='center' width={2} height={1} element={<Entypo name="dots-three-horizontal" size={24} color="black" />}/> ])
+   //  console.log('1',x.date_time);
     })
     setContent(arr)
     setLoading(false)
-  }
+  }   
+  // console.log("time",time);
+
   return (
     <View style={styles.container}>
       <Header
@@ -187,6 +197,27 @@ export default function PatientDataTable({ navigation }) {
       }
       {loading && <Loading />}
       {alert && alert}
+      {showEdit && userDetails.id%2!=0 &&
+      <PopUp
+        animationType='fade'
+        isButton={false}
+        backgroundColor='#FCEBD6'
+        height={18}
+        width={40}
+        element={<View style={{flex:3,width:'100%',alignSelf:'center',alignItems:'center'}}>
+      <UpdateDateReportTable 
+      setShowEdit={()=>setShowEdit(false)}
+      />
+      <DeleteDataReportTable 
+      time={time.replace(":","!").replace(":","!")}
+      getData={getData}
+      setShowEdit={()=>setShowEdit(false)}
+      />
+     
+      <TouchableOpacity style={styles.textEdit} onPress={()=>setShowEdit(false)}><Text>Cancle</Text></TouchableOpacity>
+       </View>}
+        
+        />}
     </View>
   );
 }
@@ -199,5 +230,14 @@ const styles = StyleSheet.create({
   row: { height: 28 },
   text: { textAlign: 'center' },
   dataWrapper: { marginTop: -1 },
+  textEdit:{
+  backgroundColor: '#F9AC27',
+  width: '130%',
+  flex: 1,
+  justifyContent: 'center',
+  marginTop: '2%',
+  alignItems:'center'
+},
 
+ 
 });

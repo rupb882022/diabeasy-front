@@ -72,6 +72,11 @@ export const  Post_unit=(id,body)=>{
 export const  Get_Table_Data=(userDetails_id,fromDate,toDate)=>{
   return Fetch(`User/GetdataForTable/${userDetails_id}/${fromDate}/${toDate}`,'GET');
 }
+
+export const Delete_line_tableData=(time)=>{
+  return Fetch(`User/GetdataForTable/Delete/${time}`,'Delete');
+  }
+
 //-------------------------------patient Data------------------------------------
 export const  Get_graphs_details=(userDetails_id)=>{
   return Fetch(`User/GetdataForGraphs/${userDetails_id}`,'GET');
