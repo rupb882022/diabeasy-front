@@ -100,7 +100,7 @@ export default function PatientDataTable({ navigation }) {
     let arr = [];
     result.map((x, i) => {
       arr.push([moment(x.date_time).format('DD/MM/YY - H:mm'), x.blood_sugar_level, x.value_of_ingection?x.value_of_ingection:0, x.totalCarbs?x.totalCarbs:0,
-      <Button onPress={()=>{setShowEdit(true);setTime(x.date_time);}} alignItems='center' width={2} height={1} element={<Entypo name="dots-three-horizontal" size={24} color="black" />}/> ])
+      <Button color='transparent' onPress={()=>{setShowEdit(true);setTime(x.date_time);}} alignItems='center' width={14} height={0.1} element={<Entypo name="dots-three-horizontal" size={24} color="black" />}/> ])
    //  console.log('1',x.date_time);
     })
     setContent(arr)
