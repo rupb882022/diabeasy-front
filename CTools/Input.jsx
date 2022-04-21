@@ -9,7 +9,7 @@ export default function Input(props) {
 
     const { placeholder, secure = false, required = false, editable = true, textAlign = 'left', label, validtion, min = 0, max, alignItems, justifyContent, width, height, fontSize= 14,
         keyboardType = 'default', type = '', selectBox_items = [], SelectBox_placeholder, mode = 'datetime', display = 'spinner', popup_title, date_format_hour = true,
-        getValue, spellCheck = false, setValue, validLable, flex, multiline = false, numberOfLines } = props
+        getValue, spellCheck = false, setValue, validLable, flex, multiline = false, numberOfLines,placeholderTextColor } = props
 
 
 
@@ -106,7 +106,7 @@ export default function Input(props) {
                 numberOfLines={numberOfLines}
 
                 // maxLength={10}  max lengh of the text, char=1
-                // placeholderTextColor='red'
+                placeholderTextColor={placeholderTextColor}
                 spellCheck={spellCheck}         //If false, disables spell-check style (i.e. red underlines). The default value is inherited from autoCorrect
             />
 

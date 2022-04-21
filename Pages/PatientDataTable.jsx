@@ -14,6 +14,7 @@ import { AntDesign,Entypo } from '@expo/vector-icons';
 import PopUp from '../CTools/PopUp';
 import DeleteDataReportTable from './DeleteDataReportTable';
 import UpdateDateReportTable from './UpdateDateReportTable';
+import { Put_line_tableData } from '../Functions/Function';
 
 export default function PatientDataTable({ navigation }) {
   const { userDetails } = useContext(UserContext);
@@ -25,7 +26,14 @@ export default function PatientDataTable({ navigation }) {
   const [toDate, setToDate] = useState(moment(new Date()).format('YYYY-MM-DD'))
   const [showEdit, setShowEdit] = useState(false)
   const [time, setTime] = useState()
+  const [update, setUpdate] = useState(false)
+  //const [dataUpdate, setDataUpdate] = useState({})
+  const [sugarLevel, setSugarLevel] = useState()
+  const [injectionValue, setinjectionValue] = useState()
+  const [spot, setSpot] = useState('')
+  const [carbs, setCarbs] = useState();
 
+  //console.log('sugar',sugarLevel);
   useFocusEffect(
     React.useCallback(() => {
       //  console.log(userDetails); 
@@ -48,7 +56,7 @@ export default function PatientDataTable({ navigation }) {
   );
 
   const getData = () => {
-    setLoading(true)
+   // setLoading(true)
     let id;
     if (userDetails.patientID) {// if its doctor with selected patient
       id = userDetails.patientID;
@@ -57,10 +65,8 @@ export default function PatientDataTable({ navigation }) {
       id = userDetails.id
     }
 
-    Get_Table_Data(id, fromDate, toDate).then((result) => {
-    
+    Get_Table_Data(id, fromDate, toDate).then((result) => {  
       handleResult(result)
-
     },
       (error) => {
         console.log(error + " in function Get_Table_Data")
@@ -99,15 +105,54 @@ export default function PatientDataTable({ navigation }) {
   const handleResult = (result) => {
     let arr = [];
     result.map((x, i) => {
+    //console.log('x',x.injection_site);
+
       arr.push([moment(x.date_time).format('DD/MM/YY - H:mm'), x.blood_sugar_level, x.value_of_ingection?x.value_of_ingection:0, x.totalCarbs?x.totalCarbs:0,
-      <Button color='transparent' onPress={()=>{setShowEdit(true);setTime(x.date_time);}} alignItems='center' width={14} height={0.1} element={<Entypo name="dots-three-horizontal" size={24} color="black" />}/> ])
-   //  console.log('1',x.date_time);
+      <Button color='transparent' onPress={()=>{setSugarLevel(x.blood_sugar_level);setTime(x.date_time);setinjectionValue(x.value_of_ingection?x.value_of_ingection:0);x.injection_site?setSpot(x.injection_site):'';setCarbs(x.totalCarbs?x.totalCarbs:0);setShowEdit(true)}}
+       alignItems='center' 
+       width={14}
+      height={1} 
+      element={<Entypo name="dots-three-horizontal" size={24} color="black" />}/> ])
     })
+    //console.log('arrd1=',arr);
     setContent(arr)
     setLoading(false)
+   // console.log('L',loading);
   }   
-  // console.log("time",time);
 
+ 
+  // console.log("time",time);
+const saveDetails = ()=>{
+ // let injectionType = carbs ? 'food' : injectionValue ? 'fix' : 'no-injection'  
+ console.log('s',spot);       
+  let details={
+    date_time: time,
+    blood_sugar_level: sugarLevel,
+    injection_site: 'Arm',  //`${spot}`, ---------------------------TO DO - fix injection site on popup
+    totalCarbs:carbs,
+    injectionType:carbs? 'food' : injectionValue ? 'fix' : 'no-injection',
+    value_of_ingection:injectionValue,
+    Patients_id:userDetails.id
+  }
+   //console.log("dataUpdate1=>",details);
+  Put_line_tableData(details).then((response) => {  
+   //console.log('re',response);
+    update&&setUpdate(false) 
+    response && getData();
+  })
+    .catch((error) => {
+      setAlert(
+        <Alert text="sorry, somthing went wrong, please try again later"
+          type='worng'
+          time={2000}
+          bottom={110}
+        />)
+        update&&setUpdate(false)
+      //alert(error.response.data.Message)
+      console.log("error in function Put_line_tableData " + error);
+    });
+
+}
   return (
     <View style={styles.container}>
       <Header
@@ -206,7 +251,7 @@ export default function PatientDataTable({ navigation }) {
         width={40}
         element={<View style={{flex:3,width:'100%',alignSelf:'center',alignItems:'center'}}>
       <UpdateDateReportTable 
-      setShowEdit={()=>setShowEdit(false)}
+      setShowEdit={()=>{setShowEdit(false);setUpdate(true)}}
       />
       <DeleteDataReportTable 
       time={time.replace(":","!").replace(":","!")}
@@ -215,9 +260,108 @@ export default function PatientDataTable({ navigation }) {
       />
      
       <TouchableOpacity style={styles.textEdit} onPress={()=>setShowEdit(false)}><Text>Cancle</Text></TouchableOpacity>
+       </View>}/>}
+       {update&&userDetails.id%2!=0 && 
+       <PopUp
+       backgroundColor="#bbe4f2"
+       height='50%'
+       width='70%'
+      // onPress={()=>setUpdate(false)}
+       isButton={false}
+       element={<View style={{flex:1}}>
+         <Text style={styles.titlePopup}>Edit</Text>
+       <View style={{marginTop:'20%',}} >
+          {/* <Text> Edit time: {moment(time).format('DD/MM/YY - H:mm')}</Text> */}
+          {/* time.replace("T"," ") */}
+          <Input
+                popup_title='Date and Time to edit'
+                label='Date and time to edit'
+               // type='date'
+                editable={false}
+                width='150%'
+                height='50%'
+                placeholder={moment(time).format("DD/MM/YYYY H:mm")}
+            />
+            <Input
+                label='Blood sugar level'
+              //  validtion='number'
+                placeholder={`${sugarLevel}`}
+                keyboardType='number-pad'
+                max={600}
+                required={true}
+                width='150%'
+                height='50%'
+                getValue={(value) => setSugarLevel(value)}
+                setValue={sugarLevel}
+                placeholderTextColor='black'
+            />
+            <Input
+                label='injection value'
+              //  validtion='float'
+             placeholder={`${injectionValue}`}
+              width='150%'
+              height='50%'    
+              keyboardType='decimal-pad'
+              getValue={(value) => setinjectionValue(value)}
+              setValue={injectionValue}
+              placeholderTextColor='black'
+
+            />
+            <Input
+                label='Spot of injection'
+                placeholder={`${spot}`}
+                editable={false}
+                type='selectBox'
+                width='150%'
+                height='50%'
+                getValue={(value) => setSpot(value)}
+                setValue={spot}
+                SelectBox_placeholder='Select spot of injection'
+                selectBox_items={[
+                    { itemKey: 0, label: 'Arm', value: 'Arm' },
+                    { itemKey: 1, label: 'Belly', value: 'Belly' },
+                    { itemKey: 2, label: 'Leg', value: 'Leg' },
+                    { itemKey: 3, label: 'Buttock', value: 'Buttock' },
+                ]} />
+                <Input
+                label='Carbs'
+              //  validtion='float'
+                width='150%'
+                height='50%'
+                keyboardType='decimal-pad'
+                getValue={(value) => setCarbs(value)}
+                placeholder={carbs? `${carbs}`:'0'}
+                setValue={carbs}
+                placeholderTextColor='black'
+            />
+            <View style={{flex:0.8,flexDirection:'row',marginTop:'5%'}}>
+              <Button
+                 text="save"
+                 width={10}
+                 height={10}
+                 //alignItems='center'
+                 justifyContent='flex-start'
+                 onPress={()=>{
+                  time&&sugarLevel&&
+                  saveDetails();
+                  }}
+             />
+             <Button
+                 text="cancle"
+                 width={10}
+                 height={10}
+                //alignItems='flex-end'
+                // justifyContent='flex-end'
+                 onPress={()=>setUpdate(false)}
+             />
+             
+             </View>
+               
+                </View>
+               
        </View>}
-        
-        />}
+       />
+       }
     </View>
   );
 }
@@ -238,6 +382,22 @@ const styles = StyleSheet.create({
   marginTop: '2%',
   alignItems:'center'
 },
+titlePopup: {
+  fontSize: 30,
+  width: '70%',
+  height: '100%',
+  textAlign: 'center',
+  fontWeight: 'bold',
+  color: 'white',
+  textShadowColor: '#1EA6D6',
+  textShadowOffset: { width: 2, height: 2 },
+  textShadowRadius: 5,
+  justifyContent: 'flex-start',
+  alignSelf:'center',
+ // alignItems: 'flex-end',
+ // flex: 3,
+ position:'absolute',
 
+}
  
 });

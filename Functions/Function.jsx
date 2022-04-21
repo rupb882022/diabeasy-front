@@ -77,6 +77,11 @@ export const Delete_line_tableData=(time)=>{
   return Fetch(`User/GetdataForTable/Delete/${time}`,'Delete');
   }
 
+  export const Put_line_tableData=(body)=>{
+    return Axios('User/GetdataForTable/put','PUT',body);
+    }
+  
+
 //-------------------------------patient Data------------------------------------
 export const  Get_graphs_details=(userDetails_id)=>{
   return Fetch(`User/GetdataForGraphs/${userDetails_id}`,'GET');

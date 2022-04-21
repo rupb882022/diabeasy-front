@@ -8,7 +8,7 @@ export default function DeleteDataReportTable(props) {
   const { setShowEdit, time ,getData } = props
 
   const [delAlert,setDelAlert]=useState(false)
-console.log("t=",time);
+//console.log("t=",time);
   const deleteLine = () => {
     setDelAlert(false)
     setShowEdit();
