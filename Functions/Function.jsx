@@ -76,7 +76,6 @@ export const  Get_Table_Data=(userDetails_id,fromDate,toDate)=>{
 export const Delete_line_tableData=(time)=>{
   return Fetch(`User/deleteTableRow/${time}`,'Delete');
   }
-
 //-------------------------------patient Data------------------------------------
 export const  Get_graphs_details=(userDetails_id)=>{
   return Fetch(`User/GetdataForGraphs/${userDetails_id}`,'GET');
