@@ -47,15 +47,7 @@ export default function InsertData({ navigation, route }) {
             }
 console.log("detials",detials);
             Post_user_data(detials).then((response) => {
-                if (response) {
-                    // setAlert(
-                    //     <Alert
-                    //         text="details Save!"
-                    //         type='success'
-                    //         time={3000}
-                    //     />)
-                         navigation.navigate('Repotrs - Table');
-                }
+                    response&&navigation.navigate('Repotrs - Table');
             })
                 .catch((error) => {
                     setAlert(

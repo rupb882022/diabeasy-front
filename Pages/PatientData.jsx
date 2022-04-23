@@ -61,7 +61,7 @@ export default function PatientData() {
     setLoading(true)
     Get_graphs_details(id).then((result) => {
       let List = []; let data = []; let labels = []; let dataPie = [];
-
+console.log(result)
       result.data.map(x => {
         //array for graph
         if (x.month != 30) {
