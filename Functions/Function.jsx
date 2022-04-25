@@ -80,7 +80,6 @@ export const Delete_line_tableData=(time)=>{
   export const Put_line_tableData=(body)=>{
     return Axios(`User/updateTableRow`,'PUT',body);
     }
-  
 
 //-------------------------------patient Data------------------------------------
 export const  Get_graphs_details=(userDetails_id)=>{
