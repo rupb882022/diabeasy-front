@@ -74,11 +74,11 @@ export const  Get_Table_Data=(userDetails_id,fromDate,toDate)=>{
 }
 
 export const Delete_line_tableData=(time)=>{
-  return Fetch(`User/GetdataForTable/Delete/${time}`,'Delete');
+  return Fetch(`User/deleteTableRow/${time}`,'Delete');
   }
 
   export const Put_line_tableData=(body)=>{
-    return Axios('User/GetdataForTable/put','PUT',body);
+    return Axios(`User/updateTableRow`,'PUT',body);
     }
   
 

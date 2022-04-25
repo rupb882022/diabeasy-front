@@ -27,21 +27,15 @@ export default function PatientDataTable({ navigation }) {
   const [showEdit, setShowEdit] = useState(false)
   const [time, setTime] = useState()
   const [update, setUpdate] = useState(false)
-  //const [dataUpdate, setDataUpdate] = useState({})
   const [sugarLevel, setSugarLevel] = useState()
   const [injectionValue, setinjectionValue] = useState()
-  const [spot, setSpot] = useState('')
+  const [spot, setSpot] = useState()
   const [carbs, setCarbs] = useState();
 
-  //console.log('sugar',sugarLevel);
   useFocusEffect(
     React.useCallback(() => {
-      //  console.log(userDetails); 
       if (userDetails.id % 2 == 0 && userDetails.patientID || userDetails.id % 2 != 0 && !userDetails.patientID) {
-
         getData();
-        //loading&&setLoading(false)
-        // console.log('1');
       }
       else if (userDetails.id % 2 == 0 && !userDetails.patientID) {
         setContent([]);
@@ -56,7 +50,7 @@ export default function PatientDataTable({ navigation }) {
   );
 
   const getData = () => {
-   // setLoading(true)
+   // setLoading(true) ----------------------------------------TO DO ------------- Fix Loading!!
     let id;
     if (userDetails.patientID) {// if its doctor with selected patient
       id = userDetails.patientID;
@@ -80,7 +74,7 @@ export default function PatientDataTable({ navigation }) {
       })
   }
 
-
+// colomns names
   const CONTENT = {
     tableHead: ['Date and time', 'Blood sugar', 'Injection value', 'Carbs value', 'Edit'],
     tableData: content,
@@ -101,42 +95,33 @@ export default function PatientDataTable({ navigation }) {
         setFromDate(date) : setToDate(date)
     }
   }
-  //const btn = <Button alignItems='center' width={2} height={1} element={<Entypo name="dots-three-horizontal" size={24} color="black" />}/> 
+  // insert data from 'GET' into the table
   const handleResult = (result) => {
     let arr = [];
     result.map((x, i) => {
-    //console.log('x',x.injection_site);
-
       arr.push([moment(x.date_time).format('DD/MM/YY - H:mm'), x.blood_sugar_level, x.value_of_ingection?x.value_of_ingection:0, x.totalCarbs?x.totalCarbs:0,
-      <Button color='transparent' onPress={()=>{setSugarLevel(x.blood_sugar_level);setTime(x.date_time);setinjectionValue(x.value_of_ingection?x.value_of_ingection:0);x.injection_site?setSpot(x.injection_site):'';setCarbs(x.totalCarbs?x.totalCarbs:0);setShowEdit(true)}}
+      <Button key={i} color='transparent' onPress={()=>{setSugarLevel(x.blood_sugar_level?x.blood_sugar_level:0);setTime(x.date_time);setinjectionValue(x.value_of_ingection?x.value_of_ingection:0);setSpot(x.injection_site?x.injection_site:'');setCarbs(x.totalCarbs?x.totalCarbs:0);setShowEdit(true)}}
        alignItems='center' 
        width={14}
       height={1} 
       element={<Entypo name="dots-three-horizontal" size={24} color="black" />}/> ])
     })
-    //console.log('arrd1=',arr);
     setContent(arr)
     setLoading(false)
-   // console.log('L',loading);
   }   
 
- 
-  // console.log("time",time);
+  // 'PUT' method - update data
 const saveDetails = ()=>{
- // let injectionType = carbs ? 'food' : injectionValue ? 'fix' : 'no-injection'  
- console.log('s',spot);       
   let details={
     date_time: time,
     blood_sugar_level: sugarLevel,
-    injection_site: 'Arm',  //`${spot}`, ---------------------------TO DO - fix injection site on popup
+    injection_site: spot,  
     totalCarbs:carbs,
     injectionType:carbs? 'food' : injectionValue ? 'fix' : 'no-injection',
     value_of_ingection:injectionValue,
     Patients_id:userDetails.id
   }
-   //console.log("dataUpdate1=>",details);
   Put_line_tableData(details).then((response) => {  
-   //console.log('re',response);
     update&&setUpdate(false) 
     response && getData();
   })
@@ -148,11 +133,106 @@ const saveDetails = ()=>{
           bottom={110}
         />)
         update&&setUpdate(false)
-      //alert(error.response.data.Message)
       console.log("error in function Put_line_tableData " + error);
     });
 
 }
+
+let updatePopup =<>
+ <PopUp
+  backgroundColor="#bbe4f2"
+  height='50%'
+  width='70%'
+  isButton={false}
+  element={<View style={{flex:1}}>
+    <Text style={styles.titlePopup}>Edit</Text>
+  <View style={{marginTop:'20%',}} >
+     <Input
+           popup_title='Date and Time to edit'
+           label='Date and time to edit'
+          // type='date'
+           editable={false}
+           width='150%'
+           height='50%'
+           placeholder={moment(time).format("DD/MM/YYYY H:mm")}
+       />
+       <Input
+           label='Blood sugar level'
+           placeholder={sugarLevel?`${sugarLevel}`: '0'}
+           keyboardType='number-pad'
+           max={600}
+           required={true}
+           width='150%'
+           height='50%'
+           getValue={(value) => setSugarLevel(value)}
+           setValue={sugarLevel}
+           placeholderTextColor='black'
+       />
+       <Input
+         label='injection value'
+         placeholder={injectionValue?`${injectionValue}`:'0'}
+         width='150%'
+         height='50%'    
+         keyboardType='decimal-pad'
+         getValue={(value) => setinjectionValue(value)}
+         setValue={injectionValue}
+         placeholderTextColor='black'
+
+       />
+       {/* ToDo -------------------------------- fix label spot injection to outside the page range */}
+       <Input
+           label='Spot of injection'
+           placeholder={spot?spot:'none'}
+           editable={false}
+           type='selectBox'
+           width='150%'
+           height='50%'
+           getValue={(value) => { console.log('v',value);value=='No injection'?setSpot():value&&setSpot(value)}}
+           setValue={spot}
+           SelectBox_placeholder='Select spot of injection'
+           selectBox_items={[
+               { itemKey: 0, label: 'Arm', value: 'Arm' },
+               { itemKey: 1, label: 'Belly', value: 'Belly' },
+               { itemKey: 2, label: 'Leg', value: 'Leg' },
+               { itemKey: 3, label: 'Buttock', value: 'Buttock' },
+               { itemKey: 4, label: 'No injection', value: 'No injection' },
+           ]} />
+           <Input
+           label='Carbs'
+           width='150%'
+           height='50%'
+           keyboardType='decimal-pad'
+           getValue={(value) => setCarbs(value)}
+           placeholder={carbs? `${carbs}`:'0'}
+           setValue={carbs}
+           placeholderTextColor='black'
+       />
+       <View style={{flex:0.8,flexDirection:'row',marginTop:'5%'}}>
+         <Button
+            text="save"
+            width={10}
+            height={10}
+            justifyContent='flex-start'
+            onPress={()=>{
+             time&&sugarLevel&&
+             saveDetails();
+             }}
+        />
+        <Button
+            text="cancle"
+            width={10}
+            height={10}
+           //alignItems='flex-end'
+           // justifyContent='flex-end'
+            onPress={()=>setUpdate(false)}
+        />
+        
+        </View>
+          
+           </View>
+          
+  </View>}
+  /></>
   return (
     <View style={styles.container}>
       <Header
@@ -261,107 +341,7 @@ const saveDetails = ()=>{
      
       <TouchableOpacity style={styles.textEdit} onPress={()=>setShowEdit(false)}><Text>Cancle</Text></TouchableOpacity>
        </View>}/>}
-       {update&&userDetails.id%2!=0 && 
-       <PopUp
-       backgroundColor="#bbe4f2"
-       height='50%'
-       width='70%'
-      // onPress={()=>setUpdate(false)}
-       isButton={false}
-       element={<View style={{flex:1}}>
-         <Text style={styles.titlePopup}>Edit</Text>
-       <View style={{marginTop:'20%',}} >
-          {/* <Text> Edit time: {moment(time).format('DD/MM/YY - H:mm')}</Text> */}
-          {/* time.replace("T"," ") */}
-          <Input
-                popup_title='Date and Time to edit'
-                label='Date and time to edit'
-               // type='date'
-                editable={false}
-                width='150%'
-                height='50%'
-                placeholder={moment(time).format("DD/MM/YYYY H:mm")}
-            />
-            <Input
-                label='Blood sugar level'
-              //  validtion='number'
-                placeholder={`${sugarLevel}`}
-                keyboardType='number-pad'
-                max={600}
-                required={true}
-                width='150%'
-                height='50%'
-                getValue={(value) => setSugarLevel(value)}
-                setValue={sugarLevel}
-                placeholderTextColor='black'
-            />
-            <Input
-                label='injection value'
-              //  validtion='float'
-             placeholder={`${injectionValue}`}
-              width='150%'
-              height='50%'    
-              keyboardType='decimal-pad'
-              getValue={(value) => setinjectionValue(value)}
-              setValue={injectionValue}
-              placeholderTextColor='black'
-
-            />
-            <Input
-                label='Spot of injection'
-                placeholder={`${spot}`}
-                editable={false}
-                type='selectBox'
-                width='150%'
-                height='50%'
-                getValue={(value) => setSpot(value)}
-                setValue={spot}
-                SelectBox_placeholder='Select spot of injection'
-                selectBox_items={[
-                    { itemKey: 0, label: 'Arm', value: 'Arm' },
-                    { itemKey: 1, label: 'Belly', value: 'Belly' },
-                    { itemKey: 2, label: 'Leg', value: 'Leg' },
-                    { itemKey: 3, label: 'Buttock', value: 'Buttock' },
-                ]} />
-                <Input
-                label='Carbs'
-              //  validtion='float'
-                width='150%'
-                height='50%'
-                keyboardType='decimal-pad'
-                getValue={(value) => setCarbs(value)}
-                placeholder={carbs? `${carbs}`:'0'}
-                setValue={carbs}
-                placeholderTextColor='black'
-            />
-            <View style={{flex:0.8,flexDirection:'row',marginTop:'5%'}}>
-              <Button
-                 text="save"
-                 width={10}
-                 height={10}
-                 //alignItems='center'
-                 justifyContent='flex-start'
-                 onPress={()=>{
-                  time&&sugarLevel&&
-                  saveDetails();
-                  }}
-             />
-             <Button
-                 text="cancle"
-                 width={10}
-                 height={10}
-                //alignItems='flex-end'
-                // justifyContent='flex-end'
-                 onPress={()=>setUpdate(false)}
-             />
-             
-             </View>
-               
-                </View>
-               
-       </View>}
-       />
-       }
+       {update&&userDetails.id%2!=0 && updatePopup}
     </View>
   );
 }
