@@ -155,6 +155,7 @@ let updatePopup =<>
            width='150%'
            height='50%'
            placeholder={moment(time).format("DD/MM/YYYY H:mm")}
+           placeholderTextColor='black'
        />
        <Input
            label='Blood sugar level'
@@ -166,7 +167,6 @@ let updatePopup =<>
            height='50%'
            getValue={(value) => setSugarLevel(value)}
            setValue={sugarLevel}
-           placeholderTextColor='black'
        />
        <Input
          label='injection value'
@@ -176,8 +176,6 @@ let updatePopup =<>
          keyboardType='decimal-pad'
          getValue={(value) => setinjectionValue(value)}
          setValue={injectionValue}
-         placeholderTextColor='black'
-
        />
        {/* ToDo -------------------------------- fix label spot injection to outside the page range */}
        <Input
@@ -188,7 +186,6 @@ let updatePopup =<>
            width='150%'
            height='50%'
            getValue={(value) => { console.log('v',value);value=='No injection'?setSpot():value&&setSpot(value)}}
-           setValue={spot}
            SelectBox_placeholder='Select spot of injection'
            selectBox_items={[
                { itemKey: 0, label: 'Arm', value: 'Arm' },
@@ -205,7 +202,6 @@ let updatePopup =<>
            getValue={(value) => setCarbs(value)}
            placeholder={carbs? `${carbs}`:'0'}
            setValue={carbs}
-           placeholderTextColor='black'
        />
        <View style={{flex:0.8,flexDirection:'row',marginTop:'5%'}}>
          <Button
