@@ -18,7 +18,8 @@ import { UserContext } from '../CTools/UserDetailsHook'
 import PatientData from '../Pages/PatientData';
 import PatientDataTable from '../Pages/PatientDataTable';
 import Loading from '../CTools/Loading';
-
+import InjectionType from '../Pages/InjectionType';
+import Recommandation from '../Pages/Recommandation';
 const Drawernav = createDrawerNavigator();
 
 
@@ -165,7 +166,14 @@ export default function Drawer(props) {
                     ...options,
                     drawerIcon: () => (<AntDesign name="exclamationcircleo" size={24} color={color} />)
                 }} />
-  
+                <Drawernav.Screen name='Injection' component={InjectionType} options={{
+                    ...options,
+                    drawerIcon: () => (<Fontisto name="injection-syringe" size={24} color={color} />)
+                }} />
+                <Drawernav.Screen name='Recommandation-Test' component={Recommandation} options={{
+                    ...options,
+                    drawerIcon: () => (<Fontisto name="injection-syringe" size={24} color={color} />)
+                }} />
 
                 {/* <Drawernav.Screen name='Setting' component={Setting} options={{
                 ...options,

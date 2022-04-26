@@ -100,11 +100,26 @@ export default function PatientDataTable({ navigation }) {
     let arr = [];
     result.map((x, i) => {
       arr.push([moment(x.date_time).format('DD/MM/YY - H:mm'), x.blood_sugar_level, x.value_of_ingection?x.value_of_ingection:0, x.totalCarbs?x.totalCarbs:0,
-      <Button key={i} color='transparent' onPress={()=>{setSugarLevel(x.blood_sugar_level?x.blood_sugar_level:0);setTime(x.date_time);setinjectionValue(x.value_of_ingection?x.value_of_ingection:0);setSpot(x.injection_site?x.injection_site:'');setCarbs(x.totalCarbs?x.totalCarbs:0);setShowEdit(true)}}
+      userDetails.id % 2!=0?<Button key={i} color='transparent' onPress={()=>{setSugarLevel(x.blood_sugar_level?x.blood_sugar_level:0);setTime(x.date_time);setinjectionValue(x.value_of_ingection?x.value_of_ingection:0);setSpot(x.injection_site?x.injection_site:'');setCarbs(x.totalCarbs?x.totalCarbs:0);setShowEdit(true)}}
        alignItems='center' 
        width={14}
       height={1} 
-      element={<Entypo name="dots-three-horizontal" size={24} color="black" />}/> ])
+      element={<Entypo name="dots-three-horizontal" size={24} color="black" />}/>:
+      <Button
+      key={i}
+      color='transparent'
+      alignItems='center' 
+      width={14}
+      height={1} 
+      element={<Entypo name="dots-three-horizontal" size={24} color="black" />}
+      onPress={()=>setAlert(
+        <Alert text="sorry, you can not edit this kind of data"
+        type='worng'
+        time={2000}
+        bottom={110}
+      />)}
+      
+      /> ])
     })
     setContent(arr)
     setLoading(false)
@@ -229,6 +244,13 @@ let updatePopup =<>
           
   </View>}
   /></>
+  // let alertDoctor=    setAlert(
+  //   <Alert text="sorry, you can not edit this kind of data"
+  //   type='worng'
+  //   time={2000}
+  //   bottom={110}
+  // />)
+  
   return (
     <View style={styles.container}>
       <Header
@@ -336,7 +358,8 @@ let updatePopup =<>
       />
      
       <TouchableOpacity style={styles.textEdit} onPress={()=>setShowEdit(false)}><Text>Cancle</Text></TouchableOpacity>
-       </View>}/>}
+       </View>}/>}       
+   
        {update&&userDetails.id%2!=0 && updatePopup}
     </View>
   );
