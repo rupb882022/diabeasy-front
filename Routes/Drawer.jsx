@@ -20,6 +20,7 @@ import PatientDataTable from '../Pages/PatientDataTable';
 import Loading from '../CTools/Loading';
 import InjectionType from '../Pages/InjectionType';
 import Recommandation from '../Pages/Recommandation';
+import Setting from '../Pages/Setting';
 const Drawernav = createDrawerNavigator();
 
 
@@ -170,15 +171,15 @@ export default function Drawer(props) {
                     ...options,
                     drawerIcon: () => (<Fontisto name="injection-syringe" size={24} color={color} />)
                 }} />
-                <Drawernav.Screen name='Recommandation-Test' component={Recommandation} options={{
+                {/* <Drawernav.Screen name='Recommandation-Test' component={Recommandation} options={{
                     ...options,
                     drawerIcon: () => (<Fontisto name="injection-syringe" size={24} color={color} />)
-                }} />
+                }} /> */}
 
-                {/* <Drawernav.Screen name='Setting' component={Setting} options={{
+                <Drawernav.Screen name='Setting' component={Setting} options={{
                 ...options,
                 drawerIcon: () => (<Ionicons name="settings-outline" size={24} color={color} />)
-            }} /> */}
+            }} />
 
                 <Drawernav.Screen name='Log Out' component={LogOut} options={{
                     ...options,
