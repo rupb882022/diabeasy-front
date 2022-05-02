@@ -13,11 +13,12 @@ const [afterFood,setAfterfood]=useState(false)
 const [eightHours,setEightHours]=useState(false)
 const [highValue,setHighValue]=useState(false)
 const [afterPanicButton,setAfterPanicButton]=useState(false)
-const [forgotPassword,setForgotPassword]=useState(false)
+//const [forgotPassword,setForgotPassword]=useState(false)
+const [show, setShow] = useState(false);
 
 // אחרי שעתיים של הזנת מזון, מעל שמונה שעות שלא הזין, ערך סוכר גבוהה מעל 200 מעל 24 שעות, שעתתים לאחר לחצן מצוקה
 
-const element = <>
+const element = <View style={{backgroundColor:'#bbe4f2'}}>
  <View style={{flexDirection:'row',marginBottom:'2%'}}>
    <Text style={{marginRight:'33%'}}> Two hours after eating </Text>
 <Switch
@@ -66,7 +67,7 @@ const element = <>
                 />
 
 </View>
-</>
+</View>
 
   return (
       <View style={styles.container}>
@@ -82,7 +83,7 @@ const element = <>
    <Text style={styles.txt}> Edit personal information              <AntDesign name="right" size={20} color="black" /></Text> 
   </TouchableOpacity>
   
-  <TouchableOpacity onPress={()=>setForgotPassword(!forgotPassword)}> 
+  <TouchableOpacity onPress={()=>setShow(true)}> 
   <Text style={styles.txt}> Change password                          <AntDesign style={{justifyContent:'flex-end'}} name="right" size={20} color="black" />
 </Text>    
   </TouchableOpacity>
@@ -92,18 +93,18 @@ const element = <>
    <AntDesign  name="down" size={20} color="black" />:
    <AntDesign name="up" size={20} color="black" />}
 </Text>    
+
   </TouchableOpacity>
   {openDiv && element}
-  
+{show && <ForgotPasswordPopUp setShow={(isShow) => setShow(isShow)}/>}
+
   <TouchableOpacity > 
    <Text style={styles.txt}> bla bla bla bla                                  <AntDesign name="right" size={20} color="black" /></Text> 
   </TouchableOpacity>
   {/* </ScrollView> */}
        </View>
 
-{/* {forgotPassword&&<ForgotPasswordPopUp
-        setShow={(isShow) => setForgotPassword(isShow)}
-/>} */}
+
 
        <View style={{flex:0.3}}>
          <Image
@@ -111,7 +112,6 @@ const element = <>
       source={require('../images/home_img.webp.png')}
       />
       </View>
-       
 
       </View>
   )

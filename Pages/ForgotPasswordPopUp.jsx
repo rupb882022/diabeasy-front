@@ -81,7 +81,7 @@ if(password==code){
             <Image style={styles.imgPopup} source={require('../images/forget_password_popup.png')} />
             <Text style={styles.title}> {'Forgot Your \n Password?'}</Text>
           </View>
-          <Text style={styles.bodytxt}> Dont Worry! Enter your Email for password restore </Text>ד
+          <Text style={styles.bodytxt}> Dont Worry! Enter your Email for password restore </Text>
           <View style={styles.mail}>
             {!approve ? <Input
               keyboardType='email-address'
