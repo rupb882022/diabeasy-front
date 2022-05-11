@@ -18,6 +18,7 @@ export default function HipoRec({route,navigation}) {
       key={i}
     amount={x.amount}
     blood_sugar_level={x.blood_sugar_level}
+    next_blood_sugar_level={x.blood_sugar_level1}
     date_time={x.date_time}
     image={x.image}
     Unit_name={x.name}
@@ -44,12 +45,13 @@ const styles = StyleSheet.create({
     container: {
       // flex: 1,
       flexDirection: 'row',
-      flexWrap: 'wrap',
+     flexWrap: 'wrap',
       padding: 10 ,
+width:'100%'
   },title:{
     alignSelf:'center',
     marginTop:'18%',
     fontSize:22,
-    marginBottom:'5%'
+    marginBottom:'5%',
   }
 })
