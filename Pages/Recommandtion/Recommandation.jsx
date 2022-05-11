@@ -1,10 +1,14 @@
 import { View, Text, StyleSheet, Image } from 'react-native';
 import React, { useEffect, useState, useContext } from 'react';
-import Button from '../CTools/Button';
-import Header from '../CTools/Header';
+import Button from '../../CTools/Button';
+import Header from '../../CTools/Header';
 
 export default function Recommandation() {
+
 const [unit,setUnit]=useState(3)
+
+
+
 
   return (
     <View style={styles.container}>

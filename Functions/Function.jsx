@@ -103,3 +103,7 @@ export const  GET_assistant_phone=(userDetails_id)=>{
   return Fetch(`User/assistant_phone/${userDetails_id}`,'GET');
 }
 
+//---------------------------------recommandtion-----------------------
+export const get_food_for_hipo=(user_id)=>{
+  return Fetch(`Food/hipoRecomendtion/${user_id}`)
+}

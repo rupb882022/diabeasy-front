@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
-import { Ionicons, Entypo, AntDesign, Fontisto } from '@expo/vector-icons';
+import { Ionicons, Entypo, AntDesign,Fontisto } from '@expo/vector-icons';
 
 export default function Footer(props) {
   const { navigation } = props
@@ -13,7 +13,7 @@ export default function Footer(props) {
       case 'Home':
         setColor({ home: activeColor, sports: 'black', forum: 'black', call: 'black' })
         break;
-      case 'Sports Location':
+      case 'Injection':
         setColor({ home: 'black', sports: activeColor, forum: 'black', call: 'black' })
         // navigation.navigate('Sports location');
         break;
@@ -39,10 +39,10 @@ export default function Footer(props) {
             <Text style={styles.color(color.home)}>Home</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={()=>handelClick('Sports Location')}>
+        <TouchableOpacity onPress={()=>handelClick('Injection')}>
           <View style={{ flexDirection: 'column', alignItems: 'center' }}>
-            <Ionicons name="football-outline" size={30} color={color.sports} />
-            <Text style={styles.color(color.sports)}>Sport</Text>
+            <Fontisto name="injection-syringe" size={30} color={color.sports} />
+            <Text style={styles.color(color.sports)}>recommandtion</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={()=>handelClick('Forum')}>

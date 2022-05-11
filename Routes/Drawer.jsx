@@ -18,8 +18,8 @@ import { UserContext } from '../CTools/UserDetailsHook'
 import PatientData from '../Pages/PatientData';
 import PatientDataTable from '../Pages/PatientDataTable';
 import Loading from '../CTools/Loading';
-import InjectionType from '../Pages/InjectionType';
-import Recommandation from '../Pages/Recommandation';
+import InjectionType from '../Pages/Recommandtion/InjectionType';
+import Recommandation from '../Pages/Recommandtion/Recommandation';
 import Setting from '../Pages/Setting';
 const Drawernav = createDrawerNavigator();
 

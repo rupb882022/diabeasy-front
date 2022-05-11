@@ -12,7 +12,9 @@ import CustomDrawer from './CustomDrawer';
 import AddNewFood from '../Pages/Food/AddNewFood';
 import AddUnit from '../Pages/Food/AddUnit';
 import DoctorHome from '../Pages/Doctor/DoctorHome';
-
+import InjectionType from '../Pages/Recommandtion/InjectionType';
+import HipoRec from '../Pages/Recommandtion/HipoRec';
+// import InsertData from '../Pages/InsertData';
 const Stack = createStackNavigator();
 
 export default function Navigtor() {
@@ -43,6 +45,8 @@ export default function Navigtor() {
       <Stack.Screen name="AddNewFood" screenOptions={options} component={AddNewFood} />
       <Stack.Screen name="DoctorHome" screenOptions={options} component={DoctorHome} />
       <Stack.Screen name="AddUnit" screenOptions={options} component={AddUnit} />
+      <Stack.Screen name="HipoRec" screenOptions={options} component={HipoRec} />
+      {/* <Stack.Screen name="Injection" screenOptions={options} component={InjectionType} /> */}
     </Stack.Navigator>
   )
 }
