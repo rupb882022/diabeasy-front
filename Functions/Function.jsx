@@ -107,3 +107,7 @@ export const  GET_assistant_phone=(userDetails_id)=>{
 export const get_food_for_hipo=(user_id)=>{
   return Fetch(`Food/hipoRecomendtion/${user_id}`)
 }
+//---------------------------------information-----------------------
+export const get_alerts=(user_id)=>{
+  return Fetch(`User/alert/${user_id}`)
+}

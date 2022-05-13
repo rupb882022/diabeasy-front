@@ -3,7 +3,7 @@ import React from 'react';
 import Button from './Button';
 export default function PopUp(props) {
 
-    const { show, animationType = 'slide', setShow, width, height, button_width = 15, button_height = 3, button_textSize = 17, button_txt = 'OK', padding, title, title_size, element, backgroundColor, isButton=true } = props
+    const { show, animationType = 'slide', setShow, width, height, button_width = 15, button_height = 3, button_textSize = 17, button_txt = 'OK', padding, title, title_size, element, backgroundColor, isButton=true,alignItems='center',justifyContent='center',style } = props
 
     return (
         <>
@@ -12,7 +12,7 @@ export default function PopUp(props) {
                 visible={show}
                 animationType={animationType} //slide ,fade ,none
             >
-                <View style={styles.centeredView}>
+                <View style={styles.centeredView(justifyContent,alignItems,style)}>
 
                     <View style={styles.modalView(width, height, padding, backgroundColor)}>
                         {title ? <Text style={styles.title(title_size)}>{title}</Text> : <></>}
@@ -34,10 +34,20 @@ export default function PopUp(props) {
     );
 }
 const styles = StyleSheet.create({
-    centeredView: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
+    centeredView:(justifyContent,alignItems,style)=> {
+       if(style&&style=='information'){
+        return{
+            flex: 1,
+            justifyContent:justifyContent,
+            alignItems: alignItems,
+            top:'13%',
+            right:'5%'
+        }
+       }
+        return{flex: 1,
+        justifyContent:justifyContent,
+        alignItems: alignItems,
+    }
     },
     modalView: (width = 75, height = 40, padding = 5, backgroundColor = "white") => {
         return {

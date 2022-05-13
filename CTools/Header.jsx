@@ -1,17 +1,19 @@
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import React from 'react';
+import { Ionicons } from '@expo/vector-icons';
+
 
 
 
 export default function Header(props) {
-  const { logo_image, possiton = 75, title, flex, paddingRight, marginLeft, flexDirection, line = true, image_heigt, image_width, alignItems, justifyContent, image_margin,fontSize } = props
+  const { logo_image, possiton = 75, title, flex, paddingRight, marginLeft, flexDirection, line = true, image_heigt, image_width, alignItems, justifyContent, image_margin, fontSize } = props
   var icon = '';
 
   //for icon image margin 
   let image_marginBottom = image_margin && image_margin.Bottom ? image_margin.Bottom : 0;
   let image_marginTop = image_margin && image_margin.Top ? image_margin.Top : 0;
 
-  
+
   switch (logo_image) {
     case 'heart':
       icon = require('../images/headerLogo/heart.png')
@@ -49,11 +51,13 @@ export default function Header(props) {
   return (
     <>
       <View style={styles.container(flex, flexDirection, alignItems, justifyContent, possiton)}>
-        <Text style={styles.title(paddingRight, marginLeft,fontSize)}>{title}</Text>
-        {logo_image&&<Image
+        <Text style={styles.title(paddingRight, marginLeft, fontSize)}>{title}</Text>
+        {logo_image&&logo_image === 'diabeasy' && <Image
           style={styles.Image(image_heigt, image_width, image_marginTop, image_marginBottom)}
           source={icon}
-        />}
+        /> 
+        }
+
       </View>
       {line ? <View style={styles.line(possiton)}></View> : <></>}
     </>
@@ -79,7 +83,7 @@ const styles = StyleSheet.create({
       marginBottom: image_marginBottom + '%',
     }
   },
-  title: (paddingRight = 0, marginLeft = 0,fontSize=30) => {
+  title: (paddingRight = 0, marginLeft = 0, fontSize = 30) => {
     return {
       fontSize: fontSize,
       width: '70%',
@@ -100,5 +104,11 @@ const styles = StyleSheet.create({
       position: 'relative',
       bottom: possiton
     }
+  },
+  iconsRow: {
+    flexDirection: 'row',
+    marginBottom: '3%'
+  },icon:{
+    paddingLeft:'8%'
   }
 });

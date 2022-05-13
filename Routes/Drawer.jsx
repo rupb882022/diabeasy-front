@@ -1,4 +1,8 @@
 import { createDrawerNavigator } from '@react-navigation/drawer';
+
+
+
+
 import { TouchableOpacity, Text } from 'react-native';
 import InsertData from '../Pages/InsertData'
 import Home from '../Pages/Home'
@@ -19,7 +23,7 @@ import PatientData from '../Pages/PatientData';
 import PatientDataTable from '../Pages/PatientDataTable';
 import Loading from '../CTools/Loading';
 import InjectionType from '../Pages/Recommandtion/InjectionType';
-import Recommandation from '../Pages/Recommandtion/Recommandation';
+import Information from '../CTools/Information';
 import Setting from '../Pages/Setting';
 const Drawernav = createDrawerNavigator();
 
@@ -27,7 +31,6 @@ const Drawernav = createDrawerNavigator();
 export default function Drawer(props) {
 
     const { navigation } = props
-
     const { userDetails } = useContext(UserContext);
 
     let usertype = userDetails && userDetails.id % 2 == 0 ? 'doctor' : 'Patients';
@@ -50,6 +53,7 @@ export default function Drawer(props) {
 
     if (usertype == 'doctor') {
         return (<>
+        <Information/>
             <Drawernav.Navigator drawerContent={props => <CustomDrawer {...props} />} screenOptions={({ navigation }) => ({
                 headerLeft: () => {
                     return (
@@ -108,6 +112,7 @@ export default function Drawer(props) {
         );
     } else {
         return (<>
+           <Information/>
             <Drawernav.Navigator drawerContent={props => <CustomDrawer {...props} />} screenOptions={({ navigation }) => ({
                 headerLeft: () => {
                     return (
@@ -167,10 +172,10 @@ export default function Drawer(props) {
                     ...options,
                     drawerIcon: () => (<AntDesign name="exclamationcircleo" size={24} color={color} />)
                 }} />
-                <Drawernav.Screen name='Injection' component={InjectionType} options={{
+                {/* <Drawernav.Screen name='Injection' component={InjectionType} options={{
                     ...options,
                     drawerIcon: () => (<Fontisto name="injection-syringe" size={24} color={color} />)
-                }} />
+                }} /> */}
                 {/* <Drawernav.Screen name='Recommandation-Test' component={Recommandation} options={{
                     ...options,
                     drawerIcon: () => (<Fontisto name="injection-syringe" size={24} color={color} />)
