@@ -22,8 +22,16 @@ export const  Post_user_details=(body)=>{
 export const  Get_doctor_patients=(id)=>{
   return Fetch( `User/Doctor/${id}`,'Get');
 }
-//----------------------------------Insert Data--------------------------------
 
+//-----------------------------------Home(for patient)-------------------------
+export const post_pushToken=(id,body)=>{
+  return Axios(`User/addToken/${id}`,'POST',body)
+}
+
+//----------------------------------Insert Data--------------------------------
+export const  Post_SendPushNotification=(body)=>{
+  return Axios( `sendpushnotification`,'POST',body);
+}
 
 //-------------------------------------Forum-----------------------------------
 export const  Delete_Comment=(comment_id)=>{

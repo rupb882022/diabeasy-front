@@ -6,11 +6,10 @@ import Button from '../CTools/Button';
 import moment from 'moment';
 import { UserContext } from '../CTools/UserDetailsHook'
 import Loading from '../CTools/Loading';
-import { Post_user_data } from '../Functions/Function'
+import { Post_user_data,Post_SendPushNotification } from '../Functions/Function'
 import Alert from '../CTools/Alert';
 import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
-
 
 export default function InsertData({ navigation, route }) {
 
@@ -45,10 +44,20 @@ export default function InsertData({ navigation, route }) {
                 Patients_id: userDetails.id,
                 food: food
             }
+            let PushDetails={
+                "to":userDetails.Token,
+                "title":"DiabeasyApp",
+                "body":"2 Hours remaining! have you checked your blood sugar level?",
+                "badge":"0",
+                "ttl":"20",  // num of seconds - exept only int - write the number of sec you want that the push will wait. 
+                "data":{"to":userDetails.Token}
+            }
             console.log("detials", detials);
             Post_user_data(detials).then((response) => {
                 response && navigation.navigate('Repotrs - Table');
-            })
+            }).then(Post_SendPushNotification(PushDetails).then((res)=>{
+                res&& console.log(" res status push notification=> ", res.status);
+            }))
                 .catch((error) => {
                     setAlert(
                         <Alert text="sorry somting is got wotng try agine later"
