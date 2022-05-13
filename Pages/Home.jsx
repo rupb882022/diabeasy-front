@@ -6,14 +6,35 @@ import Loading from '../CTools/Loading';
 import { Octicons } from '@expo/vector-icons';
 import { UserContext } from '../CTools/UserDetailsHook'
 import Moment from 'moment';
+import registerForPushNotificationsAsync from '../CTools/registerForPushNotificationsAsync';
+import { post_pushToken } from '../Functions/Function';
 
 
 export default function Home(props) {
     const { navigation } = props
-    const { userDetails } = useContext(UserContext);
+    const { userDetails,setUserDetails } = useContext(UserContext);
     const [helloText, setHelloText] = useState();
 
+    //const [expoPushToken, setExpoPushToken] = useState('');
 
+useEffect(()=>{
+registerForPushNotificationsAsync().then((token)=>{
+let data={"pushtoken": token};//console.log("data",data);
+post_pushToken(userDetails.id,data).then((response) => {
+    response && console.log("res test Home=>",response.data);
+    let temp =Object.assign({}, userDetails, { Token : token });
+    setUserDetails(temp)
+  })}).catch((error) => {
+    setAlert(
+      <Alert text="sorry, somthing went wrong, please try again later"
+        type='worng'
+        time={2000}
+        bottom={110}
+      />)
+    console.log("error in function post_pushToken " + error);
+  });
+
+},[])
 
 
 
