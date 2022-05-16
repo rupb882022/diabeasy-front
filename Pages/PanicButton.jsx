@@ -1,17 +1,20 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet,TouchableWithoutFeedback,Keyboard,KeyboardAvoidingView, Platform } from 'react-native';
 import React, { useState, useEffect, useContext } from 'react';
 import Header from '../CTools/Header';
 import Button from '../CTools/Button'
 import Communications from "react-native-communications";
 import { Feather } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
-import { UserContext } from '../CTools/UserDetailsHook'
-import { GET_assistant_phone } from '../Functions/Function'
-
+import { UserContext } from '../CTools/UserDetailsHook';
+import { GET_assistant_phone,POST_EmergancyPhoneNumber } from '../Functions/Function';
+import  Input from '../CTools/Input';
+import AlertTool from '../CTools/Alert';
 export default function PanicButton() {
     const [phone, setPhone] = useState();
     const [alert, setAlert] = useState();
     const { userDetails } = useContext(UserContext);
+    const [newPhone, setNewPhone] = useState();
+    const [alertTool, setAlertTool] = useState();
 
     const EmergancyCall = () => {
         getPhone();
@@ -33,9 +36,29 @@ export default function PanicButton() {
                 }
             }, (error) => {
                 console.log(error + " GET_assistant_phone")
-                setAlert("sorry.. we did not found your energency person, you can go to setting page to add one")
+                setAlert("Sorry.. we did not found your energency phone number")
             });
         }
+    }
+
+    const saveNumber=()=>{
+        if (newPhone && !phone) {
+        POST_EmergancyPhoneNumber(userDetails.id,newPhone.toString()).then((resulte)=>{
+        resulte&&console.log('resultePhoneNumber TEST');
+        setPhone(newPhone);
+        setAlert();
+        setAlertTool(
+            <AlertTool text="Phone number succesfully added :)"
+                type='success'
+                time={3000}
+            />) 
+        }).catch((error) => {
+            setAlert("sorry, somthing went wrong, please try again later")
+            console.log("error in function POST_EmergancyPhoneNumber" + error);
+          })
+            
+        }
+
     }
 
 
@@ -46,11 +69,16 @@ export default function PanicButton() {
 
     //todo clear alert when emergency call is update in setting page
     return (
+        <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={{ flex: 1 }}
+    >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.container}>
             <Header
                 title='Emergency Call'
                 logo_image='panic'
-                flex={0.2}
+                flex={alert?0.4:0.3}
                 image_width={25}
                 image_heigt={100}
                 image_margin={{ Bottom: -4 }}
@@ -69,14 +97,31 @@ export default function PanicButton() {
                 color='#ff9900'
                 onPress={EmergancyCall}
             />
+            {!alert&&<Text style={{flex:0.3,alignSelf:'center',fontSize:20}}>Tap for emergancy call</Text>}
+            {alertTool&&alertTool}
             {alert && <View style={styles.alert_Container}>
                 <View style={styles.alert}>
                     <Ionicons name="alert-circle-outline" size={28} color="black" />
                     <Text style={styles.alertText}>
-                        {alert}</Text>
+                        {alert}</Text>                        
                 </View>
+                <View style={{flex:0.6,marginTop:'5%'}}> 
+                <Input 
+                 label='You can add emergancy phone num here:'
+                 keyboardType='number-pad'
+                 getValue={(value) => setNewPhone(value)}
+                 />
+                 <Button
+                 alignItems='center'
+                 text='Add'
+                 onPress={()=> saveNumber()}
+                 />
+                 </View>
             </View>}
-        </View>
+
+        </View> 
+   </TouchableWithoutFeedback>
+</KeyboardAvoidingView>
     );
 }
 
@@ -97,12 +142,14 @@ const styles = StyleSheet.create({
         borderWidth: 4,
         backgroundColor: 'white',
         overflow: 'hidden',
-        padding: '2%'
+        padding: '2%',
+        flex:0.3
     },
     alert_Container: {
-        bottom: '30%',
+        bottom: '5%',
         paddingLeft: '5%',
         paddingRight: '5%',
+        flex:1
     }
 
 })

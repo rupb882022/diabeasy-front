@@ -111,6 +111,11 @@ export const  GET_assistant_phone=(userDetails_id)=>{
   return Fetch(`User/assistant_phone/${userDetails_id}`,'GET');
 }
 
+export const POST_EmergancyPhoneNumber=(id,number)=>{
+  return Axios(`User/assistant_phone/${id}/${number}`,'POST');
+}
+
+
 //---------------------------------recommandtion-----------------------
 export const get_food_for_hipo=(user_id)=>{
   return Fetch(`Food/hipoRecomendtion/${user_id}`)
