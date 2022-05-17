@@ -39,7 +39,7 @@ export default function Footer(props) {
             <Text style={styles.color(color.home)}>Home</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={()=>handelClick('Injection')}>
+        <TouchableOpacity onPress={()=>handelClick('Recommandtion')}>
           <View style={{ flexDirection: 'column', alignItems: 'center' }}>
             <Fontisto name="injection-syringe" size={30} color={color.sports} />
             <Text style={styles.color(color.sports)}>recommandtion</Text>

@@ -6,6 +6,8 @@ import Input from '../../CTools/Input';
 import Button from '../../CTools/Button';
 import {Post_Comment} from '../../Functions/Function'
 import Alert from '../../CTools/Alert';
+import Moment from 'moment';
+
 
 //todo fix alert and date
 export default function AddComment(props) {
@@ -25,7 +27,7 @@ export default function AddComment(props) {
 
       userDetails.id % 2 == 0 ? doctor_id = userDetails.id : patient_id = userDetails.id;
       setComment({
-        date_time: new Date(),
+        date_time:Moment( new Date()).format('YYYY-MM-DD HH:mm:ss'),
         subject: subject,
         value: comment_value,
         Patients_id: patient_id,

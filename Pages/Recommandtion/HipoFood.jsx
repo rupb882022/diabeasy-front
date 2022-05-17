@@ -6,26 +6,35 @@ import moment from 'moment';
 export default function HipoFood(props) {
 
   const window =Dimensions.get('window');
-  console.log(window.height);
   console.log(Math.floor(window.height-window.height/10*7));
-  const {next_blood_sugar_level,totalCarbs,food_name,Unit_name,image,date_time,blood_sugar_level,amount}=props
+  const {hide=false,next_blood_sugar_level,totalCarbs,food_name,Unit_name,image,date_time,blood_sugar_level,amount}=props
   return (
-    <View style={styles.container(Math.floor(window.height-window.height/10*7.5))}>
-      <Text style={styles.title}>{amount} {Unit_name} {food_name}</Text>
+    <View style={styles.container(Math.floor(window.height-window.height/10*7.5),hide)}>
+  {hide?<></>: <> 
+   <Text style={styles.title}>{amount} {Unit_name} {food_name}</Text>
       <Image style={styles.image}  source={{ uri: image ? image.includes("http")?image:ImageUri +image : ImageUri + 'emptyFoodPhoto.JPG' }} />
       <Text style={styles.content}>date: {moment(date_time).format('DD/MM/YYYY')}</Text>
       <Text style={styles.content}>sugar level: {blood_sugar_level}</Text>
       <Text style={styles.content}>next sugar level: {next_blood_sugar_level}</Text>
       <Text style={styles.content}>carbohydrates: {totalCarbs}</Text>
+      </>  }
     </View>
   )
 }
 const styles = StyleSheet.create({
-  container:(height)=>{
-     return{flex:1,
+  container:(height,hide)=>{
+    if(hide){
+      return{
+        backgroundColor:'transparent',
+        flexDirection:'colum',
+        flexBasis: '50%',
+      }
+    }
+    return{flex:1,
      flexDirection:'colum',
-     flexWrap: 'wrap',
+     flexBasis: '45%',
      marginHorizontal:'2%',
+     marginBottom:'4%',
     height:height,
     // justifyContent:'center',
     backgroundColor:'white',

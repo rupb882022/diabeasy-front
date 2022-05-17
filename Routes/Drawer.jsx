@@ -43,7 +43,7 @@ export default function Drawer(props) {
 
     const options = {
         headerStyle: {
-            backgroundColor: 'transparent',
+            backgroundColor:'transparent',
         },
         headerTintColor: 'white',
         headerTitleStyle: {
@@ -141,6 +141,10 @@ export default function Drawer(props) {
                     ...options,
                     drawerIcon: () => (<Entypo name="add-to-list" size={24} color={color} />)
                 }} />
+                      <Drawernav.Screen name='Recommandtion' component={InjectionType} options={{
+                    ...options,
+                    drawerIcon: () => (<Fontisto name="injection-syringe" size={24} color={color} />)
+                }} />
                 <Drawernav.Screen name='Forum' component={Forum} options={{
                     ...options,
                     drawerIcon: () => (<Ionicons name="chatbubbles-outline" size={24} color={color} />)
@@ -172,10 +176,7 @@ export default function Drawer(props) {
                     ...options,
                     drawerIcon: () => (<AntDesign name="exclamationcircleo" size={24} color={color} />)
                 }} />
-                {/* <Drawernav.Screen name='Injection' component={InjectionType} options={{
-                    ...options,
-                    drawerIcon: () => (<Fontisto name="injection-syringe" size={24} color={color} />)
-                }} /> */}
+
                 {/* <Drawernav.Screen name='Recommandation-Test' component={Recommandation} options={{
                     ...options,
                     drawerIcon: () => (<Fontisto name="injection-syringe" size={24} color={color} />)

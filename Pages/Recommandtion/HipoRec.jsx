@@ -7,7 +7,7 @@ export default function HipoRec({route,navigation}) {
 
   let hipoFood = route.params && route.params.hipoFood ? route.params.hipoFood : '';
 
-
+ 
 
   return (
 <>
@@ -25,15 +25,19 @@ export default function HipoRec({route,navigation}) {
     food_name={x.name1}
     totalCarbs={x.totalCarbs}
   />})}
-
+{hipoFood&&hipoFood.lenght%2!==0&&
+  <HipoFood 
+     hide={true}
+  />
+}
     </ScrollView>
   <Button
   text='back'
-  width={3}
+  width={6}
   height={3}
   radius={8}
   alignItems='center'
-  justifyContent='flex-end'
+  justifyContent='center'
   onPress={()=>{navigation.goBack()}}
   />
 </>

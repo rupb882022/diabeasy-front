@@ -60,6 +60,7 @@ export default function Information() {
       style='information'
       width={90}
       height={70}
+      // backgroundColor='#EBEBEE'
     />}
   </>
   )
