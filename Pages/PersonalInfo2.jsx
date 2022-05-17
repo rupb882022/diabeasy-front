@@ -133,7 +133,7 @@ export default function PersonalInfo2(props) {
                     label='Emergency Contact Phone Number'
                     validtion='number'
                     keyboardType='number-pad'
-                    placeholder='+972'
+                   // placeholder='+972'
                     getValue={(value) => setPhoneNumber(value)}
                 />
 
