@@ -4,7 +4,7 @@ import { ImageUri } from '../Routes/Url'
 import {readAlert} from '../Functions/Function'
 
 
-
+let i = -1;
 
 const AlertList = (props) => {
   const { list, navigation, setShow } = props
@@ -13,7 +13,7 @@ const AlertList = (props) => {
     i = -1;
   })
 
-  let i = -1;
+
 
   const alertContent = (name, content) => {
     switch (content) {
@@ -100,6 +100,7 @@ const styles = StyleSheet.create({
 
   },
   item: (width, i, active) => {
+    // console.log("i",i)
     return {
       backgroundColor: active ? '#9FC0FA' : '#d5e5fe4d',
       height: '70%',
@@ -109,11 +110,11 @@ const styles = StyleSheet.create({
       marginBottom: '18%',
       borderRadius: 10,
       padding: '2%',
-      bottom: i == 0 ? 0 : '25%',
+      bottom: i == 0 ? 0 : (i*25)+'%',
       zIndex: 20
     }
   },
-  itemContainer: (active) => {
+  itemContainer: () => {
     return {
       flexDirection: 'row',
       //  backgroundColor: active ? '#88B1F9' : '#d5e5fe4d',
