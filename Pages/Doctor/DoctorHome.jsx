@@ -18,15 +18,16 @@ export default function DoctorHome(props) {
         setLoading(true);
         Get_doctor_patients(userDetails.id).then((result) => {
             setPatients(result)
-            setLoading(false)
         },
             (error) => {
                 console.log("error in function Get_doctor_patients", error)
-                setLoading(false)
+                loading&&setInterval(() => setLoading(false), 1200);
             })
     }, [])
 
-
+    useEffect(() => {
+        loading&&setInterval(() => setLoading(false), 1200);
+    },[patients])
 
 
 

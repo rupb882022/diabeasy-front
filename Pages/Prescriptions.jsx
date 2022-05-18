@@ -34,7 +34,6 @@ export default function Prescriptions(props) {
 
   useFocusEffect(
     React.useCallback(() => {
-      console.log(userDetails);
       if (userDetails.id % 2 == 0 && userDetails.patientID) {
         getPrescriptions();
       }

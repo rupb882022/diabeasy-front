@@ -12,7 +12,7 @@ export const Fetch = (url, method) =>
       })
     })
       .then(res => {
-        if (res && res.status == 200) {
+        if (res && res.status == 200|| res.status === 201) {
           resolve(res.json());
         } else {
           throw new Error(res.status)
@@ -32,7 +32,7 @@ export const Axios = (url, method, body) =>
       url: apiUrl+url,
       method: method,
       data: body
-    };
+    }
    
     axios(configurationObject)
       .then((response) => {

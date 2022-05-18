@@ -25,7 +25,7 @@ export default function HipoRec({route,navigation}) {
     food_name={x.name1}
     totalCarbs={x.totalCarbs}
   />})}
-{hipoFood&&hipoFood.lenght%2!==0&&
+{hipoFood&&hipoFood.length%2!==0&&
   <HipoFood 
      hide={true}
   />

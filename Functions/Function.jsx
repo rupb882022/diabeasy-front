@@ -124,3 +124,6 @@ export const get_food_for_hipo=(user_id)=>{
 export const get_alerts=(user_id)=>{
   return Fetch(`User/alert/${user_id}`)
 }
+export const  readAlert=(id)=>{
+  return Fetch(`User/readAlert/${id}`,'GET');
+}

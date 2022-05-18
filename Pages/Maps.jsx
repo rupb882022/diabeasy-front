@@ -58,7 +58,7 @@ export default function Maps() {
     })
       ();
   }, []);
-  console.log("*****", location);
+
   return (
     <>
       {loading && <Loading opacity={'#d6f2fc'} text='Choose location and start exercise' />}

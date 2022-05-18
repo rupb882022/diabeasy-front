@@ -247,17 +247,14 @@ export default function Forum() {
           }
         }
         setData(allComments);
-        setLoading(false);
       }
     } catch (error) {
-      // console.log(error)
-      setLoading(false);
     }
 
   }
 
   const get_all_comments = () => {
-    setLoading(true);
+   !loading&&setLoading(true);
     Get_all_comments().then((resulte) => {
       buildForum(resulte)
     },
@@ -269,17 +266,19 @@ export default function Forum() {
           bottom={110}
           />)
         console.log("error in function Get_all_comments", error)
-        setLoading(false);
       })
   }
 
   // get all comment every time when user go into the forum
   useFocusEffect(
     React.useCallback(() => {
-      get_all_comments();
+     get_all_comments();
+      setInterval(() => setLoading(false), 2000);
     }, [])
   );
-
+useEffect(()=>{
+  !loading&& setLoading(false);
+},[data,alert])
 
   return (<>
     {loading && <Loading />}

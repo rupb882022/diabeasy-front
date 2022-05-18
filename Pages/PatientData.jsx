@@ -44,7 +44,7 @@ export default function PatientData() {
         get_graphs_details(userDetails.id)
       }
       else if (!userDetails.patientID && userDetails.id % 2 == 0) {
-        console.log("8");
+   
         setPieInfo();
         setGrapData();
         setPieInfoMonth();
@@ -61,7 +61,7 @@ export default function PatientData() {
     setLoading(true)
     Get_graphs_details(id).then((result) => {
       let List = []; let data = []; let labels = []; let dataPie = [];
-console.log(result)
+
       result.data.map(x => {
         //array for graph
         if (x.month != 30) {

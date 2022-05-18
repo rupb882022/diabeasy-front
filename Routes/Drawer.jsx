@@ -53,7 +53,9 @@ export default function Drawer(props) {
 
     if (usertype == 'doctor') {
         return (<>
-        <Information/>
+        <Information
+           navigation={navigation}
+        />
             <Drawernav.Navigator drawerContent={props => <CustomDrawer {...props} />} screenOptions={({ navigation }) => ({
                 headerLeft: () => {
                     return (
@@ -112,7 +114,9 @@ export default function Drawer(props) {
         );
     } else {
         return (<>
-           <Information/>
+           <Information
+              navigation={navigation}
+           />
             <Drawernav.Navigator drawerContent={props => <CustomDrawer {...props} />} screenOptions={({ navigation }) => ({
                 headerLeft: () => {
                     return (

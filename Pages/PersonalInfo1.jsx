@@ -44,7 +44,6 @@ export default function PersonalInfo1(props) {
                 time={2500}
                 bottom={80}
                 />)
-            console.log("FirstName.length", FirstName.length);
             return false;
         }
         //valid worng mail
