@@ -1,7 +1,8 @@
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import React from 'react';
 import { Ionicons } from '@expo/vector-icons';
-
+import { borderColor } from 'react-native/Libraries/Components/View/ReactNativeStyleAttributes';
+import Information from './Information';
 
 
 
@@ -51,7 +52,9 @@ export default function Header(props) {
   return (
     <>
       <View style={styles.container(flex, flexDirection, alignItems, justifyContent, possiton)}>
-        <Text style={styles.title(paddingRight, marginLeft, fontSize)}>{title}</Text>
+        {/* <Text style={styles.title(paddingRight, marginLeft, fontSize)}>{title}</Text> */}
+                <Text style={styles.title(paddingRight, marginLeft, fontSize)}>Diabeasy</Text>
+
         {logo_image&&logo_image === 'diabeasy' && <Image
           style={styles.Image(image_heigt, image_width, image_marginTop, image_marginBottom)}
           source={icon}
@@ -62,6 +65,7 @@ export default function Header(props) {
       {line ? <View style={styles.line(possiton)}></View> : <></>}
     </>
   );
+
 }
 const styles = StyleSheet.create({
   container: (flex = 1, flexDirection = 'row', alignItems = 'flex-end', justifyContent = 'flex-start', possiton) => {
@@ -71,7 +75,9 @@ const styles = StyleSheet.create({
       justifyContent: justifyContent,
       alignItems: alignItems,
       position: 'relative',
-      bottom: possiton
+      bottom: possiton,
+      backgroundColor:'#D8E2DC',
+      ZIndex:0
     }
   },
   Image: (image_heigt = 84, image_width = 25, image_marginTop, image_marginBottom) => {
@@ -86,8 +92,9 @@ const styles = StyleSheet.create({
   title: (paddingRight = 0, marginLeft = 0, fontSize = 30) => {
     return {
       fontSize: fontSize,
-      width: '70%',
-      height: '55%',
+      // width: '10%',
+      // height: '55%',
+       left:'35%',bottom:'27%',
       textAlign: 'right',
       paddingRight: paddingRight + '%',
       marginLeft: marginLeft + '%',
@@ -96,13 +103,16 @@ const styles = StyleSheet.create({
       textShadowColor: '#1EA6D6',
       textShadowOffset: { width: 2, height: 2 },
       textShadowRadius: 1,
+      position: 'absolute',
     }
+
   },
   line: (possiton) => {
     return {
       borderBottomWidth: 3,
       position: 'relative',
-      bottom: possiton
+      bottom: possiton,
+      borderColor:'#1EA6D6'
     }
   },
   iconsRow: {

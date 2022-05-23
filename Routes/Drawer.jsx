@@ -13,7 +13,7 @@ import PanicButton from '../Pages/PanicButton';
 import Forum from '../Pages/Forum/Forum';
 import Maps from '../Pages/Maps';
 import { useFocusEffect } from '@react-navigation/native';
-import React, { useContext } from 'react';
+import React, { useContext, useState, useRef} from 'react';
 import Footer from './Footer';
 import Prescriptions from '../Pages/Prescriptions';
 import DoctorHome from '../Pages/Doctor/DoctorHome';
@@ -25,25 +25,29 @@ import Loading from '../CTools/Loading';
 import InjectionType from '../Pages/Recommandtion/InjectionType';
 import Information from '../CTools/Information';
 import Setting from '../Pages/Setting';
+
+
 const Drawernav = createDrawerNavigator();
 
 
-export default function Drawer(props) {
 
+
+
+export default function Drawer(props) {
     const { navigation } = props
     const { userDetails } = useContext(UserContext);
 
     let usertype = userDetails && userDetails.id % 2 == 0 ? 'doctor' : 'Patients';
-
-
+  
 
 
     //color of icons
     let color = "black"
-
+    let backgroundColor = '#D8E2DC'
     const options = {
         headerStyle: {
-            backgroundColor:'transparent',
+            backgroundColor: 'transparent',
+            // backgroundColor:backgroundColor
         },
         headerTintColor: 'white',
         headerTitleStyle: {
@@ -51,23 +55,29 @@ export default function Drawer(props) {
         },
     }
 
+
+
+
     if (usertype == 'doctor') {
         return (<>
-        <Information
-           navigation={navigation}
-        />
+            <Information
+                backgroundColor={backgroundColor}
+                navigation={navigation}
+            />
             <Drawernav.Navigator drawerContent={props => <CustomDrawer {...props} />} screenOptions={({ navigation }) => ({
                 headerLeft: () => {
                     return (
                         <TouchableOpacity
-                            onPress={() => navigation.toggleDrawer()}>
+                            style={{ backgroundColor: backgroundColor }}
+                            onPress={() => { navigation.toggleDrawer(); }}>
                             <Ionicons name="ios-menu"
                                 size={75}
                                 style={{
                                     height: 70,
                                     marginTop: '35%',
                                     marginLeft: '15%',
-                                    color: '#1ea6d6'
+                                    color: '#1ea6d6',
+                                    // backgroundColor:backgroundColor
                                 }}
                             />
                         </TouchableOpacity>
@@ -114,21 +124,26 @@ export default function Drawer(props) {
         );
     } else {
         return (<>
-           <Information
-              navigation={navigation}
-           />
+            <Information
+                navigation={navigation}
+                backgroundColor={backgroundColor}
+            />
             <Drawernav.Navigator drawerContent={props => <CustomDrawer {...props} />} screenOptions={({ navigation }) => ({
                 headerLeft: () => {
                     return (
                         <TouchableOpacity
-                            onPress={() => navigation.toggleDrawer()}>
+                            style={{ backgroundColor: backgroundColor }}
+                            onPress={() => { navigation.toggleDrawer(); }}>
                             <Ionicons name="ios-menu"
-                                size={75}
+                                size={70}
                                 style={{
-                                    height: 70,
-                                    marginTop: '35%',
+                                    height: 55,
+                                    position: 'relative',
+                                    top: '25%',
+                                    // marginTop: '35%',
                                     marginLeft: '15%',
-                                    color: '#1ea6d6'
+                                    color: '#1ea6d6',
+                                    // backgroundColor:backgroundColor
                                 }}
                             />
                         </TouchableOpacity>
@@ -145,7 +160,7 @@ export default function Drawer(props) {
                     ...options,
                     drawerIcon: () => (<Entypo name="add-to-list" size={24} color={color} />)
                 }} />
-                      <Drawernav.Screen name='Recommandtion' component={InjectionType} options={{
+                <Drawernav.Screen name='Recommandtion' component={InjectionType} options={{
                     ...options,
                     drawerIcon: () => (<Fontisto name="injection-syringe" size={24} color={color} />)
                 }} />
@@ -187,24 +202,25 @@ export default function Drawer(props) {
                 }} /> */}
 
                 <Drawernav.Screen name='Setting' component={Setting} options={{
-                ...options,
-                drawerIcon: () => (<Ionicons name="settings-outline" size={24} color={color} />)
-            }} />
+                    ...options,
+                    drawerIcon: () => (<Ionicons name="settings-outline" size={24} color={color} />)
+                }} />
 
                 <Drawernav.Screen name='Log Out' component={LogOut} options={{
                     ...options,
                     drawerIcon: () => (<AntDesign name="logout" size={24} color={color} />)
                 }} />
-                     {/* <Drawernav.Screen name='Loading' component={Loading} options={{
+                {/* <Drawernav.Screen name='Loading' component={Loading} options={{
                     ...options,
                     drawerIcon: () => (<AntDesign name="logout" size={24} color={color} />)
                 }} /> */}
 
             </Drawernav.Navigator>
+            
             <Footer
                 navigation={navigation}
             />
-        </>
+</>
         );
     }
 }

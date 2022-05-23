@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, } from 'react-native';
+import { StyleSheet, Text, View, Image,TouchableWithoutFeedback,Keyboard,KeyboardAvoidingView } from 'react-native';
 import React, { useState } from 'react';
 import PopUp from '../CTools/PopUp';
 import Input from '../CTools/Input';
@@ -23,26 +23,30 @@ export default function ForgotPasswordPopUp(props) {
     })
   }
 
-  const checkCode=()=>{
-if(password==code){
-  //need to check if doctor or patient code%2==0
-  setApprove(true)
-  setValidtion('')
-}else{
-  setApprove(false)
-  setValidtion('not the right code')
-}
+  const checkCode = () => {
+    if (password == code) {
+      //need to check if doctor or patient code%2==0
+      setApprove(true)
+      setValidtion('')
+     
+      setPassword('');
+  
+    } else {
+      setApprove(false)
+      setValidtion('not the right code')
+    }
   }
 
   const getPassword = () => {
     if (mail) {
       setLoading(true)
-      let tempMail=mail.replace(".","=");
-        Rest_password(tempMail).then((resulte) => {
+      let tempMail = mail.replace(".", "=");
+      Rest_password(tempMail).then((resulte) => {
         console.log("resulte", resulte);
         if (resulte) {
           setCode(resulte);
           setPassword('');
+          setCode('')
         }
         setLoading(false)
       },
@@ -52,21 +56,13 @@ if(password==code){
         })
     }
   }
-  // const sendEmail = async() => {
-  //   let params={
-  //        subject: "subject1",
-  //        body:"body1",
-  //        to:"tal_farkash@walla.com",
-  //   }
-    
-  //   console.log("params",params);
-  //     emailjs.send('service_1hsmgrq', 'template_lulvgxf',params, 'AGouvb_bFo7_5FLGk')    .then((result) => {
-  //     console.log("res=>",result.text);
-  // }, (error) => {
-  //     console.log("err=>",error.text);
-  // });   
-  //    };
+
   return (
+    <KeyboardAvoidingView
+    behavior={Platform.OS === "ios" ? "padding" : "height"}
+    style={{ flex: 1 }}
+>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
     <PopUp
       style={styles.container}
       width={80}
@@ -83,14 +79,26 @@ if(password==code){
           </View>
           <Text style={styles.bodytxt}> Dont Worry! Enter your Email for password restore </Text>
           <View style={styles.mail}>
-            {!approve ? <Input
+    
+            {!approve ? <>
+         
+            <Input
               keyboardType='email-address'
-              placeholder={!code?'Enter Your Email Adress':'enter 4 digits code..'}
+              placeholder='Enter Your Email Adress'
               getValue={(value) => { setMail(value) }}
               width={98}
-              height={50}
-
-            /> :
+              height={code?50:30}
+            />
+          {code&&
+             <Input
+             keyboardType='numeric'
+             placeholder='enter 4 digits code..'
+             getValue={(value) => { setPassword(value) }}
+             width={98}
+             height={50}
+           />
+          }
+            </>:
               <>
                 <Input
                   label='set new password'
@@ -115,6 +123,7 @@ if(password==code){
               </>
             }
           </View>
+          
           {!code && loading && <View style={styles.progress}>
             <Progress.Bar
               width={255}
@@ -128,6 +137,7 @@ if(password==code){
               animationConfig={{ bounciness: 20 }}
             />
           </View>}
+          
           <View style={styles.buttons}>
             <Button
               alignItems='center'
@@ -135,7 +145,7 @@ if(password==code){
               width={24}
               height={6}
               text='send'
-              onPress={code?checkCode:getPassword}
+              onPress={()=>{code ? checkCode() : getPassword()}}
             />
             <Button
               alignItems='center'
@@ -147,10 +157,13 @@ if(password==code){
             />
           </View>
         </>
+        
       }
 
 
     />
+            </TouchableWithoutFeedback>
+        </KeyboardAvoidingView>
   );
 }
 

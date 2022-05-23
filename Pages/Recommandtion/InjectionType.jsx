@@ -57,7 +57,7 @@ useEffect(()=>{
           radius={1000}
           width={8}
           height={8}
-          onPress={() => { alert('By press OK, \n your project will delete in 10 seconds') }}
+          // onPress={() => { alert('By press OK, \n your project will delete in 10 seconds') }}
         />
         <Button
           text='Food'

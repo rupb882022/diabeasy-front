@@ -6,11 +6,12 @@ import Button from '../CTools/Button';
 import moment from 'moment';
 import { UserContext } from '../CTools/UserDetailsHook'
 import Loading from '../CTools/Loading';
-import { Post_user_data,Post_SendPushNotification } from '../Functions/Function'
+import { Post_user_data, Post_SendPushNotification } from '../Functions/Function'
 import Alert from '../CTools/Alert';
 import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
-
+import {Get_all_ExceptionalEvent} from'../Functions/Function'
+import MultiSelectInput from '../CTools/MultiSelectInput'
 export default function InsertData({ navigation, route }) {
 
     //for date time placeholder
@@ -22,6 +23,7 @@ export default function InsertData({ navigation, route }) {
     const [dateTime, setDateTime] = useState();
     const [sugarLevel, setsugarLevel] = useState();
     const [spot, setSpot] = useState();
+    const [listExceptionalEvent, setListExceptionalEvent] = useState();
     const [carbs, setCarbs] = useState('');
     const [valid_lable, setValid_lable] = useState('');
     const [injectionValue, setinjectionValue] = useState();
@@ -33,7 +35,7 @@ export default function InsertData({ navigation, route }) {
             let injectionType = carbs ? 'food' : injectionValue ? 'fix' : 'no-injection'
 
             let date = dateTime ? moment(dateTime, 'DD/MM/YYYY H:mm').format('YYYY-MM-DD[T]HH:mm:ss') : moment(today).format('YYYY-MM-DD[T]HH:mm:ss');
-            let food = foodLibary?foodLibary.map(x => {return { foodId: x.id, amount: x.amount, unitName: x.unit }}):[]
+            let food = foodLibary ? foodLibary.map(x => { return { foodId: x.id, amount: x.amount, unitName: x.unit } }) : []
             let detials = {
                 date_time: date,
                 blood_sugar_level: sugarLevel,
@@ -44,19 +46,19 @@ export default function InsertData({ navigation, route }) {
                 Patients_id: userDetails.id,
                 food: food
             }
-            let PushDetails={
-                "to":userDetails.Token,
-                "title":"DiabeasyApp",
-                "body":"2 Hours remaining! have you checked your blood sugar level?",
-                "badge":"0",
-                "ttl":"20",  // num of seconds - exept only int - write the number of sec you want that the push will wait. 
-                "data":{"to":userDetails.Token}
+            let PushDetails = {
+                "to": userDetails.Token,
+                "title": "DiabeasyApp",
+                "body": "2 Hours remaining! have you checked your blood sugar level?",
+                "badge": "0",
+                "ttl": "20",  // num of seconds - exept only int - write the number of sec you want that the push will wait. 
+                "data": { "to": userDetails.Token }
             }
             console.log("detials", detials);
             Post_user_data(detials).then((response) => {
                 response && navigation.navigate('Repotrs - Table');
-            }).then(Post_SendPushNotification(PushDetails).then((res)=>{
-                res&& console.log(" res status push notification=> ", res.status);
+            }).then(Post_SendPushNotification(PushDetails).then((res) => {
+                res && console.log(" res status push notification=> ", res.status);
             }))
                 .catch((error) => {
                     setAlert(
@@ -95,6 +97,20 @@ export default function InsertData({ navigation, route }) {
         regex.test(carbs) ? setValid_lable('') : setValid_lable("digits only!")
     }
 
+    useEffect(() => {
+        if (!listExceptionalEvent) {
+            Get_all_ExceptionalEvent().then((resulte) => {
+                let temp = resulte.map(x => {
+                    return ({ itemKey: x.id, label: x.name.replace(/(\r\n|\n|\r)/gm, ""), value: x.id })
+                });
+                setListExceptionalEvent(temp);
+            },
+                (error) => {
+                    console.log("error in function Get_all_ExceptionalEvent ", error)
+                })
+        }
+    }, []);
+
     return (
         <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -108,18 +124,25 @@ export default function InsertData({ navigation, route }) {
                         logo_image='infusion'
                         image_width={30}
                         image_heigt={125}
-                        possiton={68}
-                        flex={1.5}
-                        marginLeft={2}
+                        possiton={61}
+                        flex={1.4}
+                        line={false}
                         image_margin={{ Bottom: -5 }}
                     />
                     <View style={styles.containerBody}>
                         <Text style={styles.eatText}>What are you going to eat?</Text>
+                       
+                        <MultiSelectInput
+                        placeholder=' Exceptional event'
+                            // data={categoryList}
+                            // getValue={(value) => setCategory(value)}
+                        />
                         <View style={{ flex: 1, flexDirection: 'row' }}>
                             <View style={{ flex: 4, paddingLeft: '13%' }}>
                                 <View style={styles.CarbsinputContiner}>
-                                    <Text style={styles.label}>Carbs</Text>
+                                    <Text style={styles.label}></Text>
                                     <TextInput
+                                    placeholder='Carbs'
                                         style={styles.Carbsinput}
                                         value={carbs ? carbs.toString() : ''}
                                         onChangeText={value => { setCarbs(value); }}
@@ -144,7 +167,7 @@ export default function InsertData({ navigation, route }) {
                             </View>
                         </View>
                         <Input
-                            label='Blood sugar level'
+                            placeholder='Blood sugar level'
                             validtion='number'
                             keyboardType='number-pad'
                             max={600}
@@ -152,13 +175,14 @@ export default function InsertData({ navigation, route }) {
                             getValue={(value) => setsugarLevel(value)}
                         />
                         <Input
-                            label='injection value'
+                            placeholder='injection value'
                             validtion='float'
                             // keyboardType='decimal-pad'
                             getValue={(value) => setinjectionValue(value)}
                         />
+
                         <Input
-                            label='Spot of injection'
+                            placeholder='Spot of injection'
                             editable={false}
                             type='selectBox'
                             getValue={(value) => setSpot(value)}
@@ -171,10 +195,10 @@ export default function InsertData({ navigation, route }) {
                             ]} />
                         <Input
                             popup_title='Choose date and time'
-                            label='Date time'
+                            // label='Date time'
                             type='date'
                             editable={false}
-                            placeholder={"  " + moment(today).format("DD/MM/YYYY H:mm")}
+                            placeholder={" Date time: " + moment(today).format("DD/MM/YYYY H:mm")}
                             getValue={(value) => setDateTime(value)}
                         />
                     </View>

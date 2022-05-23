@@ -32,6 +32,9 @@ export const post_pushToken=(id,body)=>{
 export const  Post_SendPushNotification=(body)=>{
   return Axios( `sendpushnotification`,'POST',body);
 }
+export const  Get_all_ExceptionalEvent=()=>{
+  return Fetch(`User/Get_all_ExceptionalEvent`,'Get');
+}
 
 //-------------------------------------Forum-----------------------------------
 export const  Delete_Comment=(comment_id)=>{

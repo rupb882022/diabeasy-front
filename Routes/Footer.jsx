@@ -42,7 +42,7 @@ export default function Footer(props) {
         <TouchableOpacity onPress={()=>handelClick('Recommandtion')}>
           <View style={{ flexDirection: 'column', alignItems: 'center' }}>
             <Fontisto name="injection-syringe" size={30} color={color.sports} />
-            <Text style={styles.color(color.sports)}>recommandtion</Text>
+            <Text style={styles.color(color.sports)}>Recommandtion</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={()=>handelClick('Forum')}>

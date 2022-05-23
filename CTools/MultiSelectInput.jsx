@@ -8,7 +8,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 
 
 export default function MultiSelectInput(props) {
-  const { data,getValue } = props
+  const { data,getValue,placeholder=" Select categories" } = props
   const [selected, setSelected] = useState([]);
   useEffect(() => {
     getValue && getValue(selected)
@@ -26,7 +26,7 @@ export default function MultiSelectInput(props) {
         data={data}
         labelField="label"
         valueField="value"
-        placeholder=" Select categories"
+        placeholder={placeholder}
         searchPlaceholder="Search..."
         value={selected}
         onChange={item => {
@@ -60,7 +60,8 @@ const styles = StyleSheet.create({
     // borderBottomWidth: 0.5,
   },
   placeholderStyle: {
-    fontSize: 16,
+    fontSize: 15,
+    color:'#B6B6B6'
   },
   selectedTextStyle: {
     fontSize: 14,
