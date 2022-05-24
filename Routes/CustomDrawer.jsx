@@ -29,7 +29,7 @@ const changePic=()=>{
 
     return (
         <>
-            <DrawerContentScrollView >
+            <DrawerContentScrollView scrollEnabled={false}>
                 <View style={styles.header}>
                  <TouchableOpacity 
                  onPress={changePic}

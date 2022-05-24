@@ -65,7 +65,7 @@ export default function AddNewFood(props) {
       },
         (error) => {
           setAlert(
-            <Alert text='sorry somting is not working try agine later'
+            <Alert text={`sorry we cannot find ${serchName} right now`} 
               type='worng'
               bottom={250}
             />)

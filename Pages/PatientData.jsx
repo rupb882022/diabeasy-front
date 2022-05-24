@@ -166,18 +166,18 @@ export default function PatientData() {
   }, [month, pieInfo])
 
 
-
+  console.log(grapData.labels)
 
   return (
     <>
       {loading && <Loading opacity={'#d6f2fc'} />}
       <Header
         title='Graphs'
-        flex={0.35}
-        possiton={62}
+        flex={0.30}
+        possiton={40}
         paddingRight={5}
       />
-      <View style={{ flex: 0.08, flexDirection: 'column', position: 'relative', bottom: '5%', right: '28%' }}>
+      <View style={{ flex: 0.08, flexDirection: 'column', position: 'relative', bottom: '3%', right: '28%' }}>
         <Input
           placeholder='Month'
           // placeholder='last 30 days'
@@ -191,8 +191,7 @@ export default function PatientData() {
           selectBox_items={monthList ? monthList : []}
         />
       </View>
-      {/* TO DO -function from serverside for set A1C parameter   */}
-      {/* (46.7 + your glucose) / 28.7 = your A1C */}
+
       <Text style={{ alignSelf: 'flex-end', paddingBottom: '4%', fontSize: 18, position: 'absolute', top: '10%',right:'5%' }}>Estimated A1C : {a1c && a1c.toFixed(1)}% </Text>
 
 
@@ -216,7 +215,7 @@ export default function PatientData() {
 
           </View>
           <View style={{ paddingTop: '4%' }}>
-            {grapData && grapData.labels.length > 5 && <><Text style={styles.secoundTitle}>Average in the last 6 months</Text>
+            {grapData && grapData.labels.length >= 2 && <><Text style={styles.secoundTitle}>Average in the last {grapData.labels.length} months</Text>
               <LineChart
                 data={grapData}
                 width={Dimensions.get("window").width} // from react-native

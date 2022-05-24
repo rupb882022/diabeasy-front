@@ -1,33 +1,40 @@
-import { View, StyleSheet, Text, TextInput, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { View, StyleSheet, ScrollView, Switch, Text, TextInput, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import React, { useState, useContext, useEffect } from 'react';
 import Header from '../CTools/Header';
 import Input from '../CTools/Input';
 import Button from '../CTools/Button';
 import moment from 'moment';
+import CheckBox from '../CTools/CheckBox'
 import { UserContext } from '../CTools/UserDetailsHook'
 import Loading from '../CTools/Loading';
 import { Post_user_data, Post_SendPushNotification } from '../Functions/Function'
 import Alert from '../CTools/Alert';
 import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
-import {Get_all_ExceptionalEvent} from'../Functions/Function'
+import { Get_all_ExceptionalEvent } from '../Functions/Function'
 import MultiSelectInput from '../CTools/MultiSelectInput'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 export default function InsertData({ navigation, route }) {
 
     //for date time placeholder
     const today = new Date();
     let FoodDetails = route.params && route.params.myFoodDtails ? route.params.myFoodDtails : '';
 
-    const { userDetails } = useContext(UserContext);
+    const { userDetails,setUserDetails } = useContext(UserContext);
     const [alert, setAlert] = useState()
     const [dateTime, setDateTime] = useState();
     const [sugarLevel, setsugarLevel] = useState();
-    const [spot, setSpot] = useState();
+    const [spot, setSpot] = useState(userDetails&&userDetails.spot);
     const [listExceptionalEvent, setListExceptionalEvent] = useState();
+    const [ExceptionalEvent, setExceptionalEvent] = useState(null);
     const [carbs, setCarbs] = useState('');
     const [valid_lable, setValid_lable] = useState('');
     const [injectionValue, setinjectionValue] = useState();
     const [foodLibary, setFoodLibary] = useState(FoodDetails);
+    const [defualtSpot, setDefualtSpot] = useState(userDetails&&userDetails.spot?true:false)
+
+    // const [keyboardStatus, setKeyboardStatus] = useState(undefined);
 
 
     const save_details = () => {
@@ -44,7 +51,8 @@ export default function InsertData({ navigation, route }) {
                 injectionType: injectionType,
                 value_of_ingection: injectionValue,
                 Patients_id: userDetails.id,
-                food: food
+                food: food,
+                ExceptionalEvent: ExceptionalEvent
             }
             let PushDetails = {
                 "to": userDetails.Token,
@@ -57,9 +65,10 @@ export default function InsertData({ navigation, route }) {
             console.log("detials", detials);
             Post_user_data(detials).then((response) => {
                 response && navigation.navigate('Repotrs - Table');
-            }).then(Post_SendPushNotification(PushDetails).then((res) => {
-                res && console.log(" res status push notification=> ", res.status);
-            }))
+            })
+                // .then(Post_SendPushNotification(PushDetails).then((res) => {
+                //     res && console.log(" res status push notification=> ", res.status);
+                // }))
                 .catch((error) => {
                     setAlert(
                         <Alert text="sorry somting is got wotng try agine later"
@@ -93,8 +102,8 @@ export default function InsertData({ navigation, route }) {
 
 
     const checkCarbs = () => {
-        let regex = /^[+-]?\d+(\.\d+)?$/;
-        regex.test(carbs) ? setValid_lable('') : setValid_lable("digits only!")
+        let regex =/^[+-]?\d+(\.\d+)?$/;
+        regex.test(carbs) ? setValid_lable('') : setValid_lable("numbers only!")
     }
 
     useEffect(() => {
@@ -111,6 +120,51 @@ export default function InsertData({ navigation, route }) {
         }
     }, []);
 
+    
+    const storeData = async (value) => {
+        try {
+            const jsonValue = JSON.stringify(value)
+            await AsyncStorage.setItem('userDetails', jsonValue)
+            console.log("userDetails", jsonValue)
+        } catch (e) {
+            await AsyncStorage.setItem('eror', e)
+            setValidtionUser("sorry, app lost connection, please try to sign in agine");
+        }
+    }
+    
+    useEffect(() => {
+  console.log("defualtSpot",defualtSpot)
+  console.log("spot",spot)
+  console.log("userDetails",userDetails)
+    if(defualtSpot&&spot&&userDetails&&!userDetails.spot){
+        let temp={...userDetails,spot:spot}
+        storeData(temp)
+        setUserDetails(temp)
+    }
+
+    if(!defualtSpot&&userDetails&&userDetails.spot){
+        delete userDetails['spot'];
+        storeData(userDetails);
+    }
+    }, [defualtSpot]);
+
+
+
+
+    // useEffect(() => {
+    //     const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
+    //       setKeyboardStatus("Keyboard Shown");
+    //     });
+    //     const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
+    //       setKeyboardStatus("Keyboard Hidden");
+    //     });
+
+    //     return () => {
+    //       showSubscription.remove();
+    //       hideSubscription.remove();
+    //     };
+    //   }, []);
+
     return (
         <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -124,85 +178,116 @@ export default function InsertData({ navigation, route }) {
                         logo_image='infusion'
                         image_width={30}
                         image_heigt={125}
-                        possiton={61}
-                        flex={1.4}
-                        line={false}
+                        possiton={ExceptionalEvent && ExceptionalEvent.length > 0 ? 28 - (ExceptionalEvent.length*0.80) : 28}
+                        flex={0.8}
+                        // line={false}
                         image_margin={{ Bottom: -5 }}
                     />
-                    <View style={styles.containerBody}>
-                        <Text style={styles.eatText}>What are you going to eat?</Text>
-                       
-                        <MultiSelectInput
-                        placeholder=' Exceptional event'
-                            // data={categoryList}
-                            // getValue={(value) => setCategory(value)}
-                        />
-                        <View style={{ flex: 1, flexDirection: 'row' }}>
-                            <View style={{ flex: 4, paddingLeft: '13%' }}>
-                                <View style={styles.CarbsinputContiner}>
-                                    <Text style={styles.label}></Text>
-                                    <TextInput
-                                    placeholder='Carbs'
-                                        style={styles.Carbsinput}
-                                        value={carbs ? carbs.toString() : ''}
-                                        onChangeText={value => { setCarbs(value); }}
-                                        clearButtonMode='while-editing'
-                                        onBlur={checkCarbs}
+                    {/* <SafeAreaView style={{flex:5}}> */}
+                    <ScrollView style={{ maxHeight: 500 }}>
+                        <View style={styles.containerBody}>
+                            <Text style={styles.eatText}>What are you going to eat?</Text>
+
+                            <MultiSelectInput
+                                placeholder=' Exceptional event ?'
+                                data={listExceptionalEvent}
+                                getValue={(value) => setExceptionalEvent(value)}
+                            />
+                            <View style={{ flex: 1, flexDirection: 'row' }}>
+                                <View style={{ flex: 4, paddingLeft: '13%' }}>
+                                    <View style={styles.CarbsinputContiner}>
+                                        <Text style={styles.label}></Text>
+                                        <TextInput
+                                            placeholder='Carbs'
+                                            style={styles.Carbsinput}
+                                            value={carbs ? carbs.toString() : ''}
+                                            onChangeText={value => { setCarbs(value); }}
+                                            clearButtonMode='while-editing'
+                                            onBlur={checkCarbs}
+                                        />
+                                    </View>
+                                    <Text style={styles.valid_lable}>{valid_lable}</Text>
+                                </View>
+                                <View style={{ flex: 1, paddingRight: '12%', paddingBottom: '4%' }}>
+
+                                    <Button
+                                        // text="food library"
+                                        width={15}
+                                        onPress={() => navigation.navigate('Food')}
+                                        height={6}
+                                        radius={5}
+                                        element={<Ionicons name="fast-food-outline" size={24} color='white' />}
+                                        alignItems='flex-end'
+                                        justifyContent='center'
                                     />
                                 </View>
-                                <Text style={styles.valid_lable}>{valid_lable}</Text>
                             </View>
-                            <View style={{ flex: 1, paddingRight: '12%', paddingBottom: '4%' }}>
-
-                                <Button
-                                    // text="food library"
-                                    width={15}
-                                    onPress={() => navigation.navigate('Food')}
-                                    height={6}
-                                    radius={5}
-                                    element={<Ionicons name="fast-food-outline" size={24} color='white' />}
-                                    alignItems='flex-end'
-                                    justifyContent='center'
-                                />
+                            <Input
+                                placeholder='Blood sugar level'
+                                validtion='number'
+                                keyboardType='number-pad'
+                                max={600}
+                                required={true}
+                                getValue={(value) => setsugarLevel(value)}
+                            />
+                            <Input
+                                placeholder='injection value'
+                                validtion='float'
+                                // keyboardType='decimal-pad'
+                                getValue={(value) => setinjectionValue(value)}
+                            />
+                            <View style={{ flexDirection: 'row', flex: 1 }}>
+                                <View style={{flex:1,paddingRight:'8%'}}>
+                                <Input
+                                flex={1}
+                                alignItems='flex-end'
+                                width={83}
+                                    placeholder={userDetails&&userDetails.spot?userDetails&&userDetails.spot:'Spot of injection'}
+                                    editable={false}
+                                    type='selectBox'
+                                    getValue={(value) => setSpot(value)}
+                                    SelectBox_placeholder={'Select spot of injection'}
+                                    selectBox_items={[
+                                        { itemKey: 0, label: 'Arm', value: 'Arm' },
+                                        { itemKey: 1, label: 'Belly', value: 'Belly' },
+                                        { itemKey: 2, label: 'Leg', value: 'Leg' },
+                                        { itemKey: 3, label: 'Buttock', value: 'Buttock' },
+                                    ]} />
+                                    </View>
+                                    <View style={{position:'relative',right:'67%' }}>
+                                {/* <CheckBox
+                                    getvalue={(value) => { setDefualtSpot(value) }}
+                                /> */}
+                                     <Button
+                                        // text="food library"
+                                        width={4}
+                                         onPress={() =>{setDefualtSpot(!defualtSpot);}}
+                                        height={4}
+                                        radius={5}
+                                        color={defualtSpot?'grey':'#1ea6d6'}
+                                        element={<><Text style={styles.default}>{defualtSpot?'unset':'set'}</Text>
+                                        <Text style={styles.default}>defualt</Text>
+                                        </>
+                                        // <Ionicons name="fast-food-outline" size={24} color='white' />
+                                    }
+                                        alignItems='flex-end'
+                                        justifyContent='center'
+                                    />
+                                </View>
                             </View>
+                            <Input
+                                popup_title='Choose date and time'
+                                // label='Date time'
+                                type='date'
+                                editable={false}
+                                placeholder={" Date time: " + moment(today).format("DD/MM/YYYY H:mm")}
+                                getValue={(value) => setDateTime(value)}
+                            />
                         </View>
-                        <Input
-                            placeholder='Blood sugar level'
-                            validtion='number'
-                            keyboardType='number-pad'
-                            max={600}
-                            required={true}
-                            getValue={(value) => setsugarLevel(value)}
-                        />
-                        <Input
-                            placeholder='injection value'
-                            validtion='float'
-                            // keyboardType='decimal-pad'
-                            getValue={(value) => setinjectionValue(value)}
-                        />
-
-                        <Input
-                            placeholder='Spot of injection'
-                            editable={false}
-                            type='selectBox'
-                            getValue={(value) => setSpot(value)}
-                            SelectBox_placeholder='Select spot of injection'
-                            selectBox_items={[
-                                { itemKey: 0, label: 'Arm', value: 'Arm' },
-                                { itemKey: 1, label: 'Belly', value: 'Belly' },
-                                { itemKey: 2, label: 'Leg', value: 'Leg' },
-                                { itemKey: 3, label: 'Buttock', value: 'Buttock' },
-                            ]} />
-                        <Input
-                            popup_title='Choose date and time'
-                            // label='Date time'
-                            type='date'
-                            editable={false}
-                            placeholder={" Date time: " + moment(today).format("DD/MM/YYYY H:mm")}
-                            getValue={(value) => setDateTime(value)}
-                        />
-                    </View>
+                    </ScrollView>
+                    {/* </SafeAreaView> */}
                     <Button
+                        flex={1}
                         text="save"
                         width={10}
                         height={2}
@@ -211,6 +296,7 @@ export default function InsertData({ navigation, route }) {
                         onPress={() => save_details()}
                     />
                 </View>
+
             </TouchableWithoutFeedback>
         </KeyboardAvoidingView>
     );
@@ -223,7 +309,7 @@ const styles = StyleSheet.create({
     },
     containerBody: {
         flex: 6.5,
-        bottom: '4%',
+        // bottom: '4%',
 
     },
     eatText: {
@@ -236,7 +322,7 @@ const styles = StyleSheet.create({
     Carbsinput: {
         backgroundColor: 'white',
         width: '100%',
-        height: '48%',
+        height: '72%',
         borderRadius: 5,
         fontSize: 14,
         padding: '2%',
@@ -244,14 +330,17 @@ const styles = StyleSheet.create({
             width: -1,
             height: 1
         },
+        bottom: '25%',
         shadowColor: '#727272',
         shadowOpacity: 1,
-        justifyContent: 'center'
+        justifyContent: 'center',
+        textAlign: 'left'
     }, CarbsinputContiner: {
-        flex: 1,
+        flex: 4,
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
     }, label: {
+        // flex:1,
         width: '75%',
         paddingBottom: '1%',
     }, valid_lable: {
@@ -259,5 +348,16 @@ const styles = StyleSheet.create({
         bottom: '15%',
         fontSize: 14,
         color: '#ff9000',
+    },
+    switch: {
+        justifyContent: 'flex-end',
+        alignSelf: 'flex-end',
+        marginRight: '2%',
+    },
+    default:{
+        fontSize:12,
+        textAlign:'center',
+        color:'white',
+        flexWrap:'wrap'
     }
 });

@@ -75,12 +75,13 @@ const styles = StyleSheet.create({
   inputSearchStyle: {
     height: 40,
     fontSize: 16,
+   
   },
   icon: {
     // marginRight: 5,
   },
   selectedStyle: {
     borderRadius: 12,
-    borderColor:'black'
+    borderColor:'black',
   },
 });

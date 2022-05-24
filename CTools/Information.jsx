@@ -58,7 +58,7 @@ export default function Information({ navigation,backgroundColor }) {
         {alertNumber > 0 && <View style={styles.alertNumber}><Text
           style={{ textAlign: 'center', fontWeight: 'bold', color: 'white' }}
         >{alertNumber}</Text></View>}
-        <Ionicons name="ios-notifications-circle-outline" size={40} color="#1ea6d6" />
+        <Ionicons name="ios-notifications-circle-outline" size={40} color="white" />
       </TouchableOpacity>
     </View>
     {show && <PopUp
@@ -85,7 +85,7 @@ return{backgroundColor:color,zIndex:20}
     position: 'absolute',
     zIndex: 5,
     alignSelf: 'flex-end',
-    marginRight: '5%',
+    marginRight: '7%',
 
   }, Secoundicon: {
     marginRight: '5%',

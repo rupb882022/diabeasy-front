@@ -43,7 +43,7 @@ export default function Drawer(props) {
 
     //color of icons
     let color = "black"
-    let backgroundColor = '#D8E2DC'
+    let backgroundColor = '#00a6a64a'
     const options = {
         headerStyle: {
             backgroundColor: 'transparent',
@@ -68,7 +68,7 @@ export default function Drawer(props) {
                 headerLeft: () => {
                     return (
                         <TouchableOpacity
-                            style={{ backgroundColor: backgroundColor }}
+                            //style={{ backgroundColor: backgroundColor }}
                             onPress={() => { navigation.toggleDrawer(); }}>
                             <Ionicons name="ios-menu"
                                 size={75}
@@ -132,17 +132,18 @@ export default function Drawer(props) {
                 headerLeft: () => {
                     return (
                         <TouchableOpacity
-                            style={{ backgroundColor: backgroundColor }}
+                            // style={{ backgroundColor: backgroundColor }}
                             onPress={() => { navigation.toggleDrawer(); }}>
                             <Ionicons name="ios-menu"
-                                size={70}
+                                size={48}
                                 style={{
                                     height: 55,
+                                    zIndex:100,
                                     position: 'relative',
-                                    top: '25%',
+                                    top: '50%',
                                     // marginTop: '35%',
-                                    marginLeft: '15%',
-                                    color: '#1ea6d6',
+                                    marginLeft: '16%',
+                                    color: 'white',
                                     // backgroundColor:backgroundColor
                                 }}
                             />
@@ -155,10 +156,6 @@ export default function Drawer(props) {
                 <Drawernav.Screen name='Home' component={Home} options={{
                     ...options,
                     drawerIcon: () => (<Ionicons name="ios-home-outline" size={24} color={color} />)
-                }} />
-                <Drawernav.Screen name='Insert Data' component={InsertData} options={{
-                    ...options,
-                    drawerIcon: () => (<Entypo name="add-to-list" size={24} color={color} />)
                 }} />
                 <Drawernav.Screen name='Recommandtion' component={InjectionType} options={{
                     ...options,
@@ -214,7 +211,10 @@ export default function Drawer(props) {
                     ...options,
                     drawerIcon: () => (<AntDesign name="logout" size={24} color={color} />)
                 }} /> */}
-
+     <Drawernav.Screen name='Insert Data' component={InsertData} options={{
+                    ...options,
+                    drawerIcon: () => (<Entypo name="add-to-list" size={24} color='white' />)
+                }} />
             </Drawernav.Navigator>
             
             <Footer

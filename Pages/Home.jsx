@@ -52,11 +52,11 @@ post_pushToken(userDetails.id,data).then((response) => {
             <Header
                 title='Home'
                 logo_image='heart'
-                flex={0.5}
+                flex={0.35}
                 image_width={100}
                 image_heigt={50}
                 paddingRight={9}
-                possiton={50}
+                possiton={32}
                 image_margin={{ Bottom: 5 }}
             />
             <View style={{flex:1.8,paddingTop:'10%'}}>

@@ -4,10 +4,10 @@ import React from 'react';
 
 export default function Button(props) {
 
-    const { element,text, onPress, width, height, radius, textSize, justifyContent, alignItems,color,borderColor } = props
+    const { flex=1,element,text, onPress, width, height, radius, textSize, justifyContent, alignItems,color,borderColor } = props
 
     return (
-        <View style={styles.possition(justifyContent, alignItems)}>
+        <View style={styles.possition(justifyContent, alignItems,flex)}>
             <TouchableOpacity
                 onPress={onPress}
        
@@ -25,9 +25,9 @@ export default function Button(props) {
     );
 }
 const styles = StyleSheet.create({
-    possition: (justifyContent = '', alignItems = '') => {
+    possition: (justifyContent = '', alignItems = '',flex) => {
         return {
-            flex: 1,
+            flex: flex,
             justifyContent: justifyContent,
             alignItems: alignItems,
             shadowOffset: {

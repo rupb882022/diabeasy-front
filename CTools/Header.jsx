@@ -1,13 +1,12 @@
-import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity,Dimensions } from 'react-native';
 import React from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { borderColor } from 'react-native/Libraries/Components/View/ReactNativeStyleAttributes';
 import Information from './Information';
 
 
-
 export default function Header(props) {
-  const { logo_image, possiton = 75, title, flex, paddingRight, marginLeft, flexDirection, line = true, image_heigt, image_width, alignItems, justifyContent, image_margin, fontSize } = props
+  const { logo_image, possiton = 75, title, flex=1, paddingRight, marginLeft, flexDirection, line = true, image_heigt, image_width, alignItems, justifyContent, image_margin, fontSize } = props
   var icon = '';
 
   //for icon image margin 
@@ -53,7 +52,7 @@ export default function Header(props) {
     <>
       <View style={styles.container(flex, flexDirection, alignItems, justifyContent, possiton)}>
         {/* <Text style={styles.title(paddingRight, marginLeft, fontSize)}>{title}</Text> */}
-                <Text style={styles.title(paddingRight, marginLeft, fontSize)}>Diabeasy</Text>
+                <Text style={styles.title(0, 0, 30,Dimensions.get("window").width)}>Diabeasy</Text>
 
         {logo_image&&logo_image === 'diabeasy' && <Image
           style={styles.Image(image_heigt, image_width, image_marginTop, image_marginBottom)}
@@ -68,7 +67,7 @@ export default function Header(props) {
 
 }
 const styles = StyleSheet.create({
-  container: (flex = 1, flexDirection = 'row', alignItems = 'flex-end', justifyContent = 'flex-start', possiton) => {
+  container: (flex, flexDirection = 'row', alignItems = 'flex-end', justifyContent = 'flex-start', possiton) => {
     return {
       flex: flex,
       flexDirection: flexDirection,
@@ -76,7 +75,7 @@ const styles = StyleSheet.create({
       alignItems: alignItems,
       position: 'relative',
       bottom: possiton,
-      backgroundColor:'#D8E2DC',
+      backgroundColor:'#00a6a64a',
       ZIndex:0
     }
   },
@@ -89,12 +88,12 @@ const styles = StyleSheet.create({
       marginBottom: image_marginBottom + '%',
     }
   },
-  title: (paddingRight = 0, marginLeft = 0, fontSize = 30) => {
+  title: (paddingRight = 0, marginLeft = 0, fontSize = 30,width) => {
     return {
       fontSize: fontSize,
       // width: '10%',
       // height: '55%',
-       left:'35%',bottom:'27%',
+       left:width/3,bottom:'27%',
       textAlign: 'right',
       paddingRight: paddingRight + '%',
       marginLeft: marginLeft + '%',
@@ -109,7 +108,7 @@ const styles = StyleSheet.create({
   },
   line: (possiton) => {
     return {
-      borderBottomWidth: 3,
+      borderBottomWidth: 2,
       position: 'relative',
       bottom: possiton,
       borderColor:'#1EA6D6'
