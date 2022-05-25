@@ -4,7 +4,6 @@ import Header from '../CTools/Header';
 import Input from '../CTools/Input';
 import Button from '../CTools/Button';
 import moment from 'moment';
-import CheckBox from '../CTools/CheckBox'
 import { UserContext } from '../CTools/UserDetailsHook'
 import Loading from '../CTools/Loading';
 import { Post_user_data, Post_SendPushNotification } from '../Functions/Function'
@@ -21,24 +20,25 @@ export default function InsertData({ navigation, route }) {
     const today = new Date();
     let FoodDetails = route.params && route.params.myFoodDtails ? route.params.myFoodDtails : '';
 
-    const { userDetails,setUserDetails } = useContext(UserContext);
+    const { userDetails, setUserDetails } = useContext(UserContext);
     const [alert, setAlert] = useState()
     const [dateTime, setDateTime] = useState();
     const [sugarLevel, setsugarLevel] = useState();
-    const [spot, setSpot] = useState(userDetails&&userDetails.spot);
+    const [spot, setSpot] = useState(userDetails && userDetails.spot);
     const [listExceptionalEvent, setListExceptionalEvent] = useState();
     const [ExceptionalEvent, setExceptionalEvent] = useState(null);
     const [carbs, setCarbs] = useState('');
     const [valid_lable, setValid_lable] = useState('');
     const [injectionValue, setinjectionValue] = useState();
     const [foodLibary, setFoodLibary] = useState(FoodDetails);
-    const [defualtSpot, setDefualtSpot] = useState(userDetails&&userDetails.spot?true:false)
-
+    const [defualtSpot, setDefualtSpot] = useState(userDetails && userDetails.spot ? true : false)
+    const [loading, setLoading] = useState(false);
     // const [keyboardStatus, setKeyboardStatus] = useState(undefined);
 
 
     const save_details = () => {
         if (sugarLevel) {
+            setLoading(true);
             let injectionType = carbs ? 'food' : injectionValue ? 'fix' : 'no-injection'
 
             let date = dateTime ? moment(dateTime, 'DD/MM/YYYY H:mm').format('YYYY-MM-DD[T]HH:mm:ss') : moment(today).format('YYYY-MM-DD[T]HH:mm:ss');
@@ -46,7 +46,7 @@ export default function InsertData({ navigation, route }) {
             let detials = {
                 date_time: date,
                 blood_sugar_level: sugarLevel,
-                injection_site: spot,
+                injection_site: injectionType === 'no-injection' ? null : spot,
                 totalCarbs: carbs ? carbs : 0,
                 injectionType: injectionType,
                 value_of_ingection: injectionValue,
@@ -64,16 +64,21 @@ export default function InsertData({ navigation, route }) {
             }
             console.log("detials", detials);
             Post_user_data(detials).then((response) => {
-                response && navigation.navigate('Repotrs - Table');
-            })
+                setInterval(() => setLoading(false), 1000);
+              return response
+            }).then((response)=>{
+                response&& navigation.navigate('Repotrs - Table');
+        })
                 // .then(Post_SendPushNotification(PushDetails).then((res) => {
                 //     res && console.log(" res status push notification=> ", res.status);
                 // }))
                 .catch((error) => {
+                    setLoading(false)
                     setAlert(
                         <Alert text="sorry somting is got wotng try agine later"
                             type='worng'
                         />)
+                        
                     console.log("error in function Post_user_details " + error);
                 });
 
@@ -102,7 +107,7 @@ export default function InsertData({ navigation, route }) {
 
 
     const checkCarbs = () => {
-        let regex =/^[+-]?\d+(\.\d+)?$/;
+        let regex = /^[+-]?\d+(\.\d+)?$/;
         regex.test(carbs) ? setValid_lable('') : setValid_lable("numbers only!")
     }
 
@@ -120,7 +125,7 @@ export default function InsertData({ navigation, route }) {
         }
     }, []);
 
-    
+
     const storeData = async (value) => {
         try {
             const jsonValue = JSON.stringify(value)
@@ -131,21 +136,21 @@ export default function InsertData({ navigation, route }) {
             setValidtionUser("sorry, app lost connection, please try to sign in agine");
         }
     }
-    
-    useEffect(() => {
-  console.log("defualtSpot",defualtSpot)
-  console.log("spot",spot)
-  console.log("userDetails",userDetails)
-    if(defualtSpot&&spot&&userDetails&&!userDetails.spot){
-        let temp={...userDetails,spot:spot}
-        storeData(temp)
-        setUserDetails(temp)
-    }
 
-    if(!defualtSpot&&userDetails&&userDetails.spot){
-        delete userDetails['spot'];
-        storeData(userDetails);
-    }
+    useEffect(() => {
+        console.log("defualtSpot", defualtSpot)
+        console.log("spot", spot)
+        console.log("userDetails", userDetails)
+        if (defualtSpot && spot && userDetails && !userDetails.spot) {
+            let temp = { ...userDetails, spot: spot }
+            storeData(temp)
+            setUserDetails(temp)
+        }
+
+        if (!defualtSpot && userDetails && userDetails.spot) {
+            delete userDetails['spot'];
+            storeData(userDetails);
+        }
     }, [defualtSpot]);
 
 
@@ -172,13 +177,14 @@ export default function InsertData({ navigation, route }) {
         >
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <View style={styles.container}>
+                    {loading&&<Loading/>}
                     {alert && alert}
                     <Header
                         title='Insert Data'
                         logo_image='infusion'
                         image_width={30}
                         image_heigt={125}
-                        possiton={ExceptionalEvent && ExceptionalEvent.length > 0 ? 28 - (ExceptionalEvent.length*0.80) : 28}
+                        possiton={ExceptionalEvent && ExceptionalEvent.length > 0 ? 28 - (ExceptionalEvent.length * 0.80) : 28}
                         flex={0.8}
                         // line={false}
                         image_margin={{ Bottom: -5 }}
@@ -237,39 +243,39 @@ export default function InsertData({ navigation, route }) {
                                 getValue={(value) => setinjectionValue(value)}
                             />
                             <View style={{ flexDirection: 'row', flex: 1 }}>
-                                <View style={{flex:1,paddingRight:'8%'}}>
-                                <Input
-                                flex={1}
-                                alignItems='flex-end'
-                                width={83}
-                                    placeholder={userDetails&&userDetails.spot?userDetails&&userDetails.spot:'Spot of injection'}
-                                    editable={false}
-                                    type='selectBox'
-                                    getValue={(value) => setSpot(value)}
-                                    SelectBox_placeholder={'Select spot of injection'}
-                                    selectBox_items={[
-                                        { itemKey: 0, label: 'Arm', value: 'Arm' },
-                                        { itemKey: 1, label: 'Belly', value: 'Belly' },
-                                        { itemKey: 2, label: 'Leg', value: 'Leg' },
-                                        { itemKey: 3, label: 'Buttock', value: 'Buttock' },
-                                    ]} />
-                                    </View>
-                                    <View style={{position:'relative',right:'67%' }}>
-                                {/* <CheckBox
+                                <View style={{ flex: 1, paddingRight: '8%' }}>
+                                    <Input
+                                        flex={1}
+                                        alignItems='flex-end'
+                                        width={83}
+                                        placeholder={userDetails && userDetails.spot ? userDetails && userDetails.spot : 'Spot of injection'}
+                                        editable={false}
+                                        type='selectBox'
+                                        getValue={(value) => setSpot(value)}
+                                        SelectBox_placeholder={'Select spot of injection'}
+                                        selectBox_items={[
+                                            { itemKey: 0, label: 'Arm', value: 'Arm' },
+                                            { itemKey: 1, label: 'Belly', value: 'Belly' },
+                                            { itemKey: 2, label: 'Leg', value: 'Leg' },
+                                            { itemKey: 3, label: 'Buttock', value: 'Buttock' },
+                                        ]} />
+                                </View>
+                                <View style={{ position: 'relative', right: '67%' }}>
+                                    {/* <CheckBox
                                     getvalue={(value) => { setDefualtSpot(value) }}
                                 /> */}
-                                     <Button
+                                    <Button
                                         // text="food library"
                                         width={4}
-                                         onPress={() =>{setDefualtSpot(!defualtSpot);}}
+                                        onPress={() => { setDefualtSpot(!defualtSpot); }}
                                         height={4}
                                         radius={5}
-                                        color={defualtSpot?'grey':'#1ea6d6'}
-                                        element={<><Text style={styles.default}>{defualtSpot?'unset':'set'}</Text>
-                                        <Text style={styles.default}>defualt</Text>
+                                        color={defualtSpot ? 'grey' : '#1ea6d6'}
+                                        element={<><Text style={styles.default}>{defualtSpot ? 'unset' : 'set'}</Text>
+                                            <Text style={styles.default}>defualt</Text>
                                         </>
-                                        // <Ionicons name="fast-food-outline" size={24} color='white' />
-                                    }
+                                            // <Ionicons name="fast-food-outline" size={24} color='white' />
+                                        }
                                         alignItems='flex-end'
                                         justifyContent='center'
                                     />
@@ -354,10 +360,10 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-end',
         marginRight: '2%',
     },
-    default:{
-        fontSize:12,
-        textAlign:'center',
-        color:'white',
-        flexWrap:'wrap'
+    default: {
+        fontSize: 12,
+        textAlign: 'center',
+        color: 'white',
+        flexWrap: 'wrap'
     }
 });

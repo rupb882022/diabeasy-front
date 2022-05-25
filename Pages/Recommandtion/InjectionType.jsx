@@ -45,9 +45,9 @@ useEffect(()=>{
       {alert&&alert}
       <Header
         title='Injection'
-        flex={0.15}
+        flex={0.1}
         paddingRight={4}
-        possiton={50}
+        possiton={41}
       />
       <Text style={styles.txt}>Choose Recommandtion</Text>
       <View style={{ flex: 0.5, flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>

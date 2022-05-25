@@ -166,15 +166,15 @@ export default function PatientData() {
   }, [month, pieInfo])
 
 
-  console.log(grapData.labels)
+
 
   return (
     <>
       {loading && <Loading opacity={'#d6f2fc'} />}
       <Header
         title='Graphs'
-        flex={0.30}
-        possiton={40}
+        flex={0.25}
+        possiton={30}
         paddingRight={5}
       />
       <View style={{ flex: 0.08, flexDirection: 'column', position: 'relative', bottom: '3%', right: '28%' }}>

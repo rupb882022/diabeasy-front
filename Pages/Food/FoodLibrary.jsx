@@ -211,10 +211,10 @@ export default function FoodLibrary({ navigation }) {
         {loading && <Loading opacity={'#d6f2fc'} />}
         <Header
             title={isRecipes ? 'Recipe' : 'Ingredient'}
-            flex={2.6}
-            marginLeft={isRecipes ? -1 : 5}
-            paddingRight={5}
-            possiton={60}
+            flex={1.35}
+            // marginLeft={isRecipes ? -1 : 5}
+            // paddingRight={5}
+            possiton={27}
         />
         <View style={styles.continer}>
 
@@ -317,7 +317,8 @@ export default function FoodLibrary({ navigation }) {
 const styles = StyleSheet.create({
     continer: {
         flex: 12,
-        bottom: '1%'
+        // bottom: '1%'
+        top:'1%'
     },
     input_category: {
         paddingLeft: '5%',
@@ -351,7 +352,8 @@ const styles = StyleSheet.create({
         flex: 0.2,
         alignItems: 'flex-end',
         flexDirection: 'row',
-        justifyContent: 'space-around'
+        justifyContent: 'space-around',
+        bottom:'3%'
 
     },
 })

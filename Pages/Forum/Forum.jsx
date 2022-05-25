@@ -285,11 +285,11 @@ useEffect(()=>{
     {data && <Header
       title="Forum"
       logo_image='forum'
-      flex={1}
-      image_heigt={80}
-      image_width={30}
-      paddingRight={8}
-      possiton={48}
+      flex={0.7}
+      // image_heigt={80}
+      // image_width={30}
+      // paddingRight={8}
+      possiton={30}
     />}
     {data && <SafeAreaView style={styles.container}>
       <SectionList
@@ -336,7 +336,7 @@ const styles = StyleSheet.create({
     flex: 5,
     marginHorizontal: 16,
     position: 'relative',
-    bottom: '5%'
+    bottom: '2.5%'
   },
   header: {
     fontSize: 24,

@@ -12,7 +12,7 @@ export default function Header(props) {
   //for icon image margin 
   let image_marginBottom = image_margin && image_margin.Bottom ? image_margin.Bottom : 0;
   let image_marginTop = image_margin && image_margin.Top ? image_margin.Top : 0;
-
+let color=title=='Login'?'transparent':'#00a6a64a';
 
   switch (logo_image) {
     case 'heart':
@@ -50,9 +50,9 @@ export default function Header(props) {
   }
   return (
     <>
-      <View style={styles.container(flex, flexDirection, alignItems, justifyContent, possiton)}>
+      <View style={styles.container(flex, flexDirection, alignItems, justifyContent, possiton,color)}>
         {/* <Text style={styles.title(paddingRight, marginLeft, fontSize)}>{title}</Text> */}
-                <Text style={styles.title(0, 0, 30,Dimensions.get("window").width)}>Diabeasy</Text>
+                <Text style={styles.title(0, 0, 30,Dimensions.get("window").width)}>{title=='Login'?'':'Diabeasy'}</Text>
 
         {logo_image&&logo_image === 'diabeasy' && <Image
           style={styles.Image(image_heigt, image_width, image_marginTop, image_marginBottom)}
@@ -67,7 +67,7 @@ export default function Header(props) {
 
 }
 const styles = StyleSheet.create({
-  container: (flex, flexDirection = 'row', alignItems = 'flex-end', justifyContent = 'flex-start', possiton) => {
+  container: (flex, flexDirection = 'row', alignItems = 'flex-end', justifyContent = 'flex-start', possiton,color) => {
     return {
       flex: flex,
       flexDirection: flexDirection,
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
       alignItems: alignItems,
       position: 'relative',
       bottom: possiton,
-      backgroundColor:'#00a6a64a',
+      backgroundColor:color,
       ZIndex:0
     }
   },

@@ -274,17 +274,19 @@ export default function Prescriptions(props) {
 
 
   //<DeleteAlert answer={(answer)=>console.log('ans2=',answer)}/>
-  return (
+  return (<>     
+   <Header
+    title='Prescriptions'
+    logo_image='perscriptions'
+    flex={userDetails.id % 2 == 0 ? 0.11 : 0.11}
+    possiton={27}
+    image_margin={{ Bottom: -4 }}
+    marginLeft={7}
+  // justifyContent='flex-start' 
+  />
+    
     <View style={styles.container}>
-      <Header
-        title='Prescriptions'
-        logo_image='perscriptions'
-        flex={userDetails.id % 2 == 0 ? 0.4 : 0.8}
-        possiton={60}
-        image_margin={{ Bottom: -4 }}
-        marginLeft={7}
-      // justifyContent='flex-start' 
-      />
+
       {userDetails.id % 2 == 0 ?
         <Text style={styles.title}>{userDetails.patientNAME ? userDetails.patientNAME : 'No One'}'s requests:</Text> :
         <Text style={styles.title}>Your last requests:</Text>}
@@ -393,6 +395,7 @@ export default function Prescriptions(props) {
       {alert && alert}
       {delAlert && <DeleteAlert answer={(answer) => { console.log('Delete?=>', answer); answer ? deletePrescription() : setDelAlert(false) }} />}
     </View>
+    </>
   )
 }
 const styles = StyleSheet.create({
@@ -420,7 +423,7 @@ const styles = StyleSheet.create({
     paddingTop: '5%',
     paddingBottom: '15%',
     flex: 0.5,
-    marginTop: '2%',
+    marginTop: '8%',
     backgroundColor: '#ffffffa8',
     marginHorizontal: '2.5%'
 
@@ -435,7 +438,7 @@ const styles = StyleSheet.create({
   title: {
     alignSelf: 'center',
     position: 'absolute',
-    top: '16.2%',
+    // top: '16.2%',
     fontSize: 25,
     fontWeight: 'bold',
     backgroundColor: '#ffffffa8',

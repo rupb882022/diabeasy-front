@@ -73,9 +73,9 @@ const element = <View style={{backgroundColor:'#bbe4f2'}}>
       <View style={styles.container}>
       <Header 
       title='Setting'
-      flex={0.2}
-      paddingRight={6}     
-      //possiton={50}
+      flex={0.1}
+      // paddingRight={6}     
+      possiton={29}
       />
        <View style={{flex:0.5}}>
        {/* <ScrollView> */}
@@ -97,10 +97,10 @@ const element = <View style={{backgroundColor:'#bbe4f2'}}>
   </TouchableOpacity>
   {openDiv && element}
 {show && <ForgotPasswordPopUp setShow={(isShow) => setShow(isShow)}/>}
-
+{/* 
   <TouchableOpacity > 
    <Text style={styles.txt}> bla bla bla bla                                  <AntDesign name="right" size={20} color="black" /></Text> 
-  </TouchableOpacity>
+  </TouchableOpacity> */}
   {/* </ScrollView> */}
        </View>
 

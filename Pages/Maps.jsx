@@ -65,12 +65,12 @@ export default function Maps() {
       <Header
         title='Sports locations'
         logo_image='graph'
-        flex={0.2}
-        image_width={20}
+        flex={0.1}
+        // image_width={20}
         //image_heigt={100}
         //image_margin={{ Bottom: -4}}
-        possiton={65}
-        marginLeft={15}
+        possiton={25}
+        // marginLeft={15}
         justifyContent='flex-start' />
 
       <GooglePlacesAutocomplete

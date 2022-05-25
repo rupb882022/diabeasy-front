@@ -255,11 +255,11 @@ let updatePopup =<>
     <View style={styles.container}>
       <Header
         title='Repotrs'
-        flex={userDetails.id % 2 == 0 ? 0.5 : 0.8}
-        possiton={62}
+        flex={userDetails.id % 2 == 0 ? 0.2 : 0.5}
+        possiton={36}
         paddingRight={5} />
 
-      <View style={{ flex: 0.2, position: 'relative', bottom: '5%', justifyContent: 'space-around', flexDirection: 'row', }}>
+      <View style={{ flex: 0.2, position: 'relative', bottom: '3%', justifyContent: 'space-around', flexDirection: 'row', }}>
         <Input
           popup_title='From Date'
           label='From date:'
@@ -306,7 +306,7 @@ let updatePopup =<>
           />
         </View>
       </View>
-      <View style={{ flex: 3,backgroundColor: '#ffffffa8', }}>
+      <View style={{ flex: 3,backgroundColor: '#ffffffa8',top:'2%' }}>
         <Table borderStyle={{ borderWidth: 1 }} >
           <Row
             data={CONTENT.tableHead}
