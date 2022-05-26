@@ -6,7 +6,7 @@ import moment from 'moment';
 export default function HipoFood(props) {
 
   const window =Dimensions.get('window');
-  console.log(Math.floor(window.height-window.height/10*7));
+
   const {hide=false,next_blood_sugar_level,totalCarbs,food_name,Unit_name,image,date_time,blood_sugar_level,amount}=props
   return (
     <View style={styles.container(Math.floor(window.height-window.height/10*7.5),hide)}>

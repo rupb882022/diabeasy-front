@@ -102,7 +102,6 @@ const [delAlert,setDelAlert]=useState(false)
 
 
   const calcDetails = (amount, unit) => {
-console.log("unit",unit)
     //clac carbs when user select Unit Of Measure
     let temp = UnitOfMeasure.find(x => x.name == unit)
     let carbs = unit == "Grams" ? temp.carbs * parseFloat(amount / 100) : temp.carbs * amount

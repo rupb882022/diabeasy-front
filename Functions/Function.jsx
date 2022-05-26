@@ -11,6 +11,9 @@ export const  Get_all_InsulinType=()=>{
 export const  Rest_password=(email)=>{
   return Fetch( `User/getPassword/${email}`,'Get');
 }
+export const  set_password=(body)=>{
+  return Axios( `User/setNewpassword`,'PUT',body);
+}
 export const  Post_user_data=(body)=>{
   return Axios( `User/InsertData`,'POST',body);
 }

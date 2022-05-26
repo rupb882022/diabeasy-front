@@ -40,7 +40,6 @@ export default function AddComment(props) {
 
   useEffect(() => {
     if (!show && comment && comment_value) {
-console.log("comment",comment);
       Post_Comment(comment).then((response) => {
         response&& getAllComments();
       })

@@ -8,7 +8,7 @@ export default function Footer(props) {
   const [color, setColor] = useState({ home: activeColor, sports: 'black', forum: 'black', call: 'black' });
 
   const handelClick = (name) => {
-    console.log(name);
+
     switch (name) {
       case 'Home':
         setColor({ home: activeColor, sports: 'black', forum: 'black', call: 'black' })

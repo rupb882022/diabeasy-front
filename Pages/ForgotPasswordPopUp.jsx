@@ -1,43 +1,74 @@
-import { StyleSheet, Text, View, Image,TouchableWithoutFeedback,Keyboard,KeyboardAvoidingView,TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
 import PopUp from '../CTools/PopUp';
 import Input from '../CTools/Input';
 import Button from '../CTools/Button';
 import { flushSync } from 'react-dom'
 import * as Progress from 'react-native-progress'
-import { Rest_password } from '../Functions/Function'
+import { Rest_password, set_password } from '../Functions/Function'
 import Alert from '../CTools/Alert'
 
 export default function ForgotPasswordPopUp(props) {
-  const { show, setShow,navigation } = props
+  const { show, setShow, navigation,set_alert } = props
   const [mail, setMail] = useState();
   const [code, setCode] = useState();
   const [loading, setLoading] = useState(false);
   const [alert, setAlert] = useState(false)
   const [password, setPassword] = useState('')
-  const [approve, setApprove] = useState('')
+  const [approve, setApprove] = useState(false)
+const [passwordValid,setPasswordValid]=useState('')
 
-  // const passwordValid = (value) => {
-  //   //wiil render the page at the end of function
-  //   flushSync(() => {
-  //     password == value ? setValidtion('') : setValidtion('    not the same password')
-  //   })
-  // }
+
+  
+const set_new_password=()=>{
+  
+  if (password.length < 8) {
+    setAlert(
+      <Alert text="please set 8 characters password"
+        type='alert'
+        time={3000}
+        bottom={80}
+      />)
+    return;
+  }
+  if (password != passwordValid) {
+    setAlert(
+  <Alert text="not the same password"
+    type='alert'
+    time={3000}
+    bottom={80}
+  />)
+  return;
+}
+
+setLoading(true)
+let tempMail = mail.replace(".", "=");
+  let userDetails = {
+    email: tempMail,
+    password: password
+  }
+  set_password(userDetails).then((respone) => {
+
+  loading&&setInterval(() => setLoading(false), 1000);
+  set_alert();
+    respone && setShow(false);
+  }, (error) => {
+    console.log("error in function set_password", error)
+  })
+}
 
   const checkCode = () => {
     if (password == code) {
       setApprove(true)
-      setPassword('');
-      setShow(false)
-      navigation.navigate('setNewPassword');
-  
+      setPassword(null);
+      
+
     } else {
-      setApprove(false)
       setAlert(
         <Alert text="not the right code"
-            type='alert'
-            time={3000}
-            bottom={80}
+          type='alert'
+          time={3000}
+          bottom={80}
         />)
     }
   }
@@ -50,7 +81,6 @@ export default function ForgotPasswordPopUp(props) {
         console.log("resulte", resulte);
         if (resulte) {
           setCode(resulte);
-          setPassword('');
         }
         setLoading(false)
       },
@@ -58,106 +88,130 @@ export default function ForgotPasswordPopUp(props) {
           console.log("error in function Rest_password", error)
           setAlert(
             <Alert text="cannot find email"
-                type='alert'
-                time={3000}
-                bottom={80}
+              type='alert'
+              time={3000}
+              bottom={80}
             />)
           setLoading(false)
         })
+    }else{
+      setAlert(
+        <Alert text="insert email please"
+          type='alert'
+          time={3000}
+          bottom={80}
+        />)
     }
   }
 
   return (<>
     <KeyboardAvoidingView
-    behavior={Platform.OS === "ios" ? "padding" : "height"}
-    style={{ flex: 1 }}
->
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-    <PopUp
-      style={styles.container}
-      width={80}
-      height={48}
-      isButton={false}
-      button_txt='Cancle'
-      backgroundColor="#bbe4f2"
-      button_height='4'
-      element={
-        <>
-          <View style={styles.head}>
-            <Image style={styles.imgPopup} source={require('../images/forget_password_popup.png')} />
-            <Text style={styles.title}> {'Forgot Your \n Password?'}</Text>
-          </View>
-          <Text style={styles.bodytxt}> Dont Worry! Enter your Email for password restore </Text>
-          <View style={styles.mail}>
-    
-            {!approve && <>
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={{ flex: 1 }}
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <PopUp
+          style={styles.container}
+          width={80}
+          height={48}
+          isButton={false}
+          button_txt='Cancle'
+          backgroundColor="#bbe4f2"
+          button_height='4'
+          element={
+            <>
+              <View style={styles.head}>
+                <Image style={styles.imgPopup} source={require('../images/forget_password_popup.png')} />
+                <Text style={styles.title}> {'Forgot Your \n Password?'}</Text>
+              </View>
+              <Text style={styles.bodytxt}>{approve? 'Enter new password' : 'Dont Worry! Enter your Email for password restore'} </Text>
+              <View style={styles.mail}>
+          {approve ? <View style={styles.mail}> 
             <Input
-              keyboardType='email-address'
-              placeholder='Enter Your Email Adress'
-              getValue={(value) => { setMail(value) }}
-              width={98}
-              height={code?50:30}
-            />
+          keyboardType='email-address'
+          placeholder='Enter your new password'
+          getValue={(value) => setPassword(value)}
+          width={98}
+          height={60}
+          secure={true}
+          setValue={password}
+        />
+        <Input
+          placeholder='Confirm Password'
+          secure={true}
+          required={true}
+          getValue={(value) => { setPasswordValid(value) }}
+          width={98}
+          height={60}
+        /></View>:<></>}
+                {!approve && <>
+                  <Input
+                    keyboardType='email-address'
+                    placeholder='Enter Your Email Adress'
+                    getValue={(value) => { setMail(value) }}
+                    width={98}
+                    height={code ? 60 : 30}
+                  />
+                </>
+                }
+                {code && !approve && <>
+                  <Input
+                    keyboardType='numeric'
+                    placeholder='enter 4 digits code..'
+                    getValue={(value) => { setPassword(value) }}
+                    width={98}
+                    height={60}
+                  />
+                </>
+                }
+              </View>
+              {code && !loading &&
+                <TouchableOpacity style={{ flexDirection: 'row' }} onPress={() => { getPassword(); }}>
+                  <Text>didn't get the code?</Text>
+                  <Text style={{ textDecorationLine: 'underline', textDecorationColor: 'blue' }}> re-send</Text>
+                </TouchableOpacity>}
+              {loading && <View style={styles.progress(code ? 0 : '5%')}>
+                <Progress.Bar
+                  width={255}
+                  height={15}
+                  borderRadius={5}
+                  borderColor={"#bbe4f2"}
+                  color='#69BEDC' //#FFCF84-orange
+                  useNativeDriver={true}
+                  borderWidth={2}
+                  indeterminate={true}
+                  animationConfig={{ bounciness: 20 }}
+                />
+              </View>}
+
+              <View style={styles.buttons}>
+                <Button
+                  alignItems='center'
+                  justifyContent='center'
+                  width={24}
+                  height={6}
+                  text={code ? 'OK' : 'Send'}
+                  onPress={() => {approve?set_new_password(): code ? checkCode() : getPassword() }}
+                />
+                <Button
+                  alignItems='center'
+                  justifyContent='center'
+                  width={20}
+                  height={6}
+                  text='cancel'
+                  onPress={() => setShow(false)}
+                />
+              </View>
             </>
-            }
-          {code &&<>
-             <Input
-             keyboardType='numeric'
-             placeholder='enter 4 digits code..'
-             getValue={(value) => { setPassword(value) }}
-             width={98}
-             height={50}
-           />
-           </>
+
           }
-          </View>
-          {code &&!loading&& 
-          <TouchableOpacity style={{flexDirection:'row'}} onPress={()=>{getPassword();}}>
-            <Text>didn't get the code?</Text>
-            <Text style={{textDecorationLine:'underline',textDecorationColor:'blue'}}> re-send</Text>
-            </TouchableOpacity> }
-          { loading && <View style={styles.progress(code?0:'5%')}>
-            <Progress.Bar
-              width={255}
-              height={15}
-              borderRadius={5}
-              borderColor={"#bbe4f2"}
-              color='#69BEDC' //#FFCF84-orange
-              useNativeDriver={true}
-              borderWidth={2}
-              indeterminate={true}
-              animationConfig={{ bounciness: 20 }}
-            />
-          </View>}
-          
-          <View style={styles.buttons}>
-            <Button
-              alignItems='center'
-              justifyContent='center'
-              width={24}
-              height={6}
-              text={code?'OK':'Send'}
-              onPress={()=>{code ? checkCode() : getPassword()}}
-            />
-            <Button
-              alignItems='center'
-              justifyContent='center'
-              width={20}
-              height={6}
-              text='cancel'
-              onPress={() => setShow(false)}
-            />
-          </View>
-        </>
-        
-      }
 
 
-    />
-            </TouchableWithoutFeedback>
-        </KeyboardAvoidingView>
+        />
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
     {alert && alert}
-     </>
+  </>
   );
 }
 
@@ -209,12 +263,14 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     flex: 0.2
   },
-  progress:(bottom)=> {
-   return{ width: '97%',
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
-    bottom: bottom
-  }}
+  progress: (bottom) => {
+    return {
+      width: '97%',
+      justifyContent: 'flex-start',
+      alignItems: 'flex-start',
+      bottom: bottom
+    }
+  }
 
 
 });

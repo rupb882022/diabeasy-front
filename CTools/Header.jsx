@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
       fontSize: fontSize,
       // width: '10%',
       // height: '55%',
-       left:width/3,bottom:'27%',
+       left:width/3.1,bottom:'27%',
       textAlign: 'right',
       paddingRight: paddingRight + '%',
       marginLeft: marginLeft + '%',

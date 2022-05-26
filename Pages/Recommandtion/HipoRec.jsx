@@ -56,6 +56,9 @@ width:'100%'
     alignSelf:'center',
     marginTop:'18%',
     fontSize:22,
-    marginBottom:'5%',
+    // marginBottom:'5%',
+    padding:'4%',
+    color:'white',
+    backgroundColor:'#00a6a64a'
   }
 })

@@ -28,9 +28,7 @@ const AlertList = (props) => {
     }
   }
   const navigationTo = (content, id) => {
-console.log("!");
     readAlert(id).then((response) => {
-      console.log("2");
       if (response) {
          setShow();
         switch (content) {

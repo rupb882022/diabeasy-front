@@ -10,7 +10,7 @@ import Loading from '../CTools/Loading';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Fontisto } from '@expo/vector-icons';
 import { UserContext } from '../CTools/UserDetailsHook'
-
+import Alert from '../CTools/Alert'
 
 export default function Login({ navigation }) {
     const [show, setShow] = useState(false);
@@ -19,7 +19,7 @@ export default function Login({ navigation }) {
     const [validtionUser, setValidtionUser] = useState('');
     const [loading, setLoading] = useState(false);
     const [saveUserDetails, setSaveUserDetails] = useState(false);
-
+    const [alert,setAlert]=useState(false);
     const { userDetails, setUserDetails } = useContext(UserContext);
 
     //get user details from storge
@@ -47,6 +47,14 @@ export default function Login({ navigation }) {
             setInterval(() => setLoading(false), 2000);
         }
     }, [userDetails]);
+
+const set_alert=()=>{
+    setAlert(  <Alert text="new password set!"
+    type='success'
+    time={5000}
+    bottom={80}
+  />)
+}
 
     const checkUser = () => {
         setLoading(true);
@@ -89,6 +97,7 @@ export default function Login({ navigation }) {
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 
         <View style={styles.container}>
+            {alert&&alert}
             {loading && <Loading opacity={'#d6f2fc'} />}
             <Header
                 title='Login'
@@ -139,8 +148,9 @@ export default function Login({ navigation }) {
             {validtionUser ? <Text style={styles.validtionUser}> {validtionUser} </Text> : <></>}
             {show ?
                 <ForgotPasswordPopUp
-                    setShow={(isShow) => setShow(isShow)}
+                    setShow={(isShow) => {setShow(isShow)}}
                     navigation={navigation}
+                    set_alert={set_alert}
                 />
                 : <></>}
             <View style={styles.Buttons}>
