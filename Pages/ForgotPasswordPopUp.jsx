@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image,TouchableWithoutFeedback,Keyboard,KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, Text, View, Image,TouchableWithoutFeedback,Keyboard,KeyboardAvoidingView,TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
 import PopUp from '../CTools/PopUp';
 import Input from '../CTools/Input';
@@ -6,34 +6,39 @@ import Button from '../CTools/Button';
 import { flushSync } from 'react-dom'
 import * as Progress from 'react-native-progress'
 import { Rest_password } from '../Functions/Function'
+import Alert from '../CTools/Alert'
 
 export default function ForgotPasswordPopUp(props) {
-  const { show, setShow } = props
+  const { show, setShow,navigation } = props
   const [mail, setMail] = useState();
   const [code, setCode] = useState();
   const [loading, setLoading] = useState(false);
-  const [validtion, setValidtion] = useState('')
+  const [alert, setAlert] = useState(false)
   const [password, setPassword] = useState('')
   const [approve, setApprove] = useState('')
 
-  const passwordValid = (value) => {
-    //wiil render the page at the end of function
-    flushSync(() => {
-      password == value ? setValidtion('') : setValidtion('    not the same password')
-    })
-  }
+  // const passwordValid = (value) => {
+  //   //wiil render the page at the end of function
+  //   flushSync(() => {
+  //     password == value ? setValidtion('') : setValidtion('    not the same password')
+  //   })
+  // }
 
   const checkCode = () => {
     if (password == code) {
-      //need to check if doctor or patient code%2==0
       setApprove(true)
-      setValidtion('')
-     
       setPassword('');
+      setShow(false)
+      navigation.navigate('setNewPassword');
   
     } else {
       setApprove(false)
-      setValidtion('not the right code')
+      setAlert(
+        <Alert text="not the right code"
+            type='alert'
+            time={3000}
+            bottom={80}
+        />)
     }
   }
 
@@ -46,18 +51,23 @@ export default function ForgotPasswordPopUp(props) {
         if (resulte) {
           setCode(resulte);
           setPassword('');
-          setCode('')
         }
         setLoading(false)
       },
         (error) => {
           console.log("error in function Rest_password", error)
+          setAlert(
+            <Alert text="cannot find email"
+                type='alert'
+                time={3000}
+                bottom={80}
+            />)
           setLoading(false)
         })
     }
   }
 
-  return (
+  return (<>
     <KeyboardAvoidingView
     behavior={Platform.OS === "ios" ? "padding" : "height"}
     style={{ flex: 1 }}
@@ -80,8 +90,7 @@ export default function ForgotPasswordPopUp(props) {
           <Text style={styles.bodytxt}> Dont Worry! Enter your Email for password restore </Text>
           <View style={styles.mail}>
     
-            {!approve ? <>
-         
+            {!approve && <>
             <Input
               keyboardType='email-address'
               placeholder='Enter Your Email Adress'
@@ -89,7 +98,9 @@ export default function ForgotPasswordPopUp(props) {
               width={98}
               height={code?50:30}
             />
-          {code&&
+            </>
+            }
+          {code &&<>
              <Input
              keyboardType='numeric'
              placeholder='enter 4 digits code..'
@@ -97,34 +108,15 @@ export default function ForgotPasswordPopUp(props) {
              width={98}
              height={50}
            />
+           </>
           }
-            </>:
-              <>
-                <Input
-                  label='set new password'
-                  keyboardType='email-address'
-                  placeholder='Enter your new password'
-                  getValue={(value) => setPassword(value)}
-                  width={98}
-                  height={50}
-                  secure={true}
-                  setValue={password}
-                />
-                <Input
-                  placeholder='Confirm Password'
-                  secure={true}
-                  required={true}
-                  validLable={validtion && validtion}
-                  getValue={(value) => { passwordValid(value) }}
-                  width={98}
-                  height={50}
-
-                />
-              </>
-            }
           </View>
-          
-          {!code && loading && <View style={styles.progress}>
+          {code &&!loading&& 
+          <TouchableOpacity style={{flexDirection:'row'}} onPress={()=>{getPassword();}}>
+            <Text>didn't get the code?</Text>
+            <Text style={{textDecorationLine:'underline',textDecorationColor:'blue'}}> re-send</Text>
+            </TouchableOpacity> }
+          { loading && <View style={styles.progress(code?0:'5%')}>
             <Progress.Bar
               width={255}
               height={15}
@@ -144,7 +136,7 @@ export default function ForgotPasswordPopUp(props) {
               justifyContent='center'
               width={24}
               height={6}
-              text='send'
+              text={code?'OK':'Send'}
               onPress={()=>{code ? checkCode() : getPassword()}}
             />
             <Button
@@ -164,6 +156,8 @@ export default function ForgotPasswordPopUp(props) {
     />
             </TouchableWithoutFeedback>
         </KeyboardAvoidingView>
+    {alert && alert}
+     </>
   );
 }
 
@@ -215,12 +209,12 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     flex: 0.2
   },
-  progress: {
-    width: '97%',
+  progress:(bottom)=> {
+   return{ width: '97%',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
-    bottom: '5%'
-  }
+    bottom: bottom
+  }}
 
 
 });

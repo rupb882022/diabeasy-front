@@ -140,6 +140,7 @@ export default function Login({ navigation }) {
             {show ?
                 <ForgotPasswordPopUp
                     setShow={(isShow) => setShow(isShow)}
+                    navigation={navigation}
                 />
                 : <></>}
             <View style={styles.Buttons}>
