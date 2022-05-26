@@ -6,11 +6,11 @@ import moment from 'moment';
 export default function HipoFood(props) {
 
   const window =Dimensions.get('window');
-
-  const {hide=false,next_blood_sugar_level,totalCarbs,food_name,Unit_name,image,date_time,blood_sugar_level,amount}=props
+  const {hide=false,next_blood_sugar_level,totalCarbs,food_name,Unit_name,image,date_time,blood_sugar_level,amount,count}=props
   return (
     <View style={styles.container(Math.floor(window.height-window.height/10*7.5),hide)}>
   {hide?<></>: <> 
+  <Text style={styles.count}>{count}</Text>
    <Text style={styles.title}>{amount} {Unit_name} {food_name}</Text>
       <Image style={styles.image}  source={{ uri: image ? image.includes("http")?image:ImageUri +image : ImageUri + 'emptyFoodPhoto.JPG' }} />
       <Text style={styles.content}>date: {moment(date_time).format('DD/MM/YYYY')}</Text>
@@ -53,6 +53,13 @@ const styles = StyleSheet.create({
     height: '45%',
     justifyContent:'center',
     resizeMode: 'contain',
+  },
+  count:{
+    position:'absolute',
+    fontSize:40,
+    top:'30%',
+    left:'5%',
+    color:'#e6e6e69c'
   },
   title:{
     textAlign:'center',

@@ -13,7 +13,7 @@ export default function Footer(props) {
       case 'Home':
         setColor({ home: activeColor, sports: 'black', forum: 'black', call: 'black' })
         break;
-      case 'Injection':
+      case 'Recommandtion':
         setColor({ home: 'black', sports: activeColor, forum: 'black', call: 'black' })
         // navigation.navigate('Sports location');
         break;

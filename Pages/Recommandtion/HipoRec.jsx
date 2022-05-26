@@ -1,64 +1,116 @@
-import { View, Text ,StyleSheet,SafeAreaView,ScrollView,StatusBar } from 'react-native'
-import React from 'react'
+import { View, Text, StyleSheet, SafeAreaView, ScrollView, StatusBar } from 'react-native'
+import React, { useState } from 'react'
 import HipoFood from './HipoFood';
 import Button from '../../CTools/Button';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
-export default function HipoRec({route,navigation}) {
+export default function HipoRec({ route, navigation }) {
 
   let hipoFood = route.params && route.params.hipoFood ? route.params.hipoFood : '';
 
- 
+  const [hipo_Food, sethipoFood] = useState(hipoFood);
+  const [color, setColor] = useState('date');
+  let Dcolor = '#646363cc';
+  const order_by = (val) => {
+let temp=hipo_Food;
+let Tcolor='';
+    switch (val) {
+      case 'date':
+        temp.sort((a, b) => b.date_time - a.date_time);
+        Tcolor='date'
+        break;
+      case 'Times':
+        temp.sort((a, b) => b.count - a.count);
+        Tcolor='Times'
+        break;
+      case 'carbs':
+        temp.sort((a, b) => b.totalCarbs - a.totalCarbs);
+        Tcolor='carbs'
+        break;
+
+    }
+    sethipoFood(temp)
+    setColor(Tcolor)
+  }
 
   return (
-<>
+    <>
       <Text style={styles.title}>These foods helped you last time</Text>
-    <ScrollView contentContainerStyle={styles.container}>
-    { hipoFood&&hipoFood.map((x,i)=>{
-      return<HipoFood 
-      key={i}
-    amount={x.amount}
-    blood_sugar_level={x.blood_sugar_level}
-    next_blood_sugar_level={x.blood_sugar_level1}
-    date_time={x.date_time}
-    image={x.image}
-    Unit_name={x.name}
-    food_name={x.name1}
-    totalCarbs={x.totalCarbs}
-  />})}
-{hipoFood&&hipoFood.length%2!==0&&
-  <HipoFood 
-     hide={true}
-  />
-}
-    </ScrollView>
-  <Button
-  text='back'
-  width={6}
-  height={3}
-  radius={8}
-  alignItems='center'
-  justifyContent='center'
-  onPress={()=>{navigation.goBack()}}
-  />
-</>
+      <View style={{ flexDirection: 'row', borderColor: 'white', borderWidth: 1, width: '91.5%', alignSelf: 'center', backgroundColor: '#d7fcf49c', }}>
+        <Text style={styles.orderBy}>order by:</Text>
+        <TouchableOpacity onPress={() => {order_by('date'); }} style={styles.button}><Text style={styles.text(color=='date'?'#00a6a685':Dcolor)}>Date</Text></TouchableOpacity>
+        <TouchableOpacity onPress={() => {order_by('Times'); }} style={styles.button}><Text style={styles.text(color=='Times'?'#00a6a685':Dcolor)}>Times eaten</Text></TouchableOpacity>
+        <TouchableOpacity onPress={() => {order_by('carbs'); }} style={styles.button}><Text style={styles.text(color=='carbs'?'#00a6a685':Dcolor)}>Total carbs</Text></TouchableOpacity>
+      </View>
+      <ScrollView contentContainerStyle={styles.container}>
+        {hipoFood && hipoFood.map((x, i) => {
+          return <HipoFood
+            key={i}
+            amount={x.amount}
+            blood_sugar_level={x.blood_sugar_level}
+            next_blood_sugar_level={x.blood_sugar_level_2H}
+            date_time={x.date_time}
+            image={x.image}
+            Unit_name={x.UnitName}
+            food_name={x.FoodName}
+            totalCarbs={x.totalCarbs}
+            count={x.count}
+          />
+        })}
+        {hipoFood && hipoFood.length % 2 !== 0 &&
+          <HipoFood
+            hide={true}
+          />
+        }
+      </ScrollView>
+      <Button
+        text='back'
+        width={6}
+        height={3}
+        radius={8}
+        alignItems='center'
+        justifyContent='center'
+        onPress={() => { navigation.goBack() }}
+      />
+    </>
   )
 }
 
 const styles = StyleSheet.create({
 
-    container: {
-      // flex: 1,
-      flexDirection: 'row',
-     flexWrap: 'wrap',
-      padding: 10 ,
-width:'100%'
-  },title:{
-    alignSelf:'center',
-    marginTop:'18%',
-    fontSize:22,
+  container: {
+    // flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    padding: 10,
+    width: '100%'
+  }, title: {
+    alignSelf: 'center',
+    marginTop: '18%',
+    fontSize: 22, backgroundColor: '#00a6a64a',
     // marginBottom:'5%',
-    padding:'4%',
-    color:'white',
-    backgroundColor:'#00a6a64a'
+    padding: '4%',
+    color: 'white',
+
+  }, button: {
+
+
+  },
+  text: (color) => {
+    return {
+      fontSize: 16,
+      paddingRight: '4%',
+      paddingLeft: '1%',
+      paddingVertical: '2%',
+      color: color
+
+    }
+  }, orderBy: {
+    fontSize: 16,
+    paddingRight: '4%',
+    paddingLeft: '1%',
+    paddingVertical: '2%',
+
+    // marginLeft:'5%'
   }
 })
