@@ -52,7 +52,7 @@ export default function Information({ navigation,backgroundColor }) {
         <Ionicons name="ios-information-circle-outline" size={40} color="#1ea6d6" />
       </TouchableOpacity> */}
       <TouchableOpacity
-        style={{ zIndex: 5 }}
+        style={{ zIndex: 5,height:'45%' }}
         onPress={() => { setShow(true) }}
       >
         {alertNumber > 0 && <View style={styles.alertNumber}><Text

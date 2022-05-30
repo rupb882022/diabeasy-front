@@ -36,9 +36,9 @@ export default function InsertData({ navigation, route }) {
     // const [keyboardStatus, setKeyboardStatus] = useState(undefined);
 
     const reccomandtion=()=>{
-        if (!sugarLevel) {
+        if (!sugarLevel||!spot) {
             setAlert(
-                <Alert text="suger level value is required"
+                <Alert text="suger level value and injection_site is required"
                     type='alert'
                     time={3000}
                     bottom={90}
@@ -69,7 +69,7 @@ export default function InsertData({ navigation, route }) {
             let detials = {
                 date_time: date,
                 blood_sugar_level: sugarLevel,
-                injection_site: injectionType === 'no-injection' ? null : spot,
+                injection_site: spot,
                 totalCarbs: carbs ? carbs : 0,
                 injectionType: injectionType,
                 value_of_ingection: injectionValue,
@@ -93,7 +93,7 @@ export default function InsertData({ navigation, route }) {
             });
     }
 
-    const save_details = (reccomandtion) => {
+    const save_details = () => {
         if (sugarLevel) {
             setLoading(true);
             let injectionType = carbs ? 'food' : injectionValue ? 'fix' : 'no-injection'
@@ -110,18 +110,16 @@ export default function InsertData({ navigation, route }) {
                 Patients_id: userDetails.id,
                 food: food,
                 ExceptionalEvent: ExceptionalEvent,
-                reccomandtion:reccomandtion
             }
-            let PushDetails = {
-                "to": userDetails.Token,
-                "title": "DiabeasyApp",
-                "body": "2 Hours remaining! have you checked your blood sugar level?",
-                "badge": "0",
-                "ttl": "20",  // num of seconds - exept only int - write the number of sec you want that the push will wait. 
-                "data": { "to": userDetails.Token }
-            }
+            // let PushDetails = {
+            //     "to": userDetails.Token,
+            //     "title": "DiabeasyApp",
+            //     "body": "2 Hours remaining! have you checked your blood sugar level?",
+            //     "badge": "0",
+            //     "ttl": "20",  // num of seconds - exept only int - write the number of sec you want that the push will wait. 
+            //     "data": { "to": userDetails.Token }
+            // }
             console.log("detials", detials);
-            if(!reccomandtion){
             Post_user_data(detials).then((response) => {
                 setInterval(() => setLoading(false), 1000);
               return response
@@ -141,25 +139,6 @@ export default function InsertData({ navigation, route }) {
                         
                     console.log("error in function Post_user_details " + error);
                 });
-            }else{
-                Post_user_data(detials).then((response) => {
-                    setInterval(() => setLoading(false), 1000);
-                  return response
-                }).then((response)=>{
-                    console.log("ressss",response.data)
-                    response&& navigation.navigate('Recommandation');
-
-            })
-                    .catch((error) => {
-                        setLoading(false)
-                        setAlert(
-                            <Alert text="sorry you dont have enough data, try agine later"
-                                type='worng'
-                                bottom={90}
-                            />)
-                        console.log("error in function Post_user_details " + error);
-                    });
-            }
 
         } else {
             setAlert(
@@ -368,7 +347,7 @@ export default function InsertData({ navigation, route }) {
                         height={2}
                         alignItems='center'
                         justifyContent='flex-start'
-                        onPress={() => save_details(false)}
+                        onPress={() => save_details()}
                     />
                         <Button
                         flex={1}
@@ -377,7 +356,7 @@ export default function InsertData({ navigation, route }) {
                         height={2}
                         alignItems='flex-start'
                         justifyContent='flex-start'
-                        onPress={() => reccomandtion(true)}
+                        onPress={() => reccomandtion()}
                     />
                     </View>
                 </View>
