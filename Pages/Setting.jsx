@@ -6,7 +6,7 @@ import Button from '../CTools/Button';
 import Header from '../CTools/Header';
 import { ScrollView } from 'react-native-gesture-handler';
 import ForgotPasswordPopUp from './ForgotPasswordPopUp';
-
+import {ImageUri} from '../Routes/Url'
 export default function Setting({navigation}) {
 const [openDiv,setOpenDiv]=useState(false)
 const [afterFood,setAfterfood]=useState(false)
@@ -111,7 +111,7 @@ setShow={(isShow) => setShow(isShow)}/>}
        <View style={{flex:0.3}}>
          <Image
       style={styles.Image}
-      source={require('../images/home_img.webp.png')}
+      source={{uri:ImageUri+'settings.png'}}
       />
       </View>
 
@@ -136,14 +136,14 @@ switch: {
   marginRight: '2%',
 },
 Image: {
-  flex:5,
-  //position:'absolute',
-  //resizeMode: 'cover',
-  width: '50%',
-  height:'90%',
-  top: '1%',
+  flex:10,
+  position:'absolute',
+  resizeMode: 'contain',
+  width: '100%',
+  height:'100%',
+  top: '38%',
   alignSelf: 'flex-end',
   justifyContent:'flex-end',
-  opacity: 0.95,
+  opacity: 0.85,
 },
 })

@@ -8,6 +8,9 @@ export const  Get_userDetails=(email,password)=>{
 export const  Get_all_InsulinType=()=>{
   return Fetch( `User/getInsulinType`,'Get');
 }
+export const  GetInjectionRecommend=(id,blood_sugar_level,injectionType)=>{
+  return Fetch( `User/GetInjectionRecommend/${id}/${blood_sugar_level}/${injectionType}`,'Get');
+}
 export const  Rest_password=(email)=>{
   return Fetch( `User/getPassword/${email}`,'Get');
 }

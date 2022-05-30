@@ -13,7 +13,7 @@ import PanicButton from '../Pages/PanicButton';
 import Forum from '../Pages/Forum/Forum';
 import Maps from '../Pages/Maps';
 import { useFocusEffect } from '@react-navigation/native';
-import React, { useContext, useState, useRef} from 'react';
+import React, { useContext, useState, useRef } from 'react';
 import Footer from './Footer';
 import Prescriptions from '../Pages/Prescriptions';
 import DoctorHome from '../Pages/Doctor/DoctorHome';
@@ -25,7 +25,7 @@ import Loading from '../CTools/Loading';
 import InjectionType from '../Pages/Recommandtion/InjectionType';
 import Information from '../CTools/Information';
 import Setting from '../Pages/Setting';
-
+import Recommandation from '../Pages/Recommandtion/Recommandation';
 
 const Drawernav = createDrawerNavigator();
 
@@ -38,7 +38,7 @@ export default function Drawer(props) {
     const { userDetails } = useContext(UserContext);
 
     let usertype = userDetails && userDetails.id % 2 == 0 ? 'doctor' : 'Patients';
-  
+
 
 
     //color of icons
@@ -138,7 +138,7 @@ export default function Drawer(props) {
                                 size={48}
                                 style={{
                                     height: 55,
-                                    zIndex:100,
+                                    zIndex: 100,
                                     position: 'relative',
                                     top: '50%',
                                     // marginTop: '35%',
@@ -193,10 +193,7 @@ export default function Drawer(props) {
                     drawerIcon: () => (<AntDesign name="exclamationcircleo" size={24} color={color} />)
                 }} />
 
-                {/* <Drawernav.Screen name='Recommandation-Test' component={Recommandation} options={{
-                    ...options,
-                    drawerIcon: () => (<Fontisto name="injection-syringe" size={24} color={color} />)
-                }} /> */}
+
 
                 <Drawernav.Screen name='Setting' component={Setting} options={{
                     ...options,
@@ -211,16 +208,20 @@ export default function Drawer(props) {
                     ...options,
                     drawerIcon: () => (<AntDesign name="logout" size={24} color={color} />)
                 }} /> */}
-     <Drawernav.Screen name='Insert Data' component={InsertData} options={{
+                <Drawernav.Screen name='Insert Data' component={InsertData} options={{
                     ...options,
                     drawerIcon: () => (<Entypo name="add-to-list" size={24} color='white' />)
                 }} />
+                <Drawernav.Screen name='Recommandation' component={Recommandation} options={{
+                    ...options,
+                    drawerIcon: () => (<Fontisto name="injection-syringe" size={24} color={color} />)
+                }} />
             </Drawernav.Navigator>
-            
+
             <Footer
                 navigation={navigation}
             />
-</>
+        </>
         );
     }
 }

@@ -6,7 +6,7 @@ import Button from '../CTools/Button';
 import moment from 'moment';
 import { UserContext } from '../CTools/UserDetailsHook'
 import Loading from '../CTools/Loading';
-import { Post_user_data, Post_SendPushNotification } from '../Functions/Function'
+import { Post_user_data, Post_SendPushNotification,GetInjectionRecommend } from '../Functions/Function'
 import Alert from '../CTools/Alert';
 import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
@@ -35,8 +35,65 @@ export default function InsertData({ navigation, route }) {
     const [loading, setLoading] = useState(false);
     // const [keyboardStatus, setKeyboardStatus] = useState(undefined);
 
+    const reccomandtion=()=>{
+        if (!sugarLevel) {
+            setAlert(
+                <Alert text="suger level value is required"
+                    type='alert'
+                    time={3000}
+                    bottom={90}
+                />)
+                return;
+        }
 
-    const save_details = () => {
+        if (sugarLevel>=75&&sugarLevel<=155&&(!carbs||carbs==0)) {
+            setAlert(
+                <Alert text={`your suger level value is good \n you dont need to inject if you dont eat`}
+                    type='info'
+                    time={4000}
+                    bottom={90}
+                />)
+                return;
+        }
+
+        setLoading(true);
+        let injectionType = carbs ? 'food' : 'fix'
+
+        GetInjectionRecommend(userDetails.id,sugarLevel,injectionType).then((response) => {
+            setInterval(() => setLoading(false), 1000);
+          return response
+        }).then((response)=>{
+            
+            let date = dateTime ? moment(dateTime, 'DD/MM/YYYY H:mm').format('YYYY-MM-DD[T]HH:mm:ss') : moment(today).format('YYYY-MM-DD[T]HH:mm:ss');
+            let food = foodLibary ? foodLibary.map(x => { return { foodId: x.id, amount: x.amount, unitName: x.unit } }) : []
+            let detials = {
+                date_time: date,
+                blood_sugar_level: sugarLevel,
+                injection_site: injectionType === 'no-injection' ? null : spot,
+                totalCarbs: carbs ? carbs : 0,
+                injectionType: injectionType,
+                value_of_ingection: injectionValue,
+                Patients_id: userDetails.id,
+                food: food,
+                ExceptionalEvent: ExceptionalEvent,
+                reccomandtion:response
+            }
+            console.log("ressss",response)
+            response&&navigation.navigate('Recommandation',{detials:detials});
+
+    })
+            .catch((error) => {
+                setLoading(false)
+                setAlert(
+                    <Alert text="sorry you dont have enough data, try agine later"
+                        type='worng'
+                        bottom={90}
+                    />)
+                console.log("error in function Post_user_details " + error);
+            });
+    }
+
+    const save_details = (reccomandtion) => {
         if (sugarLevel) {
             setLoading(true);
             let injectionType = carbs ? 'food' : injectionValue ? 'fix' : 'no-injection'
@@ -52,7 +109,8 @@ export default function InsertData({ navigation, route }) {
                 value_of_ingection: injectionValue,
                 Patients_id: userDetails.id,
                 food: food,
-                ExceptionalEvent: ExceptionalEvent
+                ExceptionalEvent: ExceptionalEvent,
+                reccomandtion:reccomandtion
             }
             let PushDetails = {
                 "to": userDetails.Token,
@@ -63,6 +121,7 @@ export default function InsertData({ navigation, route }) {
                 "data": { "to": userDetails.Token }
             }
             console.log("detials", detials);
+            if(!reccomandtion){
             Post_user_data(detials).then((response) => {
                 setInterval(() => setLoading(false), 1000);
               return response
@@ -77,16 +136,37 @@ export default function InsertData({ navigation, route }) {
                     setAlert(
                         <Alert text="sorry somting is got wotng try agine later"
                             type='worng'
+                            bottom={90}
                         />)
                         
                     console.log("error in function Post_user_details " + error);
                 });
+            }else{
+                Post_user_data(detials).then((response) => {
+                    setInterval(() => setLoading(false), 1000);
+                  return response
+                }).then((response)=>{
+                    console.log("ressss",response.data)
+                    response&& navigation.navigate('Recommandation');
+
+            })
+                    .catch((error) => {
+                        setLoading(false)
+                        setAlert(
+                            <Alert text="sorry you dont have enough data, try agine later"
+                                type='worng'
+                                bottom={90}
+                            />)
+                        console.log("error in function Post_user_details " + error);
+                    });
+            }
 
         } else {
             setAlert(
                 <Alert text="suger level value is required"
                     type='alert'
                     time={3000}
+                    bottom={90}
                 />)
         }
     }
@@ -138,9 +218,9 @@ export default function InsertData({ navigation, route }) {
     }
 
     useEffect(() => {
-        console.log("defualtSpot", defualtSpot)
-        console.log("spot", spot)
-        console.log("userDetails", userDetails)
+        // console.log("defualtSpot", defualtSpot)
+        // console.log("spot", spot)
+        // console.log("userDetails", userDetails)
         if (defualtSpot && spot && userDetails && !userDetails.spot) {
             let temp = { ...userDetails, spot: spot }
             storeData(temp)
@@ -156,19 +236,7 @@ export default function InsertData({ navigation, route }) {
 
 
 
-    // useEffect(() => {
-    //     const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
-    //       setKeyboardStatus("Keyboard Shown");
-    //     });
-    //     const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
-    //       setKeyboardStatus("Keyboard Hidden");
-    //     });
 
-    //     return () => {
-    //       showSubscription.remove();
-    //       hideSubscription.remove();
-    //     };
-    //   }, []);
 
     return (
         <KeyboardAvoidingView
@@ -292,15 +360,26 @@ export default function InsertData({ navigation, route }) {
                         </View>
                     </ScrollView>
                     {/* </SafeAreaView> */}
+                    <View style={{flex:1,flexDirection:'row',paddingLeft:'5%'}}>
                     <Button
                         flex={1}
                         text="save"
-                        width={10}
+                        width={23}
                         height={2}
                         alignItems='center'
                         justifyContent='flex-start'
-                        onPress={() => save_details()}
+                        onPress={() => save_details(false)}
                     />
+                        <Button
+                        flex={1}
+                        text="reccomandtion"
+                        width={5}
+                        height={2}
+                        alignItems='flex-start'
+                        justifyContent='flex-start'
+                        onPress={() => reccomandtion(true)}
+                    />
+                    </View>
                 </View>
 
             </TouchableWithoutFeedback>
@@ -367,3 +446,18 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap'
     }
 });
+
+
+    // useEffect(() => {
+    //     const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
+    //       setKeyboardStatus("Keyboard Shown");
+    //     });
+    //     const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
+    //       setKeyboardStatus("Keyboard Hidden");
+    //     });
+
+    //     return () => {
+    //       showSubscription.remove();
+    //       hideSubscription.remove();
+    //     };
+    //   }, []);

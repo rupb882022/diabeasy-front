@@ -5,7 +5,9 @@ import Header from '../../CTools/Header';
 import Loading from '../../CTools/Loading';
 import { UserContext } from '../../CTools/UserDetailsHook'
 import {get_food_for_hipo} from '../../Functions/Function'
-import Alert from '../../CTools/Alert'
+import Alert from '../../CTools/Alert';
+import {ImageUri} from '../../Routes/Url';
+
 export default function InjectionType({ navigation }) {
 
   const [hipoFood, setHipoFood] = useState()
@@ -80,11 +82,11 @@ useEffect(()=>{
       <View style={{ flex: 0.3, flexDirection: 'row', justifyContent: 'space-evenly' }}>
         <Image
           style={styles.Image}
-          source={require('../../images/home_img.webp.png')}
+          source={{uri:ImageUri+'rec1.png'}}
         />
         <Image
           style={styles.Image}
-          source={require('../../images/home_img.webp.png')}
+          source={{uri:ImageUri+'rec1Boy.png'}}
         />
       </View>
     </View>
@@ -99,12 +101,12 @@ const styles = StyleSheet.create({
   Image: {
     flex: 0.5,
     // position:'absolute',
-    //resizeMode: 'cover',
+    resizeMode: 'contain',
     width: '50%',
     height: '100%',
-    top: '1%',
+    top: '7%',
     alignSelf: 'flex-end',
-    opacity: 0.95,
+    opacity: 0.85,
   },
   txt: {
     textAlign: 'center',

@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
   Icon: {
     color: '#666666',
     textAlign: 'left',
-    paddingTop: '2.5%',
-  },
+    paddingTop: '2.5%'
+  }, 
 
 })

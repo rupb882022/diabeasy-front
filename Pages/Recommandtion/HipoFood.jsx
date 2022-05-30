@@ -7,7 +7,6 @@ import { AntDesign } from '@expo/vector-icons';
 export default function HipoFood(props) {
 
   const window = Dimensions.get('window');
-  // const {hide=false,next_blood_sugar_level,totalCarbs,food_name,Unit_name,image,date_time,blood_sugar_level,amount,count}=props
   const { times_eaten,position, hide = false, next_blood_sugar_level, totalCarbs, date_time, blood_sugar_level, Food } = props
   
   const [food, setFood] = useState(Food && Food[0]);
