@@ -71,14 +71,17 @@ export default function Drawer(props) {
                             //style={{ backgroundColor: backgroundColor }}
                             onPress={() => { navigation.toggleDrawer(); }}>
                             <Ionicons name="ios-menu"
-                                size={75}
-                                style={{
-                                    height: 70,
-                                    marginTop: '35%',
-                                    marginLeft: '15%',
-                                    color: '#1ea6d6',
-                                    // backgroundColor:backgroundColor
-                                }}
+                                  size={48}
+                                  style={{
+                                      height: 55,
+                                      zIndex: 100,
+                                      position: 'relative',
+                                      top: '50%',
+                                      // marginTop: '35%',
+                                      marginLeft: '16%',
+                                      color: 'white',
+                                      // backgroundColor:backgroundColor
+                                  }}
                             />
                         </TouchableOpacity>
                     )

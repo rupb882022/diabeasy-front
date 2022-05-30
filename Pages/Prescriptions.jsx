@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image, ScrollView, Switch } from 'react-native'
+import { View, Text, StyleSheet, Image, ScrollView, Switch, Keyboard, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native'
 import React, { useState, useContext, useEffect } from 'react'
 import Header from '../CTools/Header';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -15,7 +15,7 @@ import * as Progress from 'react-native-progress';
 import DeleteAlert from '../CTools/DeleteAlert';
 
 export default function Prescriptions(props) {
-
+console.log("userDetails",userDetails)
   const [show, setShow] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
   const { userDetails } = useContext(UserContext);
@@ -31,7 +31,6 @@ export default function Prescriptions(props) {
   const [alert, setAlert] = useState()
   const [delAlert, setDelAlert] = useState(false)
 
-console.log("userDetails",userDetails)
   useFocusEffect(
     React.useCallback(() => {
       if (userDetails.id % 2 == 0 && userDetails.patientID) {
@@ -100,7 +99,7 @@ console.log("userDetails",userDetails)
                 bottom={110}
               />) :
             setAlert(
-              <Alert text={error}
+              <Alert text={`sorry, somthing went wrong \n please try again later`}
                 type='worng'
                 time={2000}
                 bottom={110}
@@ -120,6 +119,8 @@ console.log("userDetails",userDetails)
     let allSub = distinct.map((x, i) => ({ itemKey: i, label: x, value: x }))
     setAllSubjects(allSub);
   }
+
+console.log("userDetails",userDetails)
 
   // element popup for new prescription request
   const element = <View>
@@ -194,14 +195,14 @@ console.log("userDetails",userDetails)
         width={20}
         height={3}
         onPress={() => {
+          console.log("request",userDetails)
           if (reqValue && subject && userDetails) {
             setRequest({
               date_time: moment(new Date()).format('MM-DD-YYYY H:mm').toString(),
               subject: subject,
               value: reqValue,
               Patients_id: userDetails.id,
-              Doctor_id: userDetails.id,     
-
+              Doctor_id: userDetails.id,
               status: 'waiting'
             });
             setShow(false);
@@ -210,7 +211,8 @@ console.log("userDetails",userDetails)
       >
       </Button>
     </View>
-  </View>
+  </View>;
+
 
   //let icon=<MaterialCommunityIcons name="pill" size={24} color="black"/>;
   const btnPrescDetails = (id) => {
@@ -234,6 +236,9 @@ console.log("userDetails",userDetails)
     status == 'reject' ?
       editStatus = { status: 'rejected' } :
       editStatus = { status: 'accepted' }
+      let today=new Date();
+    editStatus={...editStatus,Doctor_id:userDetails.id,Patients_id:userDetails.patientID,date_time:today}
+
     Put_Prescription(idForPrescription, editStatus).then((response) => {
       response && getPrescriptions();
       showDetails && setShowDetails(false);
@@ -275,17 +280,16 @@ console.log("userDetails",userDetails)
 
 
   //<DeleteAlert answer={(answer)=>console.log('ans2=',answer)}/>
-  return (<>     
-   <Header
-    title='Prescriptions'
-    logo_image='perscriptions'
-    flex={userDetails.id % 2 == 0 ? 0.11 : 0.11}
-    possiton={27}
-    image_margin={{ Bottom: -4 }}
-    marginLeft={7}
-  // justifyContent='flex-start' 
-  />
-    
+  return (<>
+    <Header
+      title='Prescriptions'
+      logo_image='perscriptions'
+      flex={userDetails.id % 2 == 0 ? 0.11 : 0.11}
+      possiton={27}
+      image_margin={{ Bottom: -4 }}
+      marginLeft={7}
+    // justifyContent='flex-start' 
+    />
     <View style={styles.container}>
 
       {userDetails.id % 2 == 0 ?
@@ -330,11 +334,11 @@ console.log("userDetails",userDetails)
       />
       }
       <View style={{ flexDirection: 'row' }}>
-      <View  style={{justifyContent:'center',alignItems:'center',direction:'ltr'}}>
-        <Text>
-          <MaterialCommunityIcons name="pill" size={24} color="#1EAC14" />Accepted</Text>
-        <Text>  <MaterialCommunityIcons name="pill" size={24} color="#282f28cf" /> Waiting    </Text>
-        <Text>   <MaterialCommunityIcons name="pill" size={24} color="#EF5C5C" /> Rejected   </Text>
+        <View style={{ justifyContent: 'center', alignItems: 'center', direction: 'ltr' }}>
+          <Text>
+            <MaterialCommunityIcons name="pill" size={24} color="#1EAC14" />Accepted</Text>
+          <Text>  <MaterialCommunityIcons name="pill" size={24} color="#282f28cf" /> Waiting    </Text>
+          <Text>   <MaterialCommunityIcons name="pill" size={24} color="#EF5C5C" /> Rejected   </Text>
         </View>
 
 
@@ -351,11 +355,15 @@ console.log("userDetails",userDetails)
           button_textSize={16}
           setShow={setShow}
           backgroundColor='#d6f2fc'
-          element={element}
+          element={
+              <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                {element}
+              </TouchableWithoutFeedback>
+          }
           button_justifyContent='flex-start'
         />}
 
-{/* Todo change PopupElement from state to const and add the buttons Delete and cancle to PopupElement */}
+      {/* Todo change PopupElement from state to const and add the buttons Delete and cancle to PopupElement */}
       {showDetails && prescriptions && userDetails.id % 2 != 0 &&
         <PopUp
           height={45}
@@ -396,7 +404,7 @@ console.log("userDetails",userDetails)
       {alert && alert}
       {delAlert && <DeleteAlert answer={(answer) => { console.log('Delete?=>', answer); answer ? deletePrescription() : setDelAlert(false) }} />}
     </View>
-    </>
+  </>
   )
 }
 const styles = StyleSheet.create({
@@ -415,8 +423,8 @@ const styles = StyleSheet.create({
     // justifyContent: 'flex-start',
     // alignItems: 'flex-start',
     flex: 1,
-    marginLeft:'35%',
-    
+    marginLeft: '35%',
+
     // marginTop: '5%'
   },
   list: {

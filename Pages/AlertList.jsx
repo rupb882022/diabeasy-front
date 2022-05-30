@@ -1,18 +1,20 @@
-import React, { useEffect,useState } from 'react';
+import React, { useEffect, useState ,useContext} from 'react';
 import { SafeAreaView, View, FlatList, StyleSheet, Text, Dimensions, Image, TouchableOpacity } from 'react-native';
 import { ImageUri } from '../Routes/Url'
-import {readAlert} from '../Functions/Function'
+import { readAlert } from '../Functions/Function'
+import { UserContext } from '../CTools/UserDetailsHook';
 
 
 let i = -1;
 
 const AlertList = (props) => {
   const { list, navigation, setShow } = props
-  
+
   useEffect(() => {
     i = -1;
   })
 
+  const { userDetails,setUserDetails } = useContext(UserContext);
 
 
   const alertContent = (name, content) => {
@@ -22,6 +24,10 @@ const AlertList = (props) => {
 
       case "forum-subject":
         return `${name} add new comment in the same subject that you comment about`
+      case "addPrescription":
+        return `${name} ask for new prescription`
+      case "statusPrescription":
+        return `your prescription requests change status`
       default:
         return '';
         break;
@@ -30,13 +36,20 @@ const AlertList = (props) => {
   const navigationTo = (content, id) => {
     readAlert(id).then((response) => {
       if (response) {
-         setShow();
+        content=='addPrescription'&&setUserDetails({...userDetails,patientID:response});
+        setShow();
         switch (content) {
           case "forum-comment":
             navigation.navigate('Forum')
             break;
           case "forum-subject":
             navigation.navigate('Forum')
+            break;
+          case "addPrescription":
+            navigation.navigate('Prescriptions')
+            break;
+          case "statusPrescription":
+            navigation.navigate('Prescriptions')
             break;
           default:
             break;
@@ -52,7 +65,7 @@ const AlertList = (props) => {
   const Item = ({ id, name, profileimage, active, content, date_time, daysLeft, daysLeftName }) => {
     i++;
     return (
-      <TouchableOpacity onPress={() => { navigationTo(content, id);  }} style={styles.itemContainer(active)}>
+      <TouchableOpacity onPress={() => { navigationTo(content, id); }} style={styles.itemContainer(active)}>
         <View id={id} style={styles.item(Dimensions.get("window").width, i, active)}>
           <Image style={styles.image} source={profileimage ? { uri: profileimage.includes("http") ? profileimage : ImageUri + profileimage } : require('../images/profile_pictur.jpeg')} />
           <View style={styles.title}>
@@ -108,7 +121,7 @@ const styles = StyleSheet.create({
       marginBottom: '18%',
       borderRadius: 10,
       padding: '2%',
-      bottom: i == 0 ? 0 : (i*25)+'%',
+      bottom: i == 0 ? 0 : (i * 25) + '%',
       zIndex: 20
     }
   },

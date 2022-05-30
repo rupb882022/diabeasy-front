@@ -58,7 +58,7 @@ export default function Recommandation({ route, navigation }) {
 
   useFocusEffect(
     React.useCallback(() => {
-      console.log("*")
+      // console.log("*")
 
 
 
@@ -71,14 +71,13 @@ export default function Recommandation({ route, navigation }) {
     }))
 
 
-    console.log("fixunit",fixunit)
-    console.log("foodUnit",foodUnit)
-     console.log("total",total)
+    // console.log("fixunit",fixunit)
+    // console.log("foodUnit",foodUnit)
+    //  console.log("total",total)
 
   const total_reccomandtion = () => {
-console.log("detials",detials)
+// console.log("detials",detials)
     if (detials) {
-      console.log("+++++++++++++++++++++++++++++++++++++")
       let temptotal = 0
       if (detials.reccomandtion.fix && detials.reccomandtion.food) {
         let food = (parseInt(detials.totalCarbs)) / parseFloat(detials.reccomandtion.food)
