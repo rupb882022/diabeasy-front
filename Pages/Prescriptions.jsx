@@ -201,6 +201,7 @@ console.log("userDetails",userDetails)
               value: reqValue,
               Patients_id: userDetails.id,
               Doctor_id: userDetails.id,     
+
               status: 'waiting'
             });
             setShow(false);
