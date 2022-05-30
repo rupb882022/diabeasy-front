@@ -31,7 +31,7 @@ export default function Prescriptions(props) {
   const [alert, setAlert] = useState()
   const [delAlert, setDelAlert] = useState(false)
 
-
+console.log("userDetails",userDetails)
   useFocusEffect(
     React.useCallback(() => {
       if (userDetails.id % 2 == 0 && userDetails.patientID) {
@@ -200,7 +200,7 @@ export default function Prescriptions(props) {
               subject: subject,
               value: reqValue,
               Patients_id: userDetails.id,
-              Doctor_id: 2,       //todo change doctor id to real id
+              Doctor_id: userDetails.id,     
               status: 'waiting'
             });
             setShow(false);

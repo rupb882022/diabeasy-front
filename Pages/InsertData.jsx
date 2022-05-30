@@ -33,6 +33,7 @@ export default function InsertData({ navigation, route }) {
     const [foodLibary, setFoodLibary] = useState(FoodDetails);
     const [defualtSpot, setDefualtSpot] = useState(userDetails && userDetails.spot ? true : false)
     const [loading, setLoading] = useState(false);
+    const [details,setDetails]=useState();
     // const [keyboardStatus, setKeyboardStatus] = useState(undefined);
 
     const reccomandtion=()=>{
@@ -60,26 +61,13 @@ export default function InsertData({ navigation, route }) {
         let injectionType = carbs ? 'food' : 'fix'
 
         GetInjectionRecommend(userDetails.id,sugarLevel,injectionType).then((response) => {
+
             setInterval(() => setLoading(false), 1000);
           return response
         }).then((response)=>{
-            
-            let date = dateTime ? moment(dateTime, 'DD/MM/YYYY H:mm').format('YYYY-MM-DD[T]HH:mm:ss') : moment(today).format('YYYY-MM-DD[T]HH:mm:ss');
-            let food = foodLibary ? foodLibary.map(x => { return { foodId: x.id, amount: x.amount, unitName: x.unit } }) : []
-            let detials = {
-                date_time: date,
-                blood_sugar_level: sugarLevel,
-                injection_site: spot,
-                totalCarbs: carbs ? carbs : 0,
-                injectionType: injectionType,
-                value_of_ingection: injectionValue,
-                Patients_id: userDetails.id,
-                food: food,
-                ExceptionalEvent: ExceptionalEvent,
-                reccomandtion:response
-            }
-            console.log("ressss",response)
-            response&&navigation.navigate('Recommandation',{detials:detials});
+            let data={...details,reccomandtion:response}
+            console.log("ressss",data)
+            response&&navigation.navigate('Recommandation',{detials:data});
 
     })
             .catch((error) => {
@@ -92,7 +80,24 @@ export default function InsertData({ navigation, route }) {
                 console.log("error in function Post_user_details " + error);
             });
     }
-
+    //for recommandtion page- becouse it pass the last var in route params and not the current var
+useEffect(()=>{
+    let date = dateTime ? moment(dateTime, 'DD/MM/YYYY H:mm').format('YYYY-MM-DD[T]HH:mm:ss') : moment(today).format('YYYY-MM-DD[T]HH:mm:ss');
+    let food = foodLibary ? foodLibary.map(x => { return { foodId: x.id, amount: x.amount, unitName: x.unit } }) : []
+    let injectionType = carbs ? 'food' : 'fix'
+    let detials = {
+        date_time: date,
+        blood_sugar_level: sugarLevel,
+        injection_site: spot,
+        totalCarbs: carbs ? carbs : 0,
+        injectionType: injectionType,
+        value_of_ingection: injectionValue,
+        Patients_id: userDetails.id,
+        food: food,
+        ExceptionalEvent: ExceptionalEvent,
+    }
+    setDetails(detials)
+},[carbs,sugarLevel])
     const save_details = () => {
         if (sugarLevel) {
             setLoading(true);
@@ -427,16 +432,3 @@ const styles = StyleSheet.create({
 });
 
 
-    // useEffect(() => {
-    //     const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
-    //       setKeyboardStatus("Keyboard Shown");
-    //     });
-    //     const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
-    //       setKeyboardStatus("Keyboard Hidden");
-    //     });
-
-    //     return () => {
-    //       showSubscription.remove();
-    //       hideSubscription.remove();
-    //     };
-    //   }, []);

@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image ,KeyboardAvoidingView,Keyboard,TouchableWithoutFeedback} from 'react-native';
 import React, { useEffect, useState, useContext } from 'react';
 import Button from '../../CTools/Button';
 import Loading from '../../CTools/Loading';
@@ -17,7 +17,10 @@ export default function Recommandation({ route, navigation }) {
   const [alert, setAlert] = useState()
   const [value_of_ingection, setValue_of_ingection] = useState();
   const [showInpit, setShowInput] = useState(false);
+  // const [keyboardStatus, setKeyboardStatus] = useState(false);
+
   let detials = route.params && route.params.detials ? route.params.detials : '';
+
 
 
   const save_data = (value_of_ingection) => {
@@ -57,20 +60,25 @@ export default function Recommandation({ route, navigation }) {
     React.useCallback(() => {
       console.log("*")
 
-      fixunit&&setFixUnit(0)
-      foodUnit&&setFoodUnit(0)
-      total&&setTotal(0)
+
+
+      // fixunit&&setFixUnit(0)
+      // foodUnit&&setFoodUnit(0)
+      // total&&setTotal(0)
 
       total_reccomandtion();
        setShowInput(false);
-    },[]))
+    }))
 
-  // console.log("fixunit",fixunit)
-  // console.log("foodUnit",foodUnit)
-  // console.log("total",total)
+
+    console.log("fixunit",fixunit)
+    console.log("foodUnit",foodUnit)
+     console.log("total",total)
+
   const total_reccomandtion = () => {
 console.log("detials",detials)
     if (detials) {
+      console.log("+++++++++++++++++++++++++++++++++++++")
       let temptotal = 0
       if (detials.reccomandtion.fix && detials.reccomandtion.food) {
         let food = (parseInt(detials.totalCarbs)) / parseFloat(detials.reccomandtion.food)
@@ -97,13 +105,19 @@ console.log("detials",detials)
   return (<>
     {loading && <Loading />}
     {alert && alert}
-    <View style={styles.container}>
-      <Header
+    <Header
         title='Recommandation'
-        flex={0.1}
+        flex={0.11}
         marginLeft={13}
-        possiton={92}
+        possiton={25}
       />
+    <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            style={{ flex: 1 }}
+        >
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+    <View style={styles.container}>
+
       <View style={{ flex: 0.7, alignItems: 'center', backgroundColor: '#ffffff80', width: '90%', alignSelf: 'center', borderRadius: 50, bottom: '5%' }}>
         <View style={{ paddingTop: '8%', alignItems: 'center' }}>
           {total && total != 0 ? <><Text style={styles.txt}>The injection recommandation for you is</Text>
@@ -145,7 +159,7 @@ console.log("detials",detials)
               alignItems='flex-start'
               width={125}
               getValue={(value) => setValue_of_ingection(value)}
-            // keyboardType='decimal-pad'
+             keyboardType='decimal-pad'
             />
             <Button
               alignItems='center'
@@ -172,6 +186,8 @@ console.log("detials",detials)
         onPress={() => { navigation.goBack() }}
       />
     </View> */}
+    </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   </>
   )
 }
@@ -197,3 +213,17 @@ const styles = StyleSheet.create({
     padding: '1%', paddingHorizontal: '5%'
   }
 })
+// console.log("keyboardStatus",keyboardStatus)
+//       useEffect(() => {
+//         const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
+//           setKeyboardStatus(true);
+//         });
+//         const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
+//           setKeyboardStatus(false);
+//         });
+
+//         return () => {
+//           showSubscription.remove();
+//           hideSubscription.remove();
+//         };
+//       }, []);
