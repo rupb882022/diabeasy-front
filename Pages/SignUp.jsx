@@ -33,8 +33,8 @@ export default function SignUp({ navigation }) {
       />
 
 
-
-      <View style={styles.buttons}>
+          {/* //       Todo => on press sign up there are two headers.   */}
+      <View style={styles.buttons}>   
         <Button text='Patient' width={18} height={8} alignItems='center' onPress={()=>{setLoading(true); navigation.navigate('PersonalInfo1',{user:'Patient'})}} />
         <Button text='Doctor' width={18} height={8} alignItems='center' onPress={()=>{setLoading(true); navigation.navigate('PersonalInfo1',{user:'Doctor'})}} />
       </View>
