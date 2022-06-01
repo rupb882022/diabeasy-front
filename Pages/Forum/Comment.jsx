@@ -129,15 +129,16 @@ const styles = StyleSheet.create({
     fontSize: 12
   },
   comments: {
-    backgroundColor: '#D2E4F7',
+    backgroundColor: '#c5e4edc9',
     padding: '1%',
+    borderRadius:8,
     marginVertical: '2%',
     paddingLeft: '3%',
-    shadowOffset: {
-      width: -1,
-      height: 1
-    },
-    shadowOpacity: 25,
+    // shadowOffset: {
+    //   width: -1,
+    //   height: 1
+    // },
+    // shadowOpacity: 25,
   },
   name: {
     flexDirection: 'column',

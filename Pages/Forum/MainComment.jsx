@@ -170,14 +170,15 @@ let editComment={ subject: subject, value: editText }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#69BEDC",
+    backgroundColor: "#69bedcad",
     padding: '3%',
     marginVertical: '2%',
-    shadowOffset: {
-      width: -1,
-      height: 1
-    },
-    shadowOpacity: 25,
+    borderRadius:8,
+    // shadowOffset: {
+    //   width: -1,
+    //   height: 1
+    // },
+    // shadowOpacity: 25,
   },
   row: {
     flexDirection: 'row',

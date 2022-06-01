@@ -252,7 +252,7 @@ export default function PatientData() {
       <SafeAreaView style={styles.containerView}>
         <ScrollView style={styles.container}>
           {histogram && histogram.labels &&
-              <><Text style={styles.secoundTitle}>averge by day time</Text>
+              <><Text style={styles.secoundTitle}>day averge at {month ? ParsetoMonthName(month, 'short') : 'the last 30 days'}</Text>
                 <BarChart
                 showValuesOnTopOfBars={true}
                   style={{  borderRadius: 15, margin: 5 }}

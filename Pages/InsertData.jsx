@@ -6,7 +6,7 @@ import Button from '../CTools/Button';
 import moment from 'moment';
 import { UserContext } from '../CTools/UserDetailsHook'
 import Loading from '../CTools/Loading';
-import { Post_user_data, Post_SendPushNotification,GetInjectionRecommend } from '../Functions/Function'
+import { Post_user_data, Post_SendPushNotification, GetInjectionRecommend } from '../Functions/Function'
 import Alert from '../CTools/Alert';
 import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
@@ -24,52 +24,66 @@ export default function InsertData({ navigation, route }) {
     const [alert, setAlert] = useState()
     const [dateTime, setDateTime] = useState();
     const [sugarLevel, setsugarLevel] = useState();
-    const [spot, setSpot] = useState(userDetails && userDetails.spot);
+    const [spot, setSpot] = useState();
     const [listExceptionalEvent, setListExceptionalEvent] = useState();
     const [ExceptionalEvent, setExceptionalEvent] = useState(null);
     const [carbs, setCarbs] = useState('');
     const [valid_lable, setValid_lable] = useState('');
     const [injectionValue, setinjectionValue] = useState();
     const [foodLibary, setFoodLibary] = useState(FoodDetails);
-    const [defualtSpot, setDefualtSpot] = useState(userDetails && userDetails.spot ? true : false)
+    const [defualtSpot, setDefualtSpot] = useState()
     const [loading, setLoading] = useState(false);
-    const [details,setDetails]=useState();
+    const [details, setDetails] = useState();
     // const [keyboardStatus, setKeyboardStatus] = useState(undefined);
 
-    const reccomandtion=()=>{
-        if (!sugarLevel||!spot) {
+
+    useEffect(() => {
+        userDetails && userDetails.spot ? setSpot(userDetails.spot) : '';
+        userDetails && userDetails.spot ? setDefualtSpot(true) : setDefualtSpot(false);
+    }, [])
+
+    const reccomandtion = () => {
+        if (!sugarLevel || !spot) {
             setAlert(
                 <Alert text="suger level value and injection_site is required"
                     type='alert'
                     time={3000}
                     bottom={90}
                 />)
-                return;
+            return;
         }
-
-        if (sugarLevel>=75&&sugarLevel<=155&&(!carbs||carbs==0)) {
+        if (sugarLevel < 75) {
+            setAlert(
+                <Alert text={`suger level is low!\nyou can get recommandtion for Hipo food\nat the Recommandtion page`}
+                    type='alert'
+                    time={5000}
+                    bottom={90}
+                />)
+            return;
+        }
+        if (sugarLevel >= 75 && sugarLevel <= 155 && (!carbs || carbs == 0)) {
             setAlert(
                 <Alert text={`your suger level value is good \n you dont need to inject if you dont eat`}
                     type='info'
                     time={4000}
                     bottom={90}
                 />)
-                return;
+            return;
         }
 
         setLoading(true);
         let injectionType = carbs ? 'food' : 'fix'
 
-        GetInjectionRecommend(userDetails.id,sugarLevel,injectionType).then((response) => {
+        GetInjectionRecommend(userDetails.id, sugarLevel, injectionType).then((response) => {
 
             setInterval(() => setLoading(false), 1000);
-          return response
-        }).then((response)=>{
-            let data={...details,reccomandtion:response}
-            console.log("ressss",data)
-            response&&navigation.navigate('Recommandation',{detials:data});
+            return response
+        }).then((response) => {
+            let data = { ...details, reccomandtion: response }
+            console.log("ressss", data)
+            response && navigation.navigate('Recommandation', { detials: data });
 
-    })
+        })
             .catch((error) => {
                 setLoading(false)
                 setAlert(
@@ -80,24 +94,26 @@ export default function InsertData({ navigation, route }) {
                 console.log("error in function Post_user_details " + error);
             });
     }
+
     //for recommandtion page- becouse it pass the last var in route params and not the current var
-useEffect(()=>{
-    let date = dateTime ? moment(dateTime, 'DD/MM/YYYY H:mm').format('YYYY-MM-DD[T]HH:mm:ss') : moment(today).format('YYYY-MM-DD[T]HH:mm:ss');
-    let food = foodLibary ? foodLibary.map(x => { return { foodId: x.id, amount: x.amount, unitName: x.unit } }) : []
-    let injectionType = carbs ? 'food' : 'fix'
-    let detials = {
-        date_time: date,
-        blood_sugar_level: sugarLevel,
-        injection_site: spot,
-        totalCarbs: carbs ? carbs : 0,
-        injectionType: injectionType,
-        value_of_ingection: injectionValue,
-        Patients_id: userDetails.id,
-        food: food,
-        ExceptionalEvent: ExceptionalEvent,
-    }
-    setDetails(detials)
-},[carbs,sugarLevel])
+    useEffect(() => {
+        let date = dateTime ? moment(dateTime, 'DD/MM/YYYY H:mm').format('YYYY-MM-DD[T]HH:mm:ss') : moment(today).format('YYYY-MM-DD[T]HH:mm:ss');
+        let food = foodLibary ? foodLibary.map(x => { return { foodId: x.id, amount: x.amount, unitName: x.unit } }) : []
+        let injectionType = carbs ? 'food' : 'fix'
+        let detials = {
+            date_time: date,
+            blood_sugar_level: sugarLevel,
+            injection_site: spot,
+            totalCarbs: carbs ? carbs : 0,
+            injectionType: injectionType,
+            value_of_ingection: injectionValue,
+            Patients_id: userDetails.id,
+            food: food,
+            ExceptionalEvent: ExceptionalEvent,
+        }
+        setDetails(detials)
+    }, [carbs, sugarLevel])
+
     const save_details = () => {
         if (sugarLevel) {
             setLoading(true);
@@ -127,10 +143,10 @@ useEffect(()=>{
             console.log("detials", detials);
             Post_user_data(detials).then((response) => {
                 setInterval(() => setLoading(false), 1000);
-              return response
-            }).then((response)=>{
-                response&& navigation.navigate('Repotrs - Table');
-        })
+                return response
+            }).then((response) => {
+                response && navigation.navigate('Repotrs - Table');
+            })
                 // .then(Post_SendPushNotification(PushDetails).then((res) => {
                 //     res && console.log(" res status push notification=> ", res.status);
                 // }))
@@ -141,7 +157,7 @@ useEffect(()=>{
                             type='worng'
                             bottom={90}
                         />)
-                        
+
                     console.log("error in function Post_user_details " + error);
                 });
 
@@ -169,7 +185,6 @@ useEffect(()=>{
         }
     }
 
-
     const checkCarbs = () => {
         let regex = /^[+-]?\d+(\.\d+)?$/;
         regex.test(carbs) ? setValid_lable('') : setValid_lable("numbers only!")
@@ -189,7 +204,6 @@ useEffect(()=>{
         }
     }, []);
 
-
     const storeData = async (value) => {
         try {
             const jsonValue = JSON.stringify(value)
@@ -201,6 +215,7 @@ useEffect(()=>{
         }
     }
 
+    //set defualt spot in localstroge
     useEffect(() => {
         // console.log("defualtSpot", defualtSpot)
         // console.log("spot", spot)
@@ -217,10 +232,15 @@ useEffect(()=>{
         }
     }, [defualtSpot]);
 
-
-
-
-
+    //if user change is defualt spot
+    useEffect(() => {
+        if (userDetails && userDetails.spot != spot && spot) {
+            delete userDetails['spot'];
+            let temp = { ...userDetails, spot: spot }
+            storeData(temp)
+            setUserDetails(temp)
+        }
+    }, [spot])
 
     return (
         <KeyboardAvoidingView
@@ -229,7 +249,7 @@ useEffect(()=>{
         >
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <View style={styles.container}>
-                    {loading&&<Loading/>}
+                    {loading && <Loading />}
                     {alert && alert}
                     <Header
                         title='Insert Data'
@@ -257,6 +277,7 @@ useEffect(()=>{
                                         <Text style={styles.label}></Text>
                                         <TextInput
                                             placeholder='Carbs'
+                                            keyboardType='number-pad'
                                             style={styles.Carbsinput}
                                             value={carbs ? carbs.toString() : ''}
                                             onChangeText={value => { setCarbs(value); }}
@@ -344,28 +365,27 @@ useEffect(()=>{
                         </View>
                     </ScrollView>
                     {/* </SafeAreaView> */}
-                    <View style={{flex:1,flexDirection:'row',paddingLeft:'5%'}}>
-                    <Button
-                        flex={1}
-                        text="save"
-                        width={23}
-                        height={2}
-                        alignItems='center'
-                        justifyContent='flex-start'
-                        onPress={() => save_details()}
-                    />
+                    <View style={{ flex: 1, flexDirection: 'row', paddingLeft: '5%' }}>
                         <Button
-                        flex={1}
-                        text="reccomandtion"
-                        width={5}
-                        height={2}
-                        alignItems='flex-start'
-                        justifyContent='flex-start'
-                        onPress={() => reccomandtion()}
-                    />
+                            flex={1}
+                            text="save"
+                            width={23}
+                            height={2}
+                            alignItems='center'
+                            justifyContent='flex-start'
+                            onPress={() => save_details()}
+                        />
+                        <Button
+                            flex={1}
+                            text="reccomandtion"
+                            width={5}
+                            height={2}
+                            alignItems='flex-start'
+                            justifyContent='flex-start'
+                            onPress={() => reccomandtion()}
+                        />
                     </View>
                 </View>
-
             </TouchableWithoutFeedback>
         </KeyboardAvoidingView>
     );

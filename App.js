@@ -48,3 +48,18 @@ const styles = StyleSheet.create({
     
   }
 });
+
+// console.log("keyboardStatus",keyboardStatus)
+//       useEffect(() => {
+//         const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
+//           setKeyboardStatus(true);
+//         });
+//         const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
+//           setKeyboardStatus(false);
+//         });
+
+//         return () => {
+//           showSubscription.remove();
+//           hideSubscription.remove();
+//         };
+//       }, []);

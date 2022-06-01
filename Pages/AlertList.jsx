@@ -27,7 +27,7 @@ const AlertList = (props) => {
       case "addPrescription":
         return `${name} ask for new prescription`
       case "statusPrescription":
-        return `your prescription requests change status`
+        return `your prescription requests change status by ${name}`
       default:
         return '';
         break;
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
   item: (width, i, active) => {
     // console.log("i",i)
     return {
-      backgroundColor: active ? '#9FC0FA' : '#d5e5fe4d',
+      backgroundColor: active ? '#9fc0fabd' : '#ffffffe0',
       height: '70%',
       flexDirection: 'row',
       flexWrap: 'wrap',

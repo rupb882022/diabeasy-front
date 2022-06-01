@@ -70,7 +70,7 @@ export default function Information({ navigation,backgroundColor }) {
       style='information'
       width={90}
       height={70}
-    // backgroundColor='#EBEBEE'
+     backgroundColor='#eaf5ffe6'
     />}
   </View>
   )
@@ -98,7 +98,13 @@ return{backgroundColor:color,zIndex:20}
     fontSize: 20,
     fontWeight: 'bold',
     right: '2%',
-    top: '-1%'
+    top: '-1%',
+       shadowOffset: {
+      width: 1,
+      height: 1
+    },
+    shadowOpacity: 0.2,
+  
   }, alertNumber: {
     position: 'absolute',
     borderWidth: 1,

@@ -344,6 +344,7 @@ const styles = StyleSheet.create({
     color: 'white',
     textAlign: 'center',
     fontWeight: 'bold',
+    borderRadius:8,
     shadowOffset: {
       width: -1,
       height: 1

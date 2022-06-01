@@ -48,6 +48,8 @@ export default function Drawer(props) {
         headerStyle: {
             backgroundColor: 'transparent',
             // backgroundColor:backgroundColor
+            // height:'10%'
+       
         },
         headerTintColor: 'white',
         headerTitleStyle: {

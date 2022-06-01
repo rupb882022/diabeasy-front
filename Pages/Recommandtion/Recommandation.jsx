@@ -22,7 +22,6 @@ export default function Recommandation({ route, navigation }) {
   let detials = route.params && route.params.detials ? route.params.detials : '';
 
 
-
   const save_data = (value_of_ingection) => {
     let data = {
       ExceptionalEvent: detials.ExceptionalEvent,
@@ -58,8 +57,7 @@ export default function Recommandation({ route, navigation }) {
 
   useFocusEffect(
     React.useCallback(() => {
-      // console.log("*")
-
+       console.log("*")
 
 
       // fixunit&&setFixUnit(0)
@@ -67,13 +65,17 @@ export default function Recommandation({ route, navigation }) {
       // total&&setTotal(0)
 
       total_reccomandtion();
-       setShowInput(false);
+
     }))
 
 
-    // console.log("fixunit",fixunit)
-    // console.log("foodUnit",foodUnit)
-    //  console.log("total",total)
+    useFocusEffect(
+      React.useCallback(() => {
+         console.log("00000")
+
+         setShowInput(false);
+      },[]))
+
 
   const total_reccomandtion = () => {
 // console.log("detials",detials)
@@ -212,17 +214,3 @@ const styles = StyleSheet.create({
     padding: '1%', paddingHorizontal: '5%'
   }
 })
-// console.log("keyboardStatus",keyboardStatus)
-//       useEffect(() => {
-//         const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
-//           setKeyboardStatus(true);
-//         });
-//         const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
-//           setKeyboardStatus(false);
-//         });
-
-//         return () => {
-//           showSubscription.remove();
-//           hideSubscription.remove();
-//         };
-//       }, []);

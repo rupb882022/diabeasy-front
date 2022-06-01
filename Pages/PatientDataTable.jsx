@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity ,Keyboard,TouchableWithoutFeedback} from 'react-native'
 import React, { useEffect, useState, useContext } from 'react'
 import { Table, TableWrapper, Row, Rows, Col } from 'react-native-table-component';
 import Header from '../CTools/Header';
@@ -159,7 +159,9 @@ let updatePopup =<>
   height='50%'
   width='70%'
   isButton={false}
-  element={<View style={{flex:1}}>
+  element={
+   <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+  <View style={{flex:1}}>
     <Text style={styles.titlePopup}>Edit</Text>
   <View style={{marginTop:'20%',}} >
      <Input
@@ -242,7 +244,9 @@ let updatePopup =<>
           
            </View>
           
-  </View>}
+  </View>
+  </TouchableWithoutFeedback>
+  }
   /></>
   // let alertDoctor=    setAlert(
   //   <Alert text="sorry, you can not edit this kind of data"
