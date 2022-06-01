@@ -9,6 +9,8 @@ import { UserContext } from '../CTools/UserDetailsHook';
 import { GET_assistant_phone,POST_EmergancyPhoneNumber } from '../Functions/Function';
 import  Input from '../CTools/Input';
 import AlertTool from '../CTools/Alert';
+import { useFocusEffect } from '@react-navigation/native';
+
 export default function PanicButton() {
     const [phone, setPhone] = useState();
     const [alert, setAlert] = useState();
@@ -62,10 +64,11 @@ export default function PanicButton() {
     }
 
 
-    useEffect(() => {
+    useFocusEffect(
+        React.useCallback(() => {
         //get phone number
         getPhone();
-    }, [userDetails]);
+    } ,[userDetails]));
 
     //todo clear alert when emergency call is update in setting page
     return (
@@ -78,7 +81,7 @@ export default function PanicButton() {
             <Header
                 title='Emergency Call'
                 logo_image='panic'
-                flex={alert?0.25:0.15}
+                flex={alert&&!phone?0.25:0.15}
                 // image_width={25}
                 // image_heigt={100}
                 // image_margin={{ Bottom: -4 }}
@@ -97,9 +100,9 @@ export default function PanicButton() {
                 color='#ff9900'
                 onPress={EmergancyCall}
             />
-            {!alert&&<Text style={{flex:0.3,alignSelf:'center',fontSize:20}}>Tap for emergancy call</Text>}
+            {!alert||phone&&<Text style={{flex:0.3,alignSelf:'center',fontSize:20}}>Tap for emergancy call</Text>}
             {alertTool&&alertTool}
-            {alert && <View style={styles.alert_Container}>
+            {alert && !phone && <View style={styles.alert_Container}>
                 <View style={styles.alert}>
                     <Ionicons name="alert-circle-outline" size={28} color="black" />
                     <Text style={styles.alertText}>
