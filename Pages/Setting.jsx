@@ -1,7 +1,7 @@
 import { View, Switch,Text, TouchableOpacity,StyleSheet, Image } from 'react-native'
 import React,{useContext, useState} from 'react';
 import {UserContext} from '../CTools/UserDetailsHook'
-import { AntDesign } from '@expo/vector-icons'; 
+import { AntDesign,Feather } from '@expo/vector-icons'; 
 import Button from '../CTools/Button';
 import Header from '../CTools/Header';
 import Input from '../CTools/Input';
@@ -160,10 +160,11 @@ element={
                  />
                 </View>
  
-            <View style={{flexDirection:'row',justifyContent:'space-evenly',flex:0.2}}>
+            <View style={{flexDirection:'row-reverse',flex:0.2}}>
 
-  <Button text='Cancle' onPress={()=>setPopupPhone(false)}/>
+  <Button  text='Cancle' onPress={()=>setPopupPhone(false)}/>
   <Button text='Add' width={25} onPress={()=> saveNumber()}
+
 />
 </View>
 </View>

@@ -14,6 +14,9 @@ export const  GetInjectionRecommend=(id,blood_sugar_level,injectionType)=>{
 export const  Rest_password=(email)=>{
   return Fetch( `User/getPassword/${email}`,'Get');
 }
+export const  GETpersonalInfoToEdit=(id)=>{
+  return Fetch( `User/editPersonalInfo/${id}`,'Get');
+}
 export const  set_password=(body)=>{
   return Axios( `User/setNewpassword`,'PUT',body);
 }

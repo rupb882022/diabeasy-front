@@ -1,13 +1,14 @@
 import { View, StyleSheet, Text,TouchableWithoutFeedback, Keyboard} from 'react-native';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect ,useContext} from 'react';
 import Header from '../CTools/Header';
 import Input from '../CTools/Input';
 import Button from '../CTools/Button';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Loading from '../CTools/Loading';
 import { flushSync } from 'react-dom'
-import { Get_all_InsulinType } from '../Functions/Function';
+import { Get_all_InsulinType,GETpersonalInfoToEdit } from '../Functions/Function';
 import Alert from '../CTools/Alert';
+import { UserContext } from '../CTools/UserDetailsHook';
 
 export default function EditPersonalInfo(props) {
 
@@ -26,10 +27,25 @@ export default function EditPersonalInfo(props) {
   const [mailDoctor, setMailDoctor] = useState(null);
   const [selectInsulinLong, setSelectInsulinLong] = useState(null);
   const [selectInsuliShort, setSelectInsulinShort] = useState(null);
+  const { userDetails } = useContext(UserContext);
 
 useEffect(()=>{
 //get Details and fill fileds
-
+GETpersonalInfoToEdit(userDetails.id).then((resulte)=>{
+  let res=resulte[0];
+console.log('edit res=>', resulte);
+setFirstName(res.firstname);setLastName(res.lastname);setHeight(res.height);setWeight(res.weight);
+setGender(res.gender);setBirthDate(res.birthdate);setInsulinTypeShort(res.InsulinType_id);
+setInsulinTypeLong(res.InsulinType_long_id);setMailDoctor(res.docEmail[0])
+},
+(error)=>{
+  console.log("error", error)
+  setAlert(
+    <Alert text="sorry, somthing went wrong, please try again later"
+      type='worng'
+      time={2000}
+      bottom={110}
+    />);})
 },[])
 
 
@@ -79,18 +95,21 @@ if (!selectInsuliShort && !selectInsulinLong) {
                 <Input
                     label='First Name'
                     validtion='letters'
-                    setValue={FirstName}
+                    setValue={FirstName?`${FirstName}`:''}
                     width={55}
                     getValue={(value) => setFirstName(value)}
                     alignItems='center'
+                    placeholder={`${FirstName}`}
                 />
                 <Input
                     label='Last Name'
                     validtion='letters'
-                    setValue={LastName}
+                    //setValue={LastName}
                     width={75}
                     getValue={(value) => setLastName(value)}
                     alignItems='flex-start'
+                    placeholder={LastName?`${LastName}`:''}
+
                 />
             </View>
 
@@ -100,6 +119,7 @@ if (!selectInsuliShort && !selectInsulinLong) {
                 type='selectBox'
                 required={true}
                 setValue={gender}
+                placeholder={gender?`${gender}`:''}
                 SelectBox_placeholder='Gender'
                 getValue={(value) => setGender(value)}
                 selectBox_items={[
@@ -120,6 +140,7 @@ if (!selectInsuliShort && !selectInsulinLong) {
                 required={true}
                 setValue={birthDate}
                 getValue={(value) => {setDate(value)}}
+                placeholder={birthDate?`${birthDate}`:''}                        ///todo change format
             />
               <View style={{ flexDirection: 'row', flex: 1, marginLeft: '6%' }}>
                     <Input
@@ -128,20 +149,24 @@ if (!selectInsuliShort && !selectInsulinLong) {
                         alignItems='center'
                         validtion='number'
                         keyboardType='number-pad'
-                        placeholder='  kg'
+                       // placeholder='  kg'
                         required={true}
                         getValue={(value) => setWeight(value)}
+                        placeholder={weight?`${weight}`:'kg'}
+
                     />
 
                     <Input
                         label='Height'
                         validtion='number'
                         keyboardType='number-pad'
-                        placeholder='cm'
+                       // placeholder='cm'
                         width={70}
                         alignItems='flex-start'
                         required={true}
                         getValue={(value) => setHeight(value)}
+                        placeholder={height?`${height}`:'cm'}
+
                     />
                 </View>
                 {/* <Input
@@ -156,6 +181,8 @@ if (!selectInsuliShort && !selectInsulinLong) {
                     label='Add Your Doctor By Email'
                     keyboardType='email-address'
                     getValue={(value) => setMailDoctor(value)}
+                    placeholder={mailDoctor?`${mailDoctor}`:''}
+
                 />
                 <Input
                     label='Short insulin type'
@@ -165,6 +192,8 @@ if (!selectInsuliShort && !selectInsulinLong) {
                     getValue={(value) => setInsulinTypeShort(value)}
                     SelectBox_placeholder='Select short insulin type'
                     selectBox_items={selectInsuliShort}
+                    placeholder={insulinTypeShort?`${insulinTypeShort}`:''}
+
                 />
                 <Input
                     label='Long insulin type'
@@ -175,6 +204,8 @@ if (!selectInsuliShort && !selectInsulinLong) {
                     getValue={(value) => setInsulinTypeLong(value)}
                     SelectBox_placeholder='Select long insulin type'
                     selectBox_items={selectInsulinLong}
+                    placeholder={insulinTypeLong?`${insulinTypeLong}`:''}           //todo= change format
+
                 />
 
             <View style={styles.Buttons}>
