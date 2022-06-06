@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { useFocusEffect } from '@react-navigation/native';
 
 export default function TimeCounter(props) {
-  const { initialMinute = 0, initialSeconds = 0, initialHours = 0,text } = props;
+  const { initialMinute = 0, initialSeconds = 0, initialHours = 0,days } = props;
   const [minutes, setMinutes] = useState(initialMinute);
   const [seconds, setSeconds] = useState(initialSeconds);
   const [hours, setHours] = useState(initialHours);
@@ -37,7 +37,7 @@ export default function TimeCounter(props) {
   return (
     <View style={styles.container}>
       {minutes === 0 && seconds === 0 && hours===0?<></> :
-        <Text style={styles.text}>{hours&&hours}:{minutes < 10 ?`0${minutes}` : minutes}:{seconds < 10 ? `0${seconds}` : seconds} ago</Text>}
+        <Text style={styles.text}>{days&&days>0?days+' days ' :''}{hours&&hours}:{minutes < 10 ?`0${minutes}` : minutes}:{seconds < 10 ? `0${seconds}` : seconds} ago</Text>}
     </View>
   )
 }

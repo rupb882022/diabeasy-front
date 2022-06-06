@@ -42,18 +42,17 @@ export default function Home(props) {
 
     useFocusEffect(
         React.useCallback(() => {
-        
             userDetails && userDetails.id ? GetLastBloodTest(userDetails.id).then((respone) => {
           
                 let diffMs = (new Date() - new Date(respone));
+                var diffDays = Math.floor(diffMs / 86400000); // days
                 let diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000); // minutes
                 var diffHrs = Math.floor((diffMs % 86400000) / 3600000); // hours
-    
-                 setClock({hour:diffHrs,minute:diffMins})
+                 setClock({hour:diffHrs,minute:diffMins,days:diffDays})
             }).catch((error) => {
                 console.log("error in function GetLastBloodTest " + error);
             }) : '';
-        }, []))
+        },[]))
 
     if (!helloText) {
         let hour = Moment(new Date()).format('HH:mm:ss');
@@ -82,7 +81,9 @@ export default function Home(props) {
            <TimeCounter
            initialHours={clock.hour}
            initialMinute={clock.minute}
+           days={clock.days?clock.days:0}
             />
+        
             </View>}
             <View style={{ flex: 1.9, paddingTop: '10%' }}>
                 <Button
