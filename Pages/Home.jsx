@@ -17,6 +17,7 @@ export default function Home(props) {
     const { userDetails, setUserDetails } = useContext(UserContext);
     const [helloText, setHelloText] = useState();
     const [clock, setClock] = useState();
+    const [initClock,setInitClock]=useState(false);
     //const [expoPushToken, setExpoPushToken] = useState('');
 
     useEffect(async () => {
@@ -43,16 +44,20 @@ export default function Home(props) {
     useFocusEffect(
         React.useCallback(() => {
             userDetails && userDetails.id ? GetLastBloodTest(userDetails.id).then((respone) => {
-          
+                console.log("*", respone)
                 let diffMs = (new Date() - new Date(respone));
-                var diffDays = Math.floor(diffMs / 86400000); // days
+                let diffDays = Math.floor(diffMs / 86400000); // days
                 let diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000); // minutes
-                var diffHrs = Math.floor((diffMs % 86400000) / 3600000); // hours
-                 setClock({hour:diffHrs,minute:diffMins,days:diffDays})
+                let diffHrs = Math.floor((diffMs % 86400000) / 3600000); // hours
+                setClock({ hour: diffHrs, minute: diffMins, days: diffDays })
+                setInitClock(true);
             }).catch((error) => {
                 console.log("error in function GetLastBloodTest " + error);
             }) : '';
-        },[]))
+
+
+            initClock&&setInterval(() => setInitClock(false), 100);
+        }, []))
 
     if (!helloText) {
         let hour = Moment(new Date()).format('HH:mm:ss');
@@ -68,22 +73,24 @@ export default function Home(props) {
             <Header
                 title='Home'
                 logo_image='heart'
-                flex={0.35}
-                image_width={100}
-                image_heigt={50}
+                flex={0.33}
+                // image_width={100}
+                // image_heigt={50}
                 paddingRight={9}
-                possiton={32}
+                possiton={23}
+                bottom={20}
                 image_margin={{ Bottom: 5 }}
             />
-            
-           {clock&& <View style={{bottom:'1.5%'}}>
-            <Text style={styles.lastTest}>The last blood test was</Text>
-           <TimeCounter
-           initialHours={clock.hour}
-           initialMinute={clock.minute}
-           days={clock.days?clock.days:0}
-            />
-        
+
+            {clock && <View style={{ bottom: '1.5%' }}>
+                <Text style={styles.lastTest}>The last blood test was</Text>
+                <TimeCounter
+                    initialHours={clock.hour}
+                    initialMinute={clock.minute}
+                    days={clock.days ? clock.days : 0}
+                    init={initClock}
+                />
+
             </View>}
             <View style={{ flex: 1.9, paddingTop: '10%' }}>
                 <Button
@@ -93,8 +100,8 @@ export default function Home(props) {
                     element={<><Octicons style={{ paddingLeft: '10%' }} name="plus" size={80} color="white" />
                         <Text style={{ color: 'white', fontSize: 22, fontWeight: '700', right: '2%' }}>Insert data</Text>
                     </>}
-                    width={15}
-                    height={17}
+                    width={13}
+                    height={15}
                     textSize={30}
                     alignItems='center'
                     onPress={() => navigation.navigate('Insert Data')}
@@ -136,9 +143,9 @@ const styles = StyleSheet.create({
         textShadowOffset: { width: 2, height: 2 },
         textShadowRadius: 3,
     },
-    lastTest:{
-      color: '#1ea6d6',
-      textAlign:'center',
+    lastTest: {
+        color: '#1ea6d6',
+        textAlign: 'center',
         fontSize: 26,
         // fontWeight: 'bold',
         textShadowColor: 'white',
@@ -146,10 +153,11 @@ const styles = StyleSheet.create({
         textShadowRadius: 3,
     },
     Image: {
-        flex: 0.85,
-        // position:'absolute',
+        flex: 1,
+        position:'relative',
         resizeMode: 'cover',
         width: '40%',
+        // height:'130%',
         top: '1%',
         alignSelf: 'flex-end',
         opacity: 0.95,

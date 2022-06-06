@@ -76,7 +76,7 @@ export default function InsertData({ navigation, route }) {
 
         GetInjectionRecommend(userDetails.id, sugarLevel, injectionType).then((response) => {
 
-            setInterval(() => setLoading(false), 1000);
+            setInterval(() => setLoading(false), 2000);
             return response
         }).then((response) => {
             let data = { ...details, reccomandtion: response }

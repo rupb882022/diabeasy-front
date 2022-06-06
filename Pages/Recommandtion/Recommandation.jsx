@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, StyleSheet, Image, Easing, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback, Animated } from 'react-native';
 import React, { useEffect, useState, useContext } from 'react';
 import Button from '../../CTools/Button';
 import Loading from '../../CTools/Loading';
@@ -9,6 +9,11 @@ import { ImageUri } from '../../Routes/Url';
 import { Post_user_data, InjectionRecommendByML } from '../../Functions/Function'
 import Input from '../../CTools/Input';
 export default function Recommandation({ route, navigation }) {
+  const spinValue = new Animated.Value(0);
+  const spin = spinValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0deg', '360deg']
+  })
 
   const [fixunit, setFixUnit] = useState()
   const [foodUnit, setFoodUnit] = useState()
@@ -17,6 +22,8 @@ export default function Recommandation({ route, navigation }) {
   const [alert, setAlert] = useState()
   const [value_of_ingection, setValue_of_ingection] = useState();
   const [showInpit, setShowInput] = useState(false);
+
+
   // const [keyboardStatus, setKeyboardStatus] = useState(false);
 
   let detials = route.params && route.params.detials ? route.params.detials : '';
@@ -84,31 +91,47 @@ export default function Recommandation({ route, navigation }) {
       });
   }
 
+
+  
   useFocusEffect(
     React.useCallback(() => {
       total_reccomandtion();
+      if(!loading&&!showInpit){ 
+        // setInterval(() =>
+     return Animated.timing(
+          spinValue,
+          {
+            toValue: 1,
+            duration: 1000,
+            easing: Easing.linear, // Easing is an additional import from react-native
+            useNativeDriver: true  // To make use of native driver for performance
+          }
+        ).start()
+      
+        // , 500);
+      }
     }))
 
-    // for case that user will go out of the page and ask for new reccomandtion with diffrent value
+  // for case that user will go out of the page and ask for new reccomandtion with diffrent value
   useFocusEffect(
     React.useCallback(() => {
       setShowInput(false);
     }, []))
 
-    //if user have extremely high blood sugar level
-    useFocusEffect(
-      React.useCallback(() => {
-        if (detials.blood_sugar_level > 450) {
-          setAlert(
-            <Alert text={`Your blood sugar level is extremely high.\nWe recommend that you talk to your doctor`}
-              type='info'
-              bottom={30}
-            />
-          )
-        }
-        //delete alert for case that user will go out of the page and ask for new reccomandtion with diffrent value
-        setInterval(() => setAlert(null), 3200);
-      }, [total]))
+  //if user have extremely high blood sugar level
+  useFocusEffect(
+    React.useCallback(() => {
+      if (detials.blood_sugar_level > 450) {
+        setAlert(
+          <Alert text={`Your blood sugar level is extremely high.\nWe recommend that you talk to your doctor`}
+            type='info'
+            bottom={30}
+          />
+        )
+      }
+      //delete alert for case that user will go out of the page and ask for new reccomandtion with diffrent value
+      setInterval(() => setAlert(null), 3200);
+    }, [total]))
 
   const total_reccomandtion = () => {
     // console.log("detials",detials)
@@ -136,6 +159,11 @@ export default function Recommandation({ route, navigation }) {
     }
   }
 
+
+
+
+
+
   return (<>
     {loading && <Loading />}
     {alert && alert}
@@ -159,11 +187,14 @@ export default function Recommandation({ route, navigation }) {
               {fixunit && fixunit != 0 ? <Text style={styles.txt}>ratio of fix injection {fixunit} units </Text> : <></>}
               {foodUnit && foodUnit != 0 ? <Text style={styles.txt}>ratio of cabs injection {foodUnit} units </Text> : <></>}
             </View>
-            <Image
+
+            {/* <Image
               style={styles.Image}
               source={{ uri: ImageUri + 'rec.png' }}
-            />
-
+            /> */}
+            <Animated.Image
+              style={styles.Image(spin)}
+              source={{ uri: ImageUri + 'rec.png' }} />
 
             <Text style={styles.txt}>do you use the recommandation?</Text>
             {!showInpit && <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', flex: 0.25, paddingLeft: '15%', marginTop: '2%' }}>
@@ -232,15 +263,18 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center'
   },
-  Image: {
-    flex: 0.75,
-    // position:'absolute',
-    resizeMode: 'contain',
-    width: '100%',
-    height: '100%',
-    // top: '26%',
-    bottom: '1%',
-    opacity: 0.85,
+  Image: (spin) => {
+    return {
+      flex: 0.75,
+      // position:'absolute',
+      resizeMode: 'contain',
+      width: '100%',
+      height: '100%',
+      // top: '26%',
+      bottom: '1%',
+      opacity: 0.85,
+      transform: [{ rotate: spin }]
+    }
   },
   txt: {
     fontSize: 16,

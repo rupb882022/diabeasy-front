@@ -6,7 +6,7 @@ import Information from './Information';
 
 
 export default function Header(props) {
-  const { logo_image, possiton = 75, title, flex=1, paddingRight, marginLeft, flexDirection, line = true, image_heigt, image_width, alignItems, justifyContent, image_margin, fontSize } = props
+  const { logo_image, possiton = 75, title, flex=1, paddingRight, marginLeft,bottom, flexDirection, line = true, image_heigt, image_width, alignItems, justifyContent, image_margin, fontSize } = props
   var icon = '';
 
   //for icon image margin 
@@ -52,7 +52,7 @@ let color=title=='Login'?'transparent':'#00a6a64a';
     <>
       <View style={styles.container(flex, flexDirection, alignItems, justifyContent, possiton,color)}>
         {/* <Text style={styles.title(paddingRight, marginLeft, fontSize)}>{title}</Text> */}
-                <Text style={styles.title(0, 0, 30,Dimensions.get("window").width)}>{title=='Login'?'':'Diabeasy'}</Text>
+                <Text style={styles.title(0, 0, 30,Dimensions.get("window").width,bottom)}>{title=='Login'?'':'Diabeasy'}</Text>
 
         {logo_image&&logo_image === 'diabeasy' && <Image
           style={styles.Image(image_heigt, image_width, image_marginTop, image_marginBottom)}
@@ -88,12 +88,12 @@ const styles = StyleSheet.create({
       marginBottom: image_marginBottom + '%',
     }
   },
-  title: (paddingRight = 0, marginLeft = 0, fontSize = 30,width) => {
+  title: (paddingRight = 0, marginLeft = 0, fontSize = 30,width,bottom=27) => {
     return {
       fontSize: fontSize,
       // width: '10%',
       // height: '55%',
-       left:width/3.1,bottom:'27%',
+       left:width/3.1, bottom:bottom+'%',
       textAlign: 'right',
       paddingRight: paddingRight + '%',
       marginLeft: marginLeft + '%',
@@ -103,6 +103,7 @@ const styles = StyleSheet.create({
       textShadowOffset: { width: 2, height: 2 },
       textShadowRadius: 1,
       position: 'absolute',
+      
     }
 
   },
