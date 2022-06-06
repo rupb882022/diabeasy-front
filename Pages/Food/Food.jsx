@@ -113,7 +113,6 @@ const [delAlert,setDelAlert]=useState(false)
     suger != 0 && setSuger(suger.toFixed(1))
     temp && setWeightInGrams(weightInGrams)
   }
-
   return (<> 
     <View style={styles.container} id={id}>
       <View style={styles.face}>
@@ -133,9 +132,9 @@ const [delAlert,setDelAlert]=useState(false)
         <View style={styles.row}>
           <Image style={styles.image} source={{ uri: image ? image.includes("http")?image:ImageUri +image : ImageUri + 'emptyFoodPhoto.JPG' }} />
           <View style={styles.details}>
-            <Text style={styles.textFront}>{suger ? suger : UnitOfMeasure[0].suger.toFixed(1)} suger </Text>
-            <Text style={styles.textFront} >{carbs ? carbs : UnitOfMeasure[0].carbs.toFixed(1)} Carbohydrates  </Text>
-            <Text style={styles.textFront}>{weightInGrams ? weightInGrams : UnitOfMeasure[0].weightInGrams} g </Text>
+            <Text style={styles.textFront}> {suger ? suger : UnitOfMeasure[0].suger.toFixed(1)} suger </Text>
+            <Text style={styles.textFront}> {carbs ? carbs : UnitOfMeasure[0].carbs.toFixed(1)} Carbohydrates  </Text>
+            <Text style={styles.textFront}> {weightInGrams ? weightInGrams : UnitOfMeasure[0].weightInGrams} g </Text>
           </View>
         </View>
         <View style={styles.faceFooter}>

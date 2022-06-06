@@ -7,36 +7,53 @@ import { Octicons } from '@expo/vector-icons';
 import { UserContext } from '../CTools/UserDetailsHook'
 import Moment from 'moment';
 import registerForPushNotificationsAsync from '../CTools/registerForPushNotificationsAsync';
-import { post_pushToken } from '../Functions/Function';
+import { post_pushToken, GetLastBloodTest } from '../Functions/Function';
+import TimeCounter from '../CTools/TimeCounter';
+import { useFocusEffect } from '@react-navigation/native';
 
 
 export default function Home(props) {
     const { navigation } = props
-    const { userDetails,setUserDetails } = useContext(UserContext);
+    const { userDetails, setUserDetails } = useContext(UserContext);
     const [helloText, setHelloText] = useState();
-
+    const [clock, setClock] = useState();
     //const [expoPushToken, setExpoPushToken] = useState('');
 
-useEffect(()=>{
-registerForPushNotificationsAsync().then((token)=>{
-let data={"pushtoken": token};//console.log("data",data);
-post_pushToken(userDetails.id,data).then((response) => {
-    response && console.log("res test Home=>",response.data);
-    let temp =Object.assign({}, userDetails, { Token : token });
-    setUserDetails(temp)
-  })}).catch((error) => {
-    setAlert(
-      <Alert text="sorry, somthing went wrong, please try again later"
-        type='worng'
-        time={2000}
-        bottom={110}
-      />)
-    console.log("error in function post_pushToken " + error);
-  });
+    useEffect(async () => {
 
-},[])
+        registerForPushNotificationsAsync().then((token) => {
+            let data = { "pushtoken": token };//console.log("data",data);
+            post_pushToken(userDetails.id, data).then((response) => {
+                response && console.log("res test Home=>", response.data);
+                let temp = Object.assign({}, userDetails, { Token: token });
+                setUserDetails(temp)
+            })
+        }).catch((error) => {
+            setAlert(
+                <Alert text="sorry, somthing went wrong, please try again later"
+                    type='worng'
+                    time={2000}
+                    bottom={110}
+                />)
+            console.log("error in function post_pushToken " + error);
+        });
 
+    }, [])
 
+    useFocusEffect(
+        React.useCallback(() => {
+        
+            userDetails && userDetails.id ? GetLastBloodTest(userDetails.id).then((respone) => {
+          
+                let diffMs = (new Date() - new Date(respone));
+                let diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000); // minutes
+                var diffHrs = Math.floor((diffMs % 86400000) / 3600000); // hours
+    
+                 setClock({hour:diffHrs,minute:diffMins})
+            }).catch((error) => {
+                console.log("error in function GetLastBloodTest " + error);
+            }) : '';
+        }, []))
 
     if (!helloText) {
         let hour = Moment(new Date()).format('HH:mm:ss');
@@ -59,15 +76,23 @@ post_pushToken(userDetails.id,data).then((response) => {
                 possiton={32}
                 image_margin={{ Bottom: 5 }}
             />
-            <View style={{flex:1.8,paddingTop:'10%'}}>
+            
+           {clock&& <View style={{bottom:'1.5%'}}>
+            <Text style={styles.lastTest}>The last blood test was</Text>
+           <TimeCounter
+           initialHours={clock.hour}
+           initialMinute={clock.minute}
+            />
+            </View>}
+            <View style={{ flex: 1.9, paddingTop: '10%' }}>
                 <Button
                     // text='Insert Data'
                     justifyContent='flex-end'
                     radius={1000}
-                    element={<><Octicons style={{paddingLeft:'10%'}} name="plus" size={80} color="white" />
-                    <Text style={{color:'white',fontSize:22,fontWeight:'700',right:'2%'}}>Insert data</Text>
+                    element={<><Octicons style={{ paddingLeft: '10%' }} name="plus" size={80} color="white" />
+                        <Text style={{ color: 'white', fontSize: 22, fontWeight: '700', right: '2%' }}>Insert data</Text>
                     </>}
-                    width={17}
+                    width={15}
                     height={17}
                     textSize={30}
                     alignItems='center'
@@ -106,6 +131,15 @@ const styles = StyleSheet.create({
         paddingLeft: '4%',
         top: '10%',
         fontWeight: 'bold',
+        textShadowColor: 'white',
+        textShadowOffset: { width: 2, height: 2 },
+        textShadowRadius: 3,
+    },
+    lastTest:{
+      color: '#1ea6d6',
+      textAlign:'center',
+        fontSize: 26,
+        // fontWeight: 'bold',
         textShadowColor: 'white',
         textShadowOffset: { width: 2, height: 2 },
         textShadowRadius: 3,

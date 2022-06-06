@@ -80,7 +80,6 @@ export default function InsertData({ navigation, route }) {
             return response
         }).then((response) => {
             let data = { ...details, reccomandtion: response }
-            console.log("ressss", data)
             response && navigation.navigate('Recommandation', { detials: data });
 
         })

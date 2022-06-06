@@ -35,7 +35,7 @@ export default function HipoFood(props) {
   }
   return (
     <View style={styles.container(Math.floor(window.height - window.height / 10 * 7.5), hide)}>
-      {hide ? <></> : <>
+      {!hide&&food ?  <>
         <Text style={styles.count}>{position}</Text>
         <Text style={styles.title}>{food.amount} {food.unitName} {food.FoodName}</Text>
         <Image style={styles.image} source={{ uri:image }} />
@@ -43,8 +43,8 @@ export default function HipoFood(props) {
         <Text style={styles.content}>sugar level: {blood_sugar_level}</Text>
         <Text style={styles.content}>next sugar level: {next_blood_sugar_level}</Text>
         <Text style={styles.content}>carbohydrates: {totalCarbs}</Text>
-        <Text style={styles.content}>times eaten: {times_eaten}</Text>
-      </>}
+        <Text style={styles.content}>times eaten: {food.count}</Text>
+      </>:<></>}
       {Food && Food.length > 1 &&
         <View style={{ position: 'absolute', flexDirection: 'row', top: '44%', left: '5%', }}>
           <TouchableOpacity onPress={() => { next_item("left"); }}>

@@ -50,4 +50,28 @@ export const Axios = (url, method, body) =>
         reject(error.response.status);
       });
   })
+  export const AxiosOutSystem = (url, method, body) =>
+  new Promise((resolve, reject) => {
+    const configurationObject = {
+      url: url,
+      method: method,
+      data: body
+    }
+   
+    axios(configurationObject)
+      .then((response) => {
+        if (response.status === 200 || response.status === 201) {
+          resolve(response);
+        } 
+        else {
+          throw new Error(response);
+        }
+      })
+      .catch((error) => {
+        console.log("body=>",body);
+        console.log("url=>", apiUrl + url)
+        console.log("method=>", method)
+        reject(error.response.status);
+      });
+  })
 

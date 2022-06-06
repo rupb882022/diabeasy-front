@@ -1,9 +1,12 @@
-import {Fetch,Axios} from "./Fetch";
+import {Fetch,Axios,AxiosOutSystem} from "./Fetch";
 
 
 //-------------------------------------user------------------------------------
 export const  Get_userDetails=(email,password)=>{
   return Fetch( `User/userDetails/${email}/${password}`,'Get');
+}
+export const  GetLastBloodTest=(id)=>{
+  return Fetch( `User/GetLastBloodTest/${id}/`,'Get');
 }
 export const  Get_all_InsulinType=()=>{
   return Fetch( `User/getInsulinType`,'Get');
@@ -135,4 +138,9 @@ export const get_alerts=(user_id)=>{
 }
 export const  readAlert=(id)=>{
   return Fetch(`User/readAlert/${id}`,'GET');
+}
+
+//--------------------------------------ML-----------------------
+export const InjectionRecommendByML=(body)=>{
+  return AxiosOutSystem(`https://diabeasyml.herokuapp.com/predict`,'POST',body);
 }
