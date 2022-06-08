@@ -1,5 +1,5 @@
-import { View, Text, StyleSheet, Image } from 'react-native';
-import React, { useEffect, useState, useContext } from 'react';
+import { View, Text, StyleSheet, Image,Animated } from 'react-native';
+import React, { useEffect, useState, useContext,useRef } from 'react';
 import Button from '../CTools/Button';
 import Header from '../CTools/Header';
 import Loading from '../CTools/Loading';
@@ -11,7 +11,6 @@ import { post_pushToken, GetLastBloodTest } from '../Functions/Function';
 import TimeCounter from '../CTools/TimeCounter';
 import { useFocusEffect } from '@react-navigation/native';
 
-
 export default function Home(props) {
     const { navigation } = props
     const { userDetails, setUserDetails } = useContext(UserContext);
@@ -19,6 +18,21 @@ export default function Home(props) {
     const [clock, setClock] = useState();
     const [initClock,setInitClock]=useState(false);
     //const [expoPushToken, setExpoPushToken] = useState('');
+
+    const fadeAnim = useRef(new Animated.Value(0)).current;
+
+
+    const fadeIn = () => {
+      // Will change fadeAnim value to 1 in 5 seconds
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 3500,
+        useNativeDriver: true 
+      }).start();
+    };
+  
+
+
 
     useEffect(async () => {
 
@@ -28,6 +42,8 @@ export default function Home(props) {
                 response && console.log("res test Home=>", response.data);
                 let temp = Object.assign({}, userDetails, { Token: token });
                 setUserDetails(temp)
+            }).then(()=>{
+                fadeIn();
             })
         }).catch((error) => {
             setAlert(
@@ -82,7 +98,12 @@ export default function Home(props) {
                 image_margin={{ Bottom: 5 }}
             />
 
-            {clock && <View style={{ bottom: '1.5%' }}>
+            {clock && <Animated.View style={[
+          {
+            // Bind opacity to animated value
+            opacity: fadeAnim
+          }
+        ]}>
                 <Text style={styles.lastTest}>The last blood test was</Text>
                 <TimeCounter
                     initialHours={clock.hour}
@@ -91,8 +112,8 @@ export default function Home(props) {
                     init={initClock}
                 />
 
-            </View>}
-            <View style={{ flex: 1.9, paddingTop: '10%' }}>
+            </Animated.View>}
+            <Animated.View style={{ flex: 1.9, paddingTop: '10%',  opacity: fadeAnim }}>
                 <Button
                     // text='Insert Data'
                     justifyContent='flex-end'
@@ -108,7 +129,7 @@ export default function Home(props) {
                 />
                 {userDetails && <><Text style={styles.textHello}>{helloText}</Text>
                     <Text style={styles.textName}>{userDetails.name}</Text></>}
-            </View>
+            </Animated.View>
             <Image
                 style={styles.Image}
                 source={require('../images/home_img.webp.png')}

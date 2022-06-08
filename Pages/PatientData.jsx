@@ -91,6 +91,7 @@ export default function PatientData() {
           labels.push("Night");
           data.push(x.H0)
         }
+
       
         //array for Histogram
         houersAve.push({
@@ -171,11 +172,12 @@ export default function PatientData() {
     // backgroundColor: "#e26a00",
     backgroundGradientFrom: "#1ea6d60f",//ffffffa8//dffdff63
     backgroundGradientTo: "#dffdff63",//ffa726
-    decimalPlaces: 1, // optional, defaults to 2dp
+    decimalPlaces: 0, // optional, defaults to 2dp
     color: (opacity = 0) => `rgba(0, 0, 0, ${opacity})`,
     labelColor: (opacity = 0) => `rgba(0, 0, 0, ${opacity})`,
     style: {
-      borderRadius: 16
+      borderRadius: 20
+      
     },
     propsForDots: {
       r: "3",
@@ -253,13 +255,15 @@ export default function PatientData() {
         <ScrollView style={styles.container}>
           {histogram && histogram.labels &&
               <><Text style={styles.secoundTitle}>day averge at {month ? ParsetoMonthName(month, 'short') : 'the last 30 days'}</Text>
-                <BarChart
+                <LineChart
+                bezier
+                segments={5}
                 showValuesOnTopOfBars={true}
                   style={{  borderRadius: 15, margin: 5 }}
                   data={histogram}
-                  width={Dimensions.get("window").width-15}
+                  width={Dimensions.get("window").width-5}
                   height={250}
-                  // yAxisLabel="$"
+                  fromZero={true}
                   chartConfig={chartConfig}
                 // verticalLabelRotation={10}
                 /></>
@@ -283,15 +287,17 @@ export default function PatientData() {
           </View>
           <View style={{ paddingTop: '2%' }}>
             {grapData && grapData.labels.length >= 2 && <><Text style={styles.secoundTitle}>Average in the last {grapData.labels.length} months</Text>
-              <LineChart
+              <BarChart
                 data={grapData}
-                width={Dimensions.get("window").width} // from react-native
+                width={Dimensions.get("window").width-10} // from react-native
                 height={250}
+                segments={6}
                 //yAxisLabel="$"
                 //yAxisSuffix="k"
                 yAxisInterval={1} // optional, defaults to 1
                 chartConfig={chartConfig}
                 // bezier
+                fromZero={true}
                 style={{ bottom:'2%', borderRadius: 10, margin: 5 }}
               /></>}
 

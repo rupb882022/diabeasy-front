@@ -119,7 +119,6 @@ export default function Prescriptions(props) {
     setAllSubjects(allSub);
   }
 
-console.log("userDetails",userDetails)
 
   // element popup for new prescription request
   const element = <View>
