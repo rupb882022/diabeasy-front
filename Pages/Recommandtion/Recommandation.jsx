@@ -165,7 +165,9 @@ export default function Recommandation({ route, navigation }) {
 
 
   return (<>
-    {loading && <Loading />}
+    {loading && <Loading 
+    opacity = '#ffffff'
+    />}
     {alert && alert}
     <Header
       title='Recommandation'

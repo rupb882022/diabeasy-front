@@ -359,6 +359,7 @@ let updatePopup =<>
       time={time.replace(":","!").replace(":","!")}
       getData={getData}
       setShowEdit={()=>setShowEdit(false)}
+      setAlert={(value)=>{setAlert(value)}}
       />
      
       <TouchableOpacity style={styles.textEdit} onPress={()=>setShowEdit(false)}><Text>Cancle</Text></TouchableOpacity>

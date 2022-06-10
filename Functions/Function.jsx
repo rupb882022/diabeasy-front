@@ -93,8 +93,8 @@ export const  Get_Table_Data=(userDetails_id,fromDate,toDate)=>{
   return Fetch(`User/GetdataForTable/${userDetails_id}/${fromDate}/${toDate}`,'GET');
 }
 
-export const Delete_line_tableData=(time)=>{
-  return Fetch(`User/deleteTableRow/${time}`,'Delete');
+export const Delete_line_tableData=(time,user_id)=>{
+  return Fetch(`User/deleteTableRow/${time}/${user_id}`,'Delete');
   }
 
   export const Put_line_tableData=(body)=>{
@@ -131,6 +131,9 @@ export const POST_EmergancyPhoneNumber=(id,number)=>{
 //---------------------------------recommandtion-----------------------
 export const get_food_for_hipo=(user_id)=>{
   return Fetch(`Food/hipoRecomendtion/${user_id}`)
+}
+export const get_recommandtion_food=(user_id)=>{
+  return Fetch(`Food/foodRecomendtion/${user_id}`)
 }
 //---------------------------------information-----------------------
 export const get_alerts=(user_id)=>{

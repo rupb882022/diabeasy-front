@@ -1,5 +1,5 @@
-import { View, Text, StyleSheet, Image,Animated } from 'react-native';
-import React, { useEffect, useState, useContext,useRef } from 'react';
+import { View, Text, StyleSheet, Image, Animated } from 'react-native';
+import React, { useEffect, useState, useContext, useRef } from 'react';
 import Button from '../CTools/Button';
 import Header from '../CTools/Header';
 import Loading from '../CTools/Loading';
@@ -11,39 +11,40 @@ import { post_pushToken, GetLastBloodTest } from '../Functions/Function';
 import TimeCounter from '../CTools/TimeCounter';
 import { useFocusEffect } from '@react-navigation/native';
 
+
 export default function Home(props) {
     const { navigation } = props
     const { userDetails, setUserDetails } = useContext(UserContext);
     const [helloText, setHelloText] = useState();
     const [clock, setClock] = useState();
-    const [initClock,setInitClock]=useState(false);
+    const [initClock, setInitClock] = useState(false);
     //const [expoPushToken, setExpoPushToken] = useState('');
-
+    const [loading, setLoading] = useState(true);
     const fadeAnim = useRef(new Animated.Value(0)).current;
 
 
     const fadeIn = () => {
-      // Will change fadeAnim value to 1 in 5 seconds
-      Animated.timing(fadeAnim, {
-        toValue: 1,
-        duration: 3500,
-        useNativeDriver: true 
-      }).start();
+         Animated.timing(fadeAnim, {
+            toValue: 1,
+            duration: 3500,
+            useNativeDriver: true
+        }).start();
     };
-  
+
 
 
 
     useEffect(async () => {
-
+        setLoading(true)
         registerForPushNotificationsAsync().then((token) => {
             let data = { "pushtoken": token };//console.log("data",data);
             post_pushToken(userDetails.id, data).then((response) => {
                 response && console.log("res test Home=>", response.data);
                 let temp = Object.assign({}, userDetails, { Token: token });
                 setUserDetails(temp)
-            }).then(()=>{
+            }).then(() => {
                 fadeIn();
+                setLoading(false)
             })
         }).catch((error) => {
             setAlert(
@@ -53,6 +54,7 @@ export default function Home(props) {
                     bottom={110}
                 />)
             console.log("error in function post_pushToken " + error);
+            setLoading(false)
         });
 
     }, [])
@@ -72,7 +74,7 @@ export default function Home(props) {
             }) : '';
 
 
-            initClock&&setInterval(() => setInitClock(false), 100);
+            initClock && setInterval(() => setInitClock(false), 100);
         }, []))
 
     if (!helloText) {
@@ -86,24 +88,25 @@ export default function Home(props) {
 
     return (
         <View style={styles.container}>
+             {loading&&<Loading/>}
             <Header
                 title='Home'
                 logo_image='heart'
-                flex={0.33}
+                flex={0.25}
                 // image_width={100}
                 // image_heigt={50}
                 paddingRight={9}
-                possiton={23}
+                possiton={29}
                 bottom={20}
                 image_margin={{ Bottom: 5 }}
             />
 
             {clock && <Animated.View style={[
-          {
-            // Bind opacity to animated value
-            opacity: fadeAnim
-          }
-        ]}>
+                {
+                    // Bind opacity to animated value
+                    opacity: fadeAnim
+                }
+            ]}>
                 <Text style={styles.lastTest}>The last blood test was</Text>
                 <TimeCounter
                     initialHours={clock.hour}
@@ -113,7 +116,7 @@ export default function Home(props) {
                 />
 
             </Animated.View>}
-            <Animated.View style={{ flex: 1.9, paddingTop: '10%',  opacity: fadeAnim }}>
+            <Animated.View style={{ flex: 1.9, paddingTop: '10%', opacity: fadeAnim }}>
                 <Button
                     // text='Insert Data'
                     justifyContent='flex-end'
@@ -122,18 +125,19 @@ export default function Home(props) {
                         <Text style={{ color: 'white', fontSize: 22, fontWeight: '700', right: '2%' }}>Insert data</Text>
                     </>}
                     width={13}
-                    height={15}
+                    height={13}
                     textSize={30}
                     alignItems='center'
                     onPress={() => navigation.navigate('Insert Data')}
                 />
                 {userDetails && <><Text style={styles.textHello}>{helloText}</Text>
                     <Text style={styles.textName}>{userDetails.name}</Text></>}
-            </Animated.View>
-            <Image
+                    <Image
                 style={styles.Image}
                 source={require('../images/home_img.webp.png')}
             />
+            </Animated.View>
+
         </View>
     );
 }
@@ -174,8 +178,8 @@ const styles = StyleSheet.create({
         textShadowRadius: 3,
     },
     Image: {
-        flex: 1,
-        position:'relative',
+        flex: 0.8,
+        position: 'relative',
         resizeMode: 'cover',
         width: '40%',
         // height:'130%',
