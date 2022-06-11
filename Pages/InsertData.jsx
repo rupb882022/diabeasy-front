@@ -76,12 +76,17 @@ export default function InsertData({ navigation, route }) {
 
         GetInjectionRecommend(userDetails.id, sugarLevel, injectionType).then((response) => {
 
-            setInterval(() => setLoading(false), 1000);
+            setInterval(() => setLoading(false), 2000);
             return response
         }).then((response) => {
             let data = { ...details, reccomandtion: response }
-            console.log("ressss", data)
-            response && navigation.navigate('Recommandation', { detials: data });
+            console.log("data",data)
+
+            if(response&&(response.fix||response.food)){
+                navigation.navigate('Recommandation', { detials: data });  
+            }  else{
+                throw new Error(response);
+            }
 
         })
             .catch((error) => {
@@ -112,7 +117,7 @@ export default function InsertData({ navigation, route }) {
             ExceptionalEvent: ExceptionalEvent,
         }
         setDetails(detials)
-    }, [carbs, sugarLevel])
+    }, [carbs, sugarLevel,spot,ExceptionalEvent,injectionValue,dateTime])
 
     const save_details = () => {
         if (sugarLevel) {
@@ -249,7 +254,9 @@ export default function InsertData({ navigation, route }) {
         >
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <View style={styles.container}>
-                    {loading && <Loading />}
+                    {loading && <Loading
+                      opacity = {'#d6f2fc'}
+                    />}
                     {alert && alert}
                     <Header
                         title='Insert Data'

@@ -1,5 +1,5 @@
-import { View, Text, StyleSheet, Switch, TouchableOpacity } from 'react-native';
-import React, { useState, useEffect, useContext } from 'react';
+import { View, Text, StyleSheet, Switch, TouchableOpacity,Animated ,Easing} from 'react-native';
+import React, { useState, useEffect, useContext,useRef } from 'react';
 import Input from '../../CTools/Input';
 import FoodList from './FoodList';
 import apiUrl from '../../Routes/Url'
@@ -16,7 +16,6 @@ import { Get_all_food, Get_all_categories, Serch_food } from '../../Functions/Fu
 export default function FoodLibrary({ navigation }) {
 
     const { userDetails } = useContext(UserContext);
-    //todo clean input of serch after click or serch by category and food name
     const [loading, setLoading] = useState(false);
     const [show, setShow] = useState(false);
     const [alert, setAlert] = useState();
@@ -31,6 +30,26 @@ export default function FoodLibrary({ navigation }) {
     const [myFoodList, setMyFoodList] = useState([]);//the chosen food list
     const [myFoodDtails, setmyFoodDtails] = useState({ carbs: 0.0, suger: 0.0 });//the details on chosen food list
 
+    let fadeAnim = useRef(new Animated.Value(0)).current;
+
+
+    const fadeIn = () => {
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 2500,
+        easing: Easing.back(),
+        useNativeDriver: true 
+      }).start();
+      
+    };
+
+    useFocusEffect(
+        React.useCallback(() => {
+            if(foodList){
+            fadeIn();
+            }
+        },[foodList]))
+
     //get all Food 
     useFocusEffect(
         React.useCallback(() => {
@@ -42,6 +61,7 @@ export default function FoodLibrary({ navigation }) {
         Get_all_food(userDetails ? userDetails.id : 0, isRecipes ? 'getRecipes' : 'getIngredients').then((resulte) => {
             isRecipes ? setRecipes(resulte) : setIngredient(resulte);
             setFoodList(resulte);
+          
         },
             (error) => {
                 setAlert(
@@ -271,7 +291,7 @@ export default function FoodLibrary({ navigation }) {
                     />
                 </View>
             </View>
-            <View style={styles.cards}>
+            <Animated.View style={styles.cards(fadeAnim)}>
                 {foodList && foodList.length > 0 &&
                     <FoodList
                         get_all_food={() => { get_all_food() }}
@@ -282,7 +302,7 @@ export default function FoodLibrary({ navigation }) {
                         update_image={(value) => { update_image(value) }}
                     />
                 }
-            </View>
+            </Animated.View>
             <View style={styles.showlist}>
                 <Button
                     text='my food list'
@@ -344,9 +364,11 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         marginRight: "2%"
     },
-    cards: {
-        flex: 2,
-        bottom: '2%'
+    cards:(fadeAnim)=> {
+      return{  flex: 2,
+        bottom: '2%',
+        opacity: fadeAnim
+    }
     },
     showlist: {
         flex: 0.2,

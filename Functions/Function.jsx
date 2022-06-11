@@ -1,9 +1,12 @@
-import {Fetch,Axios} from "./Fetch";
+import {Fetch,Axios,AxiosOutSystem} from "./Fetch";
 
 
 //-------------------------------------user------------------------------------
 export const  Get_userDetails=(email,password)=>{
   return Fetch( `User/userDetails/${email}/${password}`,'Get');
+}
+export const  GetLastBloodTest=(id)=>{
+  return Fetch( `User/GetLastBloodTest/${id}/`,'Get');
 }
 export const  Get_all_InsulinType=()=>{
   return Fetch( `User/getInsulinType`,'Get');
@@ -97,8 +100,8 @@ export const  Get_Table_Data=(userDetails_id,fromDate,toDate)=>{
   return Fetch(`User/GetdataForTable/${userDetails_id}/${fromDate}/${toDate}`,'GET');
 }
 
-export const Delete_line_tableData=(time)=>{
-  return Fetch(`User/deleteTableRow/${time}`,'Delete');
+export const Delete_line_tableData=(time,user_id)=>{
+  return Fetch(`User/deleteTableRow/${time}/${user_id}`,'Delete');
   }
 
   export const Put_line_tableData=(body)=>{
@@ -136,10 +139,18 @@ export const POST_EmergancyPhoneNumber=(id,number)=>{
 export const get_food_for_hipo=(user_id)=>{
   return Fetch(`Food/hipoRecomendtion/${user_id}`)
 }
+export const get_recommandtion_food=(user_id)=>{
+  return Fetch(`Food/foodRecomendtion/${user_id}`)
+}
 //---------------------------------information-----------------------
 export const get_alerts=(user_id)=>{
   return Fetch(`User/alert/${user_id}`)
 }
 export const  readAlert=(id)=>{
   return Fetch(`User/readAlert/${id}`,'GET');
+}
+
+//--------------------------------------ML-----------------------
+export const InjectionRecommendByML=(body)=>{
+  return AxiosOutSystem(`https://diabeasyml.herokuapp.com/predict`,'POST',body);
 }

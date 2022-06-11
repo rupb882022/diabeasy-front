@@ -14,6 +14,7 @@ import AddUnit from '../Pages/Food/AddUnit';
 import DoctorHome from '../Pages/Doctor/DoctorHome';
 import InjectionType from '../Pages/Recommandtion/InjectionType';
 import HipoRec from '../Pages/Recommandtion/HipoRec';
+import FoodRec from '../Pages/Recommandtion/FoodRec';
 import EditPersonalInfo from '../Pages/EditPersonalInfo';
 
 // import InsertData from '../Pages/InsertData';
@@ -48,6 +49,7 @@ export default function Navigtor() {
       <Stack.Screen name="DoctorHome" screenOptions={options} component={DoctorHome} />
       <Stack.Screen name="AddUnit" screenOptions={options} component={AddUnit} />
       <Stack.Screen name="HipoRec" screenOptions={options} component={HipoRec} />
+      <Stack.Screen name="FoodRec" screenOptions={options} component={FoodRec} />
       <Stack.Screen name="EditPersonalInfo" screenOptions={options} component={EditPersonalInfo} />
       {/* <Stack.Screen name="Injection" screenOptions={options} component={InjectionType} /> */}
     </Stack.Navigator>

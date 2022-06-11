@@ -15,7 +15,6 @@ import * as Progress from 'react-native-progress';
 import DeleteAlert from '../CTools/DeleteAlert';
 
 export default function Prescriptions(props) {
-console.log("userDetails",userDetails)
   const [show, setShow] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
   const { userDetails } = useContext(UserContext);
@@ -120,7 +119,6 @@ console.log("userDetails",userDetails)
     setAllSubjects(allSub);
   }
 
-console.log("userDetails",userDetails)
 
   // element popup for new prescription request
   const element = <View>
