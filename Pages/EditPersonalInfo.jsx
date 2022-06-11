@@ -3,12 +3,11 @@ import React, { useState, useEffect ,useContext} from 'react';
 import Header from '../CTools/Header';
 import Input from '../CTools/Input';
 import Button from '../CTools/Button';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Loading from '../CTools/Loading';
-import { flushSync } from 'react-dom'
-import { Get_all_InsulinType,GETpersonalInfoToEdit } from '../Functions/Function';
+import { Get_all_InsulinType,GETpersonalInfoToEdit,Put_EditPersonalInfo} from '../Functions/Function';
 import Alert from '../CTools/Alert';
 import { UserContext } from '../CTools/UserDetailsHook';
+import moment from 'moment';
 
 export default function EditPersonalInfo(props) {
 
@@ -78,6 +77,35 @@ if (!selectInsuliShort && !selectInsulinLong) {
   getInsulinType();
 }
 
+const PutEditPersonalInfo=()=>{
+let data= {
+  id:userDetails.id,
+  firstname:FirstName,
+  lastname:LastName,
+  weight:weight,
+  height:height,
+  gender:gender,
+  birthdate:birthDate,
+  docEmail:mailDoctor,
+  InsulinType_id:insulinTypeShort,
+  InsulinType_long_id:insulinTypeLong,
+}
+console.log("data for postman=>",data);
+Put_EditPersonalInfo(userDetails.id,data).then((response) => {
+  response&&navigation.goBack()&&console.log("ok=>",response);
+})
+.catch((error) => {
+  setAlert(
+    <Alert text="sorry somthing is went try agine later"
+    type='worng'
+    time={2000}
+    bottom={40}
+    />)
+    console.log("error in function Put_EditPersonalInfo "+error);
+});
+
+
+}
 
 
 
@@ -99,7 +127,7 @@ if (!selectInsuliShort && !selectInsulinLong) {
                     width={55}
                     getValue={(value) => setFirstName(value)}
                     alignItems='center'
-                    placeholder={`${FirstName}`}
+                    placeholder={FirstName?`${FirstName}`:''}
                 />
                 <Input
                     label='Last Name'
@@ -140,7 +168,7 @@ if (!selectInsuliShort && !selectInsulinLong) {
                 required={true}
                 setValue={birthDate}
                 getValue={(value) => {setDate(value)}}
-                placeholder={birthDate?`${birthDate}`:''}                        ///todo change format
+                placeholder={birthDate?`${moment(birthDate).format("DD/MM/YYYY")}`:''}                       ///todo change format
             />
               <View style={{ flexDirection: 'row', flex: 1, marginLeft: '6%' }}>
                     <Input
@@ -225,7 +253,7 @@ if (!selectInsuliShort && !selectInsulinLong) {
                                 width={12}
                                 height={4}
                                 justifyContent='flex-start'
-                               // onPress={nextPage}
+                                onPress={PutEditPersonalInfo}
                             /></View>
                 
             </View>

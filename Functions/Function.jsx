@@ -26,6 +26,10 @@ export const  Post_user_data=(body)=>{
 export const  Post_user_details=(body)=>{
   return Axios( `User/RegisterUser`,'POST',body);
 }
+export const  Put_EditPersonalInfo=(id,body)=>{
+  return Axios( `User/PutPersonalInfo/${id}`,'PUT',body);
+}
+
 //----------------------------------Home doctor--------------------------------
 
 export const  Get_doctor_patients=(id)=>{
