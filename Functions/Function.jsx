@@ -17,6 +17,9 @@ export const  GetInjectionRecommend=(id,blood_sugar_level,injectionType)=>{
 export const  Rest_password=(email)=>{
   return Fetch( `User/getPassword/${email}`,'Get');
 }
+export const  GETpersonalInfoToEdit=(id)=>{
+  return Fetch( `User/editPersonalInfo/${id}`,'Get');
+}
 export const  set_password=(body)=>{
   return Axios( `User/setNewpassword`,'PUT',body);
 }
@@ -26,6 +29,10 @@ export const  Post_user_data=(body)=>{
 export const  Post_user_details=(body)=>{
   return Axios( `User/RegisterUser`,'POST',body);
 }
+export const  Put_EditPersonalInfo=(id,body)=>{
+  return Axios( `User/PutPersonalInfo/${id}`,'PUT',body);
+}
+
 //----------------------------------Home doctor--------------------------------
 
 export const  Get_doctor_patients=(id)=>{

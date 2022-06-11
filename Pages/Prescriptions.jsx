@@ -200,7 +200,7 @@ export default function Prescriptions(props) {
               subject: subject,
               value: reqValue,
               Patients_id: userDetails.id,
-              Doctor_id: userDetails.id,
+              Doctor_id: userDetails.id,  // TODO - Add doctor id to UseContext and call it here
               status: 'waiting'
             });
             setShow(false);
