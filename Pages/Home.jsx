@@ -26,7 +26,7 @@ export default function Home(props) {
     const fadeIn = () => {
          Animated.timing(fadeAnim, {
             toValue: 1,
-            duration: 3500,
+            duration: 2000,
             useNativeDriver: true
         }).start();
     };

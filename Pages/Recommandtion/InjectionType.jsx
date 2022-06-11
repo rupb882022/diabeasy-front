@@ -24,7 +24,7 @@ export default function InjectionType({ navigation }) {
         }
       }, (error) => {
         setAlert(
-          <Alert text="we are so sorry somting is got wotng try agine later"
+          <Alert text="We are so sorry somting is got wotng try agine later"
             type='worng'
             time={3500}
           />)
@@ -40,18 +40,15 @@ export default function InjectionType({ navigation }) {
   const get_Goodfood = async () => {
     if (!goodFood) {
       await get_recommandtion_food(userDetails.id).then((resulte) => {
-        if (resulte) {
-          setGoodFood(resulte)
-        }
+          resulte&&setGoodFood(resulte)
       }, (error) => {
         setAlert(
-          <Alert text="we are so sorry somting is got wotng try agine later"
+          <Alert text="We are so sorry somting is got wotng try agine later"
             type='worng'
             time={3500}
           />)
         console.log(error + " get_recommandtion_food")
       })
-        ;
     } else {
       goodFood&&navigation.navigate('FoodRec', { 'Food': goodFood })
     }
@@ -65,7 +62,7 @@ export default function InjectionType({ navigation }) {
 
   useEffect(() => {
     if (goodFood) {
-      navigation.navigate('FoodRec', { 'food': goodFood })
+      navigation.navigate('FoodRec', { 'Food': goodFood })
     }
   }, [goodFood])
   
@@ -96,7 +93,7 @@ export default function InjectionType({ navigation }) {
           onPress={() => navigation.navigate('Insert Data')}
         />
         <Button
-          text='food'
+          text='Food'
           radius={1000}
           width={16}
           height={4}

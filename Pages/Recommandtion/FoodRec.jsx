@@ -36,7 +36,6 @@ export default function FoodRec({ route, navigation }) {
     setColor(Tcolor)
   }
 
-console.log("list",food)
   useEffect(() => {
     food && setList(food)
   }, [color])
@@ -44,10 +43,10 @@ console.log("list",food)
     <View style={{ flex: 0.95 }}>
       <Text style={styles.title}>These foods was good for you last time</Text>
       <View style={{ flexDirection: 'row', borderColor: 'white', borderWidth: 1, width: '91.5%', alignSelf: 'center', backgroundColor: '#d7fcf49c', }}>
-        <Text style={styles.orderBy}>order by:</Text>
-        <TouchableOpacity onPress={() => { order_by('name'); }} style={styles.button}><Text style={styles.text(color == 'name' ? '#00a6a685' : Dcolor)}>name</Text></TouchableOpacity>
+        <Text style={styles.orderBy}>Order by:</Text>
+        <TouchableOpacity onPress={() => { order_by('name'); }} style={styles.button}><Text style={styles.text(color == 'name' ? '#00a6a685' : Dcolor)}>Name</Text></TouchableOpacity>
         <TouchableOpacity onPress={() => { order_by('foodCount'); }} style={styles.button}><Text style={styles.text(color == 'foodCount' ? '#00a6a685' : Dcolor)}>Times eaten</Text></TouchableOpacity>
-        <TouchableOpacity onPress={() => { order_by('ratio'); }} style={styles.button}><Text style={styles.text(color == 'ratio' ? '#00a6a685' : Dcolor)}>percentage</Text></TouchableOpacity>
+        <TouchableOpacity onPress={() => { order_by('ratio'); }} style={styles.button}><Text style={styles.text(color == 'ratio' ? '#00a6a685' : Dcolor)}>Percentage</Text></TouchableOpacity>
       </View>
        <ScrollView contentContainerStyle={styles.container}>
          {list && list.map((x, i) => {
@@ -72,7 +71,7 @@ console.log("list",food)
 
     </View>
     <Button
-      text='back'
+      text='Back'
       width={6}
       height={3}
       flex={0.1}

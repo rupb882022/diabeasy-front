@@ -11,15 +11,14 @@ export default function GoodFood(props) {
 
   let image=Food_image ? Food_image.includes("http") ? Food_image : ImageUri + Food_image : ImageUri + 'emptyFoodPhoto.JPG' ;
   
-console.log("food_name",food_name)
   return (
     <View id={food_id} style={styles.container(Math.floor(window.height - window.height / 10 * 7.5), hide)}>
       {!hide&& <>
         <Text style={styles.count}>{position}</Text>
-        <Text style={styles.title}>{food_name}</Text>
+        <Text style={styles.title}>{food_name&&food_name.charAt(0).toUpperCase() + food_name.slice(1)}</Text>
         <Image style={styles.image} source={{ uri:image }} />
         <Text style={styles.content}>Total eaten: {foodCount}</Text>
-        <Text style={styles.content}>was good for you: {countGood}</Text>
+        <Text style={styles.content}>Was good for you: {countGood}</Text>
         <Text style={styles.content}>Match {ratio}%</Text>
       </>}
     </View>

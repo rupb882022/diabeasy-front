@@ -37,7 +37,7 @@ export default function HipoFood(props) {
     <View style={styles.container(Math.floor(window.height - window.height / 10 * 7.5), hide)}>
       {!hide&&food ?  <>
         <Text style={styles.count}>{position}</Text>
-        <Text style={styles.title}>{food.amount} {food.unitName} {food.FoodName}</Text>
+        <Text style={styles.title}>{food.amount} {food.unitName} {food&&food.FoodName&&food.FoodName.charAt(0).toUpperCase() + food.FoodName.slice(1)}</Text>
         <Image style={styles.image} source={{ uri:image }} />
         <Text style={styles.content}>date: {moment(date_time).format('DD/MM/YYYY')}</Text>
         <Text style={styles.content}>sugar level: {blood_sugar_level}</Text>

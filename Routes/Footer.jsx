@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
-import { Ionicons, Entypo, AntDesign,Fontisto } from '@expo/vector-icons';
+import { Ionicons, Entypo, AntDesign,Fontisto ,MaterialCommunityIcons} from '@expo/vector-icons';
 
 export default function Footer(props) {
   const { navigation } = props
@@ -15,15 +15,12 @@ export default function Footer(props) {
         break;
       case 'Recommandtion':
         setColor({ home: 'black', sports: activeColor, forum: 'black', call: 'black' })
-        // navigation.navigate('Sports location');
         break;
-      case 'Forum':
+      case 'Repotrs - Table':
         setColor({ home: 'black', sports: 'black', forum: activeColor, call: 'black' })
-        // navigation.navigate('Forum');
         break;
       case 'Emergency Call':
         setColor({ home: 'black', sports: 'black', forum: 'black', call: activeColor })
-        // navigation.navigate('Emergency Call');
         break;
 
     }
@@ -45,10 +42,10 @@ export default function Footer(props) {
             <Text style={styles.color(color.sports)}>Recommandtion</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={()=>handelClick('Forum')}>
+        <TouchableOpacity onPress={()=>handelClick('Repotrs - Table')}>
           <View style={{ flexDirection: 'column', alignItems: 'center' }}>
-            <Ionicons name="chatbubbles-outline" size={30} color={color.forum} />
-            <Text style={styles.color(color.forum)}>Forum</Text>
+            <MaterialCommunityIcons name="table-plus" size={30} color={color.forum} />
+            <Text style={styles.color(color.forum)}>Repotrs</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity style={{ paddingTop: '1%' }} onPress={()=>handelClick('Emergency Call')}>

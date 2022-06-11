@@ -38,11 +38,13 @@ export default function HipoRec({ route, navigation }) {
   useEffect(() => {
     hipo_Food && setList(hipo_Food)
   }, [color])
+  
   return (<>
     <View style={{ flex: 0.95 }}>
-      <Text style={styles.title}>These foods helped you last time</Text>
+      {/* <Text style={styles.title}>These foods helped you last time</Text> */}
+      <Text style={styles.title}>Rise up your suger level</Text>
       <View style={{ flexDirection: 'row', borderColor: 'white', borderWidth: 1, width: '91.5%', alignSelf: 'center', backgroundColor: '#d7fcf49c', }}>
-        <Text style={styles.orderBy}>order by:</Text>
+        <Text style={styles.orderBy}>Order by:</Text>
         <TouchableOpacity onPress={() => { order_by('date'); }} style={styles.button}><Text style={styles.text(color == 'date' ? '#00a6a685' : Dcolor)}>Date</Text></TouchableOpacity>
         <TouchableOpacity onPress={() => { order_by('times_eaten'); }} style={styles.button}><Text style={styles.text(color == 'times_eaten' ? '#00a6a685' : Dcolor)}>Times eaten</Text></TouchableOpacity>
         <TouchableOpacity onPress={() => { order_by('carbs'); }} style={styles.button}><Text style={styles.text(color == 'carbs' ? '#00a6a685' : Dcolor)}>Total carbs</Text></TouchableOpacity>
@@ -74,7 +76,7 @@ export default function HipoRec({ route, navigation }) {
 
     </View>
     <Button
-      text='back'
+      text='Back'
       width={6}
       height={3}
       flex={0.1}
@@ -98,10 +100,11 @@ const styles = StyleSheet.create({
   }, title: {
     alignSelf: 'center',
     marginTop: '18%',
+    width:'90%',
     fontSize: 22, backgroundColor: '#00a6a64a',
     // marginBottom:'5%',
     padding: '4%',
-    color: 'white',
+    color: 'white',textAlign:'center'
 
   }, button: {
 

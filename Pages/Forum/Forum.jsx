@@ -281,7 +281,9 @@ useEffect(()=>{
 },[data,alert])
 
   return (<>
-    {loading && <Loading />}
+    {loading && <Loading
+    opacity = {'#d6f2fc'}
+    />}
     {data && <Header
       title="Forum"
       logo_image='forum'
