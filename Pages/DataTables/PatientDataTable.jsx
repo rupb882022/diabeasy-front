@@ -107,13 +107,14 @@ export default function PatientDataTable({ navigation }) {
     let arr = [];
     result.map((x, i) => {
       arr.push([moment(x.date_time).format('DD/MM/YY - H:mm'), x.blood_sugar_level, x.value_of_ingection?x.value_of_ingection:0, x.totalCarbs?x.totalCarbs:0,
-      userDetails.id % 2!=0?<Button key={i} color='transparent' onPress={()=>{setSugarLevel(x.blood_sugar_level?x.blood_sugar_level:0);setTime(x.date_time);setinjectionValue(x.value_of_ingection?x.value_of_ingection:0);setSpot(x.injection_site?x.injection_site:'');setCarbs(x.totalCarbs?x.totalCarbs:0);setShowEdit(true)}}
+      userDetails.id % 2!=0?<Button borderColor='transparent' key={i} color='transparent' onPress={()=>{setSugarLevel(x.blood_sugar_level?x.blood_sugar_level:0);setTime(x.date_time);setinjectionValue(x.value_of_ingection?x.value_of_ingection:0);setSpot(x.injection_site?x.injection_site:'');setCarbs(x.totalCarbs?x.totalCarbs:0);setShowEdit(true)}}
        alignItems='center' 
        width={14}
       height={1} 
       element={<Entypo name="dots-three-horizontal" size={24} color="black" />}/>:
       <Button
       key={i}
+      borderColor='transparent'
       color='transparent'
       alignItems='center' 
       width={14}
