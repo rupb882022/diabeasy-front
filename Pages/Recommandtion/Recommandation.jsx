@@ -74,7 +74,7 @@ export default function Recommandation({ route, navigation }) {
     setLoading(true)
     Post_user_data(data).then(async (response) => {
 
-      setInterval(() => setLoading(false), 1000);
+    loading&&setInterval(() => setLoading(false), 1000);
       return response
     }).then((response) => {
       response && navigation.navigate('Repotrs - Table');
@@ -130,7 +130,7 @@ export default function Recommandation({ route, navigation }) {
         )
       }
       //delete alert for case that user will go out of the page and ask for new reccomandtion with diffrent value
-      setInterval(() => setAlert(null), 3200);
+  setInterval(() => setAlert(null), 3200);
     }, [total]))
 
   const total_reccomandtion = () => {
@@ -166,7 +166,7 @@ export default function Recommandation({ route, navigation }) {
 
   return (<>
     {loading && <Loading 
-    opacity = '#ffffff'
+    opacity={'#d6f2fc'}
     />}
     {alert && alert}
     <Header

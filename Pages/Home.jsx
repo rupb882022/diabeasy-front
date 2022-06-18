@@ -16,7 +16,7 @@ export default function Home(props) {
     const { navigation } = props
     const { userDetails, setUserDetails } = useContext(UserContext);
     const [helloText, setHelloText] = useState();
-    const [clock, setClock] = useState();
+    const [clock, setClock] = useState(null);
     const [initClock, setInitClock] = useState(false);
     //const [expoPushToken, setExpoPushToken] = useState('');
     const [loading, setLoading] = useState(true);
@@ -34,7 +34,7 @@ export default function Home(props) {
 
 
 
-    useEffect(async () => {
+    useEffect( () => {
         setLoading(true)
         registerForPushNotificationsAsync().then((token) => {
             let data = { "pushtoken": token };//console.log("data",data);
@@ -74,7 +74,7 @@ export default function Home(props) {
             }) : '';
 
 
-            initClock && setInterval(() => setInitClock(false), 100);
+          initClock && setInterval(() => setInitClock(false), 100);
         }, []))
 
     if (!helloText) {
@@ -88,7 +88,7 @@ export default function Home(props) {
 
     return (
         <View style={styles.container}>
-             {loading&&<Loading/>}
+             {!clock||loading?<Loading/>:<></>}
             <Header
                 title='Home'
                 logo_image='heart'

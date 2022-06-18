@@ -99,6 +99,9 @@ export const  Post_unit=(id,body)=>{
 export const  Get_Table_Data=(userDetails_id,fromDate,toDate)=>{
   return Fetch(`User/GetdataForTable/${userDetails_id}/${fromDate}/${toDate}`,'GET');
 }
+export const  more_details_PD=(id,dateTime,)=>{
+  return Fetch(`User/more_details_PD/${id}/${dateTime}`,'GET');
+}
 
 export const Delete_line_tableData=(time,user_id)=>{
   return Fetch(`User/deleteTableRow/${time}/${user_id}`,'Delete');

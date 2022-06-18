@@ -1,20 +1,21 @@
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity ,Keyboard,TouchableWithoutFeedback} from 'react-native'
+import { StyleSheet, Text, View,Image, ScrollView, TouchableOpacity ,Keyboard,TouchableWithoutFeedback} from 'react-native'
 import React, { useEffect, useState, useContext } from 'react'
 import { Table, TableWrapper, Row, Rows, Col } from 'react-native-table-component';
-import Header from '../CTools/Header';
-import Button from '../CTools/Button';
-import Loading from '../CTools/Loading';
-import Alert from '../CTools/Alert';
-import { UserContext } from '../CTools/UserDetailsHook';
-import { Get_Table_Data } from '../Functions/Function'
+import Header from '../../CTools/Header';
+import Button from '../../CTools/Button';
+import Loading from '../../CTools/Loading';
+import Alert from '../../CTools/Alert';
+import { UserContext } from '../../CTools/UserDetailsHook';
+import { Get_Table_Data } from '../../Functions/Function'
 import moment from 'moment';
 import { useFocusEffect } from '@react-navigation/native';
-import Input from '../CTools/Input';
-import { AntDesign,Entypo } from '@expo/vector-icons';
-import PopUp from '../CTools/PopUp';
+import Input from '../../CTools/Input';
+import { AntDesign,Entypo,Ionicons } from '@expo/vector-icons';
+import PopUp from '../../CTools/PopUp';
 import DeleteDataReportTable from './DeleteDataReportTable';
 import UpdateDateReportTable from './UpdateDateReportTable';
-import { Put_line_tableData } from '../Functions/Function';
+import { Put_line_tableData,more_details_PD } from '../../Functions/Function';
+import { ImageUri } from '../../Routes/Url'
 
 export default function PatientDataTable({ navigation }) {
   const { userDetails } = useContext(UserContext);
@@ -31,6 +32,9 @@ export default function PatientDataTable({ navigation }) {
   const [injectionValue, setinjectionValue] = useState()
   const [spot, setSpot] = useState()
   const [carbs, setCarbs] = useState();
+
+  const [showExstraDetails, setShowExstraDetails] = useState(false)
+  const [ exstraDetails,setExstraDetails]=useState();
 
   useFocusEffect(
     React.useCallback(() => {
@@ -52,6 +56,7 @@ export default function PatientDataTable({ navigation }) {
   const getData = () => {
    // setLoading(true) ----------------------------------------TO DO ------------- Fix Loading!!
     let id;
+    setLoading(true) 
     if (userDetails.patientID) {// if its doctor with selected patient
       id = userDetails.patientID;
     }
@@ -61,6 +66,7 @@ export default function PatientDataTable({ navigation }) {
 
     Get_Table_Data(id, fromDate, toDate).then((result) => {  
       handleResult(result)
+      setInterval(() => setLoading(false), 1000);
     },
       (error) => {
         console.log(error + " in function Get_Table_Data")
@@ -70,7 +76,7 @@ export default function PatientDataTable({ navigation }) {
             time={2000}
             bottom={110}
           />);
-        setLoading(false)
+          setInterval(() => setLoading(false), 1000);
       })
   }
 
@@ -95,6 +101,7 @@ export default function PatientDataTable({ navigation }) {
         setFromDate(date) : setToDate(date)
     }
   }
+
   // insert data from 'GET' into the table
   const handleResult = (result) => {
     let arr = [];
@@ -153,6 +160,43 @@ const saveDetails = ()=>{
 
 }
 
+const get_more_details=()=>{
+
+  let id=0;
+  if (userDetails.patientID) {// if its doctor with selected patient
+    id = userDetails.patientID;
+  }
+  else if (userDetails.id % 2 != 0) {  // if its patient (=> not a doctor without selected patient)
+    id = userDetails.id
+  }
+
+  more_details_PD(id,time.replace(":","!").replace(":","!")).then((respone)=>{
+
+setShowEdit(false)
+if(respone&&respone.length==0){
+  setAlert(
+    <Alert text="no exstra details for this row"
+      type='info'
+      time={2000}
+      bottom={110}
+    />)
+}else{
+  setExstraDetails(respone)
+  setShowExstraDetails(true)
+
+}
+  },
+      (error) => {
+        console.log(error + " in function more_details_PD")
+        setAlert(
+          <Alert text="sorry, somthing went wrong, please try again later"
+            type='worng'
+            time={2000}
+            bottom={110}
+          />);
+      })
+}
+
 let updatePopup =<>
  <PopUp
   backgroundColor="#bbe4f2"
@@ -202,7 +246,7 @@ let updatePopup =<>
            type='selectBox'
            width='150%'
            height='50%'
-           getValue={(value) => { console.log('v',value);value=='No injection'?setSpot():value&&setSpot(value)}}
+           getValue={(value) => { value=='No injection'?setSpot():value&&setSpot(value)}}
            SelectBox_placeholder='Select spot of injection'
            selectBox_items={[
                { itemKey: 0, label: 'Arm', value: 'Arm' },
@@ -248,13 +292,30 @@ let updatePopup =<>
   </TouchableWithoutFeedback>
   }
   /></>
-  // let alertDoctor=    setAlert(
-  //   <Alert text="sorry, you can not edit this kind of data"
-  //   type='worng'
-  //   time={2000}
-  //   bottom={110}
-  // />)
-  
+
+
+const moreDetailsElement=<><ScrollView>
+  {exstraDetails&&exstraDetails.map((x,i)=>{
+  let image=x.image_food ? x.image_food.includes("http") ? x.image_food : ImageUri + x.image_food : ImageUri + 'emptyFoodPhoto.JPG' ;
+
+  return(<View key={i} style={{marginBottom:'3%',padding:'2%',backgroundColor:'white',height:150,width:210}}>
+    <Text style={{textAlign:'center',fontWeight:'bold',flexWrap:'wrap'}}>{x.amount} {x.UM_name} of {x.name_food&&x.name_food.charAt(0).toUpperCase() + x.name_food.slice(1)}</Text>
+   <View style={{flexDirection:'row',width:'100%',height:'100%'}}>
+    <Image style={styles.image} source={{ uri:image }} />
+    <View style={{flexDirection:'column',justifyContent:'flex-start',marginTop:'5%'}}>
+    <Text style={styles.content}>Sugar: {x.sugars.toFixed(1)}</Text>
+    <Text style={styles.content}>Carbohydrates: {x.carbohydrates.toFixed(1)}</Text>
+    <Text style={styles.content}>Weight in grams: {x.weightInGrams}</Text>
+    </View></View></View>)
+      
+  })}
+</ScrollView>
+  <TouchableOpacity onPress={()=>{setShowExstraDetails(false)}}
+   style={{marginTop:'4%',alignItems:'center', borderWidth: 2,backgroundColor:'#1ea6d6',borderRadius:60,borderColor:'white',paddingHorizontal:'10%',paddingVertical:'2%'}}>
+  <Text style={{color:'white',fontSize:16}}>close</Text>
+</TouchableOpacity>
+</>
+
   return (
     <View style={styles.container}>
       <Header
@@ -344,24 +405,41 @@ let updatePopup =<>
       }
       {loading && <Loading />}
       {alert && alert}
+      {showExstraDetails&&exstraDetails&&
+      <PopUp
+      isButton={false}
+      element={moreDetailsElement}
+      // button_txt='close'
+      backgroundColor='#d6f2fce0'
+      // setShow={(value)=>{setShowExstraDetails(false)}}
+      height={exstraDetails.length==1?30:50}
+      width={80}
+      />}
       {showEdit && userDetails.id%2!=0 &&
       <PopUp
         animationType='fade'
         isButton={false}
         backgroundColor='#FCEBD6'
-        height={18}
+        height={22}
         width={40}
         element={<View style={{flex:3,width:'100%',alignSelf:'center',alignItems:'center'}}>
       <UpdateDateReportTable 
       setShowEdit={()=>{setShowEdit(false);setUpdate(true)}}
       />
+
       <DeleteDataReportTable 
       time={time.replace(":","!").replace(":","!")}
       getData={getData}
       setShowEdit={()=>setShowEdit(false)}
       setAlert={(value)=>{setAlert(value)}}
       />
-     
+           <TouchableOpacity 
+           onPress={()=>{get_more_details()}}
+           style={styles.moreDetails}>
+        <Text>
+          <Ionicons name="fast-food-outline" size={24} color="black" />
+           More details</Text>
+      </TouchableOpacity>
       <TouchableOpacity style={styles.textEdit} onPress={()=>setShowEdit(false)}><Text>Cancle</Text></TouchableOpacity>
        </View>}/>}       
    
@@ -402,6 +480,31 @@ titlePopup: {
  // flex: 3,
  position:'absolute',
 
+},
+moreDetails:{
+  backgroundColor: '#FFC052',
+  width: '130%',
+  flex: 1,
+  justifyContent: 'center',
+  alignItems: 'center',
+  paddingRight:'18%',
+  marginTop:'2%',
+  padding:'2%'
+},
+image: {
+  width: '25%',
+  height: '70%',
+  // justifyContent: 'flex-start',
+  // alignContent:'flex-start',
+  resizeMode: 'contain',
+  marginTop:'2%'
+},
+content: {
+  textAlign: 'auto',
+  color: '#818080',
+  // top: '3%',
+  paddingLeft: '5%',
+  marginTop:'5%',
+  fontSize:14
 }
- 
 });

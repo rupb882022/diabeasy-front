@@ -1,10 +1,10 @@
 import { StyleSheet, Text, View ,TouchableOpacity,} from 'react-native'
 import React ,{useState,useContext} from 'react'
-import DeleteAlert from '../CTools/DeleteAlert'
+import DeleteAlert from '../../CTools/DeleteAlert'
 import {AntDesign} from '@expo/vector-icons'
-import { Delete_line_tableData } from '../Functions/Function'
-import { UserContext } from '../CTools/UserDetailsHook'
-import Alert from '../CTools/Alert';
+import { Delete_line_tableData } from '../../Functions/Function'
+import { UserContext } from '../../CTools/UserDetailsHook'
+import Alert from '../../CTools/Alert';
 export default function DeleteDataReportTable(props) {
   const { setShowEdit, time ,getData,setAlert } = props
   const { userDetails } = useContext(UserContext);
@@ -33,7 +33,7 @@ export default function DeleteDataReportTable(props) {
    <TouchableOpacity style={styles.Delete} onPress={()=>{setDelAlert(true)}}>
       <Text>
         <AntDesign name="delete" size={20} color="black" />
-        delete
+        Delete
       </Text>
     </TouchableOpacity>
     {delAlert && <DeleteAlert answer={(answer) => { answer ? deleteLine() : setDelAlert(false) }} />}
@@ -43,7 +43,7 @@ export default function DeleteDataReportTable(props) {
 
 const styles = StyleSheet.create({
   Delete: {
-    backgroundColor: '#FFC052',
+    backgroundColor: '#ffd087',
     width: '130%',
     flex: 1,
     justifyContent: 'center',

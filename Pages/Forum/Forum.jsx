@@ -273,7 +273,7 @@ export default function Forum() {
   useFocusEffect(
     React.useCallback(() => {
      get_all_comments();
-      setInterval(() => setLoading(false), 2000);
+   loading&&setInterval(() => setLoading(false), 2000);
     }, [])
   );
 useEffect(()=>{

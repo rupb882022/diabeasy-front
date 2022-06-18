@@ -21,12 +21,12 @@ export default function DoctorHome(props) {
         },
             (error) => {
                 console.log("error in function Get_doctor_patients", error)
-                loading&&setInterval(() => setLoading(false), 1200);
+             loading?setInterval(() => setLoading(false), 1200):null;
             })
     }, [])
 
     useEffect(() => {
-        loading&&setInterval(() => setLoading(false), 1200);
+    loading?setInterval(() => setLoading(false), 1200):null;
     },[patients])
 
 

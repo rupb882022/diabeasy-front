@@ -20,7 +20,7 @@ import DoctorHome from '../Pages/Doctor/DoctorHome';
 import LogOut from '../Pages/LogOut';
 import { UserContext } from '../CTools/UserDetailsHook'
 import PatientData from '../Pages/PatientData';
-import PatientDataTable from '../Pages/PatientDataTable';
+import PatientDataTable from '../Pages/DataTables/PatientDataTable';
 import Loading from '../CTools/Loading';
 import InjectionType from '../Pages/Recommandtion/InjectionType';
 import Information from '../CTools/Information';

@@ -44,7 +44,8 @@ export default function Login({ navigation }) {
         if (userDetails) {
             setLoading(true)
             navigation.navigate('Drawer');
-            setInterval(() => setLoading(false), 2000);
+          setInterval(() => setLoading(false), 2000);
+  
         }
     }, [userDetails]);
 
@@ -79,7 +80,7 @@ const set_alert=()=>{
         //globle save user detail 
         saveUserDetails && await storeData({ id: resulte.id, image: resulte.profileimage, name: resulte.name })
         await setUserDetails({ id: resulte.id, image: resulte.profileimage, name: resulte.name })
-        setInterval(() => setLoading(false), 1000);
+      setInterval(() => setLoading(false), 1000);
         navigation.navigate('Drawer');
     }
 

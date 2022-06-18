@@ -10,7 +10,7 @@ export default function SignUp({ navigation }) {
 
   const [loading, setLoading] = useState(true);
   useEffect(() => {
-    setInterval(() => setLoading(false), 1500);
+  setInterval(() => setLoading(false), 1500);
   },[])
 
   return (

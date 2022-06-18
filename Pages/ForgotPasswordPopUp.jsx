@@ -49,7 +49,7 @@ let tempMail = mail.replace(".", "=");
   }
   set_password(userDetails).then((respone) => {
 
-  loading&&setInterval(() => setLoading(false), 1000);
+ loading?setInterval(() => setLoading(false), 1000):null;
   set_alert();
     respone && setShow(false);
   }, (error) => {

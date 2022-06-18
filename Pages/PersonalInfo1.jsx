@@ -24,7 +24,8 @@ export default function PersonalInfo1(props) {
     const [alert, setAlert] = useState()
 
     useEffect(() => {
-        setInterval(() => setLoading(false), 1500);
+
+      setInterval(() => setLoading(false), 1500);
     }, [])
 
 
