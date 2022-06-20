@@ -56,7 +56,6 @@ export default function PatientDataTable({ navigation }) {
   const getData = () => {
    // setLoading(true) ----------------------------------------TO DO ------------- Fix Loading!!
     let id;
-    setLoading(true) 
     if (userDetails.patientID) {// if its doctor with selected patient
       id = userDetails.patientID;
     }
@@ -66,7 +65,7 @@ export default function PatientDataTable({ navigation }) {
 
     Get_Table_Data(id, fromDate, toDate).then((result) => {  
       handleResult(result)
-      setInterval(() => setLoading(false), 1000);
+      // setInterval(() => setLoading(false), 1000);
     },
       (error) => {
         console.log(error + " in function Get_Table_Data")
@@ -76,7 +75,7 @@ export default function PatientDataTable({ navigation }) {
             time={2000}
             bottom={110}
           />);
-          setInterval(() => setLoading(false), 1000);
+          // setInterval(() => setLoading(false), 1000);
       })
   }
 
@@ -130,7 +129,7 @@ export default function PatientDataTable({ navigation }) {
       /> ])
     })
     setContent(arr)
-    setLoading(false)
+     setLoading(false)
   }   
 
   // 'PUT' method - update data

@@ -55,9 +55,10 @@ export default function Recommandation({ route, navigation }) {
   //     }
   //   }
   // }
-
+  
 
   const save_data = (value_of_ingection) => {
+    setLoading(true)
     let data = {
       ExceptionalEvent: detials.ExceptionalEvent,
       Patients_id: detials.Patients_id,
@@ -71,16 +72,17 @@ export default function Recommandation({ route, navigation }) {
       system_recommendations: total
     }
     console.log("data", data)
-    setLoading(true)
+
     Post_user_data(data).then(async (response) => {
 
-    loading&&setInterval(() => setLoading(false), 1000);
+    setInterval(() => setLoading(false), 1000);
+
       return response
     }).then((response) => {
       response && navigation.navigate('Repotrs - Table');
     })
       .catch((error) => {
-        setLoading(false)
+        setInterval(() => setLoading(false), 1000);
         setAlert(
           <Alert text="sorry somting is got wotng try agine later"
             type='worng'
@@ -126,6 +128,7 @@ export default function Recommandation({ route, navigation }) {
           <Alert text={`Your blood sugar level is extremely high.\nWe recommend that you talk to your doctor`}
             type='info'
             bottom={30}
+            time={5000}
           />
         )
       }
