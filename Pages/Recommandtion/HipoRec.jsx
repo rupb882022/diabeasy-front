@@ -43,7 +43,7 @@ export default function HipoRec({ route, navigation }) {
     <View style={{ flex: 0.95 }}>
       {/* <Text style={styles.title}>These foods helped you last time</Text> */}
       <Text style={styles.title}>Rise up your suger level</Text>
-      <View style={{ flexDirection: 'row', borderColor: 'white', borderWidth: 1, width: '91.5%', alignSelf: 'center', backgroundColor: '#d7fcf49c', }}>
+      <View style={{ flexDirection: 'row', borderColor: 'white', borderWidth: 1, width: '91.5%', alignSelf: 'center', backgroundColor: '#d7fcf49c' }}>
         <Text style={styles.orderBy}>Order by:</Text>
         <TouchableOpacity onPress={() => { order_by('date'); }} style={styles.button}><Text style={styles.text(color == 'date' ? '#00a6a685' : Dcolor)}>Date</Text></TouchableOpacity>
         <TouchableOpacity onPress={() => { order_by('times_eaten'); }} style={styles.button}><Text style={styles.text(color == 'times_eaten' ? '#00a6a685' : Dcolor)}>Times eaten</Text></TouchableOpacity>

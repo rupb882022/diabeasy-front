@@ -21,13 +21,14 @@ const AlertList = (props) => {
     switch (content) {
       case "forum-comment":
         return `you got new respone on your comment by ${name}`
-
       case "forum-subject":
         return `${name} add new comment in the same subject that you comment about`
       case "addPrescription":
         return `${name} ask for new prescription`
       case "statusPrescription":
         return `your prescription requests change status by ${name}`
+        case "fixReport":
+        return "The reported issue has been fixed"
       default:
         return '';
         break;
@@ -51,6 +52,7 @@ const AlertList = (props) => {
           case "statusPrescription":
             navigation.navigate('Prescriptions')
             break;
+      
           default:
             break;
         }
@@ -61,13 +63,14 @@ const AlertList = (props) => {
       })
   }
 
-
   const Item = ({ id, name, profileimage, active, content, date_time, daysLeft, daysLeftName }) => {
     i++;
+    console.log(content=="fixReport"?ImageUri+'diabeasy_logo.png': profileimage ? { uri: profileimage.includes("http") ? profileimage : ImageUri + profileimage } : require('../images/profile_pictur.jpeg'))
+
     return (
       <TouchableOpacity onPress={() => { navigationTo(content, id); }} style={styles.itemContainer(active)}>
         <View id={id} style={styles.item(Dimensions.get("window").width, i, active)}>
-          <Image style={styles.image} source={profileimage ? { uri: profileimage.includes("http") ? profileimage : ImageUri + profileimage } : require('../images/profile_pictur.jpeg')} />
+          <Image style={styles.image('white')} source={content=="fixReport"?{uri:ImageUri+'diabeasy_logo.png'}: profileimage ? { uri: profileimage.includes("http") ? profileimage : ImageUri + profileimage } : require('../images/profile_pictur.jpeg')} />
           <View style={styles.title}>
             <Text style={styles.text}>{alertContent(name, content)}</Text>
           </View>
@@ -143,8 +146,8 @@ const styles = StyleSheet.create({
 
     // color:'white',
   },
-  image: {
-    width: 78,
+  image: (backgroundColor)=>{
+    return{width: 78,
     height: 80,
     marginTop: '3%',
     justifyContent: 'center',
@@ -152,8 +155,10 @@ const styles = StyleSheet.create({
     // alignSelf: 'flex-start',
     flexBasis: '30%',
     borderColor: "white",
-    borderWidth: 2
-  },
+    borderWidth: 2,
+    backgroundColor:backgroundColor
+    
+  }},
   date: {
     color: 'gray',
     marginLeft: '3.5%'
