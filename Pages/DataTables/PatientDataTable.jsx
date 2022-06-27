@@ -75,7 +75,7 @@ export default function PatientDataTable({ navigation }) {
             time={2000}
             bottom={110}
           />);
-          // setInterval(() => setLoading(false), 1000);
+          //  setInterval(() => setLoading(false), 1000);
       })
   }
 

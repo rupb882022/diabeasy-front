@@ -248,7 +248,7 @@ export default function PatientData() {
         />
       </View>
 
-      <Text style={{ alignSelf: 'flex-end', paddingBottom: '4%', fontSize: 18, position: 'absolute', top: '10%', right: '5%' }}>Estimated A1C : {a1c && a1c.toFixed(1)}% </Text>
+      <Text style={{ alignSelf: 'flex-end', paddingBottom: '4%', fontSize: 18, position: 'absolute', top: '8.5%', right: '5%' }}>Estimated A1C : {a1c && a1c.toFixed(1)}% </Text>
 
 
       <SafeAreaView style={styles.containerView}>

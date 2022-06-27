@@ -99,15 +99,15 @@ export default function Maps() {
           radius: 10000,
           location: `${Number(region.latitude)}, ${Number(region.longitude)}`
         }}
-        styles={{ container: { flex: 0, position: 'absolute', top: '9%', width: '100%', zIndex: 1 } }}
+        styles={{ container: { flex: 0, position: 'absolute', top: '6.4%', width: '100%', zIndex: 1 } }}
        // currentLocation={true} // Will add a 'Current location' button at the top of the predefined places list
       //currentLocationLabel="Current location"
      //nearbyPlacesAPI="GooglePlacesSearch"
 
       />
-      {location && <MapView
+      {location && <><MapView
         loadingEnabled={true}
-        style={{ flex: 0.9, marginBottom: '5%' }}
+        style={{ flex: 0.9,top:'1%'}}
         initialRegion={{
           latitude: Number(location.coords.latitude),//32.166313,
           longitude: Number(location.coords.longitude),//34.843311,
@@ -130,15 +130,7 @@ export default function Maps() {
         provider='google'  //--> By delete this line, the maps provider will be Apple
       >
 
-        <View style={{ alignSelf: 'flex-start', position: 'absolute', top: 10, width: '38%', height: '15%' }}>
-          <Input
-            label='Radius:'
-            placeholder={'How many KM?'}
-            placeholderTextColor='black'
-            keyboardType='numeric'
-            getValue={(value) => value ? setDistance(parseFloat( value )* 1000 / 2) : setDistance(0)}   
-          />
-        </View>
+
         <Marker
           coordinate={region}
           title="I'm Here !" />
@@ -170,7 +162,18 @@ export default function Maps() {
           <SimpleLineIcons name="info" size={28} color="black" />
         </TouchableOpacity>
 
-      </MapView>}
+      </MapView>
+              <View style={{ alignSelf: 'flex-start', position: 'absolute', top: '13%', width: '38%', height: '15%' }}>
+              <Input
+                label='Radius:'
+                placeholder={'How many KM?'}
+                placeholderTextColor='black'
+                keyboardType='numeric'
+                getValue={(value) => value ? setDistance(parseFloat( value )* 1000 / 2) : setDistance(0)}   
+              />
+            </View></>
+      }
+
       {show ?
         <PopUp
           setShow={(show) => setShow(show)}
@@ -207,7 +210,7 @@ const styles = StyleSheet.create({
   },
   info: {
     alignItems: 'flex-end',
-    paddingTop: '2%',
+    paddingTop: '5.5%',
     paddingRight: '2%'
 
   },
