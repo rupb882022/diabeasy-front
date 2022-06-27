@@ -240,11 +240,11 @@ export default function AddNewFood(props) {
 
   return (<>
     <Header
-      flex={0.4}
+      flex={0.22}
       title={isRecipe ? 'Add Recipe' : 'Add Ingredient'}
-      marginLeft={isRecipe ? 0 : 7}
+      marginLeft={isRecipe ? 0 : -1}
       line={false}
-      possiton={-15}
+      possiton={-36}
     />
     <SafeAreaView style={styles.containerView}>
       <ScrollView style={styles.container}>
@@ -398,7 +398,7 @@ const styles = StyleSheet.create({
     flex: 2
   },
   container: {
-    paddingTop: '1%'
+    paddingTop: '10%'
   },
   row: {
     flexDirection: 'row',

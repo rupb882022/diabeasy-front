@@ -1,3 +1,4 @@
+import axios from "axios";
 import {Fetch,Axios,AxiosOutSystem} from "./Fetch";
 
 
@@ -151,6 +152,9 @@ export const get_alerts=(user_id)=>{
 }
 export const  readAlert=(id)=>{
   return Fetch(`User/readAlert/${id}`,'GET');
+}
+export const  sendAdminReport=(body)=>{
+  return Axios(`User/setAdminReport`,'POST',body);
 }
 
 //--------------------------------------ML-----------------------

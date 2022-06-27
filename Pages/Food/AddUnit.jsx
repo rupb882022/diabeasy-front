@@ -1,4 +1,4 @@
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, KeyboardAvoidingView,TouchableWithoutFeedback,Keyboard} from 'react-native'
 import React, { useState, useEffect } from 'react'
 import {Get_all_unit,Post_unit} from '../../Functions/Function'
 import Alert from '../../CTools/Alert';
@@ -59,11 +59,16 @@ export default function AddUnit(props) {
 
 
   return (
+//     <KeyboardAvoidingView
+//     behavior={Platform.OS === "ios" ? "padding" : "height"}
+//     style={{ flex: 1 }}
+// >
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
     <View style={styles.container}>
       <Header
         title='add unit'
-        flex={0.5}
-        possiton={5}
+        flex={0.17}
+        possiton={-45}
         paddingRight={5}
         line={false}
       />
@@ -84,7 +89,8 @@ export default function AddUnit(props) {
           validtion='float'
           width={80}
           height={50}
-          keyboardType='numbers-and-punctuation'
+          
+          keyboardType='numeric'
           getValue={(value) => setCrabs(value)}
         />
         <Input
@@ -92,7 +98,7 @@ export default function AddUnit(props) {
           validtion='float'
           width={80}
           height={50}
-          keyboardType='numbers-and-punctuation'
+          keyboardType='numeric'
           getValue={(value) => setSuger(value)}
         />
         <Input
@@ -100,7 +106,7 @@ export default function AddUnit(props) {
           validtion='number'
           width={80}
           height={50}
-          keyboardType='numbers-and-punctuation'
+          keyboardType='decimal-pad'
           getValue={(value) => setWeightInGrams(value)}
         />
       </View>
@@ -121,6 +127,8 @@ export default function AddUnit(props) {
       </View>
       {alert && alert}
     </View>
+    </TouchableWithoutFeedback>
+    // </KeyboardAvoidingView>
 
   )
 }
@@ -130,7 +138,8 @@ const styles = StyleSheet.create({
     flex: 1
   },
   inputs: {
-    flex: 1
+    flex: 1,paddingTop:'25%'
+    
   },
   Buttons: {
     flex: 1,
