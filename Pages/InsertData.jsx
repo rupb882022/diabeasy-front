@@ -146,14 +146,14 @@ const save_details = () => {
             food: food,
             ExceptionalEvent: ExceptionalEvent,
         }
-        // let PushDetails = {
-        //     "to": userDetails.Token,
-        //     "title": "DiabeasyApp",
-        //     "body": "2 Hours remaining! have you checked your blood sugar level?",
-        //     "badge": "0",
-        //     "ttl": "20",  // num of seconds - exept only int - write the number of sec you want that the push will wait. 
-        //     "data": { "to": userDetails.Token }
-        // }
+        let PushDetails = {
+            "to": userDetails.Token,
+            "title": "DiabeasyApp",
+            "body": "2 Hours remaining! have you checked your blood sugar level?",
+            "badge": "0",
+            "ttl": "10",  // num of seconds - exept only int - write the number of sec you want that the push will wait. 
+            "data": { "to": userDetails.Token }
+        }
         console.log("detials", detials);
         Post_user_data(detials).then((response) => {
             setInterval(() => setLoading(false), 1000);
@@ -161,9 +161,9 @@ const save_details = () => {
         }).then((response) => {
             response && navigation.navigate('Repotrs - Table');
         })
-            // .then(Post_SendPushNotification(PushDetails).then((res) => {
-            //     res && console.log(" res status push notification=> ", res.status);
-            // }))
+            .then(Post_SendPushNotification(PushDetails).then((res) => {
+                res && console.log(" res status push notification=> ", res.status);
+            }))
             .catch((error) => {
                 setLoading(false)
                 setAlert(

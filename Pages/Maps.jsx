@@ -92,7 +92,7 @@ export default function Maps() {
           })
         }}
         query={{
-          key: 'AIzaSyDuXETWUfNvzGYOofGVA9w1-r-P14PTbiY',//- API Google key. - AIzaSyDuXETWUfNvzGYOofGVA9w1-r-P14PTbiY
+          key: 'AIzaSyCxK0YIfvxlxJ8vocNVyDG_JScVf7SKG6w',//- API Google key. - AIzaSyCxK0YIfvxlxJ8vocNVyDG_JScVf7SKG6w
           language: 'en',
           components: "country:il",
           //	types:"establishment",
@@ -181,13 +181,16 @@ export default function Maps() {
           height={51}
           element={
             <>
-              <SimpleLineIcons name="info" size={28} color="black" />
-              <Text style={{ marginBottom: '10%', fontWeight: 'bold' }}> Instructions : </Text>
-              <Text>{`1.Location must be Active for use this page!\n
-                (if it doesn't work go to setting->expo->active location)\n
-              2.Hold the pin and drag it to where you wanna be\n
-              3.Circle will apper after writing number for distance\n
-              4. stam stam stam`}</Text>
+              <SimpleLineIcons name="info" size={28} color="black" zIndex='1'/>
+              <Text style={{ marginBottom: '10%',marginTop:'5%', fontWeight: 'bold',}}> Instructions : </Text>
+              <Text style={{ textAlign:'left'}}>
+                {`1.Location must be Active for use this page!
+              \n(if it doesn't work go to setting-> expo-> location-> active your location)
+              \n2.You can hold the pin and drag it to where ever you wanna be
+              \n3.Circle will apper after writing number for distance in the 'Radius' bar
+              \n4.Search bar by google will help you find near by locations
+              \n5.Don't give up, sports can help your body help you!`}
+              </Text>
             </>
           }
           button_txt='Close'

@@ -86,7 +86,7 @@ let data= {
   height:height,
   gender:gender,
   birthdate:birthDate,
-  docEmail:mailDoctor,
+  email:mailDoctor,
   InsulinType_id:insulinTypeShort,
   InsulinType_long_id:insulinTypeLong,
 }
