@@ -153,7 +153,7 @@ console.log("Adminreport",Adminreport);
     console.log(error,"error in sendAdminReport")
     setAlertTool(
       <AlertTool
-        text="sorry, somthing went wrong, please try again later"
+        text="sorry, something went wrong, please try again later"
         type='worng'
         time={3000}
       />)
@@ -174,7 +174,7 @@ console.log("Adminreport",Adminreport);
       }).catch((error) => {
         setAlertTool(
           <AlertTool
-            text="sorry, somthing went wrong, please try again later"
+            text="sorry, something went wrong, please try again later"
             type='worng'
             time={3000}
           />)

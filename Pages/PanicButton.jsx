@@ -55,7 +55,7 @@ export default function PanicButton() {
                 time={3000}
             />) 
         }).catch((error) => {
-            setAlert("sorry, somthing went wrong, please try again later")
+            setAlert("sorry, something went wrong, please try again later")
             console.log("error in function POST_EmergancyPhoneNumber" + error);
           })
             

@@ -84,7 +84,7 @@ export default function Recommandation({ route, navigation }) {
       .catch((error) => {
         setInterval(() => setLoading(false), 1000);
         setAlert(
-          <Alert text="sorry somting is got wotng try agine later"
+          <Alert text="sorry something went wrong try again later"
             type='worng'
             bottom={30}
           />)

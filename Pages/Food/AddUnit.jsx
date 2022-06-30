@@ -47,7 +47,7 @@ export default function AddUnit(props) {
       })
       .catch((error) => {
         setAlert(
-          <Alert text="sorry somting is got wotng try agine later"
+          <Alert text="sorry something went wrong try again later"
             type='worng'
             time={2000}
             bottom={80}

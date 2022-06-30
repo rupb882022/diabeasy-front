@@ -65,7 +65,7 @@ export default function Prescriptions(props) {
       (error) => {
         console.log("error", error)
         setAlert(
-          <Alert text="sorry, somthing went wrong, please try again later"
+          <Alert text="sorry, something went wrong, please try again later"
             type='worng'
             time={2000}
             bottom={110}
@@ -98,7 +98,7 @@ export default function Prescriptions(props) {
                 bottom={110}
               />) :
             setAlert(
-              <Alert text={`sorry, somthing went wrong \n please try again later`}
+              <Alert text={`sorry, something went wrong \n please try again later`}
                 type='worng'
                 time={2000}
                 bottom={110}
@@ -243,7 +243,7 @@ export default function Prescriptions(props) {
     })
       .catch((error) => {
         setAlert(
-          <Alert text="sorry, somthing went wrong, please try again later"
+          <Alert text="sorry, something went wrong, please try again later"
             type='worng'
             time={2000}
             bottom={110}
@@ -267,7 +267,7 @@ export default function Prescriptions(props) {
         console.log("error", error)
         showDetails && setShowDetails(false);
         setAlert(
-          <Alert text="sorry, somthing went wrong, please try again later"
+          <Alert text="sorry, something went wrong, please try again later"
             type='worng'
             time={2000}
             bottom={110}

@@ -62,7 +62,7 @@ let editComment={ subject: subject, value: editText }
     })
     .catch((error) => {
       setAlert(
-        <Alert text="sorry somthing is went try agine later"
+        <Alert text="sorry something went wrong, try again later"
         type='worng'
         time={2000}
         bottom={40}

@@ -48,7 +48,7 @@ export default function Home(props) {
             })
         }).catch((error) => {
             setAlert(
-                <Alert text="sorry, somthing went wrong, please try again later"
+                <Alert text="sorry, something went wrong, please try again later"
                     type='worng'
                     time={2000}
                     bottom={110}

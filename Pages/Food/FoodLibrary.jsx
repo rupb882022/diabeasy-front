@@ -65,7 +65,7 @@ export default function FoodLibrary({ navigation }) {
         },
             (error) => {
                 setAlert(
-                    <Alert text='sorry somting is not working try agine later'
+                    <Alert text='sorry something went wrong, try again later'
                         type='worng'
                         bottom={50}
                     />)

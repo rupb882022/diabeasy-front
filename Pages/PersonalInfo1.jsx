@@ -112,7 +112,7 @@ export default function PersonalInfo1(props) {
                             />)
                     } else {
                         setAlert(
-                            <Alert text="sorry somting is got wotng try agine later"
+                            <Alert text="sorry something went wrong, try again later"
                             type='worng'
                             time={2000}
                             bottom={80}

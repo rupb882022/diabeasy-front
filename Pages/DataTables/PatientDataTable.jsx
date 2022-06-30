@@ -70,7 +70,7 @@ export default function PatientDataTable({ navigation }) {
       (error) => {
         console.log(error + " in function Get_Table_Data")
         setAlert(
-          <Alert text="sorry, somthing went wrong, please try again later"
+          <Alert text="sorry, something went wrong, please try again later"
             type='worng'
             time={2000}
             bottom={110}
@@ -149,7 +149,7 @@ const saveDetails = ()=>{
   })
     .catch((error) => {
       setAlert(
-        <Alert text="sorry, somthing went wrong, please try again later"
+        <Alert text="sorry, something went wrong, please try again later"
           type='worng'
           time={2000}
           bottom={110}
@@ -189,7 +189,7 @@ if(respone&&respone.length==0){
       (error) => {
         console.log(error + " in function more_details_PD")
         setAlert(
-          <Alert text="sorry, somthing went wrong, please try again later"
+          <Alert text="sorry, something went wrong, please try again later"
             type='worng'
             time={2000}
             bottom={110}

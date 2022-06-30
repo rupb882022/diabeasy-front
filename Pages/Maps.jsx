@@ -189,7 +189,7 @@ export default function Maps() {
               \n2.You can hold the pin and drag it to where ever you wanna be
               \n3.Circle will apper after writing number for distance in the 'Radius' bar
               \n4.Search bar by google will help you find near by locations
-              \n5.Don't give up, sports can help your body help you!`}
+              \n5.Don't give up, help your body first in order to help yourself!`}
               </Text>
             </>
           }

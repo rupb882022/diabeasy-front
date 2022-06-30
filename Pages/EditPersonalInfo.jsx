@@ -40,7 +40,7 @@ setInsulinTypeLong(res.InsulinType_long_id);setMailDoctor(res.docEmail[0])
 (error)=>{
   console.log("error", error)
   setAlert(
-    <Alert text="sorry, somthing went wrong, please try again later"
+    <Alert text="sorry, something went wrong, please try again later"
       type='worng'
       time={2000}
       bottom={110}
@@ -96,7 +96,7 @@ Put_EditPersonalInfo(userDetails.id,data).then((response) => {
 })
 .catch((error) => {
   setAlert(
-    <Alert text="sorry somthing is went try agine later"
+    <Alert text="sorry something went wrong, try again later"
     type='worng'
     time={2000}
     bottom={40}

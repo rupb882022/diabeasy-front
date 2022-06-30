@@ -139,7 +139,7 @@ export default function Forum() {
         })
         .catch((error) => {
           setAlert(
-            <Alert text="sorry somthing went worng try agine later"
+            <Alert text="sorry something went wrong try again later"
             type='worng'
             time={2000}
             bottom={110}
@@ -163,7 +163,7 @@ export default function Forum() {
       },
         (error) => {
           setAlert(
-            <Alert text="sorry somthing went worng try agine later"
+            <Alert text="sorry something went wrong, try again later"
             type='worng'
             time={2000}
             bottom={110}
@@ -260,7 +260,7 @@ export default function Forum() {
     },
       (error) => {
         setAlert(
-          <Alert text="sorry somthing went worng try agine later"
+          <Alert text="sorry something went wrong, try again later"
           type='worng'
           time={2000}
           bottom={110}

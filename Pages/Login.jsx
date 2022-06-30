@@ -91,7 +91,7 @@ const set_alert=()=>{
             console.log("userDetails", jsonValue)
         } catch (e) {
             await AsyncStorage.setItem('eror', e)
-            setValidtionUser("sorry, app lost connection, please try to sign in agine");
+            setValidtionUser("sorry, the app lost connection, please try to sign in again");
         }
     }
     return (

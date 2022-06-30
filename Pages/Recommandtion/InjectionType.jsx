@@ -24,7 +24,7 @@ export default function InjectionType({ navigation }) {
         }
       }, (error) => {
         setAlert(
-          <Alert text="We are so sorry somting is got wotng try agine later"
+          <Alert text="Sorry ,you have no data for recommendation, eat something sweet and let us know what it was."
             type='worng'
             time={3500}
           />)
@@ -43,7 +43,7 @@ export default function InjectionType({ navigation }) {
           resulte&&setGoodFood(resulte)
       }, (error) => {
         setAlert(
-          <Alert text="We are so sorry somting is got wotng try agine later"
+          <Alert text="We are so sorry! something went wrong, try again later"
             type='worng'
             time={3500}
           />)

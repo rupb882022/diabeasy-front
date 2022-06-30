@@ -101,7 +101,7 @@ return;
         .catch((error) => {
             setLoading(false)
             setAlert(
-                <Alert text="sorry you dont have enough data, try agine later"
+                <Alert text="sorry you dont have enough data, try again later"
                     type='worng'
                     bottom={90}
                 />)
@@ -167,7 +167,7 @@ const save_details = () => {
             .catch((error) => {
                 setLoading(false)
                 setAlert(
-                    <Alert text="sorry somting is got wotng try agine later"
+                    <Alert text="sorry something went wrong try again later"
                         type='worng'
                         bottom={90}
                     />)
@@ -225,7 +225,7 @@ const storeData = async (value) => {
         console.log("userDetails", jsonValue)
     } catch (e) {
         await AsyncStorage.setItem('eror', e)
-        setValidtionUser("sorry, app lost connection, please try to sign in agine");
+        setValidtionUser("sorry, the app lost connection, please try to sign in again");
     }
 }
 

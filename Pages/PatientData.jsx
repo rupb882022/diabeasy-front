@@ -160,7 +160,7 @@ export default function PatientData() {
       (error) => {
         console.log("error in function Get_graphs_details", error)
         setAlert(
-          <Alert text="sorry, somthing went wrong, please try again later"
+          <Alert text="sorry, something went wrong, please try again later"
             type='worng'
             time={2000}
             bottom={110}

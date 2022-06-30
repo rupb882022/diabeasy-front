@@ -64,7 +64,7 @@ const [delAlert,setDelAlert]=useState(false)
         console.log("error in function Delete_food", error)
         setShowEdit(false);
         setAlert(
-          <Alert text="sorry,somthing went wrong, please try again later"
+          <Alert text="sorry, something went wrong, please try again later"
             type='worng'
             time={2000}
             bottom={100}

@@ -130,7 +130,7 @@ export default function AddNewFood(props) {
           })
           .catch((error) => {
             setAlert(
-              <Alert text="sorry somthing went worng try agine later"
+              <Alert text="sorry something went worng, try again later"
               type='worng'
                 time={2000}
                 bottom={80}
@@ -164,7 +164,7 @@ export default function AddNewFood(props) {
           })
           .catch((error) => {
             setAlert(
-              <Alert text="sorry somthing went worng try agine later"
+              <Alert text="sorry something went wrong, try again later"
               type='worng'
                 time={2000}
                 bottom={80}
