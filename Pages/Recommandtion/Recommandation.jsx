@@ -137,7 +137,7 @@ export default function Recommandation({ route, navigation }) {
     }, [total]))
 
   const total_reccomandtion = () => {
-    // console.log("detials",detials)
+     console.log("detials",detials)
     if (detials) {
       let temptotal = 0
       if (detials.reccomandtion.fix && detials.reccomandtion.food) {
@@ -159,6 +159,7 @@ export default function Recommandation({ route, navigation }) {
         setFixUnit(0);
       }
       setTotal(Math.floor(temptotal));
+      console.log("temptotal",temptotal)
     }
   }
 
@@ -188,7 +189,7 @@ export default function Recommandation({ route, navigation }) {
           <View style={{ flex: 0.7, alignItems: 'center', backgroundColor: '#ffffff80', width: '90%', alignSelf: 'center', borderRadius: 50, bottom: '5%' }}>
             <View style={{ paddingTop: '8%', alignItems: 'center' }}>
               {total && total != 0 ? <><Text style={styles.txt}>The injection recommandation for you is</Text>
-                <Text style={{ fontWeight: 'bold', fontSize: 18 }}> {total} units </Text></> : <></>}
+                <Text style={{ fontWeight: 'bold', fontSize: 18 }}> {total} units </Text></> : <Text  style={styles.txt}>There is no need to inject</Text>}
               {fixunit && fixunit != 0 ? <Text style={styles.txt}>ratio of fix injection {fixunit} units </Text> : <></>}
               {foodUnit && foodUnit != 0 ? <Text style={styles.txt}>ratio of cabs injection {foodUnit} units </Text> : <></>}
             </View>
