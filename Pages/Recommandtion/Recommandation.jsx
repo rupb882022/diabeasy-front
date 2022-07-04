@@ -8,6 +8,8 @@ import { useFocusEffect } from '@react-navigation/native';
 import { ImageUri } from '../../Routes/Url';
 import { Post_user_data, InjectionRecommendByML } from '../../Functions/Function'
 import Input from '../../CTools/Input';
+import * as Progress from 'react-native-progress'
+
 export default function Recommandation({ route, navigation }) {
   const spinValue = new Animated.Value(0);
   const spin = spinValue.interpolate({
@@ -32,8 +34,7 @@ export default function Recommandation({ route, navigation }) {
     let data = {
       Weekday: Weekday, DayTime: DayTime, Blood_sugar_level: Blood_sugar_level, Value_of_ingection: Value_of_ingection, TotalCarbs: TotalCarbs
     }
-    InjectionRecommendByML(data).then((response) => {
-      console.log("res=>", response.data);
+   return InjectionRecommendByML(data).then((response) => {
       return response.data
     })
       .catch((error) => {
@@ -41,20 +42,23 @@ export default function Recommandation({ route, navigation }) {
       })
   }
 
-  // const ml_recommandtion_loop=async()=>{
-  //  let prediction=false;
-  //   let Value_of_ingection = 1
-  //   while (!prediction) {    
-  //     let res=await ml_recommandtion("Tuesday","noon",detials.blood_sugar_level,Value_of_ingection,detials.totalCarbs)
-  //     console.log("res=>",res)
-  //     if(res&&res.prediction&&res.probability>0.9){
-  //       prediction=true;
-  //       console.log("res true========================",res)
-  //     }else{
-  //       Value_of_ingection++;
-  //     }
-  //   }
-  // }
+  const ml_recommandtion_loop=async()=>{
+   let prediction=false;
+    let Value_of_ingection = 1
+    while (!prediction&&Value_of_ingection<20) {  
+      let res=await ml_recommandtion("Tuesday","noon",detials.blood_sugar_level,Value_of_ingection,detials.totalCarbs)
+      //  console.log("res=>",res)
+      if(res&&res.prediction&&res.probability>=0.85){
+        prediction=true;
+        //  console.log("res true========================",res)
+        setTotal(Value_of_ingection)
+        setFoodUnit(0);
+        setFixUnit(0);
+      }else{
+        Value_of_ingection++;
+      }
+    }
+  }
   
 
   const save_data = (value_of_ingection) => {
@@ -71,7 +75,6 @@ export default function Recommandation({ route, navigation }) {
       value_of_ingection: value_of_ingection,
       system_recommendations: total
     }
-    console.log("data", data)
 
     Post_user_data(data).then(async (response) => {
 
@@ -97,7 +100,13 @@ export default function Recommandation({ route, navigation }) {
   
   useFocusEffect(
     React.useCallback(() => {
-      total_reccomandtion();
+
+      if(detials&&detials.totalRows>140){//min value to use predict ml
+        ml_recommandtion_loop();
+      }else{
+        total_reccomandtion();
+      }
+
       if(!loading&&!showInpit){ 
         // setInterval(() =>
      return Animated.timing(
@@ -117,6 +126,9 @@ export default function Recommandation({ route, navigation }) {
   // for case that user will go out of the page and ask for new reccomandtion with diffrent value
   useFocusEffect(
     React.useCallback(() => {
+      setTotal(undefined)
+      setFoodUnit(0);
+      setFixUnit(0);
       setShowInput(false);
     }, []))
 
@@ -137,7 +149,6 @@ export default function Recommandation({ route, navigation }) {
     }, [total]))
 
   const total_reccomandtion = () => {
-     console.log("detials",detials)
     if (detials) {
       let temptotal = 0
       if (detials.reccomandtion.fix && detials.reccomandtion.food) {
@@ -159,7 +170,6 @@ export default function Recommandation({ route, navigation }) {
         setFixUnit(0);
       }
       setTotal(Math.floor(temptotal));
-      console.log("temptotal",temptotal)
     }
   }
 
@@ -169,7 +179,7 @@ export default function Recommandation({ route, navigation }) {
 
 
   return (<>
-    {loading && <Loading 
+    {loading&& <Loading 
     opacity={'#d6f2fc'}
     />}
     {alert && alert}
@@ -188,8 +198,22 @@ export default function Recommandation({ route, navigation }) {
 
           <View style={{ flex: 0.7, alignItems: 'center', backgroundColor: '#ffffff80', width: '90%', alignSelf: 'center', borderRadius: 50, bottom: '5%' }}>
             <View style={{ paddingTop: '8%', alignItems: 'center' }}>
-              {total && total != 0 ? <><Text style={styles.txt}>The injection recommandation for you is</Text>
-                <Text style={{ fontWeight: 'bold', fontSize: 18 }}> {total} units </Text></> : <Text  style={styles.txt}>There is no need to inject</Text>}
+              {total && total !== 0 ? <><Text style={styles.txt}>The injection recommandation for you is</Text>
+                <Text style={{ fontWeight: 'bold', fontSize: 18 }}> {total} units </Text></> :total===undefined?
+                  
+                        <Progress.Bar
+                          width={255}
+                          height={15}
+                          borderRadius={5}
+                          borderColor={"#bbe4f2"}
+                          color='#69BEDC' //#FFCF84-orange
+                          useNativeDriver={true}
+                          borderWidth={2}
+                          indeterminate={true}
+                          animationConfig={{ bounciness: 20 }}
+                        />
+                      
+                :<Text  style={styles.txt}>There is no need to inject</Text>}
               {fixunit && fixunit != 0 ? <Text style={styles.txt}>ratio of fix injection {fixunit} units </Text> : <></>}
               {foodUnit && foodUnit != 0 ? <Text style={styles.txt}>ratio of cabs injection {foodUnit} units </Text> : <></>}
             </View>
@@ -197,7 +221,8 @@ export default function Recommandation({ route, navigation }) {
             {/* <Image
               style={styles.Image}
               source={{ uri: ImageUri + 'rec.png' }}
-            /> */}
+            /> */
+            }
             <Animated.Image
               style={styles.Image(spin)}
               source={{ uri: ImageUri + 'rec.png' }} />
