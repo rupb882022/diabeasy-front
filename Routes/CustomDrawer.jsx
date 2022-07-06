@@ -55,6 +55,8 @@ const styles = StyleSheet.create({
         textShadowColor: '#1ea6d6',
         textShadowOffset: { width: 2, height: 2 },
         textShadowRadius: 1,
+        flexWrap:'wrap',
+        maxWidth:'65%'
     },
     image: {
         width: 78,

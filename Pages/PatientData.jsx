@@ -38,14 +38,17 @@ export default function PatientData() {
 
   useFocusEffect(
     React.useCallback(() => {
-      if (userDetails.patientID) {        // if its doctor with selected patient
+      console.log("console.log(userDetails)", userDetails)
+      if (userDetails.patientID) {
+        setPieInfo();
+        setGrapData();
+        setPieInfoMonth();     // if its doctor with selected patient
         get_graphs_details(userDetails.patientID)
       }
       else if (userDetails.id % 2 != 0) {  // if its patient (=> not a doctor without selected patient)
         get_graphs_details(userDetails.id)
       }
       else if (!userDetails.patientID && userDetails.id % 2 == 0) {
-
         setPieInfo();
         setGrapData();
         setPieInfoMonth();
@@ -92,7 +95,7 @@ export default function PatientData() {
           data.push(x.H0)
         }
 
-      
+
         //array for Histogram
         houersAve.push({
           "data": data,
@@ -177,7 +180,7 @@ export default function PatientData() {
     labelColor: (opacity = 0) => `rgba(0, 0, 0, ${opacity})`,
     style: {
       borderRadius: 20
-      
+
     },
     propsForDots: {
       r: "3",
@@ -202,66 +205,88 @@ export default function PatientData() {
 
 
   useEffect(() => {
-    if (histogramList) {
+    console.log("histogramList",histogramList)
+    if (histogramList && histogramList.length) {
       let histogramMonth = {};
       let temp;
       if (!month || month == 30) {
         histogramMonth = histogramList.find(x => x.month == 30);
-
-        temp = {
-          labels: histogramMonth.labels,
-          datasets: [{ data: histogramMonth.data }]
+        console.log("1",histogramMonth)
+        if (histogramMonth) {
+          temp = {
+            labels: histogramMonth.labels,
+            datasets: [{ data: histogramMonth.data }]
+          }
         }
       }
       else {
         histogramMonth = histogramList.find(x => x.month == month);
-        temp = {
-          labels: histogramMonth.labels,
-          datasets: [{ data: histogramMonth.data }]
+        console.log("2",histogramMonth)
+        if (histogramMonth) {
+          temp = {
+            labels: histogramMonth.labels,
+            datasets: [{ data: histogramMonth.data }]
+          }
         }
       }
       histogramMonth && setHistogram(temp)
     }
   }, [month, histogramList])
 
-  return (
-    <>
+  if (!pieInfoMonth || !histogram) {
+    return (<View style={{ flex: 1 }}>
       {loading && <Loading opacity={'#d6f2fc'} />}
       <Header
         title='Graphs'
-        flex={0.25}
+        flex={0.12}
         possiton={30}
         paddingRight={5}
       />
-      <View style={{ flex: 0.08, flexDirection: 'column', position: 'relative', bottom: '3%', right: '28%' }}>
-        <Input
-          placeholder='Month'
-          // placeholder='last 30 days'
-          alignItems='center'
-          editable={false}
-          width={35}
-          height={100}
-          getValue={(value) => setMonth(value)}
-          type='selectBox'
-          SelectBox_placeholder='Select month'
-          selectBox_items={monthList ? monthList : []}
-        />
+      <View style={{ justifyContent: 'center', paddingBottom: '30%' }}>
+
+        <Text style={{ textAlign: 'center', fontSize: 25, flexWrap: 'wrap' }}>You do not have enough data</Text>
       </View>
+      {alert && alert}</View>
+    )
+  } else {
+    return (
+      <>
+        {loading && <Loading opacity={'#d6f2fc'} />}
+        <Header
+          title='Graphs'
+          flex={0.25}
+          possiton={30}
+          paddingRight={5}
+        />
+        <View style={{ flex: 0.08, flexDirection: 'column', position: 'relative', bottom: '3%', right: '28%' }}>
+          <Input
+            placeholder='Month'
+            // placeholder='last 30 days'
+            alignItems='center'
+            editable={false}
+            width={35}
+            height={100}
+            getValue={(value) => setMonth(value)}
+            type='selectBox'
+            SelectBox_placeholder='Select month'
+            selectBox_items={monthList ? monthList : []}
+          />
+        </View>
 
-      <Text style={{ alignSelf: 'flex-end', paddingBottom: '4%', fontSize: 18, position: 'absolute', top: '8.5%', right: '5%' }}>Estimated A1C : {a1c && a1c.toFixed(1)}% </Text>
+        <Text style={{ alignSelf: 'flex-end', paddingBottom: '4%', fontSize: 18, position: 'absolute', top: '8.5%', right: '5%' }}>Estimated A1C : {a1c && a1c.toFixed(1)}% </Text>
 
 
-      <SafeAreaView style={styles.containerView}>
-        <ScrollView style={styles.container}>
-          {histogram && histogram.labels &&
+        <SafeAreaView style={styles.containerView}>
+          <ScrollView style={styles.container}>
+            {histogram && histogram.labels &&
               <><Text style={styles.secoundTitle}>day averge at {month ? ParsetoMonthName(month, 'short') : 'the last 30 days'}</Text>
                 <LineChart
-                bezier
-                segments={5}
-                showValuesOnTopOfBars={true}
-                  style={{  borderRadius: 15, margin: 5 }}
+                  bezier
+                  segments={5}
+                  showValuesOnTopOfBars={true}
+                  style={{ borderRadius: 15, margin: 5 }}
                   data={histogram}
-                  width={Dimensions.get("window").width-5}
+                  width={Dimensions.get("window").width - 5}
                   height={250}
                   fromZero={true}
                   chartConfig={chartConfig}
@@ -270,44 +295,45 @@ export default function PatientData() {
             }
 
 
-          {pieInfoMonth && <Text style={styles.secoundTitle}>{month ? ParsetoMonthName(month, 'short') : 'last 30 days'} values segmentation </Text>}
+            {pieInfoMonth && <Text style={styles.secoundTitle}>{month ? ParsetoMonthName(month, 'short') : 'last 30 days'} values segmentation </Text>}
 
 
-          <View style={{ backgroundColor: '#ffffffa8', marginHorizontal: '2%', borderRadius: 16 }}>
-            {pieInfoMonth && <PieChart
-              data={pieInfoMonth}
-              width={Dimensions.get("window").width-10}
-              height={230}
-              chartConfig={chartConfig}
-              accessor={"amount"}
-              backgroundColor={"transparent"}
-              paddingLeft={"7"}
-            />}
-
-          </View>
-          <View style={{ paddingTop: '2%' }}>
-            {grapData && grapData.labels.length >= 2 && <><Text style={styles.secoundTitle}>Average in the last {grapData.labels.length} months</Text>
-              <BarChart
-                data={grapData}
-                width={Dimensions.get("window").width-10} // from react-native
-                height={250}
-                segments={6}
-                //yAxisLabel="$"
-                //yAxisSuffix="k"
-                yAxisInterval={1} // optional, defaults to 1
+            <View style={{ backgroundColor: '#ffffffa8', marginHorizontal: '2%', borderRadius: 16 }}>
+              {pieInfoMonth && <PieChart
+                data={pieInfoMonth}
+                width={Dimensions.get("window").width - 10}
+                height={230}
                 chartConfig={chartConfig}
-                // bezier
-                fromZero={true}
-                style={{ bottom:'2%', borderRadius: 10, margin: 5 }}
-              /></>}
+                accessor={"amount"}
+                backgroundColor={"transparent"}
+                paddingLeft={"7"}
+              />}
+
+            </View>
+            <View style={{ paddingTop: '2%' }}>
+              {grapData && grapData.labels.length >= 2 && <><Text style={styles.secoundTitle}>Average in the last {grapData.labels.length} months</Text>
+                <BarChart
+                  data={grapData}
+                  width={Dimensions.get("window").width - 10} // from react-native
+                  height={250}
+                  segments={6}
+                  //yAxisLabel="$"
+                  //yAxisSuffix="k"
+                  yAxisInterval={1} // optional, defaults to 1
+                  chartConfig={chartConfig}
+                  // bezier
+                  fromZero={true}
+                  style={{ bottom: '2%', borderRadius: 10, margin: 5 }}
+                /></>}
 
 
-          </View>
-        </ScrollView>
-      </SafeAreaView >
-      {alert && alert}
-    </>
-  )
+            </View>
+          </ScrollView>
+        </SafeAreaView >
+        {alert && alert}
+      </>
+    )
+  }
 }
 
 const styles = StyleSheet.create({

@@ -282,8 +282,8 @@ export default function Prescriptions(props) {
     <Header
       title='Prescriptions'
       logo_image='perscriptions'
-      flex={userDetails.id % 2 == 0 ? 0.11 : 0.11}
-      possiton={27}
+      flex={userDetails.id % 2 == 0 ? 0.09 : 0.11}
+      possiton={userDetails.id % 2 == 0?23:27}
       image_margin={{ Bottom: -4 }}
       marginLeft={7}
     // justifyContent='flex-start' 
@@ -295,14 +295,14 @@ export default function Prescriptions(props) {
         <Text style={styles.title}>Your last requests:</Text>}
       <ScrollView style={styles.list}>
         <View >
-          {prescriptions && prescriptions.map((item) => (
+          {prescriptions &&prescriptions.length>0? prescriptions.map((item) => (
             <View key={item.id} style={styles.oneItem}>
               <TouchableOpacity onPress={() => { btnPrescDetails(item.id) }}>
                 <Text style={styles.status}>{<MaterialCommunityIcons name="pill" size={24} color={item.status == 'accepted' ? "#1EAC14" : item.status == 'rejected' ? "#EF5C5C" : "#282f28cf"} />} - Request from {moment(new Date(item.date_time)).format('DD/MM/YYYY')}</Text>
 
               </TouchableOpacity>
             </View>
-          ))
+          )):<Text style={{textAlign:'center',justifyContent:'center',fontSize:20}}>no requests</Text>
 
           }
         </View>
@@ -322,14 +322,14 @@ export default function Prescriptions(props) {
         />
       </View>
       }
-      {userDetails.id % 2 != 0 && <Button
+      {userDetails.id % 2 != 0 ? <Button
         text='New request'
         width={12}
         height={4}
         alignItems='center'
         justifyContent='center'
         onPress={() => setShow(true)}
-      />
+      />:<View style={{flex:0.5}}></View>
       }
       <View style={{ flexDirection: 'row' }}>
         <View style={{ justifyContent: 'center', alignItems: 'center', direction: 'ltr' }}>

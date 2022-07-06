@@ -6,7 +6,7 @@ import Button from '../CTools/Button';
 import moment from 'moment';
 import { UserContext } from '../CTools/UserDetailsHook'
 import Loading from '../CTools/Loading';
-import { Post_user_data, Post_SendPushNotification, GetInjectionRecommend,ml_recommandtion } from '../Functions/Function'
+import { Post_user_data, Post_SendPushNotification, GetInjectionRecommend } from '../Functions/Function'
 import Alert from '../CTools/Alert';
 import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
@@ -42,37 +42,7 @@ export default function InsertData({ navigation, route }) {
         userDetails && userDetails.spot ? setDefualtSpot(true) : setDefualtSpot(false);
     }, [])
 
-
-    const ml_recommandtion = async (Weekday, DayTime, Blood_sugar_level, Value_of_ingection, TotalCarbs) => {
-        let data = {
-          Weekday: Weekday, DayTime: DayTime, Blood_sugar_level: Blood_sugar_level, Value_of_ingection: Value_of_ingection, TotalCarbs: TotalCarbs
-        }
-       return InjectionRecommendByML(data).then((response) => {
-          return response.data
-        })
-          .catch((error) => {
-            console.log("error", error);
-          })
-      }
     
-      const ml_recommandtion_loop=async()=>{
-       let prediction=false;
-        let Value_of_ingection = 1
-        while (!prediction&&Value_of_ingection<15) {  
-          let res=await ml_recommandtion("Tuesday","noon",detials.blood_sugar_level,Value_of_ingection,detials.totalCarbs)
-          console.log("res=>",res)
-          if(res&&res.prediction&&res.probability>=0.85){
-            prediction=true;
-            console.log("res true========================",res)
-            setTotal(Value_of_ingection)
-            setFoodUnit(0);
-            setFixUnit(0);
-          }else{
-            Value_of_ingection++;
-          }
-        }
-      }
-
     const reccomandtion = () => {
         if (!sugarLevel || !spot) {
             setAlert(

@@ -15,18 +15,18 @@ export default function DoctorHome(props) {
     const [element, setElement] = useState()
 
     useEffect(() => {
-        setLoading(true);
+        // setLoading(true);
         Get_doctor_patients(userDetails.id).then((result) => {
             setPatients(result)
         },
             (error) => {
                 console.log("error in function Get_doctor_patients", error)
-             loading?setInterval(() => setLoading(false), 1200):null;
+            //  loading?setInterval(() => setLoading(false), 1200):null;
             })
     }, [])
 
     useEffect(() => {
-    loading?setInterval(() => setLoading(false), 1200):null;
+    loading&&setInterval(() => setLoading(false), 1200);
     },[patients])
 
 
@@ -71,11 +71,11 @@ export default function DoctorHome(props) {
             <Header
                 title='Home'
                 logo_image='heart'
-                flex={0.2}
+                flex={0.1}
                 image_width={50}
                 image_heigt={50}
                 paddingRight={9}
-                possiton={50}
+                possiton={30}
                 image_margin={{ Bottom: 5 }}
             />
 
