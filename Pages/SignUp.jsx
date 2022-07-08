@@ -20,18 +20,20 @@ export default function SignUp({ navigation }) {
         title='Create your account'
         logo_image='diabeasy'
         fontSize={27}
-        image_width={200}
-        image_heigt={200}
+       image_width={0}
+      image_heigt={0}
        
         justifyContent='flex-end'
         flexDirection="column-reverse"
         alignItems='center'
         //paddingRight={25}
         line={false}
-        possiton={10}
+       possiton={10}
       //image_marginBottom={40}
+      
       />
 
+        <Text style={{textAlign:'center',fontSize:25,top:'15%'}}> Who Are You?  </Text>
 
           {/* //       Todo => on press sign up there are two headers.   */}
       <View style={styles.buttons}>   

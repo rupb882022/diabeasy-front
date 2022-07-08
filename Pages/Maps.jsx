@@ -178,7 +178,7 @@ export default function Maps() {
         <PopUp
           setShow={(show) => setShow(show)}
           width={80}
-          height={51}
+          height={60}
           element={
             <>
               <SimpleLineIcons name="info" size={28} color="black" zIndex='1'/>
