@@ -63,7 +63,7 @@ export default function PersonalInfo2(props) {
         Post_user_details(userDetilas)
             .then((response) => {
                 setLoading(false);
-                response&& navigation.navigate('Login') //Todo approve the register
+                response&& navigation.navigate('Login') 
             })
             .catch((error) => {
                 setAlert(

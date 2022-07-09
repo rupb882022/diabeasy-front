@@ -5,7 +5,6 @@ import Button from '../CTools/Button'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Loading from '../CTools/Loading';
 
-//Todo fix css title header
 export default function SignUp({ navigation }) {
 
   const [loading, setLoading] = useState(true);
@@ -33,7 +32,6 @@ export default function SignUp({ navigation }) {
       />
 
 
-          {/* //       Todo => on press sign up there are two headers.   */}
       <View style={styles.buttons}>   
         <Button text='Patient' width={18} height={8} alignItems='center' onPress={()=>{setLoading(true); navigation.navigate('PersonalInfo1',{user:'Patient'})}} />
         <Button text='Doctor' width={18} height={8} alignItems='center' onPress={()=>{setLoading(true); navigation.navigate('PersonalInfo1',{user:'Doctor'})}} />

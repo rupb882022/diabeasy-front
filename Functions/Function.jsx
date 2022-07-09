@@ -101,6 +101,7 @@ export const  Get_Table_Data=(userDetails_id,fromDate,toDate)=>{
   return Fetch(`User/GetdataForTable/${userDetails_id}/${fromDate}/${toDate}`,'GET');
 }
 export const  more_details_PD=(id,dateTime,)=>{
+  console.log(`User/more_details_PD/${id}/${dateTime}`)
   return Fetch(`User/more_details_PD/${id}/${dateTime}`,'GET');
 }
 
@@ -137,8 +138,10 @@ export const  GET_assistant_phone=(userDetails_id)=>{
 export const POST_EmergancyPhoneNumber=(id,number)=>{
   return Axios(`User/assistant_phone/${id}/${number}`,'POST');
 }
-
-
+//---------------------------------maps-----------------------
+export const  Get_api_google_key=()=>{
+  return Fetch(`User/HistoryLog/googleKey`,'GET');
+}
 //---------------------------------recommandtion-----------------------
 export const get_food_for_hipo=(user_id)=>{
   return Fetch(`Food/hipoRecomendtion/${user_id}`)

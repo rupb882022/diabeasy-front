@@ -10,13 +10,14 @@ import * as Location from 'expo-location';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import PopUp from '../CTools/PopUp';
 import Loading from '../CTools/Loading';
+import{Get_api_google_key}from '../Functions/Function'
 
 export default function Maps() {
   const [location, setLocation] = useState();
   const [distance, setDistance] = useState(0)
   const [loading, setLoading] = useState(true);
   const [show, setShow] = useState(false);
-
+  const [apiKey,setApiKey]=useState();
 
   const [pin, setPin] = useState({
     latitude: 32.34245547297243,
@@ -43,6 +44,9 @@ export default function Maps() {
         return;
       }
       let location = await Location.getCurrentPositionAsync({});
+      let apiKey=await Get_api_google_key(); 
+      setApiKey(apiKey)
+      console.log("apiKey",apiKey)
       setLoading(false)
       setLocation(location)
       setRegion({
@@ -92,7 +96,7 @@ export default function Maps() {
           })
         }}
         query={{
-          key: 'AIzaSyCxK0YIfvxlxJ8vocNVyDG_JScVf7SKG6w',//- API Google key. - AIzaSyCxK0YIfvxlxJ8vocNVyDG_JScVf7SKG6w
+          key: 'AIzaSyCxK0YIfvxlxJ8vocNVyDG_JScVf7SKG6w',
           language: 'en',
           components: "country:il",
           //	types:"establishment",

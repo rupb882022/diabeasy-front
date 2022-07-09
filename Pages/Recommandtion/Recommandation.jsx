@@ -30,6 +30,12 @@ export default function Recommandation({ route, navigation }) {
 
   let detials = route.params && route.params.detials ? route.params.detials : '';
 
+
+
+
+
+
+
   const ml_recommandtion = async (Weekday, DayTime, Blood_sugar_level, Value_of_ingection, TotalCarbs) => {
     let data = {
       Weekday: Weekday, DayTime: DayTime, Blood_sugar_level: Blood_sugar_level, Value_of_ingection: Value_of_ingection, TotalCarbs: TotalCarbs
@@ -45,8 +51,22 @@ export default function Recommandation({ route, navigation }) {
   const ml_recommandtion_loop=async()=>{
    let prediction=false;
     let Value_of_ingection = 1
+    let dateTime=detials&&detials.date_time?new Date(detials.date_time):new Date()
+    let day=dateTime.toLocaleString("en-US", { "weekday": "long" });
+    let hour=dateTime.getHours()
+  let dayTime='';
+  if(hour>=0&&hour<6){
+    dayTime='night'
+  }else if(hour>=6&&hour<12){
+    dayTime='morning'
+  }else if(hour>=12&&hour<18){
+    dayTime='noon'
+  }else {
+    dayTime='evning'
+  }
+
     while (!prediction&&Value_of_ingection<20) {  
-      let res=await ml_recommandtion("Tuesday","noon",detials.blood_sugar_level,Value_of_ingection,detials.totalCarbs)
+      let res=await ml_recommandtion(day,dayTime,detials.blood_sugar_level,Value_of_ingection,detials.totalCarbs)
       //  console.log("res=>",res)
       if(res&&res.prediction&&res.probability>=0.85){
         prediction=true;

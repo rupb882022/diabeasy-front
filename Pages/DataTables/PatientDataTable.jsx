@@ -54,7 +54,6 @@ export default function PatientDataTable({ navigation }) {
   );
 
   const getData = () => {
-    // setLoading(true) ----------------------------------------TO DO ------------- Fix Loading!!
     let id;
     if (userDetails.patientID) {// if its doctor with selected patient
       id = userDetails.patientID;
@@ -181,7 +180,7 @@ export default function PatientDataTable({ navigation }) {
     }
 
     more_details_PD(id, time.replace(":", "!").replace(":", "!")).then((respone) => {
-
+console.log(respone)
       setShowEdit(false)
       if (respone && respone.length == 0) {
         setAlert(
@@ -248,7 +247,6 @@ export default function PatientDataTable({ navigation }) {
                 getValue={(value) => setinjectionValue(value)}
                 setValue={injectionValue}
               />
-              {/* ToDo -------------------------------- fix label spot injection to outside the page range */}
               <Input
                 label='Spot of injection'
                 placeholder={spot ? spot : 'none'}
