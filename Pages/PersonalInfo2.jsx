@@ -101,7 +101,7 @@ export default function PersonalInfo2(props) {
             {loading && <Loading opacity={'#d6f2fc'} />}
             <Header
                 title='Medical Info'
-                possiton={-10}
+                possiton={10}
                 marginLeft={4}
                 line={false}
             />
