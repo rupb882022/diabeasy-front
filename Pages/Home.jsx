@@ -56,7 +56,7 @@ export default function Home(props) {
             console.log("error in function post_pushToken " + error);
             setLoading(false)
         });
-
+        setLoading(false)
     }, [])
 
     useFocusEffect(
