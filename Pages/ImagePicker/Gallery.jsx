@@ -105,7 +105,6 @@ const ImgUpload = (imgUri, picName) => {
   });
   }
 
-//Todo change icon
  return (
 <>
 <PopUp style={styles.container}

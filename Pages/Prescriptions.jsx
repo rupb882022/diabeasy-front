@@ -361,7 +361,6 @@ export default function Prescriptions(props) {
           button_justifyContent='flex-start'
         />}
 
-      {/* Todo change PopupElement from state to const and add the buttons Delete and cancle to PopupElement */}
       {showDetails && prescriptions && userDetails.id % 2 != 0 &&
         <PopUp
           height={45}

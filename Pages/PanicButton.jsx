@@ -70,7 +70,6 @@ export default function PanicButton() {
         getPhone();
     } ,[userDetails]));
 
-    //todo clear alert when emergency call is update in setting page
     return (
         <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}

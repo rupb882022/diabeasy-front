@@ -168,7 +168,7 @@ Put_EditPersonalInfo(userDetails.id,data).then((response) => {
                 required={true}
                 setValue={birthDate}
                 getValue={(value) => {setDate(value)}}
-                placeholder={birthDate?`${moment(birthDate).format("DD/MM/YYYY")}`:''}                       ///todo change format
+                placeholder={birthDate?`${moment(birthDate).format("DD/MM/YYYY")}`:''}                 
             />
               <View style={{ flexDirection: 'row', flex: 1, marginLeft: '6%' }}>
                     <Input

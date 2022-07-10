@@ -9,7 +9,6 @@ import Alert from '../../CTools/Alert';
 import Moment from 'moment';
 
 
-//todo fix alert and date
 export default function AddComment(props) {
   
   const { comment_id, subject, name,getAllComments,userDetails,setAlert } = props

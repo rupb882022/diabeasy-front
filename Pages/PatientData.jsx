@@ -23,7 +23,6 @@ export default function PatientData() {
   const [histogram, setHistogram] = useState();
   const [histogramList, setHistogramList] = useState();
 
-  //todo if there is not enough data of patient
   const ParsetoMonthName = (monthNumber, format) => {
     const date = new Date();
     if (monthNumber == 30 || monthNumber == 0) {

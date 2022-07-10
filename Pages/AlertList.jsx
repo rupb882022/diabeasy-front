@@ -117,20 +117,23 @@ const styles = StyleSheet.create({
     // console.log("i",i)
     return {
       backgroundColor: active ? '#9fc0fabd' : '#ffffffe0',
-      height: '70%',
+      height: '100%',
       flexDirection: 'row',
       flexWrap: 'wrap',
       width: width - 104,
-      marginBottom: '18%',
+      // marginBottom: '7%',
+      // paddingBottom:'4%',
       borderRadius: 10,
       padding: '2%',
-      bottom: i == 0 ? 0 : (i * 25) + '%',
+      // bottom:'25%',
+      // bottom: i == 0||i>16 ? 0 : (i * 25) + '%',
       zIndex: 20
     }
   },
   itemContainer: () => {
     return {
       flexDirection: 'row',
+      marginTop:'2%'
       //  backgroundColor: active ? '#88B1F9' : '#d5e5fe4d',
     }
   },

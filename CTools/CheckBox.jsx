@@ -3,7 +3,6 @@ import React, { useState } from 'react'
 import Button from './Button'
 import { Fontisto } from '@expo/vector-icons';
 
-//TODO for login and food ingrediants
 export default function CheckBox(props) {
   const { ischeck = false, getvalue, disable } = props;
 
