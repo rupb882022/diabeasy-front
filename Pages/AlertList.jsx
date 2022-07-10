@@ -65,8 +65,6 @@ const AlertList = (props) => {
 
   const Item = ({ id, name, profileimage, active, content, date_time, daysLeft, daysLeftName }) => {
     i++;
-    console.log(content=="fixReport"?ImageUri+'diabeasy_logo.png': profileimage ? { uri: profileimage.includes("http") ? profileimage : ImageUri + profileimage } : require('../images/profile_pictur.jpeg'))
-
     return (
       <TouchableOpacity onPress={() => { navigationTo(content, id); }} style={styles.itemContainer(active)}>
         <View id={id} style={styles.item(Dimensions.get("window").width, i, active)}>
@@ -74,7 +72,7 @@ const AlertList = (props) => {
           <View style={styles.title}>
             <Text style={styles.text}>{alertContent(name, content)}</Text>
           </View>
-          <Text style={styles.date}>{daysLeft} {daysLeftName} ago</Text>
+          <Text style={styles.date}>{daysLeft==0&&daysLeftName=="Hours"?'Just now':`${daysLeft} ${daysLeftName} ago`}</Text>
         </View>
       </TouchableOpacity>
     )
