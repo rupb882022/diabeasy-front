@@ -80,7 +80,7 @@ export default function PanicButton() {
             <Header
                 title='Emergency Call'
                 logo_image='panic'
-                flex={alert&&!phone?0.25:0.15}
+                flex={alert&&!phone?0.25:0.11}
                 // image_width={25}
                 // image_heigt={100}
                 // image_margin={{ Bottom: -4 }}
